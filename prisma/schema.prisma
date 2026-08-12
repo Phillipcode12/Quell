@@ -1,0 +1,74 @@
+// ClearSight Rx — data model
+// Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime @default(now())
+
+  orders Order[]
+}
+
+model Product {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  name        String
+  description String
+  /// Active ingredient + concentration, e.g. "Latanoprost 0.005%"
+  strength    String
+  priceCents  Int
+  /// Milliliters per bottle
+  volumeMl    Float
+  /// Every Rx product must be gated behind a verified prescription before fulfillment.
+  requiresRx  Boolean @default(true)
+  active      Boolean @default(true)
+
+  orderItems OrderItem[]
+}
+
+model Order {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  /// pending -> paid (Stripe webhook) -> rx_review -> shipped | cancelled
+  status     String @default("pending")
+  totalCents Int
+
+  stripeSessionId       String? @unique
+  stripePaymentIntentId String?
+
+  /// Placeholder for the real prescription record. In production this is where a
+  /// verified Rx from a licensed prescriber gets attached, and fulfillment must
+  /// block until a pharmacist signs off. Nothing here performs that verification.
+  prescriptionRef    String?
+  prescriptionStatus String  @default("unverified")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  items OrderItem[]
+}
+
+model OrderItem {
+  id      String @id @default(cuid())
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  quantity       Int
+  unitPriceCents Int
+}
