@@ -25,6 +25,7 @@ const STORAGE_KEY = 'clearsight_cart'
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([])
+  const [hydrated, setHydrated] = useState(false)
 
   // Load after mount so server and client render the same initial markup.
   useEffect(() => {
@@ -34,15 +35,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // Corrupt or unavailable storage — start with an empty cart.
     }
+    setHydrated(true)
   }, [])
 
   useEffect(() => {
+    // Don't persist until the stored cart has been read back, otherwise the
+    // empty initial state overwrites a saved cart on the first render.
+    if (!hydrated) return
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(lines))
     } catch {
       // Ignore quota / private-mode failures.
     }
-  }, [lines])
+  }, [lines, hydrated])
 
   const add = useCallback((productId: string, quantity = 1) => {
     setLines((prev) => {
