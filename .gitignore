@@ -38,6 +38,11 @@ yarn-error.log*
 /prisma/*.db
 /prisma/*.db-journal
 
+# duplicate copies of the Prisma agent skills for other editors
+# (the .claude/skills copy is kept)
+/.windsurf
+/.agents
+
 # vercel
 .vercel
 
