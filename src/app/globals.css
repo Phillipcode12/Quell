@@ -8,7 +8,10 @@
   --border: #dfe6ef;
   --brand: #0f7b8a;
   --brand-dark: #0b5d69;
+  --brand-light: #7fc9d4;
   --accent: #eaf6f8;
+  --ink: #082430;
+  --sand: #fdf6ec;
 }
 
 @theme inline {
@@ -19,7 +22,10 @@
   --color-line: var(--border);
   --color-brand: var(--brand);
   --color-brand-dark: var(--brand-dark);
+  --color-brand-light: var(--brand-light);
   --color-accent: var(--accent);
+  --color-ink: var(--ink);
+  --color-sand: var(--sand);
 }
 
 body {
@@ -27,4 +33,45 @@ body {
   color: var(--foreground);
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     Helvetica, Arial, sans-serif;
+}
+
+/* Shared typography for the long-form legal and about pages. */
+.prose-page h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-page h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose-page p,
+.prose-page li {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.prose-page p {
+  margin-bottom: 1rem;
+}
+
+.prose-page ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.prose-page li {
+  margin-bottom: 0.4rem;
+}
+
+.prose-page a {
+  color: var(--brand);
+  text-decoration: underline;
 }

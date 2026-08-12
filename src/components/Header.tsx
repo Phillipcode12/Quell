@@ -30,8 +30,17 @@ export function Header({ user }: { user: HeaderUser }) {
         </Link>
 
         <nav className="ml-auto flex items-center gap-5 text-sm">
-          <Link href="/" className="hover:text-brand">
-            Catalog
+          <Link href="/#catalog" className="hidden hover:text-brand sm:inline">
+            Formulary
+          </Link>
+          <Link
+            href="/#how-it-works"
+            className="hidden hover:text-brand sm:inline"
+          >
+            How it works
+          </Link>
+          <Link href="/about" className="hidden hover:text-brand sm:inline">
+            About
           </Link>
 
           <Link href="/cart" className="hover:text-brand">
