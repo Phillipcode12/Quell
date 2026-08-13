@@ -10,7 +10,7 @@ type HeaderUser = { id: string; email: string; name: string } | null
 const navLinks = [
   { label: 'Why Quell', href: '/#science' },
   { label: 'How to use', href: '/#how-to-use' },
-  { label: 'Drug Facts', href: '/#drug-facts' },
+  { label: 'Drug Facts', href: '/drug-facts' },
   { label: 'FAQ', href: '/#faq' },
 ]
 

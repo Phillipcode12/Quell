@@ -36,7 +36,7 @@ export function FinalCta() {
             <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
-            href="#drug-facts"
+            href="/drug-facts"
             className="rounded-lg border border-line px-7 py-3.5 font-medium text-white transition hover:border-brand hover:bg-white/5"
           >
             Read the Drug Facts

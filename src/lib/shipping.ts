@@ -15,8 +15,13 @@ export const FREE_SHIPPING_THRESHOLD_CENTS = 5_900 // $59.00
  */
 export const STANDARD_SHIPPING_CENTS = 695 // $6.95
 
-export const SHIPPING_LABEL = 'FedEx 2-Day'
-export const FREE_SHIPPING_LABEL = 'Free FedEx 2-Day'
+/**
+ * Carrier-neutral labels. Naming a carrier or a delivery window in the
+ * promotion is a claim we would have to honour, so the offer is stated purely
+ * as free shipping above the threshold.
+ */
+export const SHIPPING_LABEL = 'Standard shipping'
+export const FREE_SHIPPING_LABEL = 'Free shipping'
 
 /** Countries Checkout will accept a shipping address for. */
 export const SHIPPABLE_COUNTRIES = ['US'] as const

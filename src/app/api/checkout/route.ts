@@ -124,10 +124,7 @@ export async function POST(request: Request) {
             display_name:
               shippingCents === 0 ? FREE_SHIPPING_LABEL : SHIPPING_LABEL,
             fixed_amount: { amount: shippingCents, currency: 'usd' },
-            delivery_estimate: {
-              minimum: { unit: 'business_day', value: 2 },
-              maximum: { unit: 'business_day', value: 3 },
-            },
+            // No delivery_estimate: we don't promise a delivery window.
           },
         },
       ],

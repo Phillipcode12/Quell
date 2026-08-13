@@ -2,7 +2,6 @@ import { FAQS } from '@/lib/product-content'
 import { formatUsd } from '@/lib/money'
 import {
   FREE_SHIPPING_THRESHOLD_CENTS,
-  SHIPPING_LABEL,
   STANDARD_SHIPPING_CENTS,
 } from '@/lib/shipping'
 
@@ -10,7 +9,7 @@ import {
 // with what checkout actually charges.
 const shippingFaq = {
   q: 'How much is shipping?',
-  a: `Orders of ${formatUsd(FREE_SHIPPING_THRESHOLD_CENTS)} or more ship free via ${SHIPPING_LABEL}. Below that, shipping is a flat ${formatUsd(STANDARD_SHIPPING_CENTS)}. You will enter your shipping address at checkout.`,
+  a: `Orders of ${formatUsd(FREE_SHIPPING_THRESHOLD_CENTS)} or more ship free. Below that, shipping is a flat ${formatUsd(STANDARD_SHIPPING_CENTS)}. You will enter your shipping address at checkout.`,
 }
 
 const allFaqs = [...FAQS, shippingFaq]

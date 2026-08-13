@@ -4,12 +4,12 @@ import { WhyItWorks } from '@/components/home/WhyItWorks'
 import { BuySection } from '@/components/home/BuySection'
 import { HowToUse } from '@/components/home/HowToUse'
 import { Lifestyle } from '@/components/home/Lifestyle'
-import { DrugFacts } from '@/components/home/DrugFacts'
 import { Faq } from '@/components/home/Faq'
 import { FinalCta } from '@/components/home/FinalCta'
 
 export default async function HomePage() {
-  // Single-SKU storefront: the homepage is the product page.
+  // Single-SKU storefront: the homepage is the product page. The full Drug
+  // Facts panel lives at /drug-facts rather than in this scroll.
   const product = await prisma.product.findFirst({ where: { active: true } })
 
   return (
@@ -19,7 +19,6 @@ export default async function HomePage() {
       <BuySection product={product} />
       <HowToUse />
       <Lifestyle />
-      <DrugFacts />
       <Faq />
       <FinalCta />
     </>

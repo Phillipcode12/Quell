@@ -1,9 +1,10 @@
+import Link from 'next/link'
 import { BuyPanel } from '@/components/BuyPanel'
 import { QuellMark } from '@/components/Logo'
 import { Droplet, Leaf, Medical, NoDrop, Truck } from '@/components/icons'
 import { formatUsd } from '@/lib/money'
 import { BRAND, DRUG_FACTS, RELIEVES } from '@/lib/product-content'
-import { FREE_SHIPPING_THRESHOLD_CENTS, SHIPPING_LABEL } from '@/lib/shipping'
+import { FREE_SHIPPING_THRESHOLD_CENTS } from '@/lib/shipping'
 
 type BuyProduct = {
   id: string
@@ -78,7 +79,7 @@ export function BuySection({ product }: { product: BuyProduct | null }) {
 
           <p className="mt-6 flex items-center gap-2.5 text-sm text-brand-light">
             <Truck className="h-5 w-5 shrink-0" />
-            Free {SHIPPING_LABEL} shipping on orders over{' '}
+            Free shipping on orders over{' '}
             {formatUsd(FREE_SHIPPING_THRESHOLD_CENTS)}
           </p>
 
@@ -88,9 +89,12 @@ export function BuySection({ product }: { product: BuyProduct | null }) {
             <strong className="font-semibold text-white">Uses:</strong>{' '}
             {DRUG_FACTS.uses}. {BRAND.trademark} is an over-the-counter drug — no
             prescription needed. Read the full{' '}
-            <a href="#drug-facts" className="text-brand-light hover:underline">
+            <Link
+              href="/drug-facts"
+              className="text-brand-light hover:underline"
+            >
               Drug Facts
-            </a>{' '}
+            </Link>{' '}
             before use.
           </p>
         </div>

@@ -1,7 +1,12 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { PageHero, TemplateNotice } from '@/components/PageHero'
-import { BRAND, COMPANY, DRUG_FACTS } from '@/lib/product-content'
+import {
+  BRAND,
+  COMPANY,
+  DRUG_FACTS,
+  MANUFACTURER,
+} from '@/lib/product-content'
 
 export const metadata: Metadata = {
   title: `Terms of Service — ${BRAND.name}`,
@@ -141,8 +146,9 @@ export default function TermsPage() {
           <h2>10. Intellectual property</h2>
           <p>
             {BRAND.trademark}, {BRAND.tagline}, the eye mark, and the site
-            content are owned by {COMPANY.name}. You may not use them without
-            written permission.
+            content are owned by {COMPANY.legalName}. You may not use them
+            without written permission. The product is manufactured for{' '}
+            {COMPANY.legalName} by {MANUFACTURER.name}.
           </p>
 
           <h2>11. Governing law</h2>

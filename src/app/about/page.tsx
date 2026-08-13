@@ -2,7 +2,13 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { PageHero } from '@/components/PageHero'
 import { Droplet, Leaf, Medical, NoDrop } from '@/components/icons'
-import { BRAND, COMPANY, DRUG_FACTS, RELIEVES } from '@/lib/product-content'
+import {
+  BRAND,
+  COMPANY,
+  DRUG_FACTS,
+  MANUFACTURER,
+  RELIEVES,
+} from '@/lib/product-content'
 
 export const metadata: Metadata = {
   title: `About us — ${BRAND.name}`,
@@ -38,7 +44,7 @@ export default function AboutPage() {
       <PageHero
         eyebrow="About us"
         title="Built for the layer other drops ignore"
-        subtitle={`${BRAND.trademark} — ${BRAND.productType}, made by ${COMPANY.name}.`}
+        subtitle={`${BRAND.trademark} — ${BRAND.productType}, from ${COMPANY.name}.`}
       />
 
       <div className="mx-auto max-w-4xl px-6 py-16">
@@ -58,6 +64,15 @@ export default function AboutPage() {
             artificial tears, it provides soothing support of the tear film’s oil
             layer to reduce moisture loss. It is also where the name of our
             slogan comes from — {BRAND.slogan.toLowerCase()}
+          </p>
+
+          <h2>Who makes Quell</h2>
+          <p>
+            Quell is a product of {COMPANY.name}, whose eye care work centres on
+            the eyelid and the tear film — the same territory this formula
+            targets. {COMPANY.legalName} owns the {BRAND.trademark} trademark.
+            The drops themselves are manufactured by {MANUFACTURER.name} of{' '}
+            {MANUFACTURER.addressLines[1]}
           </p>
 
           <h2>What Quell is</h2>

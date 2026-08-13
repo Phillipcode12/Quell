@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { ArrowRight, Truck } from '@/components/icons'
 import { formatUsd } from '@/lib/money'
 import { BRAND, FRONT_PANEL_CLAIMS, RELIEVES } from '@/lib/product-content'
-import { FREE_SHIPPING_THRESHOLD_CENTS, SHIPPING_LABEL } from '@/lib/shipping'
+import { FREE_SHIPPING_THRESHOLD_CENTS } from '@/lib/shipping'
 
 // Fades the photo's white studio background out to the page black instead of
 // sitting on the page as a bright rectangle. The product stays fully opaque in
@@ -72,8 +72,7 @@ export function Hero() {
             ))}
             <li className="flex items-center gap-2 text-brand-light">
               <Truck className="h-4 w-4" />
-              Free {SHIPPING_LABEL} over{' '}
-              {formatUsd(FREE_SHIPPING_THRESHOLD_CENTS)}
+              Free shipping over {formatUsd(FREE_SHIPPING_THRESHOLD_CENTS)}
             </li>
           </ul>
         </div>

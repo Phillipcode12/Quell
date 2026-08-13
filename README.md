@@ -3,6 +3,10 @@
 Single-product storefront for **Quell™**, a preservative-free lubricating eye
 drop. Accounts, cart, and Stripe Checkout, backed by a local SQLite database.
 
+**Quell is a brand of BlephEx®, LLC** (Brentwood, TN), which owns the trademark.
+The drops are manufactured by Aurora Pharmaceuticals, Inc. Both are defined in
+`src/lib/product-content.ts` as `COMPANY` and `MANUFACTURER`.
+
 > Quell is an **over-the-counter** drug, not a prescription product. There is no
 > prescription gating anywhere in this app by design.
 
@@ -92,12 +96,14 @@ Test card `4242 4242 4242 4242`, any future expiry, any CVC.
 Rules live in **`src/lib/shipping.ts`** and drive the cart, the FAQ, and the
 Stripe Checkout Session from one place:
 
-| Rule                | Value                        |
-| ------------------- | ---------------------------- |
-| Free shipping at    | $59.00 subtotal              |
-| Flat rate below     | $6.95                        |
-| Carrier label       | FedEx 2-Day (2–3 business days) |
-| Ships to            | US only                      |
+| Rule                | Value           |
+| ------------------- | --------------- |
+| Free shipping at    | $59.00 subtotal |
+| Flat rate below     | $6.95           |
+| Ships to            | US only         |
+
+The offer is stated as plain "free shipping over $59" — no carrier name and no
+delivery window, since either would be a promise to honour.
 
 Checkout collects a shipping address, and the address is stored on the order
 from the webhook so you know where to ship. Shipping is calculated server-side

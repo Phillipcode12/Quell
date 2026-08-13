@@ -18,17 +18,27 @@ export const BRAND = {
   size: '.33 fl oz (10 mL)',
 } as const
 
+/**
+ * Brand owner. BlephEx owns the Quell trademark and sells the product; the
+ * contact number is the one printed on the carton.
+ */
 export const COMPANY = {
-  name: 'Aurora Pharmaceuticals, Inc',
-  addressLines: [
-    '330 Franklin Rd Suite 135A-117',
-    'Brentwood, TN 37027 USA',
-  ],
+  name: 'BlephEx®, LLC',
+  /** Without the ® symbol, for running text and legal clauses. */
+  legalName: 'BlephEx, LLC',
+  addressLines: ['500 Wilson Pike Circle, Suite 103', 'Brentwood, TN 37027'],
   phone: '615.465.6041',
   phoneHref: '+16154656041',
+  fax: '800.330.2241',
   hours: 'M–F 9AM–5PM CST',
   website: 'meibum.com',
   websiteHref: 'https://meibum.com',
+} as const
+
+/** Who physically makes the product, as printed on the bottle. */
+export const MANUFACTURER = {
+  name: 'Aurora Pharmaceuticals, Inc',
+  addressLines: ['330 Franklin Rd Suite 135A-117', 'Brentwood, TN 37027 USA'],
 } as const
 
 /** Front-panel claims, as printed on the carton. */

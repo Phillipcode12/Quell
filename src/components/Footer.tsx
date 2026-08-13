@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { QuellLogoInline } from '@/components/Logo'
-import { BRAND, COMPANY } from '@/lib/product-content'
+import { BRAND, COMPANY, MANUFACTURER } from '@/lib/product-content'
 import { formatUsd } from '@/lib/money'
 import { FREE_SHIPPING_THRESHOLD_CENTS, SHIPPING_LABEL } from '@/lib/shipping'
 
@@ -11,7 +11,7 @@ const columns = [
       { label: 'Buy Quell', href: '/#buy' },
       { label: 'Why Quell works', href: '/#science' },
       { label: 'How to use', href: '/#how-to-use' },
-      { label: 'Drug Facts', href: '/#drug-facts' },
+      { label: 'Drug Facts', href: '/drug-facts' },
     ],
   },
   {
@@ -77,6 +77,10 @@ export function Footer() {
             {COMPANY.addressLines.map((line) => (
               <p key={line}>{line}</p>
             ))}
+            <p className="mt-3">
+              Manufactured by {MANUFACTURER.name},{' '}
+              {MANUFACTURER.addressLines.join(', ')}
+            </p>
           </div>
           <div className="sm:text-right">
             <p>
@@ -114,7 +118,7 @@ export function Footer() {
 
         <p className="mt-8 text-sm text-muted">
           © {new Date().getFullYear()} {COMPANY.name}. {BRAND.trademark} and{' '}
-          {BRAND.tagline} are trademarks of {COMPANY.name}.
+          {BRAND.tagline} are trademarks of {COMPANY.legalName}.
         </p>
       </div>
     </footer>

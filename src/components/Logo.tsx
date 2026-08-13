@@ -90,18 +90,18 @@ export function QuellLogoInline({ className = '' }: { className?: string }) {
     <span
       className={`inline-flex items-center gap-2.5 text-white sm:gap-3.5 ${className}`}
     >
-      <QuellMark className="h-8 w-12 shrink-0 sm:h-10 sm:w-16" />
+      <QuellMark className="h-9 w-14 shrink-0 sm:h-13 sm:w-21" />
       <span className="flex flex-col leading-none">
         <span className="flex items-start">
-          <span className="text-2xl font-semibold tracking-tight sm:text-3xl">
+          <span className="text-[26px] font-semibold tracking-tight sm:text-[38px]">
             Quell
           </span>
-          <span className="ml-1 mt-0.5 text-[10px] leading-none text-white/70 sm:text-[11px]">
+          <span className="ml-1 mt-0.5 text-[11px] leading-none text-white/70 sm:text-[13px]">
             ™
           </span>
         </span>
         {/* Hidden on the narrowest screens so the lockup stays compact. */}
-        <span className="mt-1.5 hidden whitespace-nowrap text-[8px] font-medium uppercase tracking-[0.3em] text-brand sm:block sm:text-[9px]">
+        <span className="mt-2 hidden whitespace-nowrap text-[9px] font-medium uppercase tracking-[0.3em] text-brand sm:block sm:text-[11px]">
           Quiet the Storm
         </span>
       </span>

@@ -130,7 +130,7 @@ export function CartView({
       {remaining > 0 && (
         <p className="rounded-xl border border-brand/40 bg-brand/10 p-4 text-sm text-brand-light">
           Add <strong className="font-semibold">{formatUsd(remaining)}</strong>{' '}
-          more to qualify for free {SHIPPING_LABEL} shipping.
+          more to qualify for free shipping.
         </p>
       )}
 
