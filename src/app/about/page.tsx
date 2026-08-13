@@ -1,9 +1,8 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import Link from 'next/link'
 import { PageHero } from '@/components/PageHero'
 import { Droplet, Leaf, Medical, NoDrop } from '@/components/icons'
-import { BRAND, COMPANY } from '@/lib/product-content'
+import { BRAND, COMPANY, DRUG_FACTS, RELIEVES } from '@/lib/product-content'
 
 export const metadata: Metadata = {
   title: `About us — ${BRAND.name}`,
@@ -93,15 +92,34 @@ export default function AboutPage() {
           ))}
         </div>
 
-        <div className="mt-14 overflow-hidden rounded-2xl bg-white">
-          <Image
-            src="/images/info-card-benefits.png"
-            alt="Quell benefits card: relieves dryness, irritation, redness and itching; patented MD developed formula; preservative free; lubricating eye drops"
-            width={1024}
-            height={1536}
-            sizes="(max-width: 768px) 100vw, 700px"
-            className="mx-auto h-auto w-full max-w-md"
-          />
+        {/* Was a tall photo of the brand benefits card. The card is pure text,
+            so it is set as real type here. */}
+        <div className="mt-14 rounded-2xl border border-line bg-surface p-8">
+          <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">
+            At a glance
+          </h2>
+          <dl className="mt-6 grid gap-6 sm:grid-cols-2">
+            <div>
+              <dt className="font-semibold text-white">Relieves</dt>
+              <dd className="mt-1 text-muted">{RELIEVES.join(', ')}</dd>
+            </div>
+            <div>
+              <dt className="font-semibold text-white">Patented</dt>
+              <dd className="mt-1 text-muted">MD-developed formula</dd>
+            </div>
+            <div>
+              <dt className="font-semibold text-white">Preservative-free</dt>
+              <dd className="mt-1 text-muted">
+                No preservatives to irritate eyes you dose daily
+              </dd>
+            </div>
+            <div>
+              <dt className="font-semibold text-white">Lubricating eye drops</dt>
+              <dd className="mt-1 text-muted">
+                {BRAND.size} · {DRUG_FACTS.directions.toLowerCase()}
+              </dd>
+            </div>
+          </dl>
         </div>
 
         <section

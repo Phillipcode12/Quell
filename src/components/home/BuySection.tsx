@@ -24,7 +24,7 @@ const highlights = [
 export function BuySection({ product }: { product: BuyProduct | null }) {
   if (!product) {
     return (
-      <section id="buy" className="scroll-mt-24 border-b border-line py-20">
+      <section id="buy" className="scroll-mt-24 border-b border-line py-20 sm:py-24">
         <div className="mx-auto max-w-6xl px-6">
           <p className="rounded-xl border border-line bg-surface p-6 text-muted">
             Product not loaded. Run{' '}
@@ -37,17 +37,17 @@ export function BuySection({ product }: { product: BuyProduct | null }) {
   }
 
   return (
-    <section id="buy" className="scroll-mt-24 border-b border-line py-20">
+    <section id="buy" className="scroll-mt-24 border-b border-line py-20 sm:py-24">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="grid items-start gap-12 lg:grid-cols-2">
-          <div className="overflow-hidden rounded-3xl bg-white">
+        <div className="grid items-center gap-12 lg:grid-cols-2">
+          <div className="mx-auto w-full max-w-md overflow-hidden rounded-3xl bg-white">
             <Image
               src={product.imageUrl ?? '/images/product-box-bottle-white.jpg'}
               alt={`${product.name} carton and ${product.sizeLabel} bottle`}
               width={2000}
               height={2000}
-              sizes="(max-width: 1024px) 100vw, 560px"
-              className="h-auto w-full"
+              sizes="(max-width: 1024px) 100vw, 448px"
+              className="aspect-square h-auto w-full object-cover"
             />
           </div>
 

@@ -2,7 +2,7 @@ import { FAQS } from '@/lib/product-content'
 
 export function Faq() {
   return (
-    <section id="faq" className="scroll-mt-24 border-b border-line py-20">
+    <section id="faq" className="scroll-mt-24 border-b border-line py-20 sm:py-24">
       <div className="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-[0.8fr_1.2fr]">
         <div>
           <span className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">

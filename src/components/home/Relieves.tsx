@@ -3,7 +3,7 @@ import { RELIEVES } from '@/lib/product-content'
 export function Relieves() {
   return (
     <section className="border-b border-line bg-surface">
-      <div className="mx-auto max-w-6xl px-6 py-14">
+      <div className="mx-auto max-w-6xl px-6 py-16">
         <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">
           Relieves
         </h2>

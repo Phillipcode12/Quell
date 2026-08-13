@@ -17,7 +17,7 @@ export function Hero() {
         }}
       />
 
-      <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 py-20 lg:grid-cols-2 lg:py-24">
+      <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 lg:grid-cols-2 lg:py-24">
         <div>
           <span className="inline-flex items-center gap-2 rounded-full border border-brand/40 bg-brand/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-brand-light">
             {BRAND.productType}
@@ -51,7 +51,7 @@ export function Hero() {
             </Link>
           </div>
 
-          <ul className="mt-12 grid max-w-lg gap-4 border-t border-line pt-8 sm:grid-cols-3">
+          <ul className="mt-10 grid max-w-lg gap-4 border-t border-line pt-8 sm:grid-cols-3">
             {FRONT_PANEL_CLAIMS.map((claim, i) => {
               const Icon = claimIcons[i] ?? Droplet
               return (
@@ -64,18 +64,18 @@ export function Hero() {
           </ul>
         </div>
 
-        <div className="relative">
-          <div className="overflow-hidden rounded-3xl border border-line bg-surface">
-            <Image
-              src="/images/lifestyle-gamer-setup.png"
-              alt="Quell carton and bottle on a desk beside a gaming PC and monitor"
-              width={1086}
-              height={1448}
-              priority
-              sizes="(max-width: 1024px) 100vw, 560px"
-              className="h-auto w-full"
-            />
-          </div>
+        {/* Fixed height + object-cover so the source file's tall portrait
+            proportions don't dictate how much of the page the hero eats. */}
+        <div className="overflow-hidden rounded-3xl border border-line bg-surface">
+          <Image
+            src="/images/lifestyle-gamer-setup.png"
+            alt="Quell carton and bottle on a desk beside a gaming PC and monitor"
+            width={1086}
+            height={1448}
+            priority
+            sizes="(max-width: 1024px) 100vw, 560px"
+            className="h-[340px] w-full object-cover object-center sm:h-[420px] lg:h-[500px]"
+          />
         </div>
       </div>
     </section>

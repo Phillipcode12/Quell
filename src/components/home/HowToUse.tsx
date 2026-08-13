@@ -26,7 +26,7 @@ export function HowToUse() {
   return (
     <section
       id="how-to-use"
-      className="scroll-mt-24 border-b border-line bg-surface py-20"
+      className="scroll-mt-24 border-b border-line bg-surface py-20 sm:py-24"
     >
       <div className="mx-auto max-w-6xl px-6">
         <div className="max-w-2xl">
