@@ -94,8 +94,8 @@ export async function POST(request: Request) {
           currency: 'usd',
           unit_amount: product.priceCents,
           product_data: {
-            name: `${product.name} — ${product.strength}`,
-            description: `${product.volumeMl} mL`,
+            name: product.name,
+            description: `${product.tagline} · ${product.sizeLabel}`,
           },
         },
       })),

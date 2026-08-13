@@ -1,5 +1,6 @@
-// ClearSight Rx — data model
-// Docs: https://pris.ly/d/prisma-schema
+// Quell — data model
+// Single-SKU OTC storefront. Quell is an over-the-counter lubricating eye drop
+// sold under the OTC drug monograph, so there is no prescription gating here.
 
 generator client {
   provider = "prisma-client"
@@ -24,14 +25,13 @@ model Product {
   id          String  @id @default(cuid())
   slug        String  @unique
   name        String
+  /// Trademarked tagline, e.g. "Quiet the Storm"
+  tagline     String
   description String
-  /// Active ingredient + concentration, e.g. "Latanoprost 0.005%"
-  strength    String
+  /// Net contents as printed on the carton, e.g. ".33 fl oz (10 mL)"
+  sizeLabel   String
   priceCents  Int
-  /// Milliliters per bottle
-  volumeMl    Float
-  /// Every Rx product must be gated behind a verified prescription before fulfillment.
-  requiresRx  Boolean @default(true)
+  imageUrl    String?
   active      Boolean @default(true)
 
   orderItems OrderItem[]
@@ -42,18 +42,12 @@ model Order {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  /// pending -> paid (Stripe webhook) -> rx_review -> shipped | cancelled
+  /// pending -> paid (Stripe webhook) -> shipped | cancelled
   status     String @default("pending")
   totalCents Int
 
   stripeSessionId       String? @unique
   stripePaymentIntentId String?
-
-  /// Placeholder for the real prescription record. In production this is where a
-  /// verified Rx from a licensed prescriber gets attached, and fulfillment must
-  /// block until a pharmacist signs off. Nothing here performs that verification.
-  prescriptionRef    String?
-  prescriptionStatus String  @default("unverified")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

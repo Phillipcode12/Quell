@@ -57,7 +57,7 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
         </h1>
         <p className="mt-2 text-sm text-muted">
           {isRegister
-            ? 'An account lets you track orders and prescription status.'
+            ? 'An account lets you track your orders and reorder in one click.'
             : 'Welcome back.'}
         </p>
 
@@ -90,7 +90,7 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
           />
 
           {error && (
-            <p className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+            <p className="rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-300">
               {error}
             </p>
           )}
@@ -98,7 +98,7 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-md bg-brand px-4 py-2.5 font-medium text-white hover:bg-brand-dark disabled:opacity-60"
+            className="w-full rounded-lg bg-brand px-4 py-3 font-semibold text-black transition hover:bg-brand-light disabled:opacity-60"
           >
             {loading
               ? 'Working…'
@@ -135,7 +135,7 @@ function Field({
       <span className="text-sm font-medium">{label}</span>
       <input
         {...props}
-        className="mt-1.5 w-full rounded-md border border-line bg-white px-3 py-2 outline-none focus:border-brand"
+        className="mt-1.5 w-full rounded-md border border-line bg-surface-2 px-3 py-2.5 text-white outline-none focus:border-brand"
       />
       {hint && <span className="mt-1 block text-xs text-muted">{hint}</span>}
     </label>

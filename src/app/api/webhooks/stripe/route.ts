@@ -47,9 +47,7 @@ export async function POST(request: Request) {
         // Scope by pending status so replayed events don't move a shipped order back.
         where: { id: orderId, status: 'pending' },
         data: {
-          // Paid, but NOT clear to ship. A licensed pharmacist must verify the
-          // prescription before this order is fulfilled.
-          status: 'rx_review',
+          status: 'paid',
           stripePaymentIntentId:
             typeof session.payment_intent === 'string'
               ? session.payment_intent

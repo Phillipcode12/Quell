@@ -1,33 +1,35 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { PageHero } from '@/components/PageHero'
-import { ChatSupport, Clipboard, Lock, Pharmacy } from '@/components/icons'
+import { Droplet, Leaf, Medical, NoDrop } from '@/components/icons'
+import { BRAND, COMPANY } from '@/lib/product-content'
 
 export const metadata: Metadata = {
-  title: 'About us — ClearSight Rx',
-  description: 'Who we are and how we handle prescription ophthalmic care.',
+  title: `About us — ${BRAND.name}`,
+  description: `Who makes ${BRAND.trademark} and why the formula targets the tear film's oil layer.`,
 }
 
 const values = [
   {
-    icon: Pharmacy,
-    title: 'Pharmacists first',
-    body: 'A licensed pharmacist reviews every order before it ships. That step is not automated away, and it is not optional.',
+    icon: Medical,
+    title: 'Developed by an MD',
+    body: 'Quell is a patented formula developed by a physician, built around how the tear film actually fails rather than around what is cheapest to bottle.',
   },
   {
-    icon: Clipboard,
-    title: 'No prescription, no dispense',
-    body: 'We fill valid prescriptions from licensed prescribers. We do not diagnose, and we do not sell prescription products without one.',
+    icon: NoDrop,
+    title: 'Preservative-free, on purpose',
+    body: 'Preservatives are a common source of irritation for people dosing several times a day. Quell contains none.',
   },
   {
-    icon: Lock,
-    title: 'Privacy as a default',
-    body: 'Health information is sensitive by nature. We collect the minimum needed to dispense safely and protect what we hold.',
+    icon: Droplet,
+    title: 'Targets the oil layer',
+    body: 'Most drops top up the water layer. Quell reinforces the lipid layer above it, which is what slows evaporation down.',
   },
   {
-    icon: ChatSupport,
-    title: 'Reachable humans',
-    body: 'Counseling is free and unlimited. If something about your treatment is unclear, talk to our team before you guess.',
+    icon: Leaf,
+    title: 'Natural ingredients',
+    body: 'Emu oil, manuka honey, Dead Sea salt, and Terminalia chebula sit alongside the lubricants in the inactive ingredient list.',
   },
 ]
 
@@ -36,34 +38,43 @@ export default function AboutPage() {
     <>
       <PageHero
         eyebrow="About us"
-        title="Built around the pharmacist, not around the checkout"
-        subtitle="ClearSight Rx is a mail-order model for prescription eye care — the same clinical checks as a counter pharmacy, without the trip."
+        title="Built for the layer other drops ignore"
+        subtitle={`${BRAND.trademark} — ${BRAND.productType}, made by ${COMPANY.name}.`}
       />
 
       <div className="mx-auto max-w-4xl px-6 py-16">
         <div className="prose-page">
           <p className="text-lg leading-relaxed text-muted">
-            Chronic eye conditions are managed with drops that people take every
-            day, sometimes for the rest of their lives. The medication is
-            usually straightforward. Staying on it is the hard part — refills
-            run out, pharmacies close early, and a missed month of pressure
-            control can cost vision that does not come back.
+            Dry eye is usually described as “not enough tears.” For a lot of
+            people that is not quite right. The tears are there — they just
+            evaporate too fast, because the thin layer of oil that is supposed to
+            hold them in place has thinned out. Top up the water and the relief
+            lasts minutes. Rebuild the oil and it lasts.
           </p>
 
-          <h2>What we do</h2>
+          <h2>Why emu oil</h2>
           <p>
-            We transfer your prescription, verify it with your prescriber, screen
-            it against everything else you take, and ship it on a schedule that
-            keeps you from running out. When something needs a pharmacist&apos;s
-            judgment, a pharmacist makes the call.
+            Emu oil is an all natural oil used by the Aboriginal people of
+            Australia for thousands of years to nourish and protect the body. In
+            artificial tears, it provides soothing support of the tear film’s oil
+            layer to reduce moisture loss. It is also where the name of our
+            slogan comes from — {BRAND.slogan.toLowerCase()}
           </p>
 
-          <h2>What we do not do</h2>
+          <h2>What Quell is</h2>
           <p>
-            We are not a substitute for an eye exam. We do not diagnose
-            conditions, write prescriptions, or advise you to start or stop a
-            medication your prescriber put you on. For sudden vision loss, eye
-            pain, or injury, seek urgent care immediately.
+            Quell is an over-the-counter lubricating eye drop. You do not need a
+            prescription. It is intended for use as a protectant against further
+            irritation, or to relieve dryness of the eye.
+          </p>
+
+          <h2>What Quell is not</h2>
+          <p>
+            It is not a substitute for an eye exam, and this site does not
+            provide medical advice. If you have eye pain, changes in vision,
+            continued irritation or redness, or symptoms that persist beyond 72
+            hours, stop use and see a doctor. Caution should be used in those
+            with egg or bird allergies. For use in the eyes only.
           </p>
         </div>
 
@@ -73,40 +84,70 @@ export default function AboutPage() {
               key={title}
               className="rounded-2xl border border-line bg-surface p-6"
             >
-              <div className="grid h-11 w-11 place-items-center rounded-xl bg-accent text-brand">
+              <div className="grid h-11 w-11 place-items-center rounded-xl border border-brand/40 bg-brand/10 text-brand">
                 <Icon className="h-5 w-5" />
               </div>
-              <h3 className="mt-5 font-semibold">{title}</h3>
+              <h3 className="mt-5 font-semibold text-white">{title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted">{body}</p>
             </article>
           ))}
         </div>
 
+        <div className="mt-14 overflow-hidden rounded-2xl bg-white">
+          <Image
+            src="/images/info-card-benefits.png"
+            alt="Quell benefits card: relieves dryness, irritation, redness and itching; patented MD developed formula; preservative free; lubricating eye drops"
+            width={1024}
+            height={1536}
+            sizes="(max-width: 768px) 100vw, 700px"
+            className="mx-auto h-auto w-full max-w-md"
+          />
+        </div>
+
         <section
           id="contact"
-          className="mt-14 scroll-mt-20 rounded-2xl border border-line bg-surface p-8"
+          className="mt-14 scroll-mt-24 rounded-2xl border border-line bg-surface p-8"
         >
           <h2 className="text-2xl font-semibold tracking-tight">Contact us</h2>
           <p className="mt-3 leading-relaxed text-muted">
-            Our pharmacy team answers messages seven days a week. Replace the
-            placeholders below with your real pharmacy details before launch.
+            Questions about Quell? Get in touch.
           </p>
 
-          <dl className="mt-6 grid gap-6 sm:grid-cols-3 text-sm">
+          <dl className="mt-6 grid gap-6 text-sm sm:grid-cols-3">
             <div>
-              <dt className="font-semibold">Pharmacy support</dt>
-              <dd className="mt-1 text-muted">[support@example.com]</dd>
-            </div>
-            <div>
-              <dt className="font-semibold">Phone</dt>
-              <dd className="mt-1 text-muted">[+1 (555) 000-0000]</dd>
-            </div>
-            <div>
-              <dt className="font-semibold">Mailing address</dt>
+              <dt className="font-semibold text-white">Phone</dt>
               <dd className="mt-1 text-muted">
-                [Legal entity name]
+                <a
+                  href={`tel:${COMPANY.phoneHref}`}
+                  className="text-brand-light hover:underline"
+                >
+                  {COMPANY.phone}
+                </a>
                 <br />
-                [Street, City, ST ZIP]
+                {COMPANY.hours}
+              </dd>
+            </div>
+            <div>
+              <dt className="font-semibold text-white">Online</dt>
+              <dd className="mt-1 text-muted">
+                <a
+                  href={COMPANY.websiteHref}
+                  rel="noreferrer noopener"
+                  className="text-brand-light hover:underline"
+                >
+                  {COMPANY.website}
+                </a>
+              </dd>
+            </div>
+            <div>
+              <dt className="font-semibold text-white">Mailing address</dt>
+              <dd className="mt-1 text-muted">
+                {COMPANY.name}
+                {COMPANY.addressLines.map((line) => (
+                  <span key={line} className="block">
+                    {line}
+                  </span>
+                ))}
               </dd>
             </div>
           </dl>
@@ -117,10 +158,10 @@ export default function AboutPage() {
           </p>
 
           <Link
-            href="/#catalog"
-            className="mt-8 inline-block rounded-lg bg-brand px-5 py-3 font-medium text-white hover:bg-brand-dark"
+            href="/#buy"
+            className="mt-8 inline-block rounded-lg bg-brand px-5 py-3 font-semibold text-black transition hover:bg-brand-light"
           >
-            Browse the formulary
+            Buy Quell
           </Link>
         </section>
       </div>

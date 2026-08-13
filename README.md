@@ -1,26 +1,20 @@
-# ClearSight Rx
+# Quell — Give your dry eye the bird!
 
-A local development template for a prescription ophthalmic storefront: accounts,
-a product catalog, a cart, and Stripe Checkout, backed by a local SQLite database.
+Single-product storefront for **Quell™**, a preservative-free lubricating eye
+drop. Accounts, cart, and Stripe Checkout, backed by a local SQLite database.
 
-> **This is a template, not a pharmacy.** It does not verify prescriptions,
-> dispense medication, or provide medical advice. See
-> [Before this can go live](#before-this-can-go-live).
+> Quell is an **over-the-counter** drug, not a prescription product. There is no
+> prescription gating anywhere in this app by design.
 
 ## Stack
 
 | Layer    | Choice                                                      |
 | -------- | ----------------------------------------------------------- |
 | Frontend | Next.js 16 (App Router) + React 19 + Tailwind CSS v4        |
-| Backend  | Next.js Route Handlers (Node runtime) — one app, one deploy |
+| Backend  | Next.js Route Handlers (Node runtime)                       |
 | Database | SQLite via Prisma 7 (libsql driver adapter)                 |
 | Auth     | Email + password, bcrypt hashes, JWT session cookie (jose)  |
 | Payments | Stripe Checkout + webhook                                   |
-
-The backend is Node rather than Python so the whole app is one TypeScript
-project — shared types between client and server, one dev command, one deploy.
-A separate Python service would be worth it only if you need its ML or
-data-science ecosystem.
 
 ## Setup
 
@@ -28,19 +22,13 @@ data-science ecosystem.
 npm install
 ```
 
-Create `.env` from the template and set a session secret:
-
-```bash
-cp .env.example .env
-```
-
-Generate a value for `AUTH_SECRET`:
+Copy `.env.example` to `.env`, then generate a session secret:
 
 ```bash
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
-Create the database and load the sample catalog:
+Create the database and seed the product:
 
 ```bash
 npm run db:migrate
@@ -50,7 +38,7 @@ npm run db:migrate
 npm run db:seed
 ```
 
-Start it:
+Run it:
 
 ```bash
 npm run dev
@@ -58,81 +46,81 @@ npm run dev
 
 Open http://localhost:3000.
 
+## Brand
+
+Sampled from the print-ready packaging and defined in `src/app/globals.css`:
+
+| Token   | Value     | Use                                  |
+| ------- | --------- | ------------------------------------ |
+| `brand` | `#00A7B5` | Quell teal — logo eye mark, CTAs     |
+| `background` | `#060606` | Carton black — page background  |
+
+The site is dark-only, to match the carton. The logo is drawn as inline SVG in
+`src/components/Logo.tsx`, because the supplied logo PNG sits on a grey gradient
+with a glow and cannot be placed on black directly.
+
+## Where the copy lives
+
+**`src/lib/product-content.ts` is the single source of truth** for everything
+printed on the packaging — Drug Facts, warnings, directions, ingredients, the
+emu oil panel, company contact details, and the FAQ. Every page reads from it.
+Change the packaging, change that one file.
+
+The `DRUG_FACTS` block must match the printed carton exactly. Do not edit it for
+marketing reasons.
+
 ## Enabling payments
 
 The app runs without Stripe keys — checkout returns a clear "not configured"
 message until you add them.
 
-1. Get your **test** keys from https://dashboard.stripe.com/test/apikeys and set
-   `STRIPE_SECRET_KEY` in `.env`.
-2. Install the [Stripe CLI](https://docs.stripe.com/stripe-cli) and forward
-   webhooks to your local server:
+1. Set `STRIPE_SECRET_KEY` in `.env` from
+   https://dashboard.stripe.com/test/apikeys
+2. Forward webhooks locally:
 
 ```bash
 stripe listen --forward-to localhost:3000/api/webhooks/stripe
 ```
 
-3. Copy the `whsec_...` value it prints into `STRIPE_WEBHOOK_SECRET`.
+3. Copy the `whsec_...` value into `STRIPE_WEBHOOK_SECRET`.
 4. Restart `npm run dev` — env vars are read at boot.
 
 Test card `4242 4242 4242 4242`, any future expiry, any CVC.
 
-## How checkout works
+## Order flow
 
-1. The cart lives in `localStorage`; the client posts only product IDs and
-   quantities.
-2. `POST /api/checkout` re-reads every price from the database — client-supplied
-   prices are never trusted — creates a `pending` order, and opens a Stripe
-   Checkout Session.
-3. Stripe redirects the shopper to `/checkout/success`.
-4. `POST /api/webhooks/stripe` verifies the signature and moves the order to
-   `rx_review`. **Payment status is recorded from the webhook, not the success
-   page**, because the browser may never load that page.
+1. Cart lives in `localStorage`; the client posts only product IDs and quantities.
+2. `POST /api/checkout` re-reads the price from the database — client prices are
+   never trusted — creates a `pending` order, and opens a Stripe Checkout Session.
+3. `POST /api/webhooks/stripe` verifies the signature and moves the order to
+   `paid`. **Payment is recorded from the webhook, not the success page**,
+   because the browser may never load that page.
 
-Orders land in `rx_review`, not `shipped`. Nothing in this template performs
-prescription verification.
+Statuses: `pending` → `paid` → `shipped` | `cancelled`.
 
 ## Scripts
 
-| Command              | Does                                    |
-| -------------------- | --------------------------------------- |
-| `npm run dev`        | Dev server on :3000                     |
-| `npm run build`      | Production build                        |
-| `npm run db:migrate` | Create/apply a migration                |
-| `npm run db:seed`    | Load the sample catalog                 |
-| `npm run db:studio`  | Browse the database in Prisma Studio    |
-| `npm run db:reset`   | Drop, re-migrate, and re-seed           |
+| Command              | Does                                 |
+| -------------------- | ------------------------------------ |
+| `npm run dev`        | Dev server on :3000                  |
+| `npm run build`      | Production build                     |
+| `npm run db:migrate` | Create/apply a migration             |
+| `npm run db:seed`    | Seed the Quell product               |
+| `npm run db:studio`  | Browse the database in Prisma Studio |
+| `npm run db:reset`   | Drop, re-migrate, and re-seed        |
 
-## Layout
+## Before launch
 
-```
-prisma/schema.prisma        Data model (User, Product, Order, OrderItem)
-prisma/seed.ts              Sample formulary
-src/lib/db.ts               Prisma client + libsql adapter
-src/lib/session.ts          JWT cookie sessions
-src/lib/auth.ts             Password hashing, getCurrentUser()
-src/lib/stripe.ts           Stripe client (optional at boot)
-src/app/api/auth/*          register / login / logout
-src/app/api/checkout        Creates the order + Stripe session
-src/app/api/webhooks/stripe Payment confirmation
-src/app/page.tsx            Catalog
-src/app/cart, login, register, account, checkout/success
-```
-
-## Before this can go live
-
-Selling prescription medication is regulated. This template deliberately does
-not implement any of it:
-
-- **Pharmacy licensure** in every state you ship to, plus NABP/`.pharmacy`
-  verification.
-- **A real prescription** per order, from a licensed prescriber, verified by a
-  licensed pharmacist before fulfillment. `Order.prescriptionRef` and
-  `prescriptionStatus` are placeholders marking where that belongs.
-- **Stripe approval.** Pharmaceutical sales fall under Stripe's restricted
-  businesses; the account needs pre-approval before it can accept live payments.
-- **HIPAA.** The moment you store prescription data this becomes PHI: encryption
-  at rest, access logging, retention policies, and a BAA with every vendor
-  touching it.
-- **Production hardening.** Swap SQLite for Postgres, add rate limiting on the
+- **Set the real price.** `priceCents` in `prisma/seed.ts` is a placeholder
+  ($29.99).
+- **Front-panel vs Drug Facts claims.** The carton front says the product
+  relieves "Dryness, Irritation, Redness, Itching," but the Drug Facts *Uses*
+  section is narrower: a protectant against further irritation, or to relieve
+  dryness. FDA OTC labeling expects front-panel claims to match the Uses
+  statement, and redness relief normally implies a vasoconstrictor active
+  ingredient, which this formula does not contain. Have regulatory counsel
+  reconcile the two before publishing.
+- **Legal pages** (`/privacy`, `/terms`) are unreviewed boilerplate with
+  bracketed placeholders, and say so in a banner.
+- **Production hardening** — swap SQLite for Postgres, add rate limiting on the
   auth routes, email verification, and password reset.

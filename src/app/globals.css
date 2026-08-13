@@ -1,31 +1,35 @@
 @import "tailwindcss";
 
+/*
+ * Quell brand palette, sampled from the print-ready packaging:
+ *   teal  #00A7B5  (logo eye mark + "QUIET THE STORM")
+ *   black #060606  (carton stock)
+ * The site is dark by design to match the carton, so there is no light mode.
+ */
 :root {
-  --background: #f6f8fb;
-  --surface: #ffffff;
-  --foreground: #0f1b2d;
-  --muted: #5a6b83;
-  --border: #dfe6ef;
-  --brand: #0f7b8a;
-  --brand-dark: #0b5d69;
-  --brand-light: #7fc9d4;
-  --accent: #eaf6f8;
-  --ink: #082430;
-  --sand: #fdf6ec;
+  --background: #060606;
+  --surface: #101114;
+  --surface-2: #17191d;
+  --foreground: #ffffff;
+  --muted: #a3adb6;
+  --border: #24272d;
+  --brand: #00a7b5;
+  --brand-light: #3ed2de;
+  --brand-dark: #007d8a;
+  --accent: #06272b;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-line: var(--border);
   --color-brand: var(--brand);
-  --color-brand-dark: var(--brand-dark);
   --color-brand-light: var(--brand-light);
+  --color-brand-dark: var(--brand-dark);
   --color-accent: var(--accent);
-  --color-ink: var(--ink);
-  --color-sand: var(--sand);
 }
 
 body {
@@ -35,13 +39,14 @@ body {
     Helvetica, Arial, sans-serif;
 }
 
-/* Shared typography for the long-form legal and about pages. */
+/* Long-form typography for the legal, about, and drug-facts pages. */
 .prose-page h2 {
   font-size: 1.25rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   margin-top: 2.5rem;
   margin-bottom: 0.75rem;
+  color: var(--foreground);
 }
 
 .prose-page h3 {
@@ -49,6 +54,7 @@ body {
   font-weight: 600;
   margin-top: 1.75rem;
   margin-bottom: 0.5rem;
+  color: var(--foreground);
 }
 
 .prose-page p,
@@ -72,6 +78,10 @@ body {
 }
 
 .prose-page a {
-  color: var(--brand);
+  color: var(--brand-light);
   text-decoration: underline;
+}
+
+.prose-page strong {
+  color: var(--foreground);
 }

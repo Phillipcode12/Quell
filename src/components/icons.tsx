@@ -107,6 +107,42 @@ export function Star(props: IconProps) {
   )
 }
 
+export function Leaf(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M20 4S8.5 4 5.5 9.5C3 14 5 19 5 19s5 2 9.5-.5C20 15.5 20 4 20 4Z" />
+      <path d="M5 19 14 10" />
+    </svg>
+  )
+}
+
+export function Medical(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7.5v9M7.5 12h9" />
+    </svg>
+  )
+}
+
+export function NoDrop(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M12 3.5s5.5 6 5.5 9.5a5.5 5.5 0 0 1-11 0C6.5 9.5 12 3.5 12 3.5Z" />
+      <path d="M4 4l16 16" />
+    </svg>
+  )
+}
+
+export function Clock(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5.5l3.5 2" />
+    </svg>
+  )
+}
+
 export function ArrowRight(props: IconProps) {
   return (
     <svg {...base(props)}>

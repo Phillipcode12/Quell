@@ -2,7 +2,7 @@ import 'server-only'
 import { cookies } from 'next/headers'
 import { SignJWT, jwtVerify } from 'jose'
 
-const COOKIE_NAME = 'clearsight_session'
+const COOKIE_NAME = 'quell_session'
 const MAX_AGE_SECONDS = 60 * 60 * 24 * 7 // 7 days
 
 function secretKey() {
