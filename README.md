@@ -111,8 +111,9 @@ Statuses: `pending` → `paid` → `shipped` | `cancelled`.
 
 ## Before launch
 
-- **Set the real price.** `priceCents` in `prisma/seed.ts` is a placeholder
-  ($29.99).
+- **Confirm the price.** `priceCents` in `prisma/seed.ts` is $29.99, which
+  matches the retail listing at dryeyerescue.com as of 2026-08-13. Re-check
+  before launch, and decide whether you are matching or undercutting retail.
 - **Front-panel vs Drug Facts claims.** The carton front says the product
   relieves "Dryness, Irritation, Redness, Itching," but the Drug Facts *Uses*
   section is narrower: a protectant against further irritation, or to relieve

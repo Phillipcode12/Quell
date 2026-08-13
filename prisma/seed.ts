@@ -9,7 +9,8 @@ const prisma = new PrismaClient({
 })
 
 // Quell is the only SKU. Copy is taken from the printed carton.
-// NOTE: priceCents is a placeholder — set your real retail price here.
+// priceCents ($29.99) matches the retail listing at dryeyerescue.com as of
+// 2026-08-13. Confirm it is still current before launch.
 const quell = {
   slug: 'quell-lubricating-eye-drops',
   name: 'Quell Preservative-Free Lubricating Eye Drops',
