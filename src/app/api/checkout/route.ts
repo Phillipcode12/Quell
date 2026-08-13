@@ -3,6 +3,12 @@ import { z } from 'zod'
 import { prisma } from '@/lib/db'
 import { getCurrentUser } from '@/lib/auth'
 import { appUrl, getStripe, isStripeConfigured } from '@/lib/stripe'
+import {
+  FREE_SHIPPING_LABEL,
+  SHIPPABLE_COUNTRIES,
+  SHIPPING_LABEL,
+  shippingCentsFor,
+} from '@/lib/shipping'
 
 const schema = z.object({
   items: z
@@ -52,29 +58,35 @@ export async function POST(request: Request) {
 
   const lineItems = parsed.data.items.map((item) => {
     const product = products.find((p) => p.id === item.productId)
-    if (!product) throw new Error(`Unknown product: ${item.productId}`)
-    return { product, quantity: item.quantity }
+    return product ? { product, quantity: item.quantity } : null
   })
 
-  if (lineItems.length !== parsed.data.items.length) {
+  if (lineItems.some((l) => l === null)) {
     return NextResponse.json(
       { error: 'One or more items are no longer available.' },
       { status: 400 },
     )
   }
 
-  const totalCents = lineItems.reduce(
+  const resolved = lineItems as { product: (typeof products)[number]; quantity: number }[]
+
+  const subtotalCents = resolved.reduce(
     (sum, { product, quantity }) => sum + product.priceCents * quantity,
     0,
   )
+  // Shipping is decided here, not by the client, for the same reason prices are.
+  const shippingCents = shippingCentsFor(subtotalCents)
+  const totalCents = subtotalCents + shippingCents
 
   const order = await prisma.order.create({
     data: {
       userId: user.id,
       status: 'pending',
+      subtotalCents,
+      shippingCents,
       totalCents,
       items: {
-        create: lineItems.map(({ product, quantity }) => ({
+        create: resolved.map(({ product, quantity }) => ({
           productId: product.id,
           quantity,
           unitPriceCents: product.priceCents,
@@ -88,7 +100,7 @@ export async function POST(request: Request) {
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       customer_email: user.email,
-      line_items: lineItems.map(({ product, quantity }) => ({
+      line_items: resolved.map(({ product, quantity }) => ({
         quantity,
         price_data: {
           currency: 'usd',
@@ -99,6 +111,26 @@ export async function POST(request: Request) {
           },
         },
       })),
+      // Physical goods: collect a destination address.
+      shipping_address_collection: {
+        allowed_countries: [...SHIPPABLE_COUNTRIES],
+      },
+      // Exactly one option, priced by our own rules, so the amount Stripe
+      // charges always matches the order we just wrote.
+      shipping_options: [
+        {
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            display_name:
+              shippingCents === 0 ? FREE_SHIPPING_LABEL : SHIPPING_LABEL,
+            fixed_amount: { amount: shippingCents, currency: 'usd' },
+            delivery_estimate: {
+              minimum: { unit: 'business_day', value: 2 },
+              maximum: { unit: 'business_day', value: 3 },
+            },
+          },
+        },
+      ],
       // The webhook uses this to match the payment back to the order.
       metadata: { orderId: order.id, userId: user.id },
       success_url: `${appUrl()}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,

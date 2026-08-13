@@ -4,6 +4,12 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useCart } from '@/components/CartProvider'
 import { formatUsd } from '@/lib/money'
+import {
+  FREE_SHIPPING_LABEL,
+  SHIPPING_LABEL,
+  remainingForFreeShipping,
+  shippingCentsFor,
+} from '@/lib/shipping'
 
 type Product = {
   id: string
@@ -33,10 +39,15 @@ export function CartView({
     })
     .filter((r): r is NonNullable<typeof r> => r !== null)
 
-  const total = rows.reduce(
+  // Mirrors the server calculation in /api/checkout. The server still decides
+  // what is actually charged; this is only so the cart shows the same numbers.
+  const subtotal = rows.reduce(
     (sum, r) => sum + r.product.priceCents * r.quantity,
     0,
   )
+  const shipping = shippingCentsFor(subtotal)
+  const remaining = remainingForFreeShipping(subtotal)
+  const total = subtotal + shipping
 
   async function checkout() {
     setError(null)
@@ -116,15 +127,41 @@ export function CartView({
         ))}
       </ul>
 
+      {remaining > 0 && (
+        <p className="rounded-xl border border-brand/40 bg-brand/10 p-4 text-sm text-brand-light">
+          Add <strong className="font-semibold">{formatUsd(remaining)}</strong>{' '}
+          more to qualify for free {SHIPPING_LABEL} shipping.
+        </p>
+      )}
+
       <div className="rounded-2xl border border-line bg-surface p-6">
-        <div className="flex items-center justify-between text-lg">
+        <dl className="space-y-2.5 text-sm">
+          <div className="flex items-center justify-between">
+            <dt className="text-muted">Subtotal</dt>
+            <dd className="text-white">{formatUsd(subtotal)}</dd>
+          </div>
+          <div className="flex items-center justify-between">
+            <dt className="text-muted">
+              Shipping{' '}
+              <span className="text-xs">
+                ({shipping === 0 ? FREE_SHIPPING_LABEL : SHIPPING_LABEL})
+              </span>
+            </dt>
+            <dd className={shipping === 0 ? 'text-brand-light' : 'text-white'}>
+              {shipping === 0 ? 'Free' : formatUsd(shipping)}
+            </dd>
+          </div>
+        </dl>
+
+        <div className="mt-4 flex items-center justify-between border-t border-line pt-4 text-lg">
           <span className="font-medium">Total</span>
           <span className="font-semibold text-white">{formatUsd(total)}</span>
         </div>
 
         <p className="mt-4 text-sm leading-relaxed text-muted">
           Quell is an over-the-counter lubricating eye drop — no prescription
-          needed. Read the Drug Facts panel before use.
+          needed. Read the Drug Facts panel before use. You will enter your
+          shipping address at checkout.
         </p>
 
         {error && (

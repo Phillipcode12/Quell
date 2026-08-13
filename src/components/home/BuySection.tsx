@@ -1,8 +1,9 @@
 import Image from 'next/image'
 import { BuyPanel } from '@/components/BuyPanel'
-import { Droplet, Leaf, Medical, NoDrop } from '@/components/icons'
+import { Droplet, Leaf, Medical, NoDrop, Truck } from '@/components/icons'
 import { formatUsd } from '@/lib/money'
 import { BRAND, DRUG_FACTS } from '@/lib/product-content'
+import { FREE_SHIPPING_THRESHOLD_CENTS, SHIPPING_LABEL } from '@/lib/shipping'
 
 type BuyProduct = {
   id: string
@@ -79,6 +80,12 @@ export function BuySection({ product }: { product: BuyProduct | null }) {
                 </li>
               ))}
             </ul>
+
+            <p className="mt-6 flex items-center gap-2.5 text-sm text-brand-light">
+              <Truck className="h-5 w-5 shrink-0" />
+              Free {SHIPPING_LABEL} shipping on orders over{' '}
+              {formatUsd(FREE_SHIPPING_THRESHOLD_CENTS)}
+            </p>
 
             <BuyPanel productId={product.id} />
 

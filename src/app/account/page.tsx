@@ -86,11 +86,48 @@ export default async function AccountPage() {
                   ))}
                 </ul>
 
-                <div className="mt-5 flex items-center justify-end border-t border-line pt-4">
-                  <span className="font-semibold text-white">
-                    {formatUsd(order.totalCents)}
-                  </span>
-                </div>
+                <dl className="mt-5 space-y-1.5 border-t border-line pt-4 text-sm">
+                  <div className="flex justify-between">
+                    <dt className="text-muted">Subtotal</dt>
+                    <dd className="text-muted">
+                      {formatUsd(order.subtotalCents)}
+                    </dd>
+                  </div>
+                  <div className="flex justify-between">
+                    <dt className="text-muted">Shipping</dt>
+                    <dd
+                      className={
+                        order.shippingCents === 0 ? 'text-brand-light' : 'text-muted'
+                      }
+                    >
+                      {order.shippingCents === 0
+                        ? 'Free'
+                        : formatUsd(order.shippingCents)}
+                    </dd>
+                  </div>
+                  <div className="flex justify-between pt-1.5 text-base">
+                    <dt className="font-medium text-white">Total</dt>
+                    <dd className="font-semibold text-white">
+                      {formatUsd(order.totalCents)}
+                    </dd>
+                  </div>
+                </dl>
+
+                {order.shippingLine1 && (
+                  <div className="mt-4 border-t border-line pt-4 text-sm">
+                    <p className="font-medium text-white">Shipping to</p>
+                    <address className="mt-1 not-italic leading-relaxed text-muted">
+                      {order.shippingName && <>{order.shippingName}<br /></>}
+                      {order.shippingLine1}
+                      <br />
+                      {order.shippingLine2 && <>{order.shippingLine2}<br /></>}
+                      {[order.shippingCity, order.shippingState]
+                        .filter(Boolean)
+                        .join(', ')}{' '}
+                      {order.shippingPostalCode}
+                    </address>
+                  </div>
+                )}
               </li>
             )
           })}

@@ -1,4 +1,19 @@
 import { FAQS } from '@/lib/product-content'
+import { formatUsd } from '@/lib/money'
+import {
+  FREE_SHIPPING_THRESHOLD_CENTS,
+  SHIPPING_LABEL,
+  STANDARD_SHIPPING_CENTS,
+} from '@/lib/shipping'
+
+// Built from the shipping constants so the amounts can never drift out of sync
+// with what checkout actually charges.
+const shippingFaq = {
+  q: 'How much is shipping?',
+  a: `Orders of ${formatUsd(FREE_SHIPPING_THRESHOLD_CENTS)} or more ship free via ${SHIPPING_LABEL}. Below that, shipping is a flat ${formatUsd(STANDARD_SHIPPING_CENTS)}. You will enter your shipping address at checkout.`,
+}
+
+const allFaqs = [...FAQS, shippingFaq]
 
 export function Faq() {
   return (
@@ -17,7 +32,7 @@ export function Faq() {
         </div>
 
         <div className="divide-y divide-line border-y border-line">
-          {FAQS.map((faq) => (
+          {allFaqs.map((faq) => (
             <details key={faq.q} className="group py-5">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium text-white">
                 {faq.q}

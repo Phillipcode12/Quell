@@ -43,6 +43,11 @@ export async function POST(request: Request) {
     const orderId = session.metadata?.orderId
 
     if (orderId) {
+      // In this API version the collected address lives under
+      // collected_information, not the older session.shipping_details.
+      const shipping = session.collected_information?.shipping_details ?? null
+      const address = shipping?.address ?? null
+
       await prisma.order.updateMany({
         // Scope by pending status so replayed events don't move a shipped order back.
         where: { id: orderId, status: 'pending' },
@@ -52,6 +57,13 @@ export async function POST(request: Request) {
             typeof session.payment_intent === 'string'
               ? session.payment_intent
               : null,
+          shippingName: shipping?.name ?? null,
+          shippingLine1: address?.line1 ?? null,
+          shippingLine2: address?.line2 ?? null,
+          shippingCity: address?.city ?? null,
+          shippingState: address?.state ?? null,
+          shippingPostalCode: address?.postal_code ?? null,
+          shippingCountry: address?.country ?? null,
         },
       })
     }

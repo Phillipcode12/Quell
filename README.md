@@ -87,6 +87,26 @@ stripe listen --forward-to localhost:3000/api/webhooks/stripe
 
 Test card `4242 4242 4242 4242`, any future expiry, any CVC.
 
+## Shipping
+
+Rules live in **`src/lib/shipping.ts`** and drive the cart, the FAQ, and the
+Stripe Checkout Session from one place:
+
+| Rule                | Value                        |
+| ------------------- | ---------------------------- |
+| Free shipping at    | $59.00 subtotal              |
+| Flat rate below     | $6.95                        |
+| Carrier label       | FedEx 2-Day (2–3 business days) |
+| Ships to            | US only                      |
+
+Checkout collects a shipping address, and the address is stored on the order
+from the webhook so you know where to ship. Shipping is calculated server-side
+in `/api/checkout` — the client never decides it, same as prices.
+
+> The **$6.95 rate is an assumption**, not a quoted carrier price. Confirm what
+> FedEx 2-Day actually costs you and update `STANDARD_SHIPPING_CENTS`.
+> `SHIPPABLE_COUNTRIES` is US-only; add countries there if you ship wider.
+
 ## Order flow
 
 1. Cart lives in `localStorage`; the client posts only product IDs and quantities.

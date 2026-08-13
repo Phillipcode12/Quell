@@ -1,0 +1,33 @@
+/**
+ * Shipping rules — the single source of truth for both the cart UI and the
+ * Stripe Checkout Session. Change the numbers here and both follow.
+ */
+
+/** Orders at or above this subtotal ship free. */
+export const FREE_SHIPPING_THRESHOLD_CENTS = 5_900 // $59.00
+
+/**
+ * Flat rate charged below the threshold.
+ *
+ * NOTE: this rate is an assumption, not a quoted carrier price — the free
+ * shipping threshold was specified but the paid rate was not. Confirm it
+ * against what FedEx 2-Day actually costs you before launch.
+ */
+export const STANDARD_SHIPPING_CENTS = 695 // $6.95
+
+export const SHIPPING_LABEL = 'FedEx 2-Day'
+export const FREE_SHIPPING_LABEL = 'Free FedEx 2-Day'
+
+/** Countries Checkout will accept a shipping address for. */
+export const SHIPPABLE_COUNTRIES = ['US'] as const
+
+export function shippingCentsFor(subtotalCents: number): number {
+  return subtotalCents >= FREE_SHIPPING_THRESHOLD_CENTS
+    ? 0
+    : STANDARD_SHIPPING_CENTS
+}
+
+/** Cents still needed to qualify for free shipping, or 0 if already there. */
+export function remainingForFreeShipping(subtotalCents: number): number {
+  return Math.max(0, FREE_SHIPPING_THRESHOLD_CENTS - subtotalCents)
+}

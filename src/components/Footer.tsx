@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { QuellLogoInline } from '@/components/Logo'
 import { BRAND, COMPANY } from '@/lib/product-content'
+import { formatUsd } from '@/lib/money'
+import { FREE_SHIPPING_THRESHOLD_CENTS, SHIPPING_LABEL } from '@/lib/shipping'
 
 const columns = [
   {
@@ -43,6 +45,10 @@ export function Footer() {
             </p>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted">
               {BRAND.productType} · {BRAND.size}
+            </p>
+            <p className="mt-3 max-w-xs text-sm leading-relaxed text-brand-light">
+              Free {SHIPPING_LABEL} shipping over{' '}
+              {formatUsd(FREE_SHIPPING_THRESHOLD_CENTS)}
             </p>
           </div>
 
