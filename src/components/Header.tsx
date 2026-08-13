@@ -1,9 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useCart } from '@/components/CartProvider'
 import { QuellLogoInline } from '@/components/Logo'
+import { SignOutButton } from '@/components/SignOutButton'
 
 type HeaderUser = { id: string; email: string; name: string } | null
 
@@ -15,19 +15,11 @@ const navLinks = [
 ]
 
 export function Header({ user }: { user: HeaderUser }) {
-  const { count, clear } = useCart()
-  const router = useRouter()
-
-  async function signOut() {
-    await fetch('/api/auth/logout', { method: 'POST' })
-    clear()
-    router.push('/')
-    router.refresh()
-  }
+  const { count } = useCart()
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-background/85 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center gap-6 px-6 py-3.5">
+      <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 sm:gap-6 sm:px-6 sm:py-4">
         <Link href="/" aria-label="Quell home">
           <QuellLogoInline />
         </Link>
@@ -40,7 +32,7 @@ export function Header({ user }: { user: HeaderUser }) {
           ))}
         </nav>
 
-        <div className="ml-auto flex items-center gap-4 text-sm lg:ml-0">
+        <div className="ml-auto flex shrink-0 items-center gap-3 text-sm sm:gap-4 lg:ml-0">
           <Link href="/cart" className="text-muted hover:text-white">
             Cart
             {count > 0 && (
@@ -50,29 +42,32 @@ export function Header({ user }: { user: HeaderUser }) {
             )}
           </Link>
 
+          {/* Account controls are hidden on phones so the header stays on one
+              line; they live on the account page and in the footer instead. */}
           {user ? (
             <>
-              <Link href="/account" className="text-muted hover:text-white">
+              <Link
+                href="/account"
+                className="hidden text-muted hover:text-white sm:inline"
+              >
                 Orders
               </Link>
-              <button
-                onClick={signOut}
-                className="rounded-md border border-line px-3 py-1.5 text-muted transition hover:border-brand hover:text-white"
-              >
-                Sign out
-              </button>
+              <SignOutButton className="hidden rounded-md border border-line px-3 py-1.5 text-muted transition hover:border-brand hover:text-white sm:block" />
             </>
           ) : (
-            <Link href="/login" className="text-muted hover:text-white">
+            <Link
+              href="/login"
+              className="hidden text-muted hover:text-white sm:inline"
+            >
               Sign in
             </Link>
           )}
 
           <Link
             href="/#buy"
-            className="rounded-md bg-brand px-4 py-2 font-semibold text-black transition hover:bg-brand-light"
+            className="whitespace-nowrap rounded-md bg-brand px-3 py-2 font-semibold text-black transition hover:bg-brand-light sm:px-4"
           >
-            Buy now
+            Buy<span className="hidden sm:inline"> now</span>
           </Link>
         </div>
       </div>

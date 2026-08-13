@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/db'
 import { getCurrentUser } from '@/lib/auth'
 import { formatUsd } from '@/lib/money'
+import { SignOutButton } from '@/components/SignOutButton'
 
 const STATUS_LABELS: Record<string, { label: string; className: string }> = {
   pending: {
@@ -34,10 +35,15 @@ export default async function AccountPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-14">
-      <h1 className="text-3xl font-semibold tracking-tight">Your orders</h1>
-      <p className="mt-2 text-muted">
-        Signed in as {user.name} ({user.email})
-      </p>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-semibold tracking-tight">Your orders</h1>
+          <p className="mt-2 text-muted">
+            Signed in as {user.name} ({user.email})
+          </p>
+        </div>
+        <SignOutButton />
+      </div>
 
       {orders.length === 0 ? (
         <p className="mt-10 rounded-2xl border border-line bg-surface p-10 text-center text-muted">

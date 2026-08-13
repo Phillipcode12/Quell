@@ -10,7 +10,7 @@ const cases = [
   {
     icon: Sun,
     title: 'Wind, cold, and dry air',
-    body: 'Altitude, air conditioning, and indoor heat all pull moisture off the ocular surface faster than you replace it.',
+    body: 'Altitude, air conditioning, and indoor heat pull moisture off the ocular surface faster than you replace it.',
   },
 ]
 
@@ -19,16 +19,17 @@ export function Lifestyle() {
     <section className="border-b border-line py-20 sm:py-24">
       <div className="mx-auto max-w-6xl px-6">
         <div className="grid items-center gap-12 lg:grid-cols-2">
-          {/* Landscape crop keeps this in step with the sections around it —
-              the source file is a tall portrait. */}
-          <div className="overflow-hidden rounded-3xl border border-line">
+          {/* 4:5 is close to the file's native 3:4, so the crop takes only a
+              sliver off the top and bottom rather than slicing the subject.
+              Capped width keeps it in proportion with the copy beside it. */}
+          <div className="mx-auto w-full max-w-md overflow-hidden rounded-3xl border border-line">
             <Image
               src="/images/lifestyle-model-2.png"
               alt="A person outdoors in snowy mountains holding a bottle of Quell beside their eye"
               width={1086}
               height={1448}
-              sizes="(max-width: 1024px) 100vw, 560px"
-              className="h-[300px] w-full object-cover object-top sm:h-[380px] lg:h-[440px]"
+              sizes="(max-width: 1024px) 100vw, 448px"
+              className="aspect-[4/5] w-full object-cover object-center"
             />
           </div>
 

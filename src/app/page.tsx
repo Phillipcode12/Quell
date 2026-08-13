@@ -1,8 +1,6 @@
 import { prisma } from '@/lib/db'
 import { Hero } from '@/components/home/Hero'
-import { Relieves } from '@/components/home/Relieves'
-import { Science } from '@/components/home/Science'
-import { EmuOil } from '@/components/home/EmuOil'
+import { WhyItWorks } from '@/components/home/WhyItWorks'
 import { BuySection } from '@/components/home/BuySection'
 import { HowToUse } from '@/components/home/HowToUse'
 import { Lifestyle } from '@/components/home/Lifestyle'
@@ -17,9 +15,7 @@ export default async function HomePage() {
   return (
     <>
       <Hero />
-      <Relieves />
-      <Science />
-      <EmuOil />
+      <WhyItWorks />
       <BuySection product={product} />
       <HowToUse />
       <Lifestyle />
