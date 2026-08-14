@@ -1,12 +1,11 @@
-import { PrismaLibSql } from '@prisma/adapter-libsql'
+import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '@/generated/prisma/client'
 
-// Prisma 7 talks to SQLite through a driver adapter. libsql is used here instead
-// of better-sqlite3 because it ships prebuilt binaries and needs no C toolchain.
+// Prisma 7 talks to the database through a driver adapter.
 const createPrismaClient = () =>
   new PrismaClient({
-    adapter: new PrismaLibSql({
-      url: process.env.DATABASE_URL ?? 'file:./prisma/dev.db',
+    adapter: new PrismaPg({
+      connectionString: process.env.DATABASE_URL,
     }),
   })
 

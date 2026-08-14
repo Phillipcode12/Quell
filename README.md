@@ -16,15 +16,33 @@ The drops are manufactured by Aurora Pharmaceuticals, Inc. Both are defined in
 | -------- | ----------------------------------------------------------- |
 | Frontend | Next.js 16 (App Router) + React 19 + Tailwind CSS v4        |
 | Backend  | Next.js Route Handlers (Node runtime)                       |
-| Database | SQLite via Prisma 7 (libsql driver adapter)                 |
+| Database | PostgreSQL via Prisma 7 (`@prisma/adapter-pg`)              |
 | Auth     | Email + password, bcrypt hashes, JWT session cookie (jose)  |
-| Payments | Stripe Checkout + webhook                                   |
+| Payments | Stripe Checkout + webhook, one-time and subscription        |
+| Email    | Resend, or console output when no API key is set            |
 
 ## Setup
 
 ```bash
 npm install
 ```
+
+### Database
+
+You need a PostgreSQL instance. Any will do — a local install, Docker, or a
+managed one (Neon, Supabase, RDS). Point `DATABASE_URL` at it.
+
+With Docker:
+
+```bash
+docker run --name quell-pg -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=quell -p 5432:5432 -d postgres:17
+```
+
+> The instance used during development was the PostgreSQL 17 **portable
+> binaries** (`postgresql-17.x-windows-x64-binaries.zip`), unzipped and started
+> with `initdb` + `pg_ctl` on port 5433. That needs no administrator rights,
+> which matters on a locked-down Windows machine where the normal installer
+> can't elevate.
 
 Copy `.env.example` to `.env`, then generate a session secret:
 
@@ -135,6 +153,35 @@ Statuses: `pending` → `paid` → `shipped` | `cancelled`.
 | `npm run db:studio`  | Browse the database in Prisma Studio |
 | `npm run db:reset`   | Drop, re-migrate, and re-seed        |
 
+## Admin
+
+`/admin/orders` lists every order with customer, items, totals and shipping
+address, and lets you mark orders shipped (which emails the customer) or
+cancel them (which returns stock). It also has an inline stock editor.
+
+Access is the `ADMIN_EMAILS` allowlist — comma separated, and **unset means
+nobody**. Non-admins get a 404 rather than a 403 so the route isn't advertised.
+
+## Subscriptions
+
+A 10 mL bottle at the labelled dose is roughly a month's supply, so the buy
+panel offers a monthly refill alongside one-time purchase. Rules live in
+`src/lib/subscription.ts`:
+
+| Rule                | Value                                  |
+| ------------------- | -------------------------------------- |
+| Discount            | 15% off the one-time price (a placeholder — set your own margin) |
+| Shipping            | Always free on subscriptions           |
+| Interval            | Monthly                                |
+
+Renewals arrive as `invoice.paid` webhooks and create a fresh order to fulfil,
+copying the previous order's items and address. `Order.stripeInvoiceId` is
+unique, so a replayed invoice can't duplicate an order.
+
+Customers manage or cancel through the Stripe billing portal, which must be
+enabled once at
+https://dashboard.stripe.com/test/settings/billing/portal
+
 ## Before launch
 
 - **Confirm the price.** `priceCents` in `prisma/seed.ts` is $29.99, which
@@ -149,5 +196,7 @@ Statuses: `pending` → `paid` → `shipped` | `cancelled`.
   reconcile the two before publishing.
 - **Legal pages** (`/privacy`, `/terms`) are unreviewed boilerplate with
   bracketed placeholders, and say so in a banner.
-- **Production hardening** — swap SQLite for Postgres, add rate limiting on the
-  auth routes, email verification, and password reset.
+- **Rate limiting is in-process.** Effective on one instance; on serverless the
+  limit is multiplied by the instance count. Move `src/lib/rate-limit.ts` to
+  Redis (Upstash) before real traffic — the call signature can stay.
+- **Still missing:** email verification on signup, and automated tests.
