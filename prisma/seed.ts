@@ -20,6 +20,9 @@ const quell = {
   sizeLabel: '.33 fl oz (10 mL)',
   priceCents: 2999,
   imageUrl: '/images/product-box-bottle-white.jpg',
+  // Starting inventory — set this to your real on-hand count.
+  stockQuantity: 250,
+  lowStockAt: 25,
 }
 
 async function main() {

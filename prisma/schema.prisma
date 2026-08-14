@@ -34,6 +34,11 @@ model Product {
   imageUrl    String?
   active      Boolean @default(true)
 
+  /// Units on hand. Checked before checkout and decremented when payment lands.
+  stockQuantity Int @default(0)
+  /// At or below this, the storefront shows a low-stock nudge.
+  lowStockAt    Int @default(10)
+
   orderItems OrderItem[]
 }
 

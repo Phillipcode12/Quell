@@ -70,6 +70,23 @@ export async function POST(request: Request) {
 
   const resolved = lineItems as { product: (typeof products)[number]; quantity: number }[]
 
+  // Stock is checked here and decremented again atomically when payment lands,
+  // so a sold-out product can't be added to a Checkout Session.
+  const short = resolved.find(
+    ({ product, quantity }) => product.stockQuantity < quantity,
+  )
+  if (short) {
+    return NextResponse.json(
+      {
+        error:
+          short.product.stockQuantity === 0
+            ? `${short.product.name} is out of stock.`
+            : `Only ${short.product.stockQuantity} left of ${short.product.name}.`,
+      },
+      { status: 409 },
+    )
+  }
+
   const subtotalCents = resolved.reduce(
     (sum, { product, quantity }) => sum + product.priceCents * quantity,
     0,

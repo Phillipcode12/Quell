@@ -5,6 +5,35 @@ import { Droplet, Leaf, Medical, NoDrop, Truck } from '@/components/icons'
 import { formatUsd } from '@/lib/money'
 import { BRAND, DRUG_FACTS, RELIEVES } from '@/lib/product-content'
 import { FREE_SHIPPING_THRESHOLD_CENTS } from '@/lib/shipping'
+import { stockState, type StockState } from '@/lib/inventory'
+
+function StockBadge({
+  state,
+  quantity,
+}: {
+  state: StockState
+  quantity: number
+}) {
+  const config = {
+    in_stock: { label: 'In stock', className: 'border-brand/40 bg-brand/10 text-brand-light' },
+    low_stock: {
+      label: `Only ${quantity} left`,
+      className: 'border-amber-500/40 bg-amber-500/10 text-amber-200',
+    },
+    out_of_stock: {
+      label: 'Out of stock',
+      className: 'border-line bg-surface-2 text-muted',
+    },
+  }[state]
+
+  return (
+    <span
+      className={`rounded-full border px-2.5 py-1 text-xs font-semibold ${config.className}`}
+    >
+      {config.label}
+    </span>
+  )
+}
 
 type BuyProduct = {
   id: string
@@ -14,6 +43,8 @@ type BuyProduct = {
   sizeLabel: string
   priceCents: number
   imageUrl: string | null
+  stockQuantity: number
+  lowStockAt: number
 }
 
 const highlights = [
@@ -61,11 +92,15 @@ export function BuySection({ product }: { product: BuyProduct | null }) {
             <QuellMark className="hidden h-10 w-16 shrink-0 sm:block" />
           </div>
 
-          <div className="mt-7 flex items-baseline gap-3 border-t border-line pt-7">
+          <div className="mt-7 flex flex-wrap items-baseline gap-3 border-t border-line pt-7">
             <span className="text-4xl font-semibold text-white">
               {formatUsd(product.priceCents)}
             </span>
             <span className="text-muted">{product.sizeLabel}</span>
+            <StockBadge
+              state={stockState(product.stockQuantity, product.lowStockAt)}
+              quantity={product.stockQuantity}
+            />
           </div>
 
           <ul className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -83,7 +118,11 @@ export function BuySection({ product }: { product: BuyProduct | null }) {
             {formatUsd(FREE_SHIPPING_THRESHOLD_CENTS)}
           </p>
 
-          <BuyPanel productId={product.id} />
+          <BuyPanel
+            productId={product.id}
+            maxQuantity={Math.min(10, product.stockQuantity)}
+            soldOut={product.stockQuantity <= 0}
+          />
 
           <p className="mt-6 text-sm leading-relaxed text-muted">
             <strong className="font-semibold text-white">Uses:</strong>{' '}

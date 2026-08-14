@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import type Stripe from 'stripe'
 import { prisma } from '@/lib/db'
 import { getStripe, isStripeConfigured } from '@/lib/stripe'
+import { drawDownStock } from '@/lib/inventory'
+import { sendOrderConfirmation } from '@/lib/orders'
 
 /**
  * Stripe webhook. Payment success is recorded here rather than on the success
@@ -48,7 +50,7 @@ export async function POST(request: Request) {
       const shipping = session.collected_information?.shipping_details ?? null
       const address = shipping?.address ?? null
 
-      await prisma.order.updateMany({
+      const updated = await prisma.order.updateMany({
         // Scope by pending status so replayed events don't move a shipped order back.
         where: { id: orderId, status: 'pending' },
         data: {
@@ -66,6 +68,13 @@ export async function POST(request: Request) {
           shippingCountry: address?.country ?? null,
         },
       })
+
+      // Only draw down stock the first time this event is processed, so a
+      // replayed webhook can't decrement twice.
+      if (updated.count > 0) {
+        await drawDownStock(orderId)
+        await sendOrderConfirmation(orderId)
+      }
     }
   }
 
