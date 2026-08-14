@@ -14,7 +14,13 @@ const navLinks = [
   { label: 'FAQ', href: '/#faq' },
 ]
 
-export function Header({ user }: { user: HeaderUser }) {
+export function Header({
+  user,
+  isAdmin = false,
+}: {
+  user: HeaderUser
+  isAdmin?: boolean
+}) {
   const { count } = useCart()
 
   return (
@@ -44,6 +50,15 @@ export function Header({ user }: { user: HeaderUser }) {
 
           {/* Account controls are hidden on phones so the header stays on one
               line; they live on the account page and in the footer instead. */}
+          {isAdmin && (
+            <Link
+              href="/admin/orders"
+              className="hidden font-medium text-brand-light hover:text-white sm:inline"
+            >
+              Admin
+            </Link>
+          )}
+
           {user ? (
             <>
               <Link
