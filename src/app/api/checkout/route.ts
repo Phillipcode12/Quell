@@ -2,15 +2,21 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { prisma } from '@/lib/db'
 import { getCurrentUser } from '@/lib/auth'
-import { appUrl, getStripe, isStripeConfigured } from '@/lib/stripe'
+import { getStripe, isStripeConfigured } from '@/lib/stripe'
+import { appUrl } from '@/lib/site'
 import {
   FREE_SHIPPING_LABEL,
   SHIPPABLE_COUNTRIES,
   SHIPPING_LABEL,
   shippingCentsFor,
 } from '@/lib/shipping'
+import {
+  SUBSCRIPTION_INTERVAL,
+  subscriptionPriceCents,
+} from '@/lib/subscription'
 
 const schema = z.object({
+  mode: z.enum(['one_time', 'subscription']).default('one_time'),
   items: z
     .array(
       z.object({
@@ -48,6 +54,17 @@ export async function POST(request: Request) {
     )
   }
 
+  const { mode } = parsed.data
+  const isSubscription = mode === 'subscription'
+
+  // A subscription is one recurring line, not a basket.
+  if (isSubscription && parsed.data.items.length !== 1) {
+    return NextResponse.json(
+      { error: 'Subscriptions cover a single product.' },
+      { status: 400 },
+    )
+  }
+
   // Prices always come from the database, never from the client payload.
   const products = await prisma.product.findMany({
     where: {
@@ -68,7 +85,10 @@ export async function POST(request: Request) {
     )
   }
 
-  const resolved = lineItems as { product: (typeof products)[number]; quantity: number }[]
+  const resolved = lineItems as {
+    product: (typeof products)[number]
+    quantity: number
+  }[]
 
   // Stock is checked here and decremented again atomically when payment lands,
   // so a sold-out product can't be added to a Checkout Session.
@@ -87,18 +107,23 @@ export async function POST(request: Request) {
     )
   }
 
+  const unitPriceFor = (priceCents: number) =>
+    isSubscription ? subscriptionPriceCents(priceCents) : priceCents
+
   const subtotalCents = resolved.reduce(
-    (sum, { product, quantity }) => sum + product.priceCents * quantity,
+    (sum, { product, quantity }) =>
+      sum + unitPriceFor(product.priceCents) * quantity,
     0,
   )
-  // Shipping is decided here, not by the client, for the same reason prices are.
-  const shippingCents = shippingCentsFor(subtotalCents)
+  // Subscriptions always ship free; one-time orders use the cart threshold.
+  const shippingCents = isSubscription ? 0 : shippingCentsFor(subtotalCents)
   const totalCents = subtotalCents + shippingCents
 
   const order = await prisma.order.create({
     data: {
       userId: user.id,
       status: 'pending',
+      purchaseMode: mode,
       subtotalCents,
       shippingCents,
       totalCents,
@@ -106,7 +131,7 @@ export async function POST(request: Request) {
         create: resolved.map(({ product, quantity }) => ({
           productId: product.id,
           quantity,
-          unitPriceCents: product.priceCents,
+          unitPriceCents: unitPriceFor(product.priceCents),
         })),
       },
     },
@@ -114,18 +139,38 @@ export async function POST(request: Request) {
 
   try {
     const stripe = getStripe()
+
+    // Reuse the customer across purchases so subscriptions, renewals, and the
+    // billing portal all hang off one Stripe customer per account.
+    let customerId = user.stripeCustomerId
+    if (!customerId) {
+      const customer = await stripe.customers.create({
+        email: user.email,
+        name: user.name,
+        metadata: { userId: user.id },
+      })
+      customerId = customer.id
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { stripeCustomerId: customerId },
+      })
+    }
+
     const session = await stripe.checkout.sessions.create({
-      mode: 'payment',
-      customer_email: user.email,
+      mode: isSubscription ? 'subscription' : 'payment',
+      customer: customerId,
       line_items: resolved.map(({ product, quantity }) => ({
         quantity,
         price_data: {
           currency: 'usd',
-          unit_amount: product.priceCents,
+          unit_amount: unitPriceFor(product.priceCents),
           product_data: {
             name: product.name,
             description: `${product.tagline} · ${product.sizeLabel}`,
           },
+          ...(isSubscription
+            ? { recurring: { interval: SUBSCRIPTION_INTERVAL } }
+            : {}),
         },
       })),
       // Physical goods: collect a destination address.
@@ -141,12 +186,14 @@ export async function POST(request: Request) {
             display_name:
               shippingCents === 0 ? FREE_SHIPPING_LABEL : SHIPPING_LABEL,
             fixed_amount: { amount: shippingCents, currency: 'usd' },
-            // No delivery_estimate: we don't promise a delivery window.
           },
         },
       ],
       // The webhook uses this to match the payment back to the order.
-      metadata: { orderId: order.id, userId: user.id },
+      metadata: { orderId: order.id, userId: user.id, purchaseMode: mode },
+      ...(isSubscription
+        ? { subscription_data: { metadata: { userId: user.id } } }
+        : {}),
       success_url: `${appUrl()}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl()}/cart?canceled=1`,
     })

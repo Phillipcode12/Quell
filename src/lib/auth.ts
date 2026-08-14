@@ -20,6 +20,12 @@ export async function getCurrentUser() {
 
   return prisma.user.findUnique({
     where: { id: session.userId },
-    select: { id: true, email: true, name: true, createdAt: true },
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      createdAt: true,
+      stripeCustomerId: true,
+    },
   })
 }

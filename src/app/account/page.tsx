@@ -3,6 +3,7 @@ import { prisma } from '@/lib/db'
 import { getCurrentUser } from '@/lib/auth'
 import { formatUsd } from '@/lib/money'
 import { SignOutButton } from '@/components/SignOutButton'
+import { ManageSubscriptionButton } from '@/components/ManageSubscriptionButton'
 
 const STATUS_LABELS: Record<string, { label: string; className: string }> = {
   pending: {
@@ -33,6 +34,12 @@ export default async function AccountPage() {
     include: { items: { include: { product: true } } },
   })
 
+  const hasSubscription = orders.some(
+    (o) =>
+      o.purchaseMode === 'subscription' &&
+      ['paid', 'shipped'].includes(o.status),
+  )
+
   return (
     <div className="mx-auto max-w-4xl px-6 py-14">
       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -44,6 +51,23 @@ export default async function AccountPage() {
         </div>
         <SignOutButton />
       </div>
+
+      {hasSubscription && (
+        <section className="mt-8 rounded-2xl border border-brand/40 bg-brand/10 p-6">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h2 className="font-semibold text-white">
+                Monthly refill subscription
+              </h2>
+              <p className="mt-1 text-sm leading-relaxed text-muted">
+                Your next bottle ships automatically. Update payment details,
+                change your address, or cancel any time.
+              </p>
+            </div>
+            <ManageSubscriptionButton />
+          </div>
+        </section>
+      )}
 
       {orders.length === 0 ? (
         <p className="mt-10 rounded-2xl border border-line bg-surface p-10 text-center text-muted">
@@ -71,6 +95,11 @@ export default async function AccountPage() {
                   >
                     {status.label}
                   </span>
+                  {order.purchaseMode === 'subscription' && (
+                    <span className="rounded-full border border-brand/40 bg-brand/10 px-2.5 py-1 text-xs font-semibold text-brand-light">
+                      Refill
+                    </span>
+                  )}
                   <span className="ml-auto text-sm text-muted">
                     {order.createdAt.toLocaleDateString()}
                   </span>

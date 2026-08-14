@@ -145,6 +145,11 @@ export default async function AdminOrdersPage() {
                   >
                     {order.status}
                   </span>
+                  {order.purchaseMode === 'subscription' && (
+                    <span className="rounded-full border border-brand/40 bg-brand/10 px-2.5 py-1 text-xs font-semibold text-brand-light">
+                      subscription
+                    </span>
+                  )}
                   <span className="ml-auto text-sm text-muted">
                     {order.createdAt.toLocaleString()}
                   </span>
