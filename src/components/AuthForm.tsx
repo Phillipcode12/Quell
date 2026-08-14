@@ -89,6 +89,17 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
             hint={isRegister ? 'At least 8 characters.' : undefined}
           />
 
+          {!isRegister && (
+            <p className="text-right text-sm">
+              <Link
+                href="/forgot-password"
+                className="text-muted hover:text-brand-light hover:underline"
+              >
+                Forgot your password?
+              </Link>
+            </p>
+          )}
+
           {error && (
             <p className="rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-300">
               {error}

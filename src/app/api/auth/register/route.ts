@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { prisma } from '@/lib/db'
 import { hashPassword } from '@/lib/auth'
 import { createSession } from '@/lib/session'
+import { clientIp, rateLimit, tooManyRequests } from '@/lib/rate-limit'
 
 const schema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(100),
@@ -12,6 +13,19 @@ const schema = z.object({
 })
 
 export async function POST(request: Request) {
+  // Slows down bulk account creation from a single host.
+  const ip = clientIp(request)
+  const limited = rateLimit(`register:ip:${ip}`, {
+    limit: 5,
+    windowMs: 60 * 60_000,
+  })
+  if (!limited.ok) {
+    return tooManyRequests(
+      limited.retryAfter,
+      'Too many accounts created from this location. Please try again later.',
+    )
+  }
+
   const body = await request.json().catch(() => null)
   const parsed = schema.safeParse(body)
 
