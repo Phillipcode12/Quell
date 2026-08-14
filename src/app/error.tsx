@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import Link from 'next/link'
-import { QuellMark } from '@/components/Logo'
+import { QuellLogo } from '@/components/Logo'
 
 /**
  * Catches runtime errors below the root layout so a crash shows a branded page
@@ -22,7 +22,8 @@ export default function Error({
 
   return (
     <div className="mx-auto max-w-xl px-6 py-24 text-center">
-      <QuellMark className="mx-auto h-12 w-20" />
+      {/* Named lockup: a crash is disorienting, so say where you are. */}
+      <QuellLogo size="sm" showTagline={false} className="mx-auto" />
 
       <h1 className="mt-8 text-3xl font-semibold tracking-tight sm:text-4xl">
         Something went wrong

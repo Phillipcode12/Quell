@@ -1,10 +1,11 @@
 import Link from 'next/link'
-import { QuellMark } from '@/components/Logo'
+import { QuellLogo } from '@/components/Logo'
 
 export default function NotFound() {
   return (
     <div className="mx-auto max-w-xl px-6 py-24 text-center">
-      <QuellMark className="mx-auto h-12 w-20" />
+      {/* Named lockup: being lost is disorienting, so say where you are. */}
+      <QuellLogo size="sm" showTagline={false} className="mx-auto" />
 
       <p className="mt-8 text-sm font-semibold uppercase tracking-[0.2em] text-brand">
         404

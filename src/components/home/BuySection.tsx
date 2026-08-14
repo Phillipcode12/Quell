@@ -95,7 +95,11 @@ export function BuySection({
                 Relieves {RELIEVES.join(', ').toLowerCase()}
               </p>
             </div>
-            <QuellMark className="hidden h-10 w-16 shrink-0 sm:block" />
+            {/* Deliberately the bare mark. The heading beside it already reads
+                "Quell Preservative-Free…" and the eyebrow above says "Quiet the
+                Storm", so a full lockup here would print the name and tagline
+                twice inside one small card. */}
+            <QuellMark className="hidden h-11 w-16 shrink-0 sm:block" />
           </div>
 
           <div className="mt-7 flex flex-wrap items-baseline gap-3 border-t border-line pt-7">

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { ClearCartOnMount } from '@/components/ClearCartOnMount'
-import { QuellMark } from '@/components/Logo'
+import { QuellLogo } from '@/components/Logo'
 
 export default async function CheckoutSuccessPage() {
   return (
@@ -8,7 +8,9 @@ export default async function CheckoutSuccessPage() {
       <ClearCartOnMount />
 
       <div className="rounded-3xl border border-line bg-surface p-10">
-        <QuellMark className="mx-auto h-12 w-20" />
+        {/* Full lockup with tagline: a receipt page gets revisited and
+            screenshotted, so it should carry the brand properly. */}
+        <QuellLogo size="md" className="mx-auto" />
 
         <h1 className="mt-7 text-3xl font-semibold tracking-tight">
           Order confirmed
