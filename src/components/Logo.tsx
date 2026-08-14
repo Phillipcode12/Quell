@@ -1,21 +1,39 @@
 /**
- * Quell logo, rebuilt as inline SVG.
- *
- * The supplied logo PNG sits on a grey gradient with a glow, so it can't be
- * placed on the black theme directly. This redraws the eye mark as vector so it
- * scales, stays crisp, and inherits theme colors.
+ * Quell logo, rebuilt as inline SVG. The supplied logo PNG sits on a light
+ * background with a glow and a white-filled wordmark, so it can't be dropped
+ * onto the black theme or background-removed — hence a vector rebuild.
  */
 
+// Geometry traced from the carton (public/images/product-box-bottle-white.jpg),
+// which is the definitive rendering. Lens is 1.61:1.
+const MASK_ID = 'quell-mark-knockout'
+const LENS = 'M0 31 Q25 0 50 0 Q75 0 100 31 Q75 62 50 62 Q25 62 0 31 Z'
+
+// Band widths and radii below are the measured carton values converted to this
+// viewBox. The stroke straddles the path, so path radii are the outer radius
+// minus half the band width.
+const BAND = 5.7
+const Q_BAND = 6
+
+// Teardrop: point at y≈11, bottom circle centred (49.5, 44.6), path radius 14.6.
+const DROPLET =
+  'M49.5 11 C53 23 64.1 34 64.1 44.6 A14.6 14.6 0 1 1 34.9 44.6 C34.9 34 46 23 49.5 11 Z'
+
+// The Q sits right of centre and is tangent to the teardrop's right edge.
+const Q = { cx: 58, cy: 42.2, r: 6.4 }
+const TAIL = 'M62.5 46.6 L79 60'
+
 /**
- * Quell eye mark, traced from the print artwork.
+ * Quell eye mark.
  *
- * Construction matters: the droplet and Q are thick WHITE BANDS drawn over the
- * teal lens, so the shapes read as teal-filled with white outlines rather than
- * white-filled. The Q's tail deliberately breaks out past the lens' lower-right
- * edge, which is why the viewBox extends beyond the eye itself.
+ * The construction is the important part, and it is counter-intuitive: on the
+ * carton the droplet and Q are NOT white shapes. They are knocked out to the
+ * background colour, with the teal lens showing through their interiors. A
+ * pixel scan across the carton reads teal → background → teal → background →
+ * teal. Only the "Quell" wordmark is solid white.
  *
- * `currentColor` drives the band colour, so the mark inverts correctly by
- * setting a text colour on the parent.
+ * Implemented as a mask so the cut-outs show whatever the mark is sitting on,
+ * which is what makes it work on black, on the surface panels, and on white.
  */
 export function QuellMark({
   className = 'h-8 w-8',
@@ -26,43 +44,27 @@ export function QuellMark({
 }) {
   return (
     <svg
-      viewBox="0 0 100 56"
+      viewBox="0 0 100 62"
       className={className}
       aria-hidden
       focusable="false"
     >
-      {/* Lens: sharp points left and right, symmetric curves top and bottom. */}
-      <path
-        d="M0 26.8 Q25 0 50 0 Q75 0 100 26.8 Q75 53.4 50 53.4 Q25 53.4 0 26.8 Z"
-        className={tealClassName}
-      />
-      {/* Teardrop band — narrow through the shoulders, flaring late into the
-          bottom circle, with a sharp mitred point at the top. */}
-      <path
-        d="M49.4 5.6 C53.2 16 65.4 26.4 65.4 33.4 A16 16 0 1 1 33.4 33.4 C33.4 26.4 45.6 16 49.4 5.6 Z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="4.1"
-        strokeLinejoin="miter"
-        strokeMiterlimit="8"
-      />
-      {/* Q bowl: smaller than the teardrop's circle and offset right, so a ring
-          of teal stays visible between the two bands. */}
-      <circle
-        cx="50.6"
-        cy="35.6"
-        r="8"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="4.1"
-      />
-      {/* Q tail, breaking out through the lens edge at the lower right. */}
-      <path
-        d="M55.8 40.4 L71 51.6"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="4.6"
-      />
+      <defs>
+        {/* Black in a mask = removed. Stroking the droplet and Q here cuts
+            those bands out of the lens so the page background shows through —
+            which is how the carton reads: the background fills the mark, and
+            only the wordmark is solid white. */}
+        <mask id={MASK_ID} maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="62">
+          <rect x="0" y="0" width="100" height="62" fill="#fff" />
+          <g fill="none" stroke="#000" strokeLinejoin="miter" strokeMiterlimit="8">
+            <path d={DROPLET} strokeWidth={BAND} />
+            <circle cx={Q.cx} cy={Q.cy} r={Q.r} strokeWidth={Q_BAND} />
+            <path d={TAIL} strokeWidth={Q_BAND} strokeLinecap="butt" />
+          </g>
+        </mask>
+      </defs>
+
+      <path d={LENS} className={tealClassName} mask={`url(#${MASK_ID})`} />
     </svg>
   )
 }

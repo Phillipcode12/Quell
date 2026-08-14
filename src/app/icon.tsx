@@ -18,34 +18,28 @@ export default function Icon() {
           background: '#060606',
         }}
       >
-        {/* Paths mirror QuellMark in src/components/Logo.tsx. */}
-        <svg width="58" height="33" viewBox="0 0 100 56">
+        {/* Mirrors QuellMark. Satori has no <mask>, so the knockout is drawn
+            as bands in the background colour — same result on a solid ground. */}
+        <svg width="58" height="36" viewBox="0 0 100 62">
           <path
-            d="M0 26.8 Q25 0 50 0 Q75 0 100 26.8 Q75 53.4 50 53.4 Q25 53.4 0 26.8 Z"
+            d="M0 31 Q25 0 50 0 Q75 0 100 31 Q75 62 50 62 Q25 62 0 31 Z"
             fill="#00a7b5"
           />
-          <path
-            d="M49.4 5.6 C53.2 16 65.4 26.4 65.4 33.4 A16 16 0 1 1 33.4 33.4 C33.4 26.4 45.6 16 49.4 5.6 Z"
+          <g
             fill="none"
-            stroke="#ffffff"
-            strokeWidth="4.8"
+            stroke="#060606"
             strokeLinejoin="miter"
             strokeMiterlimit="8"
-          />
-          <circle
-            cx="50.6"
-            cy="35.6"
-            r="8"
-            fill="none"
-            stroke="#ffffff"
-            strokeWidth="4.8"
-          />
-          <path
-            d="M55.8 40.4 L71 51.6"
-            fill="none"
-            stroke="#ffffff"
-            strokeWidth="5.2"
-          />
+          >
+            {/* Bands are cut wider than the master mark: at 64px the measured
+                carton widths collapse into mush. */}
+            <path
+              d="M49.5 11 C53 23 64.1 34 64.1 44.6 A14.6 14.6 0 1 1 34.9 44.6 C34.9 34 46 23 49.5 11 Z"
+              strokeWidth="8.6"
+            />
+            <circle cx="58" cy="42.2" r="7" strokeWidth="8.6" />
+            <path d="M62.5 46.6 L79 60" strokeWidth="8.6" />
+          </g>
         </svg>
       </div>
     ),
