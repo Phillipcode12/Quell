@@ -86,27 +86,56 @@ export function QuellLogo({
 }
 
 /**
- * Horizontal lockup for the site header. Sized up on tablet and desktop; kept
- * moderate on phones so it doesn't crowd the cart and buy controls beside it.
+ * Horizontal lockup: mark on the left, name and tagline stacked to its right.
+ *
+ * `lg` is the same lockup at roughly 1.4x, for hero and CTA use. Every value
+ * scales together so the spacing relationships stay identical to the header.
  */
-export function QuellLogoInline({ className = '' }: { className?: string }) {
+const INLINE_SIZES = {
+  md: {
+    gap: 'gap-2.5 sm:gap-3.5',
+    mark: 'h-9 w-13 sm:h-13 sm:w-19',
+    word: 'text-[26px] sm:text-[38px]',
+    tm: 'ml-1 mt-0.5 text-[11px] sm:text-[13px]',
+    // Header hides the tagline on the narrowest screens so the lockup
+    // doesn't crowd the cart and buy controls beside it.
+    tagline: 'mt-2 hidden text-[9px] sm:block sm:text-[11px]',
+  },
+  lg: {
+    gap: 'gap-3.5 sm:gap-5',
+    mark: 'h-13 w-19 sm:h-18 sm:w-26',
+    word: 'text-[38px] sm:text-[53px]',
+    tm: 'ml-1.5 mt-1 text-[13px] sm:text-[18px]',
+    // Nothing competes for space here, so the tagline always shows.
+    tagline: 'mt-2.5 block text-[11px] sm:mt-3 sm:text-[15px]',
+  },
+} as const
+
+export function QuellLogoInline({
+  className = '',
+  size = 'md',
+}: {
+  className?: string
+  size?: keyof typeof INLINE_SIZES
+}) {
+  const s = INLINE_SIZES[size]
+
   return (
     <span
-      className={`inline-flex items-center gap-2.5 text-white sm:gap-3.5 ${className}`}
+      className={`inline-flex items-center text-white ${s.gap} ${className}`}
     >
       {/* Sized to the artwork's 1.45:1 aspect so it doesn't letterbox. */}
-      <QuellMark className="h-9 w-13 shrink-0 sm:h-13 sm:w-19" />
+      <QuellMark className={`shrink-0 ${s.mark}`} />
       <span className="flex flex-col leading-none">
         <span className="flex items-start">
-          <span className="text-[26px] font-semibold tracking-tight sm:text-[38px]">
+          <span className={`font-semibold tracking-tight ${s.word}`}>
             Quell
           </span>
-          <span className="ml-1 mt-0.5 text-[11px] leading-none text-white/70 sm:text-[13px]">
-            ™
-          </span>
+          <span className={`leading-none text-white/70 ${s.tm}`}>™</span>
         </span>
-        {/* Hidden on the narrowest screens so the lockup stays compact. */}
-        <span className="mt-2 hidden whitespace-nowrap text-[9px] font-medium uppercase tracking-[0.3em] text-brand sm:block sm:text-[11px]">
+        <span
+          className={`whitespace-nowrap font-medium uppercase tracking-[0.3em] text-brand ${s.tagline}`}
+        >
           Quiet the Storm
         </span>
       </span>

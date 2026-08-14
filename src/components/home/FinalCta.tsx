@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { ArrowRight } from '@/components/icons'
-import { QuellLogo } from '@/components/Logo'
+import { QuellLogoInline } from '@/components/Logo'
 import { BRAND } from '@/lib/product-content'
 
 export function FinalCta() {
@@ -16,10 +16,9 @@ export function FinalCta() {
       />
 
       <div className="relative mx-auto max-w-3xl px-6 text-center">
-        {/* Full lockup, not a bare mark: this is the closing conversion
-            moment, so the brand should be named. Tagline is suppressed because
-            the slogan headline sits directly beneath it. */}
-        <QuellLogo size="md" showTagline={false} className="mx-auto" />
+        {/* The header's horizontal lockup at 1.4x — same mark, name, tagline
+            and spacing, so the closing CTA matches the masthead exactly. */}
+        <QuellLogoInline size="lg" />
 
         <h2 className="mt-8 text-3xl font-semibold tracking-tight sm:text-5xl">
           {BRAND.slogan}
