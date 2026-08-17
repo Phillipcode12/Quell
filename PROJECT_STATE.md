@@ -5,6 +5,27 @@ Update it when something here stops being true.
 
 ---
 
+## 0. Deployed
+
+**https://quell-six.vercel.app** — Vercel project `quell1/quell`, Neon Postgres,
+Authorize.net **sandbox**. Not indexed: `robots.ts` returns `Disallow: /` for
+any `*.vercel.app` host and switches itself on when `NEXT_PUBLIC_APP_URL` points
+at the real domain.
+
+Webhook registered on the sandbox account (id `9a679451-e09e-44b5-add9-5f2edb28d4fb`)
+for `net.authorize.payment.authcapture.created`. Registered through the REST API
+rather than the Merchant Interface:
+
+```
+POST https://apitest.authorize.net/rest/v1/webhooks
+Authorization: Basic base64(apiLoginId:transactionKey)
+```
+
+Before going live: swap to production credentials, register the webhook against
+the production host, and set `AUTHORIZENET_ENVIRONMENT=production`.
+
+---
+
 ## 1. Start it up
 
 ```powershell
@@ -161,6 +182,12 @@ URL does. Point `NEXT_PUBLIC_APP_URL` at the deployed origin to get past it.
 This blocks the whole payment path locally, not just the webhook.
 
 Authorize.net gotchas, all already handled in `lib/authorizenet.ts`:
+- **The webhook Signature Key is used as TEXT, not decoded hex.** It is
+  displayed as 128 hex characters, so decoding it to 64 bytes is the intuitive
+  reading — and it is wrong. Measured against real sandbox webhooks. No unit
+  test can catch this: a test that computes the HMAC the same way the code does
+  agrees with itself whichever reading is wrong. Both are accepted now, and the
+  handler logs which one matched.
 - **Key order in the request is load-bearing.** The JSON API is a shim over the
   XML service and the XSD validates element *sequence*, so object key order
   becomes element order. The correct run is `transactionType, amount, order,
@@ -237,10 +264,32 @@ Authorize.net. Two real defects were found and fixed this way — the element
 ordering, and the localhost return URL — neither of which any amount of local
 testing would have surfaced.
 
-**Never verified — the remaining gap:** an actual payment. No card has been
-charged. The chain from hosted page → approval → webhook → `paid` → email →
-stock draw-down still has not run, and cannot on localhost (see §6). It needs
-the Vercel deployment.
+**THE PAYMENT CHAIN NOW WORKS END TO END (2026-08-17).** Two sandbox card
+payments ran the whole way through on the deployed site:
+
+| Step | Evidence |
+|---|---|
+| Guest checkout, no account | both orders have `userId` null |
+| Server-side pricing | $29.99 + $6.95 = $36.94 on both |
+| Hosted page took the card | real transaction ids `120088547461`, `120088547612` |
+| Signed webhook accepted | verified using the **"text"** key derivation |
+| Order `pending` → `paid` | both |
+| Stock drawn down | 250 → 248, exactly one per paid order |
+| Confirmation email rendered | correct order number and tracking link |
+| Guest lookup finds it | 200 for the right pair, 404 for a wrong email |
+
+**Replay safety was proven by accident, which is the best way.** The first
+webhook was rejected (signature bug), Authorize.net retried it after the fix,
+and it settled correctly — the order moved `pending` → `paid` once and stock
+decremented once, despite two deliveries of the same event.
+
+**The failure was also safe.** While the signature check was wrong, the order
+sat at `pending` rather than being wrongly marked paid. Payment recorded only
+from a verified webhook is what made that the outcome.
+
+**Still not exercised:** Stax settlement. The sandbox simulates the processor
+entirely, so money has never actually moved. The first production transaction
+should be a small real purchase you make and then refund.
 
 ---
 

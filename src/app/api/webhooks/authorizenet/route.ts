@@ -4,7 +4,7 @@ import {
   getTransactionDetails,
   isGatewayConfigured,
   isWebhookConfigured,
-  verifyWebhookSignature,
+  verifyWebhookSignatureDetailed,
 } from '@/lib/authorizenet'
 import { drawDownStock } from '@/lib/inventory'
 import { sendOrderConfirmation } from '@/lib/orders'
@@ -40,12 +40,24 @@ export async function POST(request: Request) {
 
   const rawBody = await request.text()
 
-  if (!verifyWebhookSignature(rawBody, request.headers.get('x-anet-signature'))) {
+  const signature = request.headers.get('x-anet-signature')
+  const check = verifyWebhookSignatureDetailed(rawBody, signature)
+
+  if (!check.valid) {
+    // Logged with enough detail to tell a genuine forgery from a
+    // misconfiguration, without ever printing the key or the body.
+    console.error(
+      `[webhook] signature rejected. header=${signature ? 'present' : 'MISSING'} ` +
+        `keyConfigured=${Boolean(process.env.AUTHORIZENET_SIGNATURE_KEY)} ` +
+        `bodyBytes=${Buffer.byteLength(rawBody, 'utf8')}`,
+    )
     return NextResponse.json(
       { error: 'Webhook signature verification failed.' },
       { status: 400 },
     )
   }
+
+  console.info(`[webhook] signature verified using the "${check.mode}" key derivation`)
 
   let event: WebhookEvent
   try {

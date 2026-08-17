@@ -117,30 +117,71 @@ type GatewayResponse = {
 /**
  * Verifies a webhook came from Authorize.net.
  *
- * The header is `sha512=<HEX>` and the hash is HMAC-SHA512 of the RAW body
- * keyed by the Signature Key. The Merchant Interface shows that key as 128
- * hex characters; it must be used as the decoded bytes, not as the text —
- * hashing the string produces a value that never matches.
+ * The header is `sha512=<HEX>`, an HMAC-SHA512 of the RAW body keyed by the
+ * Signature Key. The Merchant Interface shows that key as 128 hex characters,
+ * which invites two readings of what to key the HMAC with:
+ *
+ *   "text"   — the 128-character string exactly as displayed  ← what it is
+ *   "bytes"  — the hex decoded to 64 bytes
+ *
+ * MEASURED, not assumed: real sandbox webhooks verified against "text" on
+ * 2026-08-17. This cost a live debugging round, because "bytes" is the
+ * intuitive reading of a hex-looking value and unit tests cannot catch the
+ * difference — a test that computes the HMAC the same way the code does will
+ * agree with itself no matter which reading is wrong.
+ *
+ * "bytes" is still accepted as a fallback. Both require possession of the
+ * secret, so allowing both costs nothing in security, and it means a change
+ * at the gateway shows up as a log line rather than an outage.
+ *
+ * Returns which derivation matched so the log records reality over time.
  */
+export function verifyWebhookSignatureDetailed(
+  rawBody: string,
+  headerValue: string | null,
+): { valid: boolean; mode: 'bytes' | 'text' | null } {
+  const signatureKey = process.env.AUTHORIZENET_SIGNATURE_KEY
+  if (!signatureKey || !headerValue) return { valid: false, mode: null }
+
+  const received = headerValue.replace(/^sha512=/i, '').trim()
+  if (!received) return { valid: false, mode: null }
+
+  let receivedBuf: Buffer
+  try {
+    receivedBuf = Buffer.from(received, 'hex')
+  } catch {
+    return { valid: false, mode: null }
+  }
+  if (receivedBuf.length === 0) return { valid: false, mode: null }
+
+  // "text" first: it is what the gateway actually uses, so the common path
+  // matches on the first attempt.
+  const candidates: { mode: 'bytes' | 'text'; key: Buffer | string }[] = [
+    { mode: 'text', key: signatureKey },
+    { mode: 'bytes', key: Buffer.from(signatureKey, 'hex') },
+  ]
+
+  for (const { mode, key } of candidates) {
+    const expected = createHmac('sha512', key as never)
+      .update(rawBody, 'utf8')
+      .digest()
+    // Length check first: timingSafeEqual throws on a length mismatch.
+    if (
+      expected.length === receivedBuf.length &&
+      timingSafeEqual(expected, receivedBuf)
+    ) {
+      return { valid: true, mode }
+    }
+  }
+
+  return { valid: false, mode: null }
+}
+
 export function verifyWebhookSignature(
   rawBody: string,
   headerValue: string | null,
 ): boolean {
-  const signatureKey = process.env.AUTHORIZENET_SIGNATURE_KEY
-  if (!signatureKey || !headerValue) return false
-
-  const received = headerValue.replace(/^sha512=/i, '').trim()
-  if (!received) return false
-
-  const expected = createHmac('sha512', Buffer.from(signatureKey, 'hex'))
-    .update(rawBody, 'utf8')
-    .digest('hex')
-
-  const a = Buffer.from(expected, 'hex')
-  const b = Buffer.from(received, 'hex')
-  // Length check first: timingSafeEqual throws on a length mismatch.
-  if (a.length !== b.length || a.length === 0) return false
-  return timingSafeEqual(a, b)
+  return verifyWebhookSignatureDetailed(rawBody, headerValue).valid
 }
 
 /** Gateway limits. Exceeding these is rejected, so callers must trim to fit. */
