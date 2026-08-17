@@ -1,0 +1,14 @@
+# Never upload local secrets. Environment variables are set in the Vercel
+# dashboard; a .env in the bundle would override them at runtime and would
+# also put local credentials on a server.
+.env
+.env.*
+!.env.example
+
+# Local-only build and tooling output.
+.next
+node_modules
+tsconfig.tsbuildinfo
+
+# Local Postgres helper scripts and the handoff doc are not needed at runtime.
+scripts
