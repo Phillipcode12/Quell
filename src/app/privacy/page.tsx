@@ -4,7 +4,7 @@ import { PageHero, TemplateNotice } from '@/components/PageHero'
 import { BRAND, COMPANY } from '@/lib/product-content'
 
 export const metadata: Metadata = {
-  title: `Privacy Policy — ${BRAND.name}`,
+  title: 'Privacy Policy',
   description: `How ${COMPANY.name} collects, uses, and protects your information.`,
 }
 
@@ -65,11 +65,14 @@ export default function PrivacyPage() {
 
           <h3>Payment information</h3>
           <p>
-            Card details are entered directly with our payment processor, Stripe,
-            and never pass through or rest on our servers. We keep only a payment
-            reference and the outcome of the charge. See{' '}
-            <a href="https://stripe.com/privacy" rel="noreferrer noopener">
-              Stripe&apos;s privacy policy
+            Card details are entered directly with our payment provider,
+            Authorize.net, and never pass through or rest on our servers. We keep
+            only a payment reference and the outcome of the charge. See{' '}
+            <a
+              href="https://www.authorize.net/about-us/privacy.html"
+              rel="noreferrer noopener"
+            >
+              Authorize.net&apos;s privacy policy
             </a>
             .
           </p>

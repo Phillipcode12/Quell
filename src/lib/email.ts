@@ -105,6 +105,11 @@ const usd = (cents: number) =>
 
 type OrderForEmail = {
   id: string
+  /// The reference the customer sees everywhere: email, gateway, support call.
+  orderNumber: string
+  /// Read from the order, not the account — guest orders have no account, and
+  /// a signed-in buyer may change their address later.
+  email: string
   subtotalCents: number
   shippingCents: number
   totalCents: number
@@ -115,7 +120,12 @@ type OrderForEmail = {
   shippingState: string | null
   shippingPostalCode: string | null
   items: { quantity: number; unitPriceCents: number; product: { name: string } }[]
-  user: { email: string; name: string }
+}
+
+/** Greeting name, taken from the shipping address so guests are addressed too. */
+function firstName(order: OrderForEmail) {
+  const first = order.shippingName?.trim().split(/\s+/)[0]
+  return first && first.length > 0 ? first : 'there'
 }
 
 function addressBlock(order: OrderForEmail) {
@@ -130,14 +140,14 @@ function addressBlock(order: OrderForEmail) {
 }
 
 export async function sendOrderConfirmationEmail(order: OrderForEmail) {
-  const ref = order.id.slice(-8).toUpperCase()
+  const ref = order.orderNumber
   const itemLines = order.items.map(
     (i) => `${i.quantity} × ${i.product.name} — ${usd(i.unitPriceCents * i.quantity)}`,
   )
   const address = addressBlock(order)
 
   const html = layout(
-    `Thanks, ${order.user.name.split(' ')[0]} — your order is confirmed`,
+    `Thanks, ${firstName(order)} — your order is confirmed`,
     `
       <p style="margin:0 0 16px;line-height:1.6;">
         Order <strong>#${ref}</strong> is paid and being prepared. We'll email
@@ -171,13 +181,13 @@ export async function sendOrderConfirmationEmail(order: OrderForEmail) {
           : ''
       }
       <p style="margin:24px 0 0;">
-        <a href="${appUrl()}/account" style="background:#00a7b5;color:#000000;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:bold;display:inline-block;">View your order</a>
+        <a href="${appUrl()}/orders?number=${ref}" style="background:#00a7b5;color:#000000;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:bold;display:inline-block;">Track your order</a>
       </p>
     `,
   )
 
   const text = [
-    `Thanks, ${order.user.name.split(' ')[0]} — your order is confirmed.`,
+    `Thanks, ${firstName(order)} — your order is confirmed.`,
     ``,
     `Order #${ref}`,
     ...itemLines,
@@ -186,11 +196,12 @@ export async function sendOrderConfirmationEmail(order: OrderForEmail) {
     `Total: ${usd(order.totalCents)}`,
     ...(address.length ? ['', 'Shipping to:', ...address] : []),
     ``,
-    `View your order: ${appUrl()}/account`,
+    // Not /account: guests have no account, and this link has to work for them.
+    `Track your order: ${appUrl()}/orders?number=${ref}`,
   ].join('\n')
 
   return deliver({
-    to: order.user.email,
+    to: order.email,
     subject: `Your ${BRAND.name} order #${ref} is confirmed`,
     html,
     text,
@@ -198,7 +209,7 @@ export async function sendOrderConfirmationEmail(order: OrderForEmail) {
 }
 
 export async function sendShippingNoticeEmail(order: OrderForEmail) {
-  const ref = order.id.slice(-8).toUpperCase()
+  const ref = order.orderNumber
   const address = addressBlock(order)
 
   const html = layout(
@@ -227,7 +238,7 @@ export async function sendShippingNoticeEmail(order: OrderForEmail) {
   ].join('\n')
 
   return deliver({
-    to: order.user.email,
+    to: order.email,
     subject: `Your ${BRAND.name} order #${ref} has shipped`,
     html,
     text,

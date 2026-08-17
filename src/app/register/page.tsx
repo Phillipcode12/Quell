@@ -1,7 +1,10 @@
+import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { redirect } from 'next/navigation'
 import { AuthForm } from '@/components/AuthForm'
 import { getCurrentUser } from '@/lib/auth'
+
+export const metadata: Metadata = { title: 'Create an account' }
 
 export default async function RegisterPage() {
   if (await getCurrentUser()) redirect('/account')

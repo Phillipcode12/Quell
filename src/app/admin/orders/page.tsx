@@ -159,13 +159,21 @@ export default async function AdminOrdersPage() {
                   <div>
                     <p className="text-sm font-semibold text-white">Customer</p>
                     <p className="mt-1 text-sm text-muted">
-                      {order.user.name}
+                      {/* Guests have no account, so fall back to the name on
+                          the shipping address. The email always lives on the
+                          order itself. */}
+                      {order.user?.name ?? order.shippingName ?? 'Guest'}
+                      {!order.user && (
+                        <span className="ml-2 rounded-full border border-line px-2 py-0.5 text-xs">
+                          guest
+                        </span>
+                      )}
                       <br />
                       <a
-                        href={`mailto:${order.user.email}`}
+                        href={`mailto:${order.email}`}
                         className="text-brand-light hover:underline"
                       >
-                        {order.user.email}
+                        {order.email}
                       </a>
                     </p>
 

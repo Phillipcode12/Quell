@@ -9,7 +9,7 @@ import {
 } from '@/lib/product-content'
 
 export const metadata: Metadata = {
-  title: `Terms of Service — ${BRAND.name}`,
+  title: 'Terms of Service',
   description: `The terms governing your purchase and use of ${BRAND.trademark}.`,
 }
 
@@ -96,8 +96,8 @@ export default function TermsPage() {
           <ul>
             <li>Prices are in U.S. dollars and may change without notice.</li>
             <li>
-              Payment is processed by Stripe. You authorize the charge when you
-              submit an order.
+              Payment is processed by Authorize.net. You authorize the charge
+              when you submit an order.
             </li>
             <li>
               If we cannot fulfill an order, the authorization is released or

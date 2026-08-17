@@ -18,9 +18,11 @@ model User {
   name         String
   createdAt    DateTime @default(now())
 
-  /// Set the first time the customer checks out. Links subscription renewal
-  /// webhooks back to an account, and opens the Stripe billing portal.
-  stripeCustomerId String? @unique
+  /// Gateway customer profile, set the first time the customer checks out.
+  /// Deliberately gateway-neutral: this holds an Authorize.net CIM profile id
+  /// today and survives a processor change without another migration.
+  /// Unused until stored cards or recurring billing land.
+  paymentProfileId String? @unique
 
   orders              Order[]
   passwordResetTokens PasswordResetToken[]
@@ -63,19 +65,41 @@ model Product {
 }
 
 model Order {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id String @id @default(cuid())
 
-  /// pending -> paid (Stripe webhook) -> shipped | cancelled
+  /// Null for guest checkout. Buying does not require an account — forcing one
+  /// is a well-known source of cart abandonment, and with subscriptions
+  /// deferred there is nothing an account is needed for at purchase time.
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  /// Where receipts go. Always populated: the account's address for a signed-in
+  /// buyer, the one typed at checkout for a guest.
+  ///
+  /// Deliberately stored on the order rather than read through the user, so
+  /// order history survives an account email change and fulfilment has a
+  /// contact address without a join. It is also the second factor for guest
+  /// order lookup.
+  email String
+
+  /// Short, human-readable reference, e.g. "Q-7F3K9M2A".
+  ///
+  /// Load-bearing: the gateway is told this as the transaction's invoiceNumber
+  /// and it is how the webhook finds its way back to this order. Authorize.net
+  /// caps invoiceNumber at 20 characters, so the 25-character cuid id above
+  /// cannot be used for that. Doubles as the reference on emails and packing
+  /// slips.
+  orderNumber String @unique
+
+  /// pending -> paid (gateway webhook) -> shipped | cancelled
   status String @default("pending")
 
-  /// "one_time" or "subscription". Renewal orders are created by the invoice
-  /// webhook and are always "subscription".
-  purchaseMode         String  @default("one_time")
-  stripeSubscriptionId String?
-  /// Stripe invoice id for renewals, so a replayed event can't duplicate an order.
-  stripeInvoiceId      String? @unique
+  /// "one_time" or "subscription". Only "one_time" is reachable today —
+  /// recurring billing is deferred to a later Authorize.net ARB phase.
+  purchaseMode          String  @default("one_time")
+  /// Reserved for that ARB phase; nothing writes these yet.
+  paymentSubscriptionId String?
+  paymentInvoiceId      String? @unique
 
   /// Goods only, before shipping.
   subtotalCents Int @default(0)
@@ -84,10 +108,12 @@ model Order {
   /// Grand total actually charged: subtotal + shipping.
   totalCents    Int
 
-  stripeSessionId       String? @unique
-  stripePaymentIntentId String?
+  /// Gateway transaction id, written when the payment webhook lands. Unique so
+  /// a replayed webhook cannot pay the same order twice.
+  paymentTransactionId String? @unique
 
-  /// Captured from Stripe Checkout on payment, so we know where to ship.
+  /// Collected by us before checkout — the hosted payment page only
+  /// pre-populates an address, it does not gather one.
   shippingName       String?
   shippingLine1      String?
   shippingLine2      String?
@@ -100,6 +126,8 @@ model Order {
   updatedAt DateTime @updatedAt
 
   items OrderItem[]
+
+  @@index([email])
 }
 
 model OrderItem {

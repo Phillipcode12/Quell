@@ -50,7 +50,7 @@ export function OrderActions({
           onClick={() => {
             if (
               confirm(
-                'Cancel this order? If it was paid, the stock goes back on the shelf. Refunding is done in Stripe.',
+                'Cancel this order? If it was paid, the stock goes back on the shelf. Refunding is done in the Authorize.net merchant interface.',
               )
             ) {
               run(() => markCancelled(orderId))

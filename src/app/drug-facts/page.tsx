@@ -5,7 +5,7 @@ import { DrugFactsPanel } from '@/components/DrugFactsPanel'
 import { BRAND, COMPANY, MANUFACTURER } from '@/lib/product-content'
 
 export const metadata: Metadata = {
-  title: `Drug Facts — ${BRAND.name}`,
+  title: 'Drug Facts',
   description: `The complete over-the-counter Drug Facts panel for ${BRAND.trademark} ${BRAND.productType}, as printed on the carton.`,
 }
 

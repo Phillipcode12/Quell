@@ -1,6 +1,6 @@
 /**
  * Shipping rules — the single source of truth for both the cart UI and the
- * Stripe Checkout Session. Change the numbers here and both follow.
+ * amount sent to the payment gateway. Change the numbers here and both follow.
  */
 
 /** Orders at or above this subtotal ship free. */

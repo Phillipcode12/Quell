@@ -28,9 +28,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [hydrated, setHydrated] = useState(false)
 
   // Load after mount so server and client render the same initial markup.
+  //
+  // react-hooks/set-state-in-effect flags this, and here it is a false
+  // positive: the cart lives in localStorage, which the server cannot read.
+  // Seeding it in the useState initializer instead would make the client's
+  // first render disagree with the server's and throw a hydration mismatch.
+  // Reading after mount is the behaviour we want, and it runs once.
   useEffect(() => {
     try {
       const raw = window.localStorage.getItem(STORAGE_KEY)
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- see above
       if (raw) setLines(JSON.parse(raw))
     } catch {
       // Corrupt or unavailable storage — start with an empty cart.

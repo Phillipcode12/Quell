@@ -1,7 +1,10 @@
+import type { Metadata } from 'next'
 import { prisma } from '@/lib/db'
 import { getCurrentUser } from '@/lib/auth'
-import { isStripeConfigured } from '@/lib/stripe'
+import { isGatewayConfigured } from '@/lib/authorizenet'
 import { CartView } from '@/components/CartView'
+
+export const metadata: Metadata = { title: 'Your cart' }
 
 export default async function CartPage() {
   // The cart lives in the browser, so ship the catalog and let the client
@@ -23,7 +26,7 @@ export default async function CartPage() {
           priceCents: p.priceCents,
         }))}
         isSignedIn={Boolean(user)}
-        stripeReady={isStripeConfigured()}
+        paymentsReady={isGatewayConfigured()}
       />
     </div>
   )

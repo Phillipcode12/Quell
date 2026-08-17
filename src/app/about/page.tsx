@@ -11,7 +11,7 @@ import {
 } from '@/lib/product-content'
 
 export const metadata: Metadata = {
-  title: `About us — ${BRAND.name}`,
+  title: 'About us',
   description: `Who makes ${BRAND.trademark} and why the formula targets the tear film's oil layer.`,
 }
 

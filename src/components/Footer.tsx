@@ -20,6 +20,9 @@ const columns = [
       { label: 'About us', href: '/about' },
       { label: 'Contact', href: '/about#contact' },
       { label: 'FAQ', href: '/#faq' },
+      // Guests have no account page, so tracking has to be reachable from
+      // every page, not just the confirmation email.
+      { label: 'Track your order', href: '/orders' },
     ],
   },
   {
@@ -47,7 +50,10 @@ export function Footer() {
               {BRAND.productType} · {BRAND.size}
             </p>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-brand-light">
-              Free {SHIPPING_LABEL} shipping over{' '}
+              {/* SHIPPING_LABEL already ends in "shipping", so it is lowercased
+                  into the sentence rather than having the word repeated after
+                  it — this read "Free Standard shipping shipping over $59.00". */}
+              Free {SHIPPING_LABEL.toLowerCase()} over{' '}
               {formatUsd(FREE_SHIPPING_THRESHOLD_CENTS)}
             </p>
           </div>
