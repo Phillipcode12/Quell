@@ -154,7 +154,20 @@ Authorize.net ARB, which has no hosted billing portal and no renewal webhook —
 see §10. `lib/subscription.ts` and the reserved `payment*` columns are kept for
 that phase.
 
+**Checkout cannot be completed on localhost.** Authorize.net rejects a
+`localhost` return URL when creating the hosted payment page — the error is
+`E00013 ... must begin with http:// or https://`, which is misleading, since the
+URL does. Point `NEXT_PUBLIC_APP_URL` at the deployed origin to get past it.
+This blocks the whole payment path locally, not just the webhook.
+
 Authorize.net gotchas, all already handled in `lib/authorizenet.ts`:
+- **Key order in the request is load-bearing.** The JSON API is a shim over the
+  XML service and the XSD validates element *sequence*, so object key order
+  becomes element order. The correct run is `transactionType, amount, order,
+  lineItems, tax, duty, shipping, taxExempt, poNumber, customer, billTo,
+  shipTo`. Getting it wrong returns `E00003 invalid child element`, naming the
+  element that appeared too late rather than the one that came too early. Do
+  not alphabetise or reorder those keys.
 - Responses carry a **UTF-8 BOM** that makes `JSON.parse` throw.
 - Failures return **HTTP 200** with `resultCode: "Error"`, so the status code
   never tells you whether the call worked.
@@ -216,10 +229,18 @@ share your email address. There is no email verification on signup (§10), so
 anyone could register with someone else's address and inherit their order
 history. Guest orders stay reachable only via order number + email.
 
-**Never verified — the one real gap:** a live payment. No transaction has ever
-been taken. The chain from hosted page → approval → webhook → `paid` → email →
-stock draw-down has not run end to end, and `getHostedPaymentPageToken` has
-never returned a real token. It needs sandbox credentials (§11).
+**Verified against the live sandbox gateway (2026-08-17):** with real sandbox
+credentials, `createHostedPaymentPageToken` returns a valid ~3,250-character
+token. That proves the credentials, the request shape, the element ordering, the
+line items, the shipping amount and the hosted-page settings are all accepted by
+Authorize.net. Two real defects were found and fixed this way — the element
+ordering, and the localhost return URL — neither of which any amount of local
+testing would have surfaced.
+
+**Never verified — the remaining gap:** an actual payment. No card has been
+charged. The chain from hosted page → approval → webhook → `paid` → email →
+stock draw-down still has not run, and cannot on localhost (see §6). It needs
+the Vercel deployment.
 
 ---
 

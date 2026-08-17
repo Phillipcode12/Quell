@@ -195,15 +195,20 @@ export async function createHostedPaymentPageToken(input: {
   const response = await gatewayRequest<{ token?: string }>(
     'getHostedPaymentPageRequest',
     {
+      // KEY ORDER IS LOAD-BEARING. This "JSON" API is a shim over the XML
+      // service, and the XSD validates a strict element sequence, so the order
+      // of these keys becomes the order of the XML elements. Getting it wrong
+      // fails with E00003 "invalid child element" rather than anything that
+      // points at the real cause.
+      //
+      // The schema's sequence for the fields used here is:
+      //   transactionType, amount, order, lineItems, tax, duty, shipping,
+      //   taxExempt, poNumber, customer, billTo, shipTo
+      //
+      // Do not reorder or alphabetise these keys.
       transactionRequest: {
         transactionType: 'authCaptureTransaction',
         amount: toAmount(input.amountCents),
-        // Shipping is its own field rather than a line item, so the gateway's
-        // own totals reconcile with the order we wrote.
-        shipping: {
-          amount: toAmount(input.shippingCents),
-          name: 'Shipping',
-        },
         order: {
           invoiceNumber: trim(input.orderNumber, MAX_INVOICE_NUMBER),
           description: trim(input.description, 255),
@@ -215,6 +220,12 @@ export async function createHostedPaymentPageToken(input: {
             quantity: String(item.quantity),
             unitPrice: toAmount(item.unitPriceCents),
           })),
+        },
+        // Shipping is its own field rather than a line item, so the gateway's
+        // own totals reconcile with the order we wrote.
+        shipping: {
+          amount: toAmount(input.shippingCents),
+          name: 'Shipping',
         },
         customer: { email: input.email },
         shipTo: input.shipTo,
