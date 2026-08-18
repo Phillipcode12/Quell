@@ -49,14 +49,6 @@ export default function AboutPage() {
 
       <div className="mx-auto max-w-4xl px-6 py-16">
         <div className="prose-page">
-          <p className="text-lg leading-relaxed text-muted">
-            Dry eye is usually described as “not enough tears.” For a lot of
-            people that is not quite right. The tears are there — they just
-            evaporate too fast, because the thin layer of oil that is supposed to
-            hold them in place has thinned out. Top up the water and the relief
-            lasts minutes. Rebuild the oil and it lasts.
-          </p>
-
           <h2>Why emu oil</h2>
           <p>
             Emu oil is an all natural oil used by the Aboriginal people of

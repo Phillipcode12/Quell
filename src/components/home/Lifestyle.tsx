@@ -5,12 +5,12 @@ const cases = [
   {
     icon: Eye,
     title: 'Screens',
-    body: 'Long sessions in front of a monitor cut your blink rate, and the tear film evaporates while you stare.',
+    body: 'Concentrating on a screen cuts how often you blink, and your tear film evaporates while you stare.',
   },
   {
     icon: Sun,
-    title: 'Wind, cold, and dry air',
-    body: 'Altitude, air conditioning, and indoor heat pull moisture off the ocular surface faster than you replace it.',
+    title: 'Dry air, indoors and out',
+    body: 'Wind and altitude outdoors, air conditioning and central heat indoors — all of it pulls moisture off your eyes faster than you can replace it.',
   },
 ]
 
@@ -35,7 +35,7 @@ export function Lifestyle() {
 
           <div>
             <span className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">
-              Where dry eye hits hardest
+              Dry eye relief
             </span>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
               Built for the conditions that dry you out
@@ -56,8 +56,9 @@ export function Lifestyle() {
             </ul>
 
             <p className="mt-8 leading-relaxed text-muted">
-              Because Quell is preservative-free, it is a drop you can reach for
-              as often as the label allows.
+              Preservative-free eye drops lack harsh chemicals that can
+              irritate, inflame, or damage the delicate surface of your eye over
+              time. They provide pure relief.
             </p>
           </div>
         </div>
