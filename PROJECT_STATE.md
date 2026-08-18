@@ -24,6 +24,34 @@ Authorization: Basic base64(apiLoginId:transactionKey)
 Before going live: swap to production credentials, register the webhook against
 the production host, and set `AUTHORIZENET_ENVIRONMENT=production`.
 
+### Local and deployed are separate. Editing one does not change the other.
+
+Running the site locally touches nothing on Vercel. The deployed site changes
+**only** when someone runs a deploy. There is no automatic pipeline — the
+project was created with the Vercel CLI rather than connected to GitHub, so
+nothing deploys on commit.
+
+They also use different databases. Local uses the portable Postgres on this
+machine; the deployed site uses Neon. Test data written locally never reaches
+the live site, and vice versa.
+
+**To deploy a change** you need a Vercel token. The one used for setup was
+deliberately revoked afterwards, so there is currently no way to deploy without
+creating a new one:
+
+1. Create one at <https://vercel.com/account/tokens>
+2. From the project folder:
+   `npx vercel deploy --prod --yes --token <TOKEN>`
+
+If deploying becomes routine, connect the repo to GitHub and let Vercel build on
+push instead. That removes the token step entirely.
+
+**Environment variables live in two places and must be kept in step:** `.env`
+for local, the Vercel dashboard for the deployed site. Changing one does not
+change the other. When setting them from the CLI use
+`vercel env add NAME production --value 'x'` — piping the value appends a
+newline and corrupts the credential (§12).
+
 ---
 
 ## 1. Start it up
@@ -39,6 +67,20 @@ Stop before shutting the machine down:
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts\stop-local.ps1
 ```
+
+> **Warning — `stop-local.ps1` kills every `node` process on the machine**, not
+> just this dev server. Anything else running on Node dies with it. Until that
+> line is narrowed, stopping by hand is safer:
+>
+> ```powershell
+> Get-NetTCPConnection -LocalPort 3000 -State Listen |
+>   ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }
+> & "$env:LOCALAPPDATA\QuellPostgres\bin\pg_ctl.exe" `
+>   -D "$env:LOCALAPPDATA\QuellPostgres\data" -m fast stop
+> ```
+>
+> Stopping the dev server cleanly matters for a second reason too — see the
+> `.next` note in §12.
 
 **Neither Postgres nor the dev server survives a reboot.** Postgres is a
 portable install (the normal Windows installer needs admin elevation, which was
@@ -299,7 +341,10 @@ should be a small real purchase you make and then refund.
 |---|---|
 | `$6.95` shipping rate | **My assumption.** You gave the $59 threshold, not the rate. Confirm against real carrier cost. |
 | `15%` subscription discount | **My placeholder**, and now dormant — subscriptions are deferred. Still a margin decision before they return. |
-| Authorize.net credentials | **Blocking a live payment test.** Need API Login ID, Transaction Key and Signature Key from the Merchant Interface. Sandbox is enough to finish verification. |
+| Authorize.net credentials | **Sandbox is done and working.** Production credentials are still needed — see §13, and read it before anyone touches the production account. |
+| Domain | Not chosen. Lives on `quell-six.vercel.app`. Own domain or a subdomain? Ryan controls DNS and warned the BlephEx records are tangled, so a separate domain sidesteps that. |
+| Fulfilment | **Unanswered and blocking real orders.** Admin marks orders shipped by hand. Nobody has said how a Quell order physically reaches XPSShipper and gets picked, packed and posted. |
+| Card statement descriptor | Quell shares BlephEx's merchant account, so charges show BlephEx's descriptor. Unrecognised descriptors cause chargebacks. Ask whether Stax allows a per-transaction descriptor like `BLEPHEX*QUELL`. Affects packaging and email copy, so it has the longest lead time. |
 | `$29.99` price | Matches the Dry Eye Rescue retail listing as of 2026-08-13. |
 | Brand teal | Site uses `#00A7B5`; print file converts to `#4AC1A8`. One token change if you want to match print. |
 | Legal pages | Unreviewed boilerplate with bracketed placeholders, and say so in a banner. |
@@ -368,6 +413,20 @@ That restores the schema and the product, but **not** user accounts.
 
 - **OneDrive locks `.next`.** A build can fail with `EPERM: unlink` even with
   no server running. Delete `.next` and rebuild.
+- **A killed dev server can corrupt `.next` into serving 404s.** Not the
+  documented `EPERM` — a subtler failure where `/` renders fine and *every other
+  route* 404s, while all the route files sit untouched on disk. It looks like
+  deleted code. It is a stale cache. Delete `.next` and restart. Stopping the
+  server cleanly avoids it.
+- **Piping a value into `vercel env add` appends a newline**, and the newline
+  becomes part of the stored secret. This burned an entire debugging cycle: the
+  Transaction Key was rejected as "length is greater than MaxLength" (17 chars
+  instead of 16), and `NEXT_PUBLIC_APP_URL` broke the production build outright.
+  Always use `--value '...'` instead. Symptoms are wildly varied and never point
+  at whitespace.
+- **PowerShell here-strings mangle `git commit -m`** when the message contains
+  quotes — it word-splits and git reads fragments as pathspecs. Write the
+  message to a file and use `git commit -F <file>`.
 - **`prisma migrate dev` is interactive** and fails in this environment. Use
   `prisma migrate diff --from-config-datasource --to-schema ... --script` to
   generate SQL into a migration folder, then `prisma migrate deploy`.
@@ -375,3 +434,92 @@ That restores the schema and the product, but **not** user accounts.
   mojibake. Use the editor tools for files containing non-ASCII.
 - **Satori (`ImageResponse`) rejects multi-child nodes** without an explicit
   `display`, which JSX interpolation silently creates.
+
+---
+
+## 13. Blocked on other people
+
+Everything here needs someone outside this project. Nothing in the codebase
+unblocks them.
+
+### Ryan — payment credentials
+
+Quell will use **the same Authorize.net account as BlephEx**, settling into the
+same StaxPay merchant account. Sharing the account needs **no change to
+BlephEx.com** — two sites can use one set of credentials.
+
+The difficulty is retrieval, not sharing:
+
+- **API Login ID** is viewable in the Merchant Interface.
+- **Transaction Key** and **Signature Key** are shown once at creation and
+  **never displayed again** — not to Ryan, not to the account owner, not to
+  Authorize.net support.
+
+So the deciding question is: **does Rohit's team still have the current values
+saved in the BlephEx site config?**
+
+| | Consequence |
+|---|---|
+| **Yes** | Use the same values. Nothing changes on BlephEx. No downtime. |
+| **No** | New keys must be generated. Old ones stop working, so BlephEx.com must be updated at the same time or its checkout breaks. |
+
+> **If new keys are generated, leave "Disable Old Transaction/Signature Key
+> Immediately" UNCHECKED.** The old key then keeps working for **24 hours**,
+> which is the window for updating both sites. Ticking that box takes
+> BlephEx.com's checkout down instantly — and it is the option that looks
+> tidier, so it needs saying out loud.
+
+The **Signature Key is only used for webhooks.** If BlephEx does not use
+Authorize.net webhooks, regenerating that one is free. Worth establishing —
+it may reduce the risky item to the Transaction Key alone.
+
+### Ryan — the other questions
+
+1. What descriptor do BlephEx charges show on card statements, and can Stax
+   send a per-transaction one for Quell?
+2. How does a Quell order reach fulfilment — does it push into XPSShipper, or
+   does someone key it in?
+3. What domain should Quell use?
+4. How should Quell's revenue be separated in the books from BlephEx's?
+5. Confirm no new underwriting is needed to add Quell to the merchant account.
+
+### Not a developer question
+
+**The redness claim.** The carton advertises redness relief; the Drug Facts
+*Uses* panel does not cover it and the formula contains no vasoconstrictor.
+This affects the printed carton, not just the site, and needs Dr. Rynerson or
+a regulatory reviewer. The claim currently appears on the homepage hero and the
+buy card.
+
+**The legal pages** are unreviewed boilerplate and say so in a banner. They
+name Authorize.net as the processor, which is accurate as of this work.
+
+---
+
+## 14. Suggested order of work
+
+1. **Copy edits.** Independent of everything else; redeploy takes a minute.
+2. **Send Ryan the questions in §13.** Credentials have the longest lead time.
+3. **Review pass** — `/security-review` and `/code-review` over the branch. It
+   handles money, sessions and an unauthenticated webhook.
+4. **`RESEND_API_KEY`**, so confirmation emails actually send rather than
+   printing to the Vercel logs.
+5. **Error tracking** (Sentry). A production crash is currently invisible.
+6. **Automated tests.** Still the largest structural gap — though note that the
+   two worst bugs found so far, the element ordering and the signature key
+   derivation, were both invisible to unit tests and only a live gateway
+   exposed them.
+7. **Production cutover:** production keys, webhook re-registered against the
+   real host, `AUTHORIZENET_ENVIRONMENT=production`, real domain. Make the
+   first production transaction a small real purchase and refund it — Stax
+   settlement has never been exercised, since the sandbox simulates the
+   processor entirely.
+
+### Smaller things left on the floor
+
+- `scripts\stop-local.ps1` kills every `node` process (§1).
+- The branch `payments/authorizenet-guest-checkout` is unmerged; `main` is the
+  pre-Authorize.net fallback.
+- Post-purchase account creation — offering to save details on the success page,
+  where the email and address are already known.
+- Rate limiting is in-process, which on Vercel means per-instance (§10).
