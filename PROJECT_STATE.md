@@ -24,6 +24,19 @@ Authorization: Basic base64(apiLoginId:transactionKey)
 Before going live: swap to production credentials, register the webhook against
 the production host, and set `AUTHORIZENET_ENVIRONMENT=production`.
 
+> **The deployed site is stale as of 2026-08-19 and should not be shown to
+> anyone.** It predates the legal-page rewrite, so `/terms` still displays
+> "Template content — not legal advice", "not enforceable terms", and bracketed
+> placeholders including `[State your return window here]`. That is what a
+> merchant-account underwriter or a Meta ad reviewer would see, and both check
+> the destination. Deploy before either process starts.
+
+> **There is no git remote.** Every commit exists only in
+> `C:\Users\phill\OneDrive\Documents\quell` on one machine — Vercel deploys were
+> pushed straight from the CLI, so there is no copy there either. OneDrive
+> replicates deletion and corruption faithfully; it is not a backup. A private
+> GitHub repo is ten minutes and removes a total-loss risk.
+
 ### Local and deployed are separate. Editing one does not change the other.
 
 Running the site locally touches nothing on Vercel. The deployed site changes
@@ -101,10 +114,13 @@ the app by design. The project began as a prescription pharmacy template
 (`ClearSight Rx`) and was rebuilt when the packaging showed a standard OTC Drug
 Facts panel with no "Rx only" legend.
 
-- **Brand owner / trademark:** BlephEx®, LLC — 500 Wilson Pike Circle, Suite
-  103, Brentwood, TN 37027. Phone 615.465.6041 (the number printed on the
-  carton).
-- **Manufacturer:** Aurora Pharmaceuticals, Inc.
+- **Brand owner / seller of record:** Aurora Pharmaceuticals, LLC — 330 Franklin
+  Road, Suite 135A, #117, Brentwood, TN 37027. Phone 615.465.6041 (the number
+  printed on the carton, shared with BlephEx).
+  *Changed 2026-08-19 — it was BlephEx®, LLC until Ryan confirmed Quell sits
+  under Aurora. See §9 and §13.*
+- **Manufacturer:** Aurora Pharmaceuticals, **Inc** — as printed on the carton,
+  and deliberately left that way even though the confirmed entity is an LLC.
 - Both live in `src/lib/product-content.ts` as `COMPANY` and `MANUFACTURER`.
 
 ---
@@ -180,10 +196,12 @@ greener. Unresolved: see open questions.
 
 ## 6. Order flow
 
-Payments run through **Authorize.net**, the gateway in front of the company's
-**StaxPay** merchant account. Not Stripe — the project was moved off Stripe so
-Quell settles into the same account as BlephEx. Integrate against Authorize.net;
-Stax sits behind it and is not called directly.
+Payments run through **Authorize.net**, the gateway. Not Stripe — the project
+was moved off Stripe to settle into the company's existing StaxPay merchant
+account. That premise has since changed (§13: Quell gets its own merchant
+account), but the integration does not: **Authorize.net is the gateway, the
+merchant account is whoever holds the money, and the code only ever talks to the
+gateway.** Whichever processor ends up behind it, only credentials change.
 
 **No account is required to buy.** Guest checkout is the default path; forcing
 signup is a well-known source of cart abandonment, and with subscriptions
@@ -341,13 +359,17 @@ should be a small real purchase you make and then refund.
 |---|---|
 | `$6.95` shipping rate | **My assumption.** You gave the $59 threshold, not the rate. Confirm against real carrier cost. |
 | `15%` subscription discount | **My placeholder**, and now dormant — subscriptions are deferred. Still a margin decision before they return. |
-| Authorize.net credentials | **Sandbox is done and working.** Production credentials are still needed — see §13, and read it before anyone touches the production account. |
-| Domain | Not chosen. Lives on `quell-six.vercel.app`. Own domain or a subdomain? Ryan controls DNS and warned the BlephEx records are tangled, so a separate domain sidesteps that. |
-| Fulfilment | **Unanswered and blocking real orders.** Admin marks orders shipped by hand. Nobody has said how a Quell order physically reaches XPSShipper and gets picked, packed and posted. |
-| Card statement descriptor | Quell shares BlephEx's merchant account, so charges show BlephEx's descriptor. Unrecognised descriptors cause chargebacks. Ask whether Stax allows a per-transaction descriptor like `BLEPHEX*QUELL`. Affects packaging and email copy, so it has the longest lead time. |
+| Authorize.net credentials | **Sandbox is done and working.** Production credentials wait on a **new merchant account** — Quell is no longer sharing BlephEx's. See §13. |
+| Merchant account | **Decided 2026-08-19: Quell gets its own.** Ryan ruled out sharing BlephEx's Stax account because the two companies are taxed and reported separately. Open: Stax's low-volume tier (Nick is quoting) vs Authorize.net's own All-in-One at ~$25/mo + 2.9% + 30¢. Either way the code is unchanged — Authorize.net stays the gateway. |
+| Domain | Not chosen. Lives on `quell-six.vercel.app`. Blocks Meta domain verification and looks like staging to a merchant-account underwriter. **Verified 2026-08-19:** meibum.com's DNS is at GoDaddy (`ns57`/`ns58.domaincontrol.com`), MX points at Microsoft 365, and it has one SPF record — `v=spf1 include:spf.protection.outlook.com -all`. |
+| Customer email address | **None exists.** `EMAIL_FROM` is still `orders@example.com`, a reserved domain that cannot send or receive. `Quell@meibum.com` is the intended address; requested from Ryan as a shared mailbox. Sending also needs Resend DKIM records plus an **edit** to that single SPF record — a second SPF record invalidates both and would break BlephEx's mail. |
+| Fulfilment | **Unanswered and blocking real orders.** Admin marks orders shipped by hand. Nobody has said how a Quell order physically reaches XPSShipper and gets picked, packed and posted. Now also a customer-facing promise: terms accept unopened returns for 30 days, so someone must receive them. |
+| Card statement descriptor | **Resolves with the separate merchant account** — Quell sets its own rather than showing BlephEx's. Still needs choosing, and it affects packaging and email copy, so it has the longest lead time. |
 | `$29.99` price | Matches the Dry Eye Rescue retail listing as of 2026-08-13. |
 | Brand teal | Site uses `#00A7B5`; print file converts to `#4AC1A8`. One token change if you want to match print. |
-| Legal pages | Unreviewed boilerplate with bracketed placeholders, and say so in a banner. |
+| Legal pages | **Rewritten 2026-08-18/19 and reviewed.** No placeholders, no template banners, every claim checked against the code. Three false statements were fixed: the cart is `localStorage` and never reaches the server, there is no marketing email, and the site runs no analytics at all — the policy now says so. Governing law is **Tennessee**; shipping is **US-only**, matching `SHIPPABLE_COUNTRIES`. Note the privacy policy now states the site uses no advertising trackers — **installing a Meta Pixel makes that false and must be changed in the same release.** |
+| Returns policy | **Decided 2026-08-19.** Unopened, original packaging, 30 days, refund of product price; original shipping not refunded. Opened drops never returnable (sterility). Damaged, incorrect or broken-seal orders replaced free within 30 days. Refunds are achievable today through the Authorize.net merchant interface; store credit was considered and dropped because no credit or coupon mechanism exists anywhere in the codebase. |
+| Seller of record | **Changed 2026-08-19 to Aurora Pharmaceuticals, LLC**, confirmed by Ryan against the IRS letter and articles of organization. `COMPANY` now carries Aurora's name and its 330 Franklin Road address; the phone is shared with BlephEx and stays. `MANUFACTURER` is deliberately left as **Aurora Pharmaceuticals, Inc** because that is what the carton prints — the suffix is wrong on the box and is a packaging correction, not a site edit. |
 | **Front-panel claims** | The carton advertises **redness relief**, but the Drug Facts *Uses* section does not cover it and the formula has no vasoconstrictor. FDA expects front-panel claims to match Uses. Affects packaging, not just the site. Needs regulatory review. |
 
 ---
@@ -442,46 +464,58 @@ That restores the schema and the product, but **not** user accounts.
 Everything here needs someone outside this project. Nothing in the codebase
 unblocks them.
 
-### Ryan — payment credentials
+### Payment credentials — the shared-account plan is dead
 
-Quell will use **the same Authorize.net account as BlephEx**, settling into the
-same StaxPay merchant account. Sharing the account needs **no change to
-BlephEx.com** — two sites can use one set of credentials.
+**Superseded 2026-08-19.** Everything previously written here assumed Quell would
+share BlephEx's Authorize.net account and Stax merchant account, and worked
+through the 24-hour key-rotation window that sharing would have required.
 
-The difficulty is retrieval, not sharing:
+Ryan ruled it out: Quell and BlephEx are separate companies, kept and taxed
+separately, and BlephEx's account is already awkward to disentangle because
+OptiVize sales run through it too. **Quell gets its own merchant account and
+therefore its own Authorize.net account.**
 
-- **API Login ID** is viewable in the Merchant Interface.
-- **Transaction Key** and **Signature Key** are shown once at creation and
-  **never displayed again** — not to Ryan, not to the account owner, not to
-  Authorize.net support.
+That removes three problems at once — no shared keys, no coordinated redeploy
+with BlephEx.com, no 24-hour rotation window, and chargebacks land on Quell's
+account rather than Ryan's.
 
-So the deciding question is: **does Rohit's team still have the current values
-saved in the BlephEx site config?**
+What is left is a pricing decision, not an engineering one:
 
-| | Consequence |
-|---|---|
-| **Yes** | Use the same values. Nothing changes on BlephEx. No downtime. |
-| **No** | New keys must be generated. Old ones stop working, so BlephEx.com must be updated at the same time or its checkout breaks. |
+| Route | Cost | Notes |
+|---|---|---|
+| **New Stax account** | Ryan pays $489/mo on the existing BlephEx account; Nick has confirmed lower tiers exist and asked for a volume estimate | That $489 is BlephEx's number for different volume — **not a quote for Quell.** Do not compare against it. |
+| **Authorize.net All-in-One** | ~$25/mo + 2.9% + 30¢, gateway and merchant account bundled | Excludes high-risk businesses, and it is unclear how they classify an OTC eye drop. Free to apply and they say which plan you qualify for. |
 
-> **If new keys are generated, leave "Disable Old Transaction/Signature Key
-> Immediately" UNCHECKED.** The old key then keeps working for **24 hours**,
-> which is the window for updating both sites. Ticking that box takes
-> BlephEx.com's checkout down instantly — and it is the option that looks
-> tidier, so it needs saying out loud.
+**Either route changes only four environment variables** — `AUTHORIZENET_API_LOGIN_ID`,
+`AUTHORIZENET_TRANSACTION_KEY`, `AUTHORIZENET_SIGNATURE_KEY`,
+`AUTHORIZENET_ENVIRONMENT` — plus registering the webhook URL in the new
+account's merchant interface. Authorize.net is the *gateway*; the merchant
+account is who holds the money. The code only ever talks to the gateway, so
+swapping processors costs nothing. Switching *gateways* is the expensive move
+and is not being contemplated.
 
-The **Signature Key is only used for webhooks.** If BlephEx does not use
-Authorize.net webhooks, regenerating that one is free. Worth establishing —
-it may reduce the risky item to the Transaction Key alone.
+Volume estimate for the application, derived from the site: ~$50 average order
+(free shipping at $59 pulls orders to two bottles), highest ticket ~$300 at the
+ten-unit cart cap, 100% card-not-present. Only *website* sales flow through this
+account — Amazon processes its own, and Ryan expects Amazon to carry the volume.
 
 ### Ryan — the other questions
 
-1. What descriptor do BlephEx charges show on card statements, and can Stax
-   send a per-transaction one for Quell?
+1. ~~Descriptor~~ — resolves with the separate account; Quell sets its own.
 2. How does a Quell order reach fulfilment — does it push into XPSShipper, or
-   does someone key it in?
-3. What domain should Quell use?
-4. How should Quell's revenue be separated in the books from BlephEx's?
-5. Confirm no new underwriting is needed to add Quell to the merchant account.
+   does someone key it in? **Still open, and now underwrites a returns promise.**
+3. What domain should Quell use? **Still open**, and now also blocks Meta domain
+   verification.
+4. ~~Book separation~~ — answered, and it is what forced the separate account.
+5. ~~New underwriting to add Quell~~ — moot; a new account means new underwriting
+   regardless, and a signing officer with a personal guarantee is required.
+6. **New:** create `Quell@meibum.com` as a Microsoft 365 **shared mailbox**
+   (free, no licence, access grantable). Separately, the DNS records so the site
+   can *send* as it — see the SPF warning in §9.
+7. **New:** confirm the seller of record. Ryan confirmed Aurora Pharmaceuticals
+   is an **LLC**, but not explicitly that Aurora — rather than BlephEx — is the
+   selling entity. The site now says Aurora on that basis. The merchant account
+   must be opened in the same name.
 
 ### Not a developer question
 
@@ -491,25 +525,39 @@ This affects the printed carton, not just the site, and needs Dr. Rynerson or
 a regulatory reviewer. The claim currently appears on the homepage hero and the
 buy card.
 
-**The legal pages** are unreviewed boilerplate and say so in a banner. They
-name Authorize.net as the processor, which is accurate as of this work.
+**The legal pages** have been rewritten and reviewed — see §9. They still name
+Authorize.net as the processor, which stays accurate whichever merchant account
+is chosen, because Authorize.net remains the gateway either way.
+
+**The carton says Aurora Pharmaceuticals, Inc.** Ryan confirmed against the IRS
+letter and articles of organization that the entity is an **LLC**. The printed
+suffix is therefore wrong on an FDA-regulated drug label, which is required to
+identify the manufacturer accurately. Minor, but it belongs in the next print
+run, and `MANUFACTURER` deliberately still mirrors the box rather than quietly
+diverging from it.
 
 ---
 
 ## 14. Suggested order of work
 
-1. **Copy edits.** Independent of everything else; redeploy takes a minute.
-2. **Send Ryan the questions in §13.** Credentials have the longest lead time.
-3. **Review pass** — `/security-review` and `/code-review` over the branch. It
+1. ~~**Copy edits.**~~ Done 2026-08-18/19 — homepage, about, and both legal
+   pages. Four commits, none deployed.
+2. **Push to a private GitHub repo.** Ten minutes, no dependency on anyone, and
+   currently the single largest risk to the project (§0).
+3. **Deploy**, so the live site stops showing unenforceable-terms banners. Needs
+   a Vercel token. Blocks the merchant application and any Meta ad review.
+4. **Send Ryan the questions in §13.** The merchant account has the longest lead
+   time, and the mailbox is a one-line ask.
+5. **Review pass** — `/security-review` and `/code-review` over the branch. It
    handles money, sessions and an unauthenticated webhook.
-4. **`RESEND_API_KEY`**, so confirmation emails actually send rather than
+6. **`RESEND_API_KEY`**, so confirmation emails actually send rather than
    printing to the Vercel logs.
-5. **Error tracking** (Sentry). A production crash is currently invisible.
-6. **Automated tests.** Still the largest structural gap — though note that the
+7. **Error tracking** (Sentry). A production crash is currently invisible.
+8. **Automated tests.** Still the largest structural gap — though note that the
    two worst bugs found so far, the element ordering and the signature key
    derivation, were both invisible to unit tests and only a live gateway
    exposed them.
-7. **Production cutover:** production keys, webhook re-registered against the
+9. **Production cutover:** production keys, webhook re-registered against the
    real host, `AUTHORIZENET_ENVIRONMENT=production`, real domain. Make the
    first production transaction a small real purchase and refund it — Stax
    settlement has never been exercised, since the sandbox simulates the
