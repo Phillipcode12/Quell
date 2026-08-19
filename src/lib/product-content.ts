@@ -19,14 +19,21 @@ export const BRAND = {
 } as const
 
 /**
- * Brand owner. BlephEx owns the Quell trademark and sells the product; the
- * contact number is the one printed on the carton.
+ * Brand owner — the entity that sells Quell and owns the trademark. The
+ * address and phone below are still BlephEx's, as printed on the carton;
+ * confirm whether Aurora's own details should replace them.
  */
 export const COMPANY = {
-  name: 'BlephEx®, LLC',
-  /** Without the ® symbol, for running text and legal clauses. */
-  legalName: 'BlephEx, LLC',
-  addressLines: ['500 Wilson Pike Circle, Suite 103', 'Brentwood, TN 37027'],
+  name: 'Aurora Pharmaceuticals, LLC',
+  /**
+   * Kept separate from `name` for running text and legal clauses. Identical
+   * today — BlephEx carried a ® that Aurora does not.
+   */
+  legalName: 'Aurora Pharmaceuticals, LLC',
+  addressLines: [
+    '330 Franklin Road, Suite 135A, #117',
+    'Brentwood, TN 37027, USA',
+  ],
   phone: '615.465.6041',
   phoneHref: '+16154656041',
   fax: '800.330.2241',
