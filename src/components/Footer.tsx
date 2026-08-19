@@ -113,19 +113,13 @@ export function Footer() {
 
         <div className="mt-8 rounded-xl border border-line bg-surface-2 p-5 text-sm leading-relaxed text-muted">
           <p>
-            These statements have not been evaluated by the Food and Drug
-            Administration. Quell is an over-the-counter lubricating eye drop for
-            use in the eyes only. Read and follow the Drug Facts panel before
-            use. This site does not provide medical advice — if you have eye
-            pain, changes in vision, or symptoms that persist beyond 72 hours,
-            stop use and see a doctor.
+            {BRAND.name} is an over-the-counter lubricating eye drop for use in
+            the eyes only. Read and follow the Drug Facts panel before use. This
+            site does not provide medical advice — if you have eye pain, changes
+            in vision, or symptoms that persist beyond 72 hours, stop use and see
+            a doctor.
           </p>
         </div>
-
-        <p className="mt-8 text-sm text-muted">
-          © {new Date().getFullYear()} {COMPANY.name}. {BRAND.trademark} and{' '}
-          {BRAND.tagline} are trademarks of {COMPANY.legalName}.
-        </p>
       </div>
     </footer>
   )

@@ -56,13 +56,3 @@ export function PageHero({
     </section>
   )
 }
-
-/** Banner marking a page as unreviewed boilerplate. */
-export function TemplateNotice({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="mb-10 rounded-xl border border-amber-500/40 bg-amber-500/10 p-5 text-sm leading-relaxed text-amber-200">
-      <p className="font-semibold">Template content — not legal advice</p>
-      <p className="mt-2">{children}</p>
-    </div>
-  )
-}
