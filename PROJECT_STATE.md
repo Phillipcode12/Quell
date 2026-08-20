@@ -553,6 +553,36 @@ What is left is a pricing decision, not an engineering one:
 | **New Stax account** | Ryan pays $489/mo on the existing BlephEx account; Nick has confirmed lower tiers exist and asked for a volume estimate | That $489 is BlephEx's number for different volume — **not a quote for Quell.** Do not compare against it. |
 | **Authorize.net All-in-One** | ~$25/mo + 2.9% + 30¢, gateway and merchant account bundled | Excludes high-risk businesses, and it is unclear how they classify an OTC eye drop. Free to apply and they say which plan you qualify for. |
 
+### Applying for the Authorize.net account
+
+Decided 2026-08-20 to open a new account under Phillip's work email so
+colleagues can be given access.
+
+**Applying is free and there is no charge before approval** — the application
+*is* the signup, and a decline leaves no account and no bill. There is no free
+tier to create first; the only free thing is the developer sandbox, which
+already exists and is what the site currently runs against.
+
+**The $25/month starts on approval**, processing or not. That is the actual
+cost risk, given fulfilment, the domain and the mailbox are all still open and
+could take weeks.
+
+**Apply anyway.** Whether an OTC drug making health claims is classified
+high-risk is the largest unresolved unknown in the payment path, Authorize.net's
+own pricing says card processing is "subject to eligibility", and finding out
+takes one to five business days. A decline means a different processor with its
+own lead time — far better known now than during launch week. Two or three
+idle months is $50–75 to settle it.
+
+> **Do not share one login.** Authorize.net supports multiple users with
+> separate credentials under Account → User Administration. Create the account
+> on an address that will outlast any one person, then add colleagues as
+> individual users. That mailbox receives password resets and security alerts
+> for a system that moves money, and a shared login leaves no audit trail.
+
+Unconfirmed: exactly when billing starts relative to approval. Worth checking
+during signup rather than assuming.
+
 **Either route changes only four environment variables** — `AUTHORIZENET_API_LOGIN_ID`,
 `AUTHORIZENET_TRANSACTION_KEY`, `AUTHORIZENET_SIGNATURE_KEY`,
 `AUTHORIZENET_ENVIRONMENT` — plus registering the webhook URL in the new
