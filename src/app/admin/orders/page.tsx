@@ -7,6 +7,7 @@ import { formatUsd } from '@/lib/money'
 import { isEmailConfigured } from '@/lib/email'
 import { stockState } from '@/lib/inventory'
 import { OrderActions, StockEditor } from '@/components/admin/OrderActions'
+import { AdminTabs } from '@/components/admin/AdminTabs'
 
 export const metadata: Metadata = { title: 'Orders' }
 
@@ -55,6 +56,8 @@ export default async function AdminOrdersPage() {
           Back to site
         </Link>
       </div>
+
+      <AdminTabs current="orders" />
 
       {!isEmailConfigured() && (
         <p className="mt-6 rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm leading-relaxed text-amber-200">
