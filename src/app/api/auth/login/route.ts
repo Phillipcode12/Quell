@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { prisma } from '@/lib/db'
-import { verifyPassword } from '@/lib/auth'
+import { verifyPasswordOrDecoy } from '@/lib/auth'
 import { createSession } from '@/lib/session'
 import { clientIp, rateLimit, tooManyRequests } from '@/lib/rate-limit'
 
@@ -47,9 +47,11 @@ export async function POST(request: Request) {
 
   const user = await prisma.user.findUnique({ where: { email } })
 
-  // Same message and roughly the same work either way, so this doesn't
-  // reveal which emails have accounts.
-  const ok = user ? await verifyPassword(password, user.passwordHash) : false
+  // Same message and the same work either way, so this doesn't reveal which
+  // emails have accounts. When there is no user the comparison still runs,
+  // against a decoy hash — skipping it would return in milliseconds where a
+  // real account takes hundreds, and that gap is an enumeration oracle.
+  const ok = await verifyPasswordOrDecoy(password, user?.passwordHash)
   if (!user || !ok) {
     return NextResponse.json(
       { error: 'Incorrect email or password.' },

@@ -36,23 +36,37 @@ export async function markShipped(orderId: string) {
 export async function markCancelled(orderId: string) {
   await assertAdmin()
 
-  // Cancelling a paid order puts the units back on the shelf.
-  const order = await prisma.order.findUnique({
-    where: { id: orderId },
-    select: { status: true },
-  })
-
-  const result = await prisma.order.updateMany({
-    where: { id: orderId, status: { in: ['pending', 'paid'] } },
+  // Cancelling a paid order puts the units back on the shelf; cancelling a
+  // pending one must not, because pending orders never drew stock down.
+  //
+  // Which of those applies has to come from the transition that actually
+  // happened, not from a status read taken beforehand. Reading first and
+  // deciding afterwards loses stock: if the payment webhook lands in the gap
+  // it flips pending -> paid and decrements, the cancel below still succeeds
+  // because 'paid' is cancellable, and the stale read then says "was pending,
+  // nothing to restore". The units stay off the shelf for an order nobody
+  // will ship.
+  //
+  // So try the paid transition on its own first. Exactly one of these two
+  // updates can match, and whichever does tells us what the row really was.
+  const fromPaid = await prisma.order.updateMany({
+    where: { id: orderId, status: 'paid' },
     data: { status: 'cancelled' },
   })
 
-  if (result.count > 0 && order?.status === 'paid') {
+  if (fromPaid.count > 0) {
     await restoreStock(orderId)
+    revalidatePath('/admin/orders')
+    return { ok: true }
   }
 
+  const fromPending = await prisma.order.updateMany({
+    where: { id: orderId, status: 'pending' },
+    data: { status: 'cancelled' },
+  })
+
   revalidatePath('/admin/orders')
-  return { ok: result.count > 0 }
+  return { ok: fromPending.count > 0 }
 }
 
 export async function updateStock(productId: string, stockQuantity: number) {
