@@ -24,25 +24,50 @@ Authorization: Basic base64(apiLoginId:transactionKey)
 Before going live: swap to production credentials, register the webhook against
 the production host, and set `AUTHORIZENET_ENVIRONMENT=production`.
 
-> **The deployed site is stale as of 2026-08-19 and should not be shown to
-> anyone.** It predates the legal-page rewrite, so `/terms` still displays
-> "Template content — not legal advice", "not enforceable terms", and bracketed
-> placeholders including `[State your return window here]`. That is what a
-> merchant-account underwriter or a Meta ad reviewer would see, and both check
-> the destination. Deploy before either process starts.
+> **The deployed site is stale and should not be shown to anyone.** Confirmed
+> still stale on 2026-08-20: the footer reads BlephEx®, LLC and `/terms` serves
+> "Template content — not legal advice", "not enforceable terms", `[State]` and
+> `[X] days`. Checked with cache bypassed — `X-Vercel-Cache: MISS`, `Age: 0` —
+> so it is the deployed build, not a CDN artefact.
+>
+> **The repo is not the problem.** `origin/main` has had the Aurora change and
+> the rewritten legal pages since 2026-08-19. Nothing has deployed *from* it.
+> That is what an underwriter or a Meta ad reviewer would see, and both check
+> the destination, so deploying is the gate on both.
+>
+> Connecting Vercel to GitHub was attempted and kept routing through Cursor's
+> "Origin" — its Settings → Git offered only "Connect an Origin team", and the
+> consent screen was `cursor.com` asking for `contents:write`,
+> `pull_requests:write` and `checks:write` on the repository. That was declined:
+> broad write access to a third party, and it connects Cursor rather than the
+> GitHub repo the code actually lives in. A GitHub connection was reported
+> working on 2026-08-20 without going through Cursor.
+>
+> **If Git connection stalls again, just deploy with a token** — it is ninety
+> seconds and needs no permissions granted to anyone:
+> `npx vercel deploy --prod --yes --token <TOKEN>`
+>
+> One trap if a *new* Vercel project is created instead of reusing `quell`: the
+> new project has none of the environment variables, and the Neon `DATABASE_URL`
+> exists only in the old project — it is not in local `.env`, which points at the
+> portable Postgres. A new URL would also orphan the registered webhook.
 
-> **There is no git remote.** Every commit exists only in
-> `C:\Users\phill\OneDrive\Documents\quell` on one machine — Vercel deploys were
-> pushed straight from the CLI, so there is no copy there either. OneDrive
-> replicates deletion and corruption faithfully; it is not a backup. A private
-> GitHub repo is ten minutes and removes a total-loss risk.
+> **Git remote: <https://github.com/Phillipcode12/Quell> (private).** Added
+> 2026-08-19. Everything is pushed and `main` is the trunk — the payments branch
+> was merged in, so work continues on `main` rather than on a feature branch.
+> Credentials are cached in Windows Credential Manager, so `git push` works
+> without a prompt.
 
 ### Local and deployed are separate. Editing one does not change the other.
 
 Running the site locally touches nothing on Vercel. The deployed site changes
-**only** when someone runs a deploy. There is no automatic pipeline — the
-project was created with the Vercel CLI rather than connected to GitHub, so
-nothing deploys on commit.
+**only** when someone runs a deploy.
+
+The project was created with the Vercel CLI rather than from a repo, so
+historically nothing deployed on commit. A GitHub connection was being set up on
+2026-08-20 — **if it took, pushing to `main` now deploys automatically.** Check
+the Deployments tab before assuming either way, and remember that pushing then
+becomes a publishing action, not just a save.
 
 They also use different databases. Local uses the portable Postgres on this
 machine; the deployed site uses Neon. Test data written locally never reaches
@@ -270,12 +295,34 @@ Authorize.net gotchas, all already handled in `lib/authorizenet.ts`:
 
 ## 7. Admin
 
-`/admin/orders` — orders with customer, items, totals, shipping address;
+Two tabs, linked by `components/admin/AdminTabs.tsx`:
+
+**`/admin/orders`** — orders with customer, items, totals, shipping address;
 counters; inline stock editor; mark shipped / cancel.
 
-Access is the `ADMIN_EMAILS` allowlist in `.env` (comma separated). **Unset
-means nobody** — it fails closed. Not a database flag, so nothing in the app can
-escalate an account. Non-admins get 404, not 403. Requires a restart to change.
+**`/admin/customers`** — added 2026-08-19. Everyone who has actually bought,
+with name, email, order count, lifetime spend and last order date. Keyed on
+**email, not the User table**: guest checkout is the default path, so a list of
+registered users would show a fraction of real customers. Each row is labelled
+Account or Guest. "Bought" means paid or shipped — a pending order is a checkout
+that may never complete, and a cancelled one is not a customer. Emails are
+grouped case-insensitively.
+
+> Using that list to service orders is covered by the privacy policy as written.
+> **Exporting it to send marketing email is not** — the marketing-email
+> disclosures were removed because no such system exists, and the policy now
+> states the site uses no advertising trackers. A mailing list means updating
+> the policy and adding consent first.
+
+Access is the `ADMIN_EMAILS` allowlist (comma separated) — in `.env` locally,
+in the Vercel dashboard for the deployed site. **Unset means nobody** — it fails
+closed, so if it is missing in Vercel the admin tabs 404 even for Phillip. Not a
+database flag, so nothing in the app can escalate an account. Non-admins get
+404, not 403.
+
+**To add an admin:** the person registers a normal account, their email is added
+to `ADMIN_EMAILS`, and the app is restarted (locally) or redeployed (Vercel —
+env changes are baked into a deployment and do not reach running functions).
 
 Current admin: `moorerevenue@outlook.com` (Phillip Moore).
 
@@ -376,9 +423,13 @@ should be a small real purchase you make and then refund.
 
 ## 10. Known limitations before launch
 
-- **Rate limiting is in-process.** Effective on one instance; on serverless the
-  limit is multiplied by instance count. Move to Redis/Upstash — the call
-  signature can stay.
+- **Rate limiting is Redis-capable but running in-process.** `lib/rate-limit.ts`
+  uses Upstash when `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are
+  set and falls back to the old in-memory map otherwise. **No Upstash database
+  exists**, so production is still on the per-instance fallback, where the limit
+  is multiplied by the instance count. The fallback is tested and enforces
+  correctly; the Redis path is written but has never run. `rateLimit` is now
+  async — await it.
 - **No email verification** on signup, and **no automated tests**.
 - **Guest checkout has no account barrier**, which makes card testing easier.
   Checkout and order lookup are both rate limited per IP, but turn on
@@ -387,7 +438,15 @@ should be a small real purchase you make and then refund.
 - **No post-purchase account creation yet.** Offering to save details on the
   success page — when the email and address are already in hand — is the
   obvious follow-up, and the natural on-ramp for when subscriptions return.
-- No error tracking — a production crash is currently invisible.
+- **Sentry is wired but dormant.** `src/instrumentation.ts` and
+  `src/instrumentation-client.ts` initialise only when `SENTRY_DSN` /
+  `NEXT_PUBLIC_SENTRY_DSN` are set, and **no Sentry project exists**, so a
+  production crash is still invisible. `sendDefaultPii` is off and session
+  replay is disabled — card entry is on Authorize.net's page, but the billing
+  address and email are typed on ours. `withSentryConfig` is deliberately *not*
+  applied: it exists for source-map upload, needs an auth token, and is the most
+  likely thing to break a Next 16 build. Server errors report without it;
+  minified client stack traces are the cost.
 - **Subscriptions are gone from the UI** and need real work to return. ARB has
   no hosted billing portal, so pause / cancel / update-card must be built by
   hand, and there is no renewal webhook: renewals arrive as generic
@@ -412,9 +471,22 @@ AUTHORIZENET_SIGNATURE_KEY=""        # 128 hex chars, required for webhooks
 AUTHORIZENET_ENVIRONMENT="sandbox"   # never point local dev at production
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 RESEND_API_KEY=""                 # empty -> emails print to the console
-EMAIL_FROM="Quell <orders@example.com>"
+EMAIL_FROM="Quell <orders@example.com>"   # PLACEHOLDER — see below
 ADMIN_EMAILS="moorerevenue@outlook.com"
+
+UPSTASH_REDIS_REST_URL=""            # empty -> rate limiting falls back
+UPSTASH_REDIS_REST_TOKEN=""          #          to the in-process map
+SENTRY_DSN=""                        # empty -> no error reporting
+NEXT_PUBLIC_SENTRY_DSN=""            # public by design, inlined into the bundle
 ```
+
+> **`EMAIL_FROM` is a live bug waiting to arm.** `example.com` is IANA's
+> reserved example domain — it cannot send or receive. Today nothing sends
+> because `RESEND_API_KEY` is empty, so the placeholder is harmless. **The
+> moment a Resend key is added, every receipt goes out from a dead address** and
+> a drug-purchase confirmation from `example.com` reads as phishing. Fix both in
+> the same change. Intended value: `Quell <Quell@meibum.com>` once that mailbox
+> exists (§13).
 
 Postgres lives at `C:\Users\phill\AppData\Local\QuellPostgres` (binaries and
 `data\`), port **5433**, user `postgres`, password `quelldev`, database `quell`.
@@ -517,6 +589,40 @@ account — Amazon processes its own, and Ryan expects Amazon to carry the volum
    selling entity. The site now says Aurora on that basis. The merchant account
    must be opened in the same name.
 
+### Who is who
+
+**Dr. Rynerson is the owner.** Confirmed 2026-08-19. That puts him on the
+critical path for two unrelated things — the regulatory claim below, *and* the
+merchant application, which needs a personal guarantee, SSN, date of birth,
+home address and signature from an owner. Nothing about that application can be
+completed without him personally, so his availability sets the timeline. Worth
+one conversation covering both rather than two approaches weeks apart.
+
+**Ryan** holds the business registration and banking, and is the route to
+whoever operates the meibum.com domain and mail tenant.
+
+### Merchant application — what is needed and from whom
+
+Phillip drives the form; Dr. Rynerson enters the ownership section in person so
+the SSN never routes through anyone else. Business banking details are
+comparatively low-sensitivity — routing and account numbers are printed on every
+cheque the company writes — so Ryan can send those normally.
+
+| Needed | From |
+|---|---|
+| EIN | Ryan — it is on the IRS letter he already pulled |
+| State and date of formation | Ryan — on the articles of organization; also public record. **Confirm it is Tennessee**; if the LLC was formed elsewhere, the Tennessee governing-law clause in the terms deserves a second look. |
+| Business bank account | Ryan |
+| SSN, DOB, home address, signature | Dr. Rynerson, in person |
+| Volume, average ticket, product description, URL | Derivable from the site — see §13 above |
+
+**All of it for Aurora Pharmaceuticals, LLC, not BlephEx.** Ryan handles both
+companies daily and BlephEx is the reflex answer; if BlephEx's EIN or bank
+account goes on the form, the deposits, the card descriptor and both legal
+pages end up disagreeing with each other. Opening the account in Aurora's name
+also settles the seller-of-record question definitively — the entity holding the
+account is the entity taking the money.
+
 ### Not a developer question
 
 **The redness claim.** The carton advertises redness relief; the Drug Facts
@@ -540,34 +646,91 @@ diverging from it.
 
 ## 14. Suggested order of work
 
-1. ~~**Copy edits.**~~ Done 2026-08-18/19 — homepage, about, and both legal
-   pages. Four commits, none deployed.
-2. **Push to a private GitHub repo.** Ten minutes, no dependency on anyone, and
-   currently the single largest risk to the project (§0).
-3. **Deploy**, so the live site stops showing unenforceable-terms banners. Needs
-   a Vercel token. Blocks the merchant application and any Meta ad review.
-4. **Send Ryan the questions in §13.** The merchant account has the longest lead
-   time, and the mailbox is a one-line ask.
-5. **Review pass** — `/security-review` and `/code-review` over the branch. It
-   handles money, sessions and an unauthenticated webhook.
-6. **`RESEND_API_KEY`**, so confirmation emails actually send rather than
-   printing to the Vercel logs.
-7. **Error tracking** (Sentry). A production crash is currently invisible.
+1. ~~**Copy edits.**~~ Done 2026-08-18/19 — homepage, about, and both legal pages.
+2. ~~**Push to a private GitHub repo.**~~ Done 2026-08-19 — see §0.
+3. ~~**Review pass.**~~ Done 2026-08-19. Two real findings, both fixed and
+   verified against the database: a login timing side channel that disclosed
+   which emails had accounts, and a stale status read in `markCancelled` that
+   could silently strand stock. Detail in the commit messages.
+4. **DEPLOY.** Still not done, and now the single thing gating the most other
+   work — the merchant application, any Meta ad review, and simply seeing two
+   days of finished work. The repo is current; nothing has deployed from it.
+   `npx vercel deploy --prod --yes --token <TOKEN>` if the Git connection stalls
+   again (§0).
+5. **Send Ryan the questions in §13.** The merchant account has the longest lead
+   time. The `Quell@meibum.com` shared mailbox is a one-line ask.
+6. **`RESEND_API_KEY`** *and* fix `EMAIL_FROM` — it is still
+   `orders@example.com`, a reserved domain that cannot send. The moment a Resend
+   key appears, that becomes a live bug rather than a dormant one.
+7. **Create the Upstash database and the Sentry project.** Both integrations are
+   written and dormant; each needs an account and a credential, nothing more
+   (§10).
 8. **Automated tests.** Still the largest structural gap — though note that the
    two worst bugs found so far, the element ordering and the signature key
    derivation, were both invisible to unit tests and only a live gateway
    exposed them.
 9. **Production cutover:** production keys, webhook re-registered against the
    real host, `AUTHORIZENET_ENVIRONMENT=production`, real domain. Make the
-   first production transaction a small real purchase and refund it — Stax
+   first production transaction a small real purchase and refund it —
    settlement has never been exercised, since the sandbox simulates the
    processor entirely.
 
 ### Smaller things left on the floor
 
 - `scripts\stop-local.ps1` kills every `node` process (§1).
-- The branch `payments/authorizenet-guest-checkout` is unmerged; `main` is the
-  pre-Authorize.net fallback.
 - Post-purchase account creation — offering to save details on the success page,
   where the email and address are already known.
-- Rate limiting is in-process, which on Vercel means per-instance (§10).
+- `TemplateNotice` was deleted when both legal banners went; if a banner is ever
+  wanted again it needs rewriting.
+- `npm audit` reports 3 high-severity advisories, all from Prisma's
+  `deepmerge-ts`. Pre-existing, not introduced by any recent dependency.
+- The Meta ad account is not created. Groundwork in §15.
+
+---
+
+## 15. Advertising groundwork (Meta / Facebook)
+
+Nothing built. Recorded so the constraints are known before money is spent.
+
+**The site cannot receive paid traffic yet.** Checkout cannot complete without
+production credentials, no receipt sends, and the deployed build is three days
+stale. Driving paid clicks at that is money spent showing people a broken shop.
+
+**Meta reviews the ad *and* the landing page as one unit** — its MARS system
+scans the destination URL, so the site is in scope, not just the creative.
+
+**The personal-attributes rule is the one that will bite.** Ads may not imply the
+viewer has a medical condition. Naming the condition is fine; second-person
+possession is not.
+
+- Fine: "Preservative-free relief for dry eye"
+- Not: "Do you suffer from dry eye?", "Tired of your dry eyes?"
+
+> **The slogan is affected.** "Give **your** dry eye the bird" attaches a
+> condition to the viewer, which is close to a textbook violation. Dropping one
+> word — **"Give dry eye the bird"** — keeps the joke and the brand without
+> asserting anything about the person watching. Use the possessive on packaging
+> and the site; use the shorter form in ad copy. Secondary risk: "the bird" is a
+> vulgar gesture — mild as written, riskier if the creative *shows* it.
+
+**Account setup**, all free: a Facebook Page, Business Manager, an ad account,
+a payment method, business verification (1–3 business days; the document name
+must match the legal entity **exactly**, and the articles of organization Ryan
+already pulled are an accepted document), and domain verification — which needs
+a real domain, since `vercel.app` cannot be verified.
+
+**Register the business as Aurora Pharmaceuticals, LLC**, not Quell, not
+BlephEx.
+
+**The economics are tight and worth facing.** At $29.99 a bottle, contribution
+is roughly $18–20 per single-unit order, while typical Facebook acquisition cost
+for a $30 DTC health product runs $25–60. That is why Ryan expects Amazon to
+carry volume. The one real lever is already built in: free shipping at $59 makes
+a two-bottle order $59.98, so pointing ads at the 2-pack roughly doubles AOV and
+contribution. If ads run at all, run them at the 2-pack.
+
+**Pixel work, when it happens:** Meta Pixel plus the Conversions API — the
+webhook already knows when payment succeeds, which is the right place to fire a
+trustworthy server-side `Purchase`. But installing a pixel **contradicts the
+privacy policy as written** (§9) and needs a consent mechanism the site does not
+have. Policy and pixel ship together or not at all.
