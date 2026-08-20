@@ -37,8 +37,12 @@ export function Hero() {
 
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
             {BRAND.trademark} is a patented, MD-developed formula that reinforces
-            your tear film’s oil layer to help reduce moisture loss — with no
-            preservatives to irritate eyes you treat every day.
+            your tear film’s oil layer to help reduce moisture loss —{' '}
+            {/* nowrap: the hyphen is a break opportunity, so without this the
+                word splits as "Preservative-" / "Free." across two lines. */}
+            <span className="whitespace-nowrap font-medium text-white">
+              Preservative-Free.
+            </span>
           </p>
 
           {/* Was its own full-width band of four boxes; inline here instead. */}
@@ -64,7 +68,10 @@ export function Hero() {
           </div>
 
           <ul className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-line pt-7 text-sm text-muted">
-            {FRONT_PANEL_CLAIMS.map((claim) => (
+            {/* The sentence above now ends on "Preservative-Free", so showing it
+                here too would be the third time in one viewport. The constant
+                still mirrors the carton's front panel; only this row skips it. */}
+            {FRONT_PANEL_CLAIMS.filter((c) => c !== 'Preservative-Free').map((claim) => (
               <li key={claim} className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-brand" />
                 {claim}

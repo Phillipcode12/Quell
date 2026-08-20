@@ -20,6 +20,9 @@ const columns = [
       { label: 'About us', href: '/about' },
       { label: 'Contact', href: '/about#contact' },
       { label: 'FAQ', href: '/#faq' },
+      // Guests have no account page, so tracking has to be reachable from
+      // every page, not just the confirmation email.
+      { label: 'Track your order', href: '/orders' },
     ],
   },
   {
@@ -47,7 +50,10 @@ export function Footer() {
               {BRAND.productType} · {BRAND.size}
             </p>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-brand-light">
-              Free {SHIPPING_LABEL} shipping over{' '}
+              {/* SHIPPING_LABEL already ends in "shipping", so it is lowercased
+                  into the sentence rather than having the word repeated after
+                  it — this read "Free Standard shipping shipping over $59.00". */}
+              Free {SHIPPING_LABEL.toLowerCase()} over{' '}
               {formatUsd(FREE_SHIPPING_THRESHOLD_CENTS)}
             </p>
           </div>
@@ -107,19 +113,13 @@ export function Footer() {
 
         <div className="mt-8 rounded-xl border border-line bg-surface-2 p-5 text-sm leading-relaxed text-muted">
           <p>
-            These statements have not been evaluated by the Food and Drug
-            Administration. Quell is an over-the-counter lubricating eye drop for
-            use in the eyes only. Read and follow the Drug Facts panel before
-            use. This site does not provide medical advice — if you have eye
-            pain, changes in vision, or symptoms that persist beyond 72 hours,
-            stop use and see a doctor.
+            {BRAND.name} is an over-the-counter lubricating eye drop for use in
+            the eyes only. Read and follow the Drug Facts panel before use. This
+            site does not provide medical advice — if you have eye pain, changes
+            in vision, or symptoms that persist beyond 72 hours, stop use and see
+            a doctor.
           </p>
         </div>
-
-        <p className="mt-8 text-sm text-muted">
-          © {new Date().getFullYear()} {COMPANY.name}. {BRAND.trademark} and{' '}
-          {BRAND.tagline} are trademarks of {COMPANY.legalName}.
-        </p>
       </div>
     </footer>
   )

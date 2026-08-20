@@ -7,7 +7,7 @@ import { prisma } from '@/lib/db'
  * The decrement is conditional (`stockQuantity >= quantity`) so concurrent
  * orders can't push stock negative. If it fails, the sale still stands — the
  * customer has paid — so this logs loudly for a human to reconcile rather than
- * throwing and causing Stripe to retry the whole webhook.
+ * throwing and causing the gateway to retry the whole webhook.
  */
 export async function drawDownStock(orderId: string) {
   const items = await prisma.orderItem.findMany({

@@ -19,17 +19,11 @@ export function WhyItWorks() {
           <span className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">
             Why it works
           </span>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
-            Most drops replace water. Quell rebuilds the oil.
-          </h2>
-          <p className="mt-4 text-lg leading-relaxed text-muted">
-            Your tear film is layered. When the outer oil layer thins, the water
-            underneath evaporates faster than you can replace it — which is why
-            watery drops can feel like they stop working within minutes.
-          </p>
         </div>
 
-        <ul className="mt-12 grid gap-5 md:grid-cols-3">
+        {/* No headline or intro above these — the three cards carry the whole
+            argument, the way they do on the brand card. */}
+        <ul className="mt-8 grid gap-5 md:grid-cols-3">
           {SCIENCE.map((item, i) => {
             const Icon = icons[i] ?? Droplet
             return (

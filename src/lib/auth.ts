@@ -25,7 +25,7 @@ export async function getCurrentUser() {
       email: true,
       name: true,
       createdAt: true,
-      stripeCustomerId: true,
+      paymentProfileId: true,
     },
   })
 }

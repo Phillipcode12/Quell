@@ -85,3 +85,32 @@ body {
 .prose-page strong {
   color: var(--foreground);
 }
+
+/* Fine print. Layered on top of .prose-page for legal pages, which are
+   reference documents rather than things to read for pleasure — everything
+   steps down a size and the headings stop reading as display type. */
+.prose-fineprint p,
+.prose-fineprint li {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.prose-fineprint h2 {
+  font-size: 0.9375rem;
+  margin-top: 1.75rem;
+  margin-bottom: 0.4rem;
+}
+
+.prose-fineprint h3 {
+  font-size: 0.8125rem;
+  margin-top: 1.15rem;
+  margin-bottom: 0.3rem;
+}
+
+.prose-fineprint p {
+  margin-bottom: 0.75rem;
+}
+
+.prose-fineprint li {
+  margin-bottom: 0.25rem;
+}

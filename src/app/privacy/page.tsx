@@ -1,34 +1,27 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { PageHero, TemplateNotice } from '@/components/PageHero'
+import { PageHero } from '@/components/PageHero'
 import { BRAND, COMPANY } from '@/lib/product-content'
 
 export const metadata: Metadata = {
-  title: `Privacy Policy — ${BRAND.name}`,
+  title: 'Privacy Policy',
   description: `How ${COMPANY.name} collects, uses, and protects your information.`,
 }
 
-const LAST_UPDATED = 'August 13, 2026'
+const LAST_UPDATED = 'August 18, 2026'
 
 export default function PrivacyPage() {
   return (
     <>
       <PageHero
+        compact
         eyebrow="Legal"
         title="Privacy Policy"
         subtitle={`Last updated ${LAST_UPDATED}`}
       />
 
-      <div className="mx-auto max-w-4xl px-6 py-16">
-        <TemplateNotice>
-          This is boilerplate scaffolding, not reviewed by a lawyer. Selling a
-          consumer health product still triggers real obligations — state privacy
-          laws such as the CCPA/CPRA, the FTC Health Breach Notification Rule,
-          and consent rules for marketing email and SMS. Have counsel review this
-          before launch.
-        </TemplateNotice>
-
-        <div className="prose-page">
+      <div className="mx-auto max-w-3xl px-6 py-12">
+        <div className="prose-page prose-fineprint">
           <p>
             {COMPANY.name} (&quot;{BRAND.name}&quot;, &quot;we&quot;,
             &quot;us&quot;) operates this website and sells {BRAND.trademark}.
@@ -56,20 +49,31 @@ export default function PrivacyPage() {
 
           <h3>Information collected automatically</h3>
           <ul>
-            <li>Device, browser, and IP address.</li>
-            <li>Pages you visit and actions you take on the site.</li>
             <li>
-              Cookies used to keep you signed in and to remember your cart.
+              Your IP address, device, and browser, recorded in our hosting
+              provider&apos;s server logs and used to rate-limit sign-in and
+              checkout against abuse.
+            </li>
+            <li>
+              A cookie used to keep you signed in. Your cart is stored in your
+              own browser and is never sent to us.
             </li>
           </ul>
+          <p>
+            We do not use analytics, advertising trackers, or third-party
+            cookies on this site.
+          </p>
 
           <h3>Payment information</h3>
           <p>
-            Card details are entered directly with our payment processor, Stripe,
-            and never pass through or rest on our servers. We keep only a payment
-            reference and the outcome of the charge. See{' '}
-            <a href="https://stripe.com/privacy" rel="noreferrer noopener">
-              Stripe&apos;s privacy policy
+            Card details are entered directly with our payment provider,
+            Authorize.net, and never pass through or rest on our servers. We keep
+            only a payment reference and the outcome of the charge. See{' '}
+            <a
+              href="https://www.authorize.net/about-us/privacy.html"
+              rel="noreferrer noopener"
+            >
+              Authorize.net&apos;s privacy policy
             </a>
             .
           </p>
@@ -80,13 +84,9 @@ export default function PrivacyPage() {
             <li>To answer your questions about the product.</li>
             <li>
               To meet recordkeeping obligations that apply to over-the-counter
-              drug sales, including adverse event reporting.
+              drug sales.
             </li>
             <li>To detect fraud and keep accounts secure.</li>
-            <li>
-              To send marketing email, only where you have opted in. You can opt
-              out at any time.
-            </li>
           </ul>
           <p>We do not sell your personal information.</p>
 
@@ -97,8 +97,7 @@ export default function PrivacyPage() {
               hosting, email — under contracts limiting their use of the data.
             </li>
             <li>
-              <strong>Regulators</strong>, where required by law, including
-              adverse event reports to the FDA.
+              <strong>Regulators</strong>, where required by law.
             </li>
             <li>
               <strong>A successor entity</strong>, if the business is acquired,
@@ -109,9 +108,8 @@ export default function PrivacyPage() {
           <h2>4. How long we keep it</h2>
           <p>
             Order records are retained as long as needed for tax, accounting, and
-            product safety recordkeeping. Marketing preferences and other
-            non-essential account data are deleted on request. [Confirm the exact
-            retention periods with counsel.]
+            product safety recordkeeping. Non-essential account data is deleted
+            on request.
           </p>
 
           <h2>5. Your choices</h2>
@@ -120,7 +118,6 @@ export default function PrivacyPage() {
             <li>
               Request deletion of anything we are not legally required to keep.
             </li>
-            <li>Opt out of marketing email at any time.</li>
             <li>
               Depending on where you live, you may have additional rights under
               state or national privacy law.

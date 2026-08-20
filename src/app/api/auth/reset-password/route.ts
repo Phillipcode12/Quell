@@ -13,7 +13,7 @@ const schema = z.object({
 
 export async function POST(request: Request) {
   const ip = clientIp(request)
-  const limited = rateLimit(`reset:ip:${ip}`, {
+  const limited = await rateLimit(`reset:ip:${ip}`, {
     limit: 10,
     windowMs: 15 * 60_000,
   })

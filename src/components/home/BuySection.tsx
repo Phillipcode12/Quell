@@ -58,13 +58,7 @@ const highlights = [
  * Deliberately has no product photo: the hero already shows the carton and
  * bottle, and repeating the same shot halfway down the page read as padding.
  */
-export function BuySection({
-  product,
-  isSignedIn = false,
-}: {
-  product: BuyProduct | null
-  isSignedIn?: boolean
-}) {
+export function BuySection({ product }: { product: BuyProduct | null }) {
   if (!product) {
     return (
       <section id="buy" className="scroll-mt-24 border-b border-line py-20 sm:py-24">
@@ -133,7 +127,6 @@ export function BuySection({
             priceCents={product.priceCents}
             maxQuantity={Math.min(10, product.stockQuantity)}
             soldOut={product.stockQuantity <= 0}
-            isSignedIn={isSignedIn}
           />
 
           <p className="mt-6 text-sm leading-relaxed text-muted">

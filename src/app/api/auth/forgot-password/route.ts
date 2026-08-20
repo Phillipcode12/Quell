@@ -14,7 +14,7 @@ const TOKEN_TTL_MS = 60 * 60_000 // 1 hour
 
 export async function POST(request: Request) {
   const ip = clientIp(request)
-  const limited = rateLimit(`forgot:ip:${ip}`, {
+  const limited = await rateLimit(`forgot:ip:${ip}`, {
     limit: 5,
     windowMs: 15 * 60_000,
   })
