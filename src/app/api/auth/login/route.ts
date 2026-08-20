@@ -13,7 +13,7 @@ const schema = z.object({
 export async function POST(request: Request) {
   // Limit by IP first, so one host can't cycle through many emails.
   const ip = clientIp(request)
-  const byIp = rateLimit(`login:ip:${ip}`, { limit: 20, windowMs: 15 * 60_000 })
+  const byIp = await rateLimit(`login:ip:${ip}`, { limit: 20, windowMs: 15 * 60_000 })
   if (!byIp.ok) {
     return tooManyRequests(
       byIp.retryAfter,
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
   const { email, password } = parsed.data
 
   // And per account, so a distributed attack can't hammer one inbox either.
-  const byEmail = rateLimit(`login:email:${email}`, {
+  const byEmail = await rateLimit(`login:email:${email}`, {
     limit: 10,
     windowMs: 15 * 60_000,
   })

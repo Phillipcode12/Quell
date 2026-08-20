@@ -28,7 +28,7 @@ const NOT_FOUND = {
 }
 
 export async function POST(request: Request) {
-  const limit = rateLimit(`order-lookup:${clientIp(request)}`, {
+  const limit = await rateLimit(`order-lookup:${clientIp(request)}`, {
     limit: 10,
     windowMs: 10 * 60 * 1000,
   })

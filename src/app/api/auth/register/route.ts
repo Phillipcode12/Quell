@@ -15,7 +15,7 @@ const schema = z.object({
 export async function POST(request: Request) {
   // Slows down bulk account creation from a single host.
   const ip = clientIp(request)
-  const limited = rateLimit(`register:ip:${ip}`, {
+  const limited = await rateLimit(`register:ip:${ip}`, {
     limit: 5,
     windowMs: 60 * 60_000,
   })

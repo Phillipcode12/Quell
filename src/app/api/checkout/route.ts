@@ -68,7 +68,7 @@ export async function POST(request: Request) {
   // card testing awkward here. Each attempt creates an order row and a gateway
   // token, so this is capped per IP. Generous enough that a real customer
   // retrying a typo never notices.
-  const limit = rateLimit(`checkout:${clientIp(request)}`, {
+  const limit = await rateLimit(`checkout:${clientIp(request)}`, {
     limit: 15,
     windowMs: 10 * 60 * 1000,
   })
