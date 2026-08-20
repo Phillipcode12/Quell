@@ -19,9 +19,10 @@ export const BRAND = {
 } as const
 
 /**
- * Brand owner — the entity that sells Quell and owns the trademark. The
- * address and phone below are still BlephEx's, as printed on the carton;
- * confirm whether Aurora's own details should replace them.
+ * Brand owner — the entity that sells Quell and owns the trademark.
+ *
+ * The address is Aurora's own. The phone is shared with BlephEx and is the
+ * number printed on the carton, which is why it did not change with the rest.
  */
 export const COMPANY = {
   name: 'Aurora Pharmaceuticals, LLC',
