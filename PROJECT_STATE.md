@@ -24,33 +24,35 @@ Authorization: Basic base64(apiLoginId:transactionKey)
 Before going live: swap to production credentials, register the webhook against
 the production host, and set `AUTHORIZENET_ENVIRONMENT=production`.
 
-> **The deployed site is stale and should not be shown to anyone.** Confirmed
-> still stale on 2026-08-20: the footer reads BlephEx®, LLC and `/terms` serves
-> "Template content — not legal advice", "not enforceable terms", `[State]` and
-> `[X] days`. Checked with cache bypassed — `X-Vercel-Cache: MISS`, `Age: 0` —
-> so it is the deployed build, not a CDN artefact.
+> **PUSHING TO `main` NOW DEPLOYS.** GitHub was connected to the `quell` project
+> on 2026-08-20 and it deploys on push, with no token and no manual step. Treat
+> a push as a publishing action, not a save — anything committed to `main` is
+> live within a couple of minutes.
 >
-> **The repo is not the problem.** `origin/main` has had the Aurora change and
-> the rewritten legal pages since 2026-08-19. Nothing has deployed *from* it.
-> That is what an underwriter or a Meta ad reviewer would see, and both check
-> the destination, so deploying is the gate on both.
+> **The site is current as of 2026-08-20** and was verified against the live URL,
+> not assumed: the template banners, `[State]`, `[X] days` and the retention
+> placeholder are all gone; Aurora Pharmaceuticals, LLC, the 30-day returns
+> policy, limitation of liability, State of Tennessee, US-only shipping and the
+> privacy policy's no-analytics statement are all present; every public route
+> returns 200 and `/admin/customers` correctly 404s when signed out.
 >
-> Connecting Vercel to GitHub was attempted and kept routing through Cursor's
-> "Origin" — its Settings → Git offered only "Connect an Origin team", and the
-> consent screen was `cursor.com` asking for `contents:write`,
-> `pull_requests:write` and `checks:write` on the repository. That was declined:
-> broad write access to a third party, and it connects Cursor rather than the
-> GitHub repo the code actually lives in. A GitHub connection was reported
-> working on 2026-08-20 without going through Cursor.
+> **The CLI is signed in** (`npx vercel login --github`, 2026-08-20), so
+> `npx vercel deploy --prod --yes` works with no token. That is the fallback if
+> a push ever fails to trigger a build. Any tokens created during setup can be
+> revoked at <https://vercel.com/account/tokens>.
 >
-> **If Git connection stalls again, just deploy with a token** — it is ninety
-> seconds and needs no permissions granted to anyone:
-> `npx vercel deploy --prod --yes --token <TOKEN>`
+> Getting here took a detour worth recording. Vercel's Settings → Git offered
+> only "Connect an Origin team", and that consent screen was `cursor.com` asking
+> for `contents:write`, `pull_requests:write` and `checks:write` on the
+> repository. It was declined — broad write access to a third party, to connect
+> something other than the GitHub repo the code lives in. **If that screen
+> appears again, it is not the GitHub connection.** The working route was the
+> ordinary GitHub option.
 >
-> One trap if a *new* Vercel project is created instead of reusing `quell`: the
-> new project has none of the environment variables, and the Neon `DATABASE_URL`
-> exists only in the old project — it is not in local `.env`, which points at the
-> portable Postgres. A new URL would also orphan the registered webhook.
+> One trap if a *new* Vercel project is ever created instead of reusing `quell`:
+> it would have none of the environment variables, and the Neon `DATABASE_URL`
+> exists only in the existing project — it is not in local `.env`, which points
+> at the portable Postgres. A new URL would also orphan the registered webhook.
 
 > **Git remote: <https://github.com/Phillipcode12/Quell> (private).** Added
 > 2026-08-19. Everything is pushed and `main` is the trunk — the payments branch
@@ -60,29 +62,22 @@ the production host, and set `AUTHORIZENET_ENVIRONMENT=production`.
 
 ### Local and deployed are separate. Editing one does not change the other.
 
-Running the site locally touches nothing on Vercel. The deployed site changes
-**only** when someone runs a deploy.
+Running the site locally touches nothing on Vercel, and the two use different
+databases — local uses the portable Postgres on this machine, the deployed site
+uses Neon. Test data written locally never reaches the live site.
 
-The project was created with the Vercel CLI rather than from a repo, so
-historically nothing deployed on commit. A GitHub connection was being set up on
-2026-08-20 — **if it took, pushing to `main` now deploys automatically.** Check
-the Deployments tab before assuming either way, and remember that pushing then
-becomes a publishing action, not just a save.
+**But the deployed site is no longer manual.** Since the GitHub connection on
+2026-08-20, pushing to `main` deploys. Committing is still local; *pushing* is
+what publishes.
 
-They also use different databases. Local uses the portable Postgres on this
-machine; the deployed site uses Neon. Test data written locally never reaches
-the live site, and vice versa.
+**To deploy:** `git push origin main`. That is it.
 
-**To deploy a change** you need a Vercel token. The one used for setup was
-deliberately revoked afterwards, so there is currently no way to deploy without
-creating a new one:
+If a push ever fails to trigger a build, deploy by hand — the CLI is signed in,
+so no token is needed:
 
-1. Create one at <https://vercel.com/account/tokens>
-2. From the project folder:
-   `npx vercel deploy --prod --yes --token <TOKEN>`
-
-If deploying becomes routine, connect the repo to GitHub and let Vercel build on
-push instead. That removes the token step entirely.
+```
+npx vercel deploy --prod --yes
+```
 
 **Environment variables live in two places and must be kept in step:** `.env`
 for local, the Vercel dashboard for the deployed site. Changing one does not
@@ -652,11 +647,9 @@ diverging from it.
    verified against the database: a login timing side channel that disclosed
    which emails had accounts, and a stale status read in `markCancelled` that
    could silently strand stock. Detail in the commit messages.
-4. **DEPLOY.** Still not done, and now the single thing gating the most other
-   work — the merchant application, any Meta ad review, and simply seeing two
-   days of finished work. The repo is current; nothing has deployed from it.
-   `npx vercel deploy --prod --yes --token <TOKEN>` if the Git connection stalls
-   again (§0).
+4. ~~**Deploy.**~~ Done 2026-08-20. GitHub is connected and pushes deploy; the
+   live site was verified current against the URL. This unblocked the merchant
+   application and any Meta ad review, both of which check the destination.
 5. **Send Ryan the questions in §13.** The merchant account has the longest lead
    time. The `Quell@meibum.com` shared mailbox is a one-line ask.
 6. **`RESEND_API_KEY`** *and* fix `EMAIL_FROM` — it is still
