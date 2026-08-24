@@ -644,6 +644,13 @@ Volume estimate for the application, derived from the site: ~$50 average order
 ten-unit cart cap, 100% card-not-present. Only *website* sales flow through this
 account — Amazon processes its own, and Ryan expects Amazon to carry the volume.
 
+**These are modelled from pricing, not measured — the site has never taken a
+real order.** Normal for a new account, but say "projected" if asked. The
+arithmetic: 1 bottle = $36.94, 2 bottles = $59.98 (clears the $59 threshold),
+10 bottles = $299.90. A second bottle costs only $23.04 more than a one-bottle
+order total, which pulls a large share of orders to two and puts the average
+near $51.
+
 ### Ryan — the other questions
 
 1. ~~Descriptor~~ — resolves with the separate account; Quell sets its own.
@@ -1315,6 +1322,91 @@ that is comfortable, and about two orders a month covers the $25.
 
 **Code impact of going live: four environment variables plus registering the
 webhook against the new account.** Authorize.net stays the gateway either way.
+
+---
+
+
+### What was actually submitted
+
+Recorded verbatim so a later dispute, review or renewal can be answered from
+the same facts.
+
+| Field | Submitted |
+|---|---|
+| Legal Business Name | Aurora Pharmaceuticals, LLC |
+| Business Address | 500 Wilson Pike Circle, Suite 103, Brentwood, TN 37027 |
+| Mailing address | 330 Franklin Road, Suite 135A, #117 (UPS Store mailbox) |
+| Website URL | https://quelldrop.com |
+| Industry | **Other / Miscellaneous** |
+| Average ticket | $50 (projected) |
+| Highest ticket | $300 (projected) |
+
+**Business description, as entered:**
+
+> Online retail of one over-the-counter lubricating eye drop (artificial
+> tears), sold direct to consumers on our website. Not a pharmacy; no
+> prescriptions or dispensing. One-time purchases only, no recurring billing.
+> Shipped from TN, US only.
+
+### Why Other rather than a specific code
+
+The industry field maps to **MCC codes**. Three options were considered and
+rejected, and the reasoning is worth keeping because it will recur at Meta and
+at any future processor:
+
+- **Health & beauty spas (7298)** — a *services* code for salons. Inaccurate,
+  and a category with elevated chargeback rates that would have worsened the
+  risk profile for no reason.
+- **Optometry / ophthalmology (8042/8043)** — healthcare *services*. Quell
+  provides no clinical care; being coded as a provider creates a permanent
+  mismatch between the category and the actual transactions.
+- **Online marketplace** — means a platform moving money for *third-party
+  sellers*. Quell sells its own product first-party. Marketplaces attract
+  payment-facilitation and money-transmission requirements that do not apply.
+  Being sold *on* Amazon does not make Quell a marketplace, and Amazon's sales
+  never touch this account anyway.
+
+**Drug Stores and Pharmacies (5912)** was the closest real code — its
+definition explicitly covers retail sale of OTC medications — but was rejected
+on two grounds. Its definition centres on *prescription dispensing*, which
+Quell does not do, so it describes a store format Quell is not. And online
+pharmacy is a recognised high-risk vertical: a card-not-present merchant on
+5912 can be asked for pharmacy licensing or LegitScript certification, neither
+of which applies to an artificial tear. A short delay from a catch-all code is
+cheaper than pharmacy-tier review.
+
+The form warned that Other/Miscellaneous may delay the application. Accepted
+deliberately: a delay means a human reads a clear description of an ordinary
+product. A wrong code is not fixable later without consequences.
+
+### The description was verified against the live site
+
+An underwriter reads the description and then visits the URL, so every claim
+was checked against what quelldrop.com actually serves:
+
+| Claim | Corroboration on the site |
+|---|---|
+| One OTC lubricating eye drop | Single product, OTC stated throughout |
+| Direct to consumers on our website | First-party storefront |
+| Not a pharmacy, no prescriptions | "Over-the-counter drug — no prescription needed", plus a FAQ answering it directly |
+| One-time purchases only | Buy panel reads "One-time purchase"; no subscription, refill or auto-ship anywhere |
+| Shipped from TN | Brentwood, TN in the footer |
+| US only | Terms: "We ship within the United States only" |
+
+Nothing on the site over-claims against the label either, after the redness
+claim was withheld (§21). The description, the site and the Drug Facts panel
+all agree.
+
+### Words deliberately avoided in the description
+
+"Pharmaceuticals" (reads as pharmacy or distributor), "supplement" and
+"nutraceutical" (among the most scrutinised words in card processing, and
+inaccurate — this is a monograph drug), "medical device" (it is not one), and
+any claim beyond the Drug Facts *Uses* panel, including redness.
+
+"FDA approved" was also avoided as **false** — monograph drugs are not
+approved, they conform to a monograph. An earlier draft used "FDA-monograph",
+which is accurate, but it was dropped for length.
 
 ---
 
