@@ -7,10 +7,15 @@ Update it when something here stops being true.
 
 ## 0. Deployed
 
-**https://quell-six.vercel.app** — Vercel project `quell1/quell`, Neon Postgres,
-Authorize.net **sandbox**. Not indexed: `robots.ts` returns `Disallow: /` for
-any `*.vercel.app` host and switches itself on when `NEXT_PUBLIC_APP_URL` points
-at the real domain.
+**https://quelldrop.com** — the canonical address since 2026-08-20 (§18).
+Vercel project `quell1/quell`, Neon Postgres, Authorize.net **sandbox**.
+`quelleye.com`, `quelleyes.com` and `quelltears.com` all 308 to it, and
+**https://quell-six.vercel.app still works as a fallback** — deliberately not
+redirected, so the site stays reachable if DNS is ever misconfigured.
+
+Not indexed: `robots.ts` returns `Disallow: /` for any `*.vercel.app` host and
+switches itself on when `NEXT_PUBLIC_APP_URL` points at the real domain — which
+it does not yet, on purpose. See the end of §18.
 
 Webhook registered on the sandbox account (id `9a679451-e09e-44b5-add9-5f2edb28d4fb`)
 for `net.authorize.payment.authcapture.created`. Registered through the REST API
@@ -412,7 +417,7 @@ should be a small real purchase you make and then refund.
 | `15%` subscription discount | **My placeholder**, and now dormant — subscriptions are deferred. Still a margin decision before they return. |
 | Authorize.net credentials | **Sandbox is done and working.** Production credentials wait on a **new merchant account** — Quell is no longer sharing BlephEx's. See §13. |
 | Merchant account | **Decided 2026-08-19: Quell gets its own.** Ryan ruled out sharing BlephEx's Stax account because the two companies are taxed and reported separately. Open: Stax's low-volume tier (Nick is quoting) vs Authorize.net's own All-in-One at ~$25/mo + 2.9% + 30¢. Either way the code is unchanged — Authorize.net stays the gateway. |
-| Domain | **Not bought yet, but decided how — see §18.** Recommendation is `quelleyedrops.com`. Still on `quell-six.vercel.app`, which blocks Meta domain verification, blocks the receipt sender address, and looks like staging to a merchant-account underwriter. **Verified 2026-08-19:** meibum.com's DNS is at GoDaddy (`ns57`/`ns58.domaincontrol.com`), MX points at Microsoft 365, and it has one SPF record — `v=spf1 include:spf.protection.outlook.com -all`. |
+| Domain | **Done 2026-08-20 — https://quelldrop.com is live and canonical** (§18). The other three redirect to it. `NEXT_PUBLIC_APP_URL` still points at the vercel.app host on purpose, so the site stays out of search until it can actually sell; flipping it turns indexing on. |
 | Customer email address | **None exists.** `EMAIL_FROM` is still `orders@example.com`, a reserved domain that cannot send or receive. `Quell@meibum.com` is the intended address; requested from Ryan as a shared mailbox. Sending also needs Resend DKIM records plus an **edit** to that single SPF record — a second SPF record invalidates both and would break BlephEx's mail. |
 | Fulfilment | **Unanswered and blocking real orders.** Admin marks orders shipped by hand. Nobody has said how a Quell order physically reaches XPSShipper and gets picked, packed and posted. Now also a customer-facing promise: terms accept unopened returns for 30 days, so someone must receive them. |
 | Card statement descriptor | **Resolves with the separate merchant account** — Quell sets its own rather than showing BlephEx's. Still needs choosing, and it affects packaging and email copy, so it has the longest lead time. |
@@ -948,10 +953,11 @@ production purchase is the first time the whole sequence runs for real.
 
 ---
 
-## 18. The domain — decided how, not yet bought
+## 18. The domain
 
-Nothing is registered yet. This section exists so the reasoning is not
-re-derived from scratch.
+**Live on https://quelldrop.com as of 2026-08-20** — see the end of this
+section for the verified state. The reasoning that led there is kept below so
+it is not re-derived from scratch.
 
 ### Where to buy it
 
@@ -1057,6 +1063,85 @@ are solved by one small ask: any company-controlled address, e.g.
 `admin@meibum.com`, far smaller than requesting a whole new shared mailbox.
 Do not register with a personal address intending to change it later; at some
 registrars a registrant change restarts the 60-day transfer lock.
+
+---
+
+
+### Live on the real domain, 2026-08-20
+
+**https://quelldrop.com is the canonical address and serves the site.** DNS was
+pointed at Vercel and verified end to end; the vercel.app URL still works as a
+fallback and is deliberately not redirected.
+
+Dr. Rynerson holds all four domains on the company GoDaddy account. Auto-renew
+is on.
+
+| Domain | Expires | Role |
+|---|---|---|
+| **quelldrop.com** | 2027-04-11 | **Canonical** |
+| quelleye.com | ⚠️ 2026-10-09 | 308 → quelldrop.com |
+| quelleyes.com | ⚠️ 2026-10-09 | 308 → quelldrop.com |
+| quelltears.com | 2028-01-28 | 308 → quelldrop.com |
+
+> Note the two October expiries. Auto-renew is on, but a card that expires
+> before then fails silently — the renewal notice is the only warning.
+
+**DNS at GoDaddy, not Vercel nameservers.** Deliberate: the same zone is needed
+for Resend's DKIM records when email is set up. Each domain has two apex A
+records — `216.198.79.1` and `64.29.17.1` — and keeps its original
+`CNAME www -> <domain>` plus GoDaddy's `_domainconnect` record, both of which
+are fine and were left alone.
+
+> Vercel's `domains inspect` recommends `76.76.21.21`, but `domains verify`
+> returns that as **rank 2**. Rank 1 for this account is the pair above. Use
+> the verify output, not inspect.
+
+### Certificates do not issue on their own — this will bite again
+
+**Vercel verified each domain's DNS as correct and then did not issue a
+certificate for it.** `quelldrop.com` served a certificate whose only SAN was
+`www.quelldrop.com`, so typing the bare domain produced a browser security
+warning that looked like a DNS mistake and was not one. The same thing happened
+to all three secondary domains.
+
+The fix is one command per domain, covering apex and www together:
+
+```
+npx vercel certs issue quelldrop.com www.quelldrop.com
+```
+
+Check what is actually being served before believing a warning:
+
+```
+echo | openssl s_client -connect quelldrop.com:443 -servername quelldrop.com \
+  | openssl x509 -noout -subject -ext subjectAltName
+```
+
+If the SAN list does not contain the exact host being typed, it is a missing
+certificate, not a DNS problem.
+
+### Verified, not assumed
+
+All eight hosts (four apex, four www) return `configured_correctly` from
+Vercel, serve valid TLS (`ssl_verify_result=0`), and the seven aliases all 308
+to `quelldrop.com` with the path preserved. Confirmed in a real browser:
+`quelleye.com/drug-facts` lands on `quelldrop.com/drug-facts` with the page
+intact and no console errors. Every public route returns 200 on the new domain,
+`/admin/orders` still 404s signed out, and `robots.txt` still returns
+`Disallow: /`.
+
+### Still on the vercel.app URL: NEXT_PUBLIC_APP_URL
+
+**Left pointing at the old host on purpose.** `robots.ts` decides indexing from
+that value's hostname, so changing it to `quelldrop.com` switches search
+indexing on immediately. Until the site can take a real payment, send a receipt
+and ship a box, there is no reason for Google to index it. The domain serves
+the site correctly without the change, which is all the merchant application
+needs.
+
+**Flip it at launch**, in the Vercel dashboard, and redeploy — env changes are
+baked into a deployment and do not reach running functions. Use
+`--value '...'`, never a pipe (§12).
 
 ---
 
