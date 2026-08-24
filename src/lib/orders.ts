@@ -1,9 +1,11 @@
 import 'server-only'
 import { prisma } from '@/lib/db'
 import {
+  sendNewOrderNotificationEmail,
   sendOrderConfirmationEmail,
   sendShippingNoticeEmail,
 } from '@/lib/email'
+import { fulfilmentEmails } from '@/lib/fulfilment'
 
 /** Everything the order emails and the admin list need, in one query shape. */
 const orderInclude = {
@@ -32,6 +34,29 @@ export async function sendOrderConfirmation(orderId: string) {
     await sendOrderConfirmationEmail(order)
   } catch (err) {
     console.error('[email] order confirmation failed:', err)
+  }
+}
+
+/**
+ * Tells the office to pack an order. Called from the payment webhook, right
+ * after the customer's confirmation.
+ *
+ * Same containment rule as the others: a failure here is logged, never thrown.
+ * The customer has paid and the order is recorded — a mail problem must not
+ * make the webhook fail and risk Authorize.net reprocessing the payment. The
+ * order is still visible in /admin/orders either way, so the worst case is a
+ * missed nudge, not a lost order.
+ */
+export async function sendNewOrderNotification(orderId: string) {
+  try {
+    const order = await getOrderForEmail(orderId)
+    if (!order) {
+      console.error(`[email] order ${orderId} not found for fulfilment notice`)
+      return
+    }
+    await sendNewOrderNotificationEmail(order, fulfilmentEmails())
+  } catch (err) {
+    console.error('[email] fulfilment notification failed:', err)
   }
 }
 

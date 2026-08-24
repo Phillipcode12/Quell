@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
 import { getAdminUser } from '@/lib/admin'
+import { isCarrierKey } from '@/lib/carriers'
 import { restoreStock } from '@/lib/inventory'
 import { sendShippingNotice } from '@/lib/orders'
 
@@ -16,15 +17,45 @@ async function assertAdmin() {
   return admin
 }
 
-export async function markShipped(orderId: string) {
+/**
+ * Marks an order shipped and emails the customer.
+ *
+ * Tracking is optional. Orders are packed by hand and the number is not always
+ * to hand at the moment someone clicks — refusing to ship without it would
+ * just mean orders sitting in the wrong state. Without a number the customer
+ * gets the same notice they always did; with one, it carries a link.
+ */
+export async function markShipped(
+  orderId: string,
+  tracking?: { carrier?: string | null; number?: string | null },
+) {
   await assertAdmin()
+
+  const number = tracking?.number?.trim() || null
+  // A carrier without a number is meaningless, so it is only stored alongside
+  // one. An unrecognised carrier is dropped rather than saved, because
+  // `trackingUrl` would refuse to link it anyway and a half-valid value is
+  // harder to debug later than a missing one.
+  const carrier =
+    number && isCarrierKey(tracking?.carrier) ? tracking!.carrier! : null
+
+  if (number && number.length > 100) {
+    throw new Error('That tracking number is too long to be real.')
+  }
 
   // Only a paid order can ship, and the guard makes a double-click idempotent.
   const result = await prisma.order.updateMany({
     where: { id: orderId, status: 'paid' },
-    data: { status: 'shipped' },
+    data: {
+      status: 'shipped',
+      shippedAt: new Date(),
+      trackingCarrier: carrier,
+      trackingNumber: number,
+    },
   })
 
+  // Sent only on the transition, so a second click cannot email the customer
+  // twice — same reasoning as the payment webhook.
   if (result.count > 0) {
     await sendShippingNotice(orderId)
   }

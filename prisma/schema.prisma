@@ -112,6 +112,19 @@ model Order {
   /// a replayed webhook cannot pay the same order twice.
   paymentTransactionId String? @unique
 
+  /// Set when an admin marks the order shipped. Distinct from `updatedAt`,
+  /// which any edit moves — this is specifically when the parcel went out, and
+  /// it is what a "where is my order" enquiry is answered from.
+  shippedAt DateTime?
+
+  /// Carrier key, e.g. "usps". Kept as a plain string rather than an enum so
+  /// adding a carrier is a code change, not a migration. `lib/carriers.ts`
+  /// turns it into a name and a tracking URL; an unrecognised value degrades
+  /// to showing the bare number rather than breaking the email.
+  trackingCarrier String?
+  /// As printed on the label. Shown to the customer in the shipping notice.
+  trackingNumber  String?
+
   /// Collected by us before checkout — the hosted payment page only
   /// pre-populates an address, it does not gather one.
   shippingName       String?

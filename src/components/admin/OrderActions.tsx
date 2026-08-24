@@ -6,6 +6,7 @@ import {
   markShipped,
   updateStock,
 } from '@/app/admin/orders/actions'
+import { CARRIERS } from '@/lib/carriers'
 
 export function OrderActions({
   orderId,
@@ -16,6 +17,8 @@ export function OrderActions({
 }) {
   const [pending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
+  const [carrier, setCarrier] = useState<string>('usps')
+  const [trackingNumber, setTrackingNumber] = useState('')
 
   const canShip = status === 'paid'
   const canCancel = status === 'pending' || status === 'paid'
@@ -34,10 +37,46 @@ export function OrderActions({
   }
 
   return (
-    <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-line pt-4">
+    <div className="mt-5 border-t border-line pt-4">
+      {canShip && (
+        <div className="mb-3 flex flex-wrap items-end gap-2">
+          <label className="block">
+            <span className="mb-1 block text-xs text-muted">Carrier</span>
+            <select
+              value={carrier}
+              onChange={(e) => setCarrier(e.target.value)}
+              className="rounded-md border border-line bg-surface-2 px-2 py-1.5 text-sm text-white outline-none focus:border-brand"
+            >
+              {CARRIERS.map((c) => (
+                <option key={c.key} value={c.key}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="block flex-1 min-w-[12rem]">
+            <span className="mb-1 block text-xs text-muted">
+              Tracking number{' '}
+              <span className="text-muted/70">— optional</span>
+            </span>
+            <input
+              value={trackingNumber}
+              onChange={(e) => setTrackingNumber(e.target.value)}
+              placeholder="Paste from the label"
+              className="w-full rounded-md border border-line bg-surface-2 px-2 py-1.5 text-sm text-white outline-none focus:border-brand"
+            />
+          </label>
+        </div>
+      )}
+
+      <div className="flex flex-wrap items-center gap-3">
       {canShip && (
         <button
-          onClick={() => run(() => markShipped(orderId))}
+          onClick={() =>
+            run(() =>
+              markShipped(orderId, { carrier, number: trackingNumber }),
+            )
+          }
           disabled={pending}
           className="rounded-md bg-brand px-4 py-2 text-sm font-semibold text-black transition hover:bg-brand-light disabled:opacity-60"
         >
@@ -65,11 +104,13 @@ export function OrderActions({
 
       {canShip && (
         <span className="text-xs text-muted">
-          Marking shipped emails the customer.
+          Marking shipped emails the customer
+          {trackingNumber.trim() ? ' with this tracking number' : ''}.
         </span>
       )}
 
       {error && <span className="text-xs text-red-300">{error}</span>}
+      </div>
     </div>
   )
 }

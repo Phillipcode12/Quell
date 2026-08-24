@@ -1,5 +1,6 @@
 import 'server-only'
 import { BRAND, COMPANY } from '@/lib/product-content'
+import { carrierName, trackingUrl } from '@/lib/carriers'
 import { appUrl } from '@/lib/site'
 
 /**
@@ -119,6 +120,10 @@ type OrderForEmail = {
   shippingCity: string | null
   shippingState: string | null
   shippingPostalCode: string | null
+  shippingCountry?: string | null
+  createdAt?: Date
+  trackingCarrier?: string | null
+  trackingNumber?: string | null
   items: { quantity: number; unitPriceCents: number; product: { name: string } }[]
 }
 
@@ -212,12 +217,33 @@ export async function sendShippingNoticeEmail(order: OrderForEmail) {
   const ref = order.orderNumber
   const address = addressBlock(order)
 
+  // Tracking is optional on purpose: an order must always be markable as
+  // shipped even when the number is not to hand. Without it this reads exactly
+  // as it did before.
+  const number = order.trackingNumber?.trim() || null
+  const carrier = carrierName(order.trackingCarrier)
+  const url = trackingUrl(order.trackingCarrier, number)
+
+  const trackingHtml = number
+    ? `<p style="margin:0 0 16px;line-height:1.6;">
+         <strong>Tracking${carrier ? ` (${carrier})` : ''}</strong><br />
+         ${
+           url
+             ? `<a href="${url}" style="color:#00707a;">${number}</a>`
+             : // No link for an unrecognised carrier — a link to the wrong
+               // carrier's site reads as "your parcel is lost".
+               number
+         }
+       </p>`
+    : ''
+
   const html = layout(
     'Your order is on its way',
     `
       <p style="margin:0 0 16px;line-height:1.6;">
         Order <strong>#${ref}</strong> has shipped.
       </p>
+      ${trackingHtml}
       ${
         address.length
           ? `<p style="margin:0 0 16px;line-height:1.6;"><strong>Shipping to</strong><br />${address.join('<br />')}</p>`
@@ -232,6 +258,9 @@ export async function sendShippingNoticeEmail(order: OrderForEmail) {
 
   const text = [
     `Your ${BRAND.name} order #${ref} has shipped.`,
+    ...(number
+      ? ['', `Tracking${carrier ? ` (${carrier})` : ''}: ${number}`, ...(url ? [url] : [])]
+      : []),
     ...(address.length ? ['', 'Shipping to:', ...address] : []),
     '',
     'Apply 1 drop 3 times per day in each eye.',
@@ -243,6 +272,112 @@ export async function sendShippingNoticeEmail(order: OrderForEmail) {
     html,
     text,
   })
+}
+
+/**
+ * Tells the office an order needs packing.
+ *
+ * Internal, not customer-facing, so it is written to be *worked from*: it
+ * carries everything needed to pick, pack and post without opening the admin
+ * screen, and prints as a usable packing slip.
+ *
+ * Sent to every fulfilment address individually rather than as one message
+ * with several recipients, so nobody can reply-all to a customer thread by
+ * accident and no address is disclosed to the others.
+ */
+export async function sendNewOrderNotificationEmail(
+  order: OrderForEmail,
+  recipients: string[],
+) {
+  if (recipients.length === 0) {
+    console.error(
+      `[email] order ${order.orderNumber} is paid but no fulfilment recipient is configured. ` +
+        `Set FULFILMENT_EMAILS (or ADMIN_EMAILS) — nobody has been told to ship it.`,
+    )
+    return { delivered: false as const }
+  }
+
+  const ref = order.orderNumber
+  const address = addressBlock(order)
+  const placed = order.createdAt
+    ? order.createdAt.toLocaleString('en-US', {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+      })
+    : null
+  const units = order.items.reduce((sum, i) => sum + i.quantity, 0)
+
+  const html = layout(
+    `Pack order #${ref}`,
+    `
+      <p style="margin:0 0 16px;line-height:1.6;">
+        <strong>${units} unit${units === 1 ? '' : 's'}</strong> to pack.
+        ${placed ? `Placed ${placed}.` : ''}
+      </p>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #dfe6ef;">
+        ${order.items
+          .map(
+            (i) => `<tr>
+              <td style="padding:10px 0;border-bottom:1px solid #eef2f6;"><strong>${i.quantity} ×</strong> ${i.product.name}</td>
+              <td style="padding:10px 0;border-bottom:1px solid #eef2f6;text-align:right;">${usd(i.unitPriceCents * i.quantity)}</td>
+            </tr>`,
+          )
+          .join('')}
+        <tr>
+          <td style="padding:10px 0;font-weight:bold;">Order total</td>
+          <td style="padding:10px 0;text-align:right;font-weight:bold;">${usd(order.totalCents)}</td>
+        </tr>
+      </table>
+      <p style="margin:20px 0 0;line-height:1.6;">
+        <strong>Ship to</strong><br />
+        ${address.length ? address.join('<br />') : '<em>No address on this order</em>'}
+        ${order.shippingCountry ? `<br />${order.shippingCountry}` : ''}
+      </p>
+      <p style="margin:16px 0 0;line-height:1.6;color:#5a6b83;">
+        Customer: ${order.email}
+      </p>
+      <p style="margin:24px 0 0;">
+        <a href="${appUrl()}/admin/orders" style="background:#00a7b5;color:#000000;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:bold;display:inline-block;">Open in admin</a>
+      </p>
+      <p style="margin:16px 0 0;line-height:1.6;color:#5a6b83;font-size:13px;">
+        Add the tracking number when you mark it shipped — that is what the
+        customer receives.
+      </p>
+    `,
+  )
+
+  const text = [
+    `Pack order #${ref}`,
+    ...(placed ? [`Placed: ${placed}`] : []),
+    '',
+    `${units} unit${units === 1 ? '' : 's'}:`,
+    ...order.items.map((i) => `  ${i.quantity} × ${i.product.name}`),
+    '',
+    `Order total: ${usd(order.totalCents)}`,
+    '',
+    'Ship to:',
+    ...(address.length ? address.map((l) => `  ${l}`) : ['  (no address on this order)']),
+    ...(order.shippingCountry ? [`  ${order.shippingCountry}`] : []),
+    '',
+    `Customer: ${order.email}`,
+    '',
+    `Admin: ${appUrl()}/admin/orders`,
+  ].join('\n')
+
+  const results = await Promise.all(
+    recipients.map((to) =>
+      deliver({
+        to,
+        // The order number is in the subject so the office can search for it
+        // when a customer calls.
+        subject: `[${BRAND.name}] Pack order #${ref} — ${units} unit${units === 1 ? '' : 's'}`,
+        html,
+        text,
+      }),
+    ),
+  )
+
+  return { delivered: results.some((r) => r.delivered) }
 }
 
 export async function sendPasswordResetEmail(to: string, resetUrl: string) {

@@ -7,7 +7,10 @@ import {
   verifyWebhookSignatureDetailed,
 } from '@/lib/authorizenet'
 import { drawDownStock } from '@/lib/inventory'
-import { sendOrderConfirmation } from '@/lib/orders'
+import {
+  sendNewOrderNotification,
+  sendOrderConfirmation,
+} from '@/lib/orders'
 
 /**
  * Authorize.net webhook. Payment success is recorded here rather than on the
@@ -140,5 +143,8 @@ async function handleAuthCapture(event: WebhookEvent) {
   if (updated.count > 0) {
     await drawDownStock(order.id)
     await sendOrderConfirmation(order.id)
+    // Inside the same guard as the confirmation, so a replayed webhook cannot
+    // make the office pack the order twice.
+    await sendNewOrderNotification(order.id)
   }
 }
