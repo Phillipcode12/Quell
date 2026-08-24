@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ClearCartOnMount } from '@/components/ClearCartOnMount'
 import { QuellLogo } from '@/components/Logo'
+import { PostPurchaseSignup } from '@/components/PostPurchaseSignup'
+import { getCurrentUser } from '@/lib/auth'
 
 export const metadata: Metadata = {
   title: 'Thanks for your order',
@@ -16,6 +18,11 @@ export default async function CheckoutSuccessPage({
   searchParams: Promise<{ order?: string }>
 }) {
   const { order } = await searchParams
+
+  // Without an order number there is nothing to attach, so the component is
+  // not rendered at all. Whether a *signed-in* buyer sees it is decided inside
+  // the component instead -- see the note on its `signedIn` prop.
+  const user = await getCurrentUser()
 
   return (
     <div className="mx-auto max-w-xl px-6 py-20 text-center">
@@ -57,6 +64,10 @@ export default async function CheckoutSuccessPage({
           Keep your order number — it&apos;s how you track this order, with or
           without an account.
         </p>
+
+        {order && (
+          <PostPurchaseSignup orderNumber={order} signedIn={Boolean(user)} />
+        )}
 
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link
