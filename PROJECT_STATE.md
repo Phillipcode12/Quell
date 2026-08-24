@@ -692,6 +692,8 @@ cheque the company writes — so Ryan can send those normally.
 | Needed | From |
 |---|---|
 | EIN | Ryan — it is on the IRS letter he already pulled |
+| **The address on the articles of organization and the IRS letter** | Ryan. **Unchecked, and it matters** — the carton address is a UPS Store mailbox (§19). If the registration also shows it, Aurora has no registered physical address |
+| Physical business address | The same office as the Dry Eye Center of Brentwood. This is what goes in the no-PO-boxes field, not the carton address |
 | State and date of formation | Ryan — on the articles of organization; also public record. **Confirm it is Tennessee**; if the LLC was formed elsewhere, the Tennessee governing-law clause in the terms deserves a second look. |
 | Business bank account | Ryan |
 | SSN, DOB, home address, signature | Dr. Rynerson, in person |
@@ -1231,9 +1233,44 @@ half-finished application cannot be parked.
   Pharmaceuticals, LLC as the legal name. Tends to drive the card statement
   descriptor — decide it deliberately here rather than discovering it on
   customers' statements.
-- **Business Address (No PO Boxes).** Aurora's address is *330 Franklin Road,
-  Suite 135A, **#117***. That `#117` reads like a mailbox within a suite.
-  Check with Ryan it will not trip the no-PO-box rule.
+- **Business Address (No PO Boxes) — CONFIRMED PROBLEM, do not use the address
+  on the carton.** Researched 2026-08-20: **330 Franklin Road, Suite 135A is
+  The UPS Store** in Brentwood Place Shopping Center, and Aurora's `#117` is a
+  rented private mailbox there. The UPS Store's own site documents the format —
+  `[Name] PMB XXX or # XXX, 330 Franklin Rd Ste #135A`. Corroborated by a
+  spread of unrelated businesses at the same suite with different sub-numbers:
+  a café at `135A-389`, a pool company at `135A-201`, a nonprofit at `135A-538`.
+
+  It is not literally a USPS PO Box, but it is a **CMRA** — a commercial mail
+  receiving agency — which is precisely what a "no PO boxes" rule targets, and
+  USPS requires the `#`/`PMB` marker to identify it as one. Expect it to be
+  flagged, on an application that already carries an uncertain high-risk
+  classification.
+
+  **Aurora's physical address is the same office as the Dry Eye Center of
+  Brentwood** (confirmed by Phillip, 2026-08-20). That is what belongs in this
+  field. Sharing premises with a related business under the same owner is
+  ordinary and not disqualifying.
+
+  **The mismatch worth worrying about is not the website.** The carton and the
+  site both show the mailbox, and that is fine — underwriters check the business
+  address against Secretary of State and EIN records, not against marketing
+  copy, and the form has separate physical and mailing fields precisely because
+  most businesses differ. **The match that matters is the articles of
+  organization and the IRS letter, and nobody has checked what address those
+  carry.** Ryan has both. If they also show the UPS Store, Aurora has no
+  registered physical address anywhere and that needs resolving before
+  submitting.
+
+  **This is inference about how underwriting generally works, not knowledge of
+  Authorize.net's criteria.** One call to 1-888-323-4289 settles it: *"our
+  mailing address is a private mailbox at a UPS Store, our physical operating
+  address is different and is not published — which do you want in the Business
+  Address field?"* Do that rather than guess on an application carrying a
+  personal guarantee.
+
+  Neither the carton nor the legal pages need changing. FDA wants a place of
+  business where the firm can be reached, and a mailing address qualifies.
 - **Industry / product description** — *"so Authorize.net can match your
   business to an appropriate acquiring bank."* **This is the high-risk
   determination**, and how an OTC drug making health claims gets categorised
