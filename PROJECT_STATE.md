@@ -13,9 +13,11 @@ Vercel project `quell1/quell`, Neon Postgres, Authorize.net **sandbox**.
 **https://quell-six.vercel.app still works as a fallback** — deliberately not
 redirected, so the site stays reachable if DNS is ever misconfigured.
 
-Not indexed: `robots.ts` returns `Disallow: /` for any `*.vercel.app` host and
-switches itself on when `NEXT_PUBLIC_APP_URL` points at the real domain — which
-it does not yet, on purpose. See the end of §18.
+**Not indexed, deliberately.** Indexing requires `ALLOW_INDEXING="true"` *and* a
+non-staging origin; the flag is off. `NEXT_PUBLIC_APP_URL` is already
+`https://quelldrop.com`, so canonical tags, OpenGraph URLs and the sitemap are
+correct while the site stays out of search. Set the flag when the store can
+actually sell — see the end of §18.
 
 Webhook registered on the sandbox account (id `9a679451-e09e-44b5-add9-5f2edb28d4fb`)
 for `net.authorize.payment.authcapture.created`. Registered through the REST API
@@ -1155,18 +1157,45 @@ intact and no console errors. Every public route returns 200 on the new domain,
 `/admin/orders` still 404s signed out, and `robots.txt` still returns
 `Disallow: /`.
 
-### Still on the vercel.app URL: NEXT_PUBLIC_APP_URL
+### Indexing is a separate switch from the URL
 
-**Left pointing at the old host on purpose.** `robots.ts` decides indexing from
-that value's hostname, so changing it to `quelldrop.com` switches search
-indexing on immediately. Until the site can take a real payment, send a receipt
-and ship a box, there is no reason for Google to index it. The domain serves
-the site correctly without the change, which is all the merchant application
-needs.
+**Fixed 2026-08-20.** `NEXT_PUBLIC_APP_URL` is now `https://quelldrop.com` in
+Vercel, and indexing is gated by its own flag.
 
-**Flip it at launch**, in the Vercel dashboard, and redeploy — env changes are
-baked into a deployment and do not reach running functions. Use
-`--value '...'`, never a pipe (§12).
+The original design decided indexing from that value's hostname, which coupled
+two unrelated questions and produced a measured defect. With the variable left
+on the old host so the site would stay unindexed, quelldrop.com was serving:
+
+```
+<link rel="canonical" href="https://quell-six.vercel.app">
+og:url    -> https://quell-six.vercel.app
+og:image  -> https://quell-six.vercel.app
+sitemap.xml listing only vercel.app URLs
+```
+
+So every shared link previewed as vercel.app, and the canonical tag pointed
+search engines at a host that is itself `Disallow`.
+
+Indexing now needs **two independent guards**, and either one alone blocks it:
+
+- `ALLOW_INDEXING` must be exactly `"true"`. Unset or anything else disallows,
+  so a missing variable can never quietly publish the site.
+- The staging-host check stays as belt and braces: a `*.vercel.app` or
+  localhost origin is never indexable even with the flag on, so a preview
+  deployment cannot leak into search results.
+
+**To go live in search: set `ALLOW_INDEXING=true` in Vercel and redeploy.** Do
+it when the store can actually sell — env changes are baked into a deployment
+and do not reach running functions.
+
+Verified on the live site after the change: canonical, `og:url`, `og:image` and
+every sitemap entry are on `quelldrop.com`, while `robots.txt` still returns
+`Disallow: /`.
+
+> **`NEXT_PUBLIC_` variables cannot use sensitive visibility on Production.**
+> `vercel env add` defaults to sensitive and fails with a confusing message
+> about framework prefixes. It needs `--visibility config --no-sensitive`. And
+> still never pipe the value — use `--value` (§12).
 
 ---
 
