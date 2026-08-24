@@ -101,18 +101,22 @@ Stop before shutting the machine down:
 powershell -ExecutionPolicy Bypass -File scripts\stop-local.ps1
 ```
 
-> **Warning — `stop-local.ps1` kills every `node` process on the machine**, not
-> just this dev server. Anything else running on Node dies with it. Until that
-> line is narrowed, stopping by hand is safer:
+> **Fixed 2026-08-20 — `stop-local.ps1` no longer kills every `node` process.**
+> It used to be `Get-Process node | Stop-Process -Force`, which took down any
+> other project's dev server, editor language servers, and — verified on this
+> machine — Adobe Creative Cloud's helper. It now finds the dev server by the
+> port it listens on and walks the process tree from there: up while the parent
+> is still Node (so `npm` goes too, and the walk stops at the shell, which is
+> not Node), and down to catch Turbopack workers.
 >
-> ```powershell
-> Get-NetTCPConnection -LocalPort 3000 -State Listen |
->   ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }
-> & "$env:LOCALAPPDATA\QuellPostgres\bin\pg_ctl.exe" `
->   -D "$env:LOCALAPPDATA\QuellPostgres\data" -m fast stop
-> ```
+> Verified rather than assumed: with a decoy Node process and Adobe's Node
+> running alongside, a real dev server was started and stopped by the script.
+> It killed 3 processes — the listener, its `next` parent and one worker —
+> freed port 3000, and left both unrelated Node processes alive.
 >
-> Stopping the dev server cleanly matters for a second reason too — see the
+> Takes `-Port` if the server is ever moved off 3000.
+>
+> Stopping the dev server cleanly still matters for a second reason — see the
 > `.next` note in §12.
 
 **Neither Postgres nor the dev server survives a reboot.** Postgres is a
@@ -181,6 +185,11 @@ src/lib/email.ts             Resend or console fallback
 src/lib/admin.ts             ADMIN_EMAILS allowlist
 src/components/Logo.tsx      Real logo vector — see below
 src/app/admin/orders/        Admin order view + fulfilment actions
+src/app/api/auth/claim-order/  Post-purchase signup: creates an account and
+                             attaches exactly one order (§17)
+src/components/PostPurchaseSignup.tsx  The card that drives it, on the receipt
+src/**/*.test.ts             Vitest unit tests, alongside what they cover (§16)
+vitest.config.mts            Test config. The .mts extension is deliberate.
 ```
 
 ---
@@ -425,14 +434,21 @@ should be a small real purchase you make and then refund.
   is multiplied by the instance count. The fallback is tested and enforces
   correctly; the Redis path is written but has never run. `rateLimit` is now
   async — await it.
-- **No email verification** on signup, and **no automated tests**.
+- **No email verification** on signup. This is load-bearing elsewhere — it is
+  the reason signing in does not adopt guest orders (§8), and the reason the
+  post-purchase signup below attaches exactly one order.
+- **Automated tests exist as of 2026-08-20, and cover `lib/` and one route.**
+  See §16. They are unit tests: no test touches the database, the network or
+  the real gateway. The page components and the remaining API routes have no
+  coverage.
 - **Guest checkout has no account barrier**, which makes card testing easier.
   Checkout and order lookup are both rate limited per IP, but turn on
   Authorize.net's velocity filters too before going live — and remember the
   limiter is in-process (see the first bullet).
-- **No post-purchase account creation yet.** Offering to save details on the
-  success page — when the email and address are already in hand — is the
-  obvious follow-up, and the natural on-ramp for when subscriptions return.
+- ~~**No post-purchase account creation yet.**~~ **Built 2026-08-20** — see
+  §17. Still worth knowing what it deliberately does *not* do: it never links
+  more than the single order whose number was presented, so it is not a route
+  into someone else's order history.
 - **Sentry is wired but dormant.** `src/instrumentation.ts` and
   `src/instrumentation-client.ts` initialise only when `SENTRY_DSN` /
   `NEXT_PUBLIC_SENTRY_DSN` are set, and **no Sentry project exists**, so a
@@ -688,10 +704,9 @@ diverging from it.
 7. **Create the Upstash database and the Sentry project.** Both integrations are
    written and dormant; each needs an account and a credential, nothing more
    (§10).
-8. **Automated tests.** Still the largest structural gap — though note that the
-   two worst bugs found so far, the element ordering and the signature key
-   derivation, were both invisible to unit tests and only a live gateway
-   exposed them.
+8. ~~**Automated tests.**~~ Started 2026-08-20 — 122 tests over `lib/` and the
+   new claim-order route (§16). The gap that remains is integration coverage:
+   the checkout and webhook routes, and anything that needs a database.
 9. **Production cutover:** production keys, webhook re-registered against the
    real host, `AUTHORIZENET_ENVIRONMENT=production`, real domain. Make the
    first production transaction a small real purchase and refund it —
@@ -700,13 +715,25 @@ diverging from it.
 
 ### Smaller things left on the floor
 
-- `scripts\stop-local.ps1` kills every `node` process (§1).
-- Post-purchase account creation — offering to save details on the success page,
-  where the email and address are already known.
+- ~~`scripts\stop-local.ps1` kills every `node` process.~~ Fixed and verified
+  2026-08-20 (§1).
+- ~~Post-purchase account creation.~~ Built 2026-08-20 (§17).
 - `TemplateNotice` was deleted when both legal banners went; if a banner is ever
   wanted again it needs rewriting.
-- `npm audit` reports 3 high-severity advisories, all from Prisma's
-  `deepmerge-ts`. Pre-existing, not introduced by any recent dependency.
+- ~~`npm audit` reports 3 high-severity advisories from Prisma's
+  `deepmerge-ts`.~~ Cleared 2026-08-20 — `npm audit` now reports zero. The
+  advisory was a stack exhaustion in `deepmerge-ts <8`, reached only through
+  `prisma` → `@prisma/config`, which is a **devDependency** that merges
+  `prisma.config.ts` at CLI time; `@prisma/client` never depends on it, so it
+  never shipped to production. `npm audit fix --force` wanted to *downgrade*
+  Prisma 7.9.1 to 6.12.0, which is worse than the problem. Prisma pins
+  `deepmerge-ts` at exactly `7.1.5` and 7.9.1 is the latest stable, so the fix
+  is an `overrides` entry in `package.json` forcing `^8.0.1`. Safe because
+  `@prisma/config` uses only the `deepmerge` export, which v8 still has —
+  verified by running `prisma validate`, `prisma generate` and
+  `prisma migrate status` afterwards, all of which load `prisma.config.ts`
+  through the merge path. Remove the override once Prisma 8 lands: it drops
+  `@prisma/config` from the tree entirely.
 - The Meta ad account is not created. Groundwork in §15.
 
 ---
@@ -757,3 +784,144 @@ webhook already knows when payment succeeds, which is the right place to fire a
 trustworthy server-side `Purchase`. But installing a pixel **contradicts the
 privacy policy as written** (§9) and needs a consent mechanism the site does not
 have. Policy and pixel ship together or not at all.
+
+---
+
+## 16. Tests
+
+```
+npm test          # once
+npm run test:watch
+```
+
+Vitest, added 2026-08-20. **122 tests, all passing.** Config lives in
+`vitest.config.mts` — note the extension: as `.ts` it is loaded as CommonJS and
+Vite warns about ESM syntax on every run.
+
+| File | What it covers |
+|---|---|
+| `lib/shipping.test.ts` | The `>=` boundary at exactly $59, the two-bottle free-shipping case the ad plan depends on, and the $36.94 total two real sandbox orders were charged |
+| `lib/order-number.test.ts` | Format, the confusable characters the alphabet drops, the 20-character gateway cap, and the collision retry |
+| `lib/inventory.test.ts` | That the decrement stays conditional (`gte`), and that an oversell logs rather than throws — throwing would make the gateway retry a webhook that already took a payment |
+| `lib/rate-limit.test.ts` | The in-process limiter for real; the Upstash wire protocol and every fallback path against a mocked fetch |
+| `lib/authorizenet.test.ts` | The BOM, HTTP-200 failures, field truncation, amount formatting, and every rejection case in signature verification |
+| `lib/session.test.ts` | Cookie flags, tampered tokens, wrong secret, expiry, and `alg: none` |
+| `lib/auth.test.ts` | bcrypt round-trip, cost factor, and that the decoy hash keeps the absent-user branch slow |
+| `lib/admin.test.ts` | The allowlist, including that an unset `ADMIN_EMAILS` admits nobody |
+| `lib/money.test.ts` | Cents-to-dollars, including negatives for refunds |
+| `api/auth/claim-order/route.test.ts` | The new route (§17), including that it links exactly one order |
+
+### Two things to know before trusting them
+
+**These are unit tests. Nothing here touches the database, the network or the
+real gateway.** Every Prisma call and every `fetch` is mocked. The rate limiter
+is the one exception — the in-process backend genuinely runs.
+
+**Read the header comment in `authorizenet.test.ts` before adding to it.** The
+two worst bugs this project has had — the element ordering and the signature key
+derivation — were *both invisible to unit tests*, because a test that computes
+an HMAC the same way the code does agrees with itself whichever reading is
+wrong. Both facts were established against the live sandbox. The ordering test
+is therefore a **regression latch on a verified fact, not a verification of
+it**: it stops a refactor or an "alphabetise these keys" tidy-up from silently
+undoing the fix. Do not let it create the impression the ordering is proven
+correct here.
+
+The suite was itself checked by mutation rather than assumed to work: changing
+`>=` to `>` in `shippingCentsFor`, dropping the `gte` guard from the stock
+decrement, and swapping two keys in the gateway request each made the relevant
+tests fail, and only those.
+
+### Resolution gotcha, if a new test file fails to import
+
+`import 'server-only'` sits at the top of most of `lib/`. That package's default
+export **throws on purpose** — it exists to fail the build when a server module
+is pulled into a client bundle. Next satisfies it through the `react-server`
+export condition; Vitest does not, so without help every server module fails to
+import with *"This module cannot be imported from a Client Component module"*,
+which reads like a bug in the code under test.
+
+`vitest.config.mts` aliases `server-only` to the no-op entry the package ships
+for that condition. **Setting `resolve.conditions` instead does not work** —
+Vitest resolves test modules through its SSR pipeline, which reads
+`ssr.resolve.conditions`, so the plain list is ignored and the failure looks
+identical. That cost a cycle; do not undo the alias.
+
+---
+
+## 17. Post-purchase account creation
+
+Built 2026-08-20. Guest checkout is the default path, so most buyers reach the
+receipt page with no account — and that is the one moment their email and
+address are already in hand, so signing up costs them a password and nothing
+else.
+
+- `src/components/PostPurchaseSignup.tsx` — the card on the receipt page.
+- `src/app/api/auth/claim-order/route.ts` — creates the account and attaches
+  the order.
+- `src/app/checkout/success/page.tsx` renders it whenever there is an `order`
+  in the query string.
+
+### Why it is not a back door into someone else's order history
+
+§8 records a deliberate choice: **signing in does not adopt guest orders that
+share your email address**, because there is no email verification on signup, so
+anyone could register with someone else's address and inherit their history.
+This route does not weaken that.
+
+It attaches **exactly one order** — the one whose number was presented — and the
+proof required is order number *plus* email, the identical pair guest lookup
+already accepts. Nobody gains access to anything they could not already read at
+`/orders`. In particular it does **not** sweep up other orders sharing the
+email: possession was proven for one order, so one order is what gets linked.
+There is a test named for that property; if it ever passes while more than one
+order is linked, the property is gone.
+
+Other behaviours worth not rediscovering:
+
+- A wrong email and a made-up order number return an **identical 404**, same as
+  `/api/orders/lookup`. Distinguishing them would confirm which order numbers
+  are real, and 8 characters is short enough that confirmation is the expensive
+  half of the attack.
+- An order already linked to an account is refused. So is an email that already
+  has an account — holding the order number does not prove you hold the
+  account, so it cannot attach the order to one it cannot authenticate as.
+- The link is a conditional `updateMany` on `userId: null`, inside a
+  transaction with the user creation. Two requests racing the same order cannot
+  both claim it, and the loser's account is rolled back rather than left over
+  promising an order it never got.
+- Rate limited to **5 per hour per IP**, matching `/api/auth/register`. It
+  creates accounts *and* is a second place an order number can be guessed at.
+- Already signed in returns 409 rather than creating a second account.
+
+### One UI trap, already hit and fixed
+
+Creating the account signs the customer in and calls `router.refresh()`. The
+first version decided *in the page* whether to render the card, so the refresh
+re-ran the server component, found a session, and unmounted the component at
+the exact moment it had something to say — the card silently vanished instead of
+confirming. The page now always renders it when there is an order number and
+passes `signedIn` as a prop, so the component survives the refresh and keeps its
+own state. Do not move that condition back up into the page.
+
+### Verified against the real system, not just mocks
+
+Run locally against the real Postgres on 2026-08-20, with **two guest orders
+sharing one email**:
+
+| Check | Result |
+|---|---|
+| Card shown to a guest, hidden when signed in | both correct |
+| Wrong email | generic 404 message, no account created |
+| Correct email | account created, bcrypt `$2b$10$` hash |
+| Order linked | `Q-CLAIM001` → new user id |
+| **Second order, same email** | **`userId` still null** — §8 holds |
+| `/account` | shows one order, not two |
+| Already-linked order | 409 |
+| Already signed in | 409 |
+| Console | no errors |
+| 375px | no horizontal overflow with the form open |
+
+**Not exercised:** the real path into this page. Checkout cannot complete on
+localhost (§6), so the orders were written directly to the database. The first
+production purchase is the first time the whole sequence runs for real.
