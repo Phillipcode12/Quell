@@ -41,6 +41,18 @@ const addressSchema = z.object({
   country: z.enum(SHIPPABLE_COUNTRIES).default('US'),
 })
 
+/** Units of any one product a single order may contain. */
+const MAX_UNITS_PER_PRODUCT = 10
+
+/**
+ * Distinct lines a single order may contain.
+ *
+ * There is one product, so a real cart never sends more than one. The cap
+ * exists because the array had no length limit at all, which is what let the
+ * per-line quantity cap be bypassed.
+ */
+const MAX_LINE_ITEMS = 20
+
 const schema = z.object({
   items: z
     .array(
@@ -53,10 +65,46 @@ const schema = z.object({
           .number()
           .int('Choose a whole number of bottles.')
           .min(1, 'Choose at least one bottle.')
-          .max(10, 'Maximum 10 bottles per order.'),
+          .max(MAX_UNITS_PER_PRODUCT, 'Maximum 10 bottles per order.'),
       }),
     )
-    .min(1, 'Your cart is empty.'),
+    .min(1, 'Your cart is empty.')
+    .max(MAX_LINE_ITEMS, 'Too many items in this order.')
+    /**
+     * "Maximum 10 bottles per order" has to be checked across the whole order,
+     * not line by line.
+     *
+     * The `.max()` above caps a single line. Nothing stopped the same
+     * productId appearing on many lines, each within the cap — and the stock
+     * check downstream is also per line, so with 250 units on hand a request
+     * posted straight at this endpoint could put roughly $7,500 through as one
+     * order. The cart UI cannot produce that, because one product means one
+     * line, but the API is a public surface and the UI is not what enforces
+     * this.
+     *
+     * It matters beyond the stated rule: the merchant application declares a
+     * ~$300 maximum ticket, and a transaction far outside the declared profile
+     * is what triggers a fraud hold on a new account.
+     */
+    .superRefine((items, ctx) => {
+      const perProduct = new Map<string, number>()
+      for (const item of items) {
+        perProduct.set(
+          item.productId,
+          (perProduct.get(item.productId) ?? 0) + item.quantity,
+        )
+      }
+
+      for (const total of perProduct.values()) {
+        if (total > MAX_UNITS_PER_PRODUCT) {
+          ctx.addIssue({
+            code: 'custom',
+            message: 'Maximum 10 bottles per order.',
+          })
+          return
+        }
+      }
+    }),
   shipTo: addressSchema,
   /// Only read when signed out. A signed-in buyer's own address always wins,
   /// so a spoofed value cannot redirect someone else's receipt.
@@ -119,9 +167,19 @@ export async function POST(request: Request) {
     },
   })
 
-  const lineItems = parsed.data.items.map((item) => {
-    const product = products.find((p) => p.id === item.productId)
-    return product ? { product, quantity: item.quantity } : null
+  // Collapse repeated lines for the same product into one. The schema already
+  // refuses an order whose combined quantity exceeds the cap, so this is about
+  // shape rather than safety: without it, a payload repeating a product would
+  // write two OrderItem rows for the same thing and send the gateway two line
+  // items, which then reads oddly on the packing email and the receipt.
+  const merged = new Map<string, number>()
+  for (const item of parsed.data.items) {
+    merged.set(item.productId, (merged.get(item.productId) ?? 0) + item.quantity)
+  }
+
+  const lineItems = [...merged].map(([productId, quantity]) => {
+    const product = products.find((p) => p.id === productId)
+    return product ? { product, quantity } : null
   })
 
   if (lineItems.some((l) => l === null)) {

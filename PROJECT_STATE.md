@@ -703,7 +703,7 @@ cheque the company writes — so Ryan can send those normally.
 | The address on the articles of organization | Ryan — unchecked. Tidiness rather than a blocker: the EIN record is the one an underwriter matches against, and it already shows Wilson Pike |
 | State and date of formation | Ryan — on the articles of organization; also public record. **Confirm it is Tennessee**; if the LLC was formed elsewhere, the Tennessee governing-law clause in the terms deserves a second look. |
 | Business bank account | Ryan |
-| SSN, DOB, home address, signature | Dr. Rynerson, in person |
+| SSN, DOB, home address, signature | Dr. Rynerson, in person. **Sole owner, confirmed 2026-08-20** — one person to disclose, no second owner section |
 | Volume, average ticket, product description, URL | Derivable from the site — see §13 above |
 
 **All of it for Aurora Pharmaceuticals, LLC, not BlephEx.** Ryan handles both
@@ -1229,11 +1229,11 @@ half-finished application cannot be parked.
 
 ### Things the form asks that were not on the earlier checklist
 
-- **"Complete information on all owners with 25% or greater equity."** A
-  Treasury requirement, and it is plural. **Aurora's ownership structure has
-  never been established** — the assumption has been Dr. Rynerson alone. If
-  there is a second 25%+ owner, their name, address, DOB and SSN are needed
-  too. Confirm before sitting down or the application stalls.
+- ~~**"Complete information on all owners with 25% or greater equity."**~~
+  **Answered 2026-08-20: Dr. Rynerson is the sole owner of Aurora.** The
+  Treasury requirement is plural, but there is only one person to disclose, so
+  no second set of SSN/DOB details is needed. This was the item most likely to
+  stall the application mid-form; it no longer does.
 - **"Primary owner must be a US Citizen with a Social Security Number."**
   Confirms this is Dr. Rynerson's section, not Phillip's.
 - **Doing Business As.** Where "Quell Eye Drops" belongs, with Aurora
