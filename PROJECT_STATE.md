@@ -418,7 +418,7 @@ should be a small real purchase you make and then refund.
 | Authorize.net credentials | **Sandbox is done and working.** Production credentials wait on a **new merchant account** — Quell is no longer sharing BlephEx's. See §13. |
 | Merchant account | **Decided 2026-08-19: Quell gets its own.** Ryan ruled out sharing BlephEx's Stax account because the two companies are taxed and reported separately. Open: Stax's low-volume tier (Nick is quoting) vs Authorize.net's own All-in-One at ~$25/mo + 2.9% + 30¢. Either way the code is unchanged — Authorize.net stays the gateway. |
 | Domain | **Done 2026-08-20 — https://quelldrop.com is live and canonical** (§18). The other three redirect to it. `NEXT_PUBLIC_APP_URL` still points at the vercel.app host on purpose, so the site stays out of search until it can actually sell; flipping it turns indexing on. |
-| Customer email address | **None exists.** `EMAIL_FROM` is still `orders@example.com`, a reserved domain that cannot send or receive. `Quell@meibum.com` is the intended address; requested from Ryan as a shared mailbox. Sending also needs Resend DKIM records plus an **edit** to that single SPF record — a second SPF record invalidates both and would break BlephEx's mail. |
+| Customer email address | **None exists yet, but the plan changed on 2026-08-20 and got simpler.** `EMAIL_FROM` is still `orders@example.com`, a reserved domain that cannot send or receive. **The sender should now be `orders@quelldrop.com`, not `Quell@meibum.com`** — Quell owns its own domain, whose DNS zone has no MX and no TXT records at all, so Resend's DKIM and SPF records go onto a clean zone. **This removes the meibum.com SPF hazard entirely**: no edit to BlephEx's single existing SPF record, so no way to break their mail. A monitored *inbox* is still needed for replies and returns, and that can still be a Microsoft 365 shared mailbox — but it is no longer on the critical path for *sending*. |
 | Fulfilment | **Unanswered and blocking real orders.** Admin marks orders shipped by hand. Nobody has said how a Quell order physically reaches XPSShipper and gets picked, packed and posted. Now also a customer-facing promise: terms accept unopened returns for 30 days, so someone must receive them. |
 | Card statement descriptor | **Resolves with the separate merchant account** — Quell sets its own rather than showing BlephEx's. Still needs choosing, and it affects packaging and email copy, so it has the longest lead time. |
 | `$29.99` price | Matches the Dry Eye Rescue retail listing as of 2026-08-13. |
@@ -501,8 +501,13 @@ NEXT_PUBLIC_SENTRY_DSN=""            # public by design, inlined into the bundle
 > because `RESEND_API_KEY` is empty, so the placeholder is harmless. **The
 > moment a Resend key is added, every receipt goes out from a dead address** and
 > a drug-purchase confirmation from `example.com` reads as phishing. Fix both in
-> the same change. Intended value: `Quell <Quell@meibum.com>` once that mailbox
-> exists (§13).
+> the same change.
+>
+> **Intended value as of 2026-08-20: `Quell <orders@quelldrop.com>`** — not the
+> meibum.com address previously planned. Quell owns its own domain now (§18) and
+> its DNS zone is empty, so Resend's DKIM and SPF records land on a clean zone
+> and BlephEx's single SPF record is never touched. A monitored inbox for
+> replies and returns is still needed, but no longer gates sending.
 
 Postgres lives at `C:\Users\phill\AppData\Local\QuellPostgres` (binaries and
 `data\`), port **5433**, user `postgres`, password `quelldev`, database `quell`.
@@ -605,8 +610,8 @@ tier to create first; the only free thing is the developer sandbox, which
 already exists and is what the site currently runs against.
 
 **The $25/month starts on approval**, processing or not. That is the actual
-cost risk, given fulfilment, the domain and the mailbox are all still open and
-could take weeks.
+cost risk, given fulfilment and the mailbox are still open and could take
+weeks. *(The domain was one of these until 2026-08-20 — it is now done, §18.)*
 
 **Apply anyway.** Whether an OTC drug making health claims is classified
 high-risk is the largest unresolved unknown in the payment path, Authorize.net's
@@ -642,14 +647,19 @@ account — Amazon processes its own, and Ryan expects Amazon to carry the volum
 1. ~~Descriptor~~ — resolves with the separate account; Quell sets its own.
 2. How does a Quell order reach fulfilment — does it push into XPSShipper, or
    does someone key it in? **Still open, and now underwrites a returns promise.**
-3. What domain should Quell use? **Still open**, and now also blocks Meta domain
-   verification.
+3. ~~What domain should Quell use?~~ **Answered 2026-08-20** — Dr. Rynerson
+   already owned four Quell domains on the company GoDaddy account.
+   `quelldrop.com` is live and canonical; the rest redirect to it (§18).
 4. ~~Book separation~~ — answered, and it is what forced the separate account.
 5. ~~New underwriting to add Quell~~ — moot; a new account means new underwriting
    regardless, and a signing officer with a personal guarantee is required.
-6. **New:** create `Quell@meibum.com` as a Microsoft 365 **shared mailbox**
-   (free, no licence, access grantable). Separately, the DNS records so the site
-   can *send* as it — see the SPF warning in §9.
+6. **Revised 2026-08-20 — the sending half of this is solved.** The site will
+   send as `orders@quelldrop.com`, whose DNS zone is Quell's own and empty, so
+   **no SPF edit to meibum.com is needed and BlephEx's mail is never at risk**.
+   What is still wanted from Ryan is a **monitored inbox** for customer replies
+   and returns — a Microsoft 365 shared mailbox is free, needs no licence and
+   access is grantable. It no longer blocks launch, but the 30-day returns
+   promise means someone has to be reading something.
 7. **New:** confirm the seller of record. Ryan confirmed Aurora Pharmaceuticals
    is an **LLC**, but not explicitly that Aurora — rather than BlephEx — is the
    selling entity. The site now says Aurora on that basis. The merchant account
@@ -721,11 +731,18 @@ diverging from it.
 4. ~~**Deploy.**~~ Done 2026-08-20. GitHub is connected and pushes deploy; the
    live site was verified current against the URL. This unblocked the merchant
    application and any Meta ad review, both of which check the destination.
-5. **Send Ryan the questions in §13.** The merchant account has the longest lead
-   time. The `Quell@meibum.com` shared mailbox is a one-line ask.
+5. **Send Ryan and Dr. Rynerson the questions in §13.** The merchant account has
+   the longest lead time. Two items are now the blockers rather than the
+   domain: **fulfilment**, and **Aurora's ownership structure** — the
+   application needs full details for every owner with 25%+ equity (§19), and
+   nobody has confirmed whether Dr. Rynerson is the sole owner.
 6. **`RESEND_API_KEY`** *and* fix `EMAIL_FROM` — it is still
    `orders@example.com`, a reserved domain that cannot send. The moment a Resend
-   key appears, that becomes a live bug rather than a dormant one.
+   key appears, that becomes a live bug rather than a dormant one. **Send from
+   `orders@quelldrop.com`**: the DKIM and SPF records go on Quell's own zone,
+   which is empty, so meibum.com is never touched (§9).
+6b. ~~**Domain.**~~ Done 2026-08-20 — `quelldrop.com` is live and canonical
+   (§18). This unblocked the merchant application and Meta domain verification.
 7. **Create the Upstash database and the Sentry project.** Both integrations are
    written and dormant; each needs an account and a credential, nothing more
    (§10).
@@ -791,8 +808,9 @@ possession is not.
 **Account setup**, all free: a Facebook Page, Business Manager, an ad account,
 a payment method, business verification (1–3 business days; the document name
 must match the legal entity **exactly**, and the articles of organization Ryan
-already pulled are an accepted document), and domain verification — which needs
-a real domain, since `vercel.app` cannot be verified.
+already pulled are an accepted document), and domain verification — **now
+unblocked**: `quelldrop.com` went live 2026-08-20 and can be verified, where
+`vercel.app` could not (§18).
 
 **Register the business as Aurora Pharmaceuticals, LLC**, not Quell, not
 BlephEx.
@@ -1055,14 +1073,21 @@ registrar's cart, and watch for premium pricing on the short ones.
 5. Record registrar, account and renewal date here so it is not tribal
    knowledge.
 
-### The account-email shortcut
+### The account-email question — mostly moot now
 
-The registrar account needs a company address and `Quell@meibum.com` does not
-exist yet — **the identical problem as the Authorize.net account email.** Both
-are solved by one small ask: any company-controlled address, e.g.
-`admin@meibum.com`, far smaller than requesting a whole new shared mailbox.
-Do not register with a personal address intending to change it later; at some
-registrars a registrant change restarts the 60-day transfer lock.
+**The registrar half solved itself:** the domains were already on the company
+GoDaddy account, so no new registrar account was created and no personal
+address is attached to one.
+
+What remains is the **Authorize.net** account email, which should be an address
+that outlasts any one person — password resets and security alerts for a system
+that moves money should not land in an individual's inbox. Any
+company-controlled address does, e.g. `admin@meibum.com`; that is a far smaller
+ask than a whole new shared mailbox.
+
+Separately, and no longer connected to the above: the site will *send* as
+`orders@quelldrop.com` (§9), and a monitored inbox is still wanted for customer
+replies and returns.
 
 ---
 
