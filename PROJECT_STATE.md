@@ -421,7 +421,7 @@ should be a small real purchase you make and then refund.
 | Merchant account | **Decided 2026-08-19: Quell gets its own.** Ryan ruled out sharing BlephEx's Stax account because the two companies are taxed and reported separately. Open: Stax's low-volume tier (Nick is quoting) vs Authorize.net's own All-in-One at ~$25/mo + 2.9% + 30¢. Either way the code is unchanged — Authorize.net stays the gateway. |
 | Domain | **Done 2026-08-20 — https://quelldrop.com is live and canonical** (§18). The other three redirect to it. `NEXT_PUBLIC_APP_URL` still points at the vercel.app host on purpose, so the site stays out of search until it can actually sell; flipping it turns indexing on. |
 | Customer email address | **None exists yet, but the plan changed on 2026-08-20 and got simpler.** `EMAIL_FROM` is still `orders@example.com`, a reserved domain that cannot send or receive. **The sender should now be `orders@quelldrop.com`, not `Quell@meibum.com`** — Quell owns its own domain, whose DNS zone has no MX and no TXT records at all, so Resend's DKIM and SPF records go onto a clean zone. **This removes the meibum.com SPF hazard entirely**: no edit to BlephEx's single existing SPF record, so no way to break their mail. A monitored *inbox* is still needed for replies and returns, and that can still be a Microsoft 365 shared mailbox — but it is no longer on the critical path for *sending*. |
-| Fulfilment | **Unanswered and blocking real orders.** Admin marks orders shipped by hand. Nobody has said how a Quell order physically reaches XPSShipper and gets picked, packed and posted. Now also a customer-facing promise: terms accept unopened returns for 30 days, so someone must receive them. |
+| Fulfilment | **Decided 2026-08-20: packed and posted by hand from the office**, not pushed to XPSShipper. The app now supports that — a paid order emails a fulfilment list, and marking it shipped captures a carrier and tracking number that reach the customer (§20). What is still open is the human side: **who** packs and posts, and who receives returns, since the terms accept unopened returns for 30 days. |
 | Card statement descriptor | **Resolves with the separate merchant account** — Quell sets its own rather than showing BlephEx's. Still needs choosing, and it affects packaging and email copy, so it has the longest lead time. |
 | `$29.99` price | Matches the Dry Eye Rescue retail listing as of 2026-08-13. |
 | Brand teal | Site uses `#00A7B5`; print file converts to `#4AC1A8`. One token change if you want to match print. |
@@ -647,8 +647,11 @@ account — Amazon processes its own, and Ryan expects Amazon to carry the volum
 ### Ryan — the other questions
 
 1. ~~Descriptor~~ — resolves with the separate account; Quell sets its own.
-2. How does a Quell order reach fulfilment — does it push into XPSShipper, or
-   does someone key it in? **Still open, and now underwrites a returns promise.**
+2. ~~How does a Quell order reach fulfilment — XPSShipper or by hand?~~
+   **Answered 2026-08-20: by hand from the office**, and the app now supports
+   it (§20). What is still needed from Ryan is **who** does the packing and
+   posting, **which address** receives the order notifications, and **who
+   receives returns** — the terms promise unopened returns for 30 days.
 3. ~~What domain should Quell use?~~ **Answered 2026-08-20** — Dr. Rynerson
    already owned four Quell domains on the company GoDaddy account.
    `quelldrop.com` is live and canonical; the rest redirect to it (§18).
@@ -839,7 +842,7 @@ npm test          # once
 npm run test:watch
 ```
 
-Vitest, added 2026-08-20. **122 tests, all passing.** Config lives in
+Vitest, added 2026-08-20. **163 tests, all passing.** Config lives in
 `vitest.config.mts` — note the extension: as `.ts` it is loaded as CommonJS and
 Vite warns about ESM syntax on every run.
 
@@ -855,6 +858,10 @@ Vite warns about ESM syntax on every run.
 | `lib/admin.test.ts` | The allowlist, including that an unset `ADMIN_EMAILS` admits nobody |
 | `lib/money.test.ts` | Cents-to-dollars, including negatives for refunds |
 | `api/auth/claim-order/route.test.ts` | The new route (§17), including that it links exactly one order |
+| `app/robots.test.ts` | Both indexing guards, including that a missing flag fails closed |
+| `lib/carriers.test.ts` | Tracking URLs, and that an unknown carrier links nowhere rather than wrongly |
+| `lib/fulfilment.test.ts` | Who receives order notifications, and the ADMIN_EMAILS fallback |
+| `lib/email.test.ts` | The pack-this-order and shipping notices, including tracking |
 
 ### Two things to know before trusting them
 
@@ -1252,3 +1259,113 @@ that is comfortable, and about two orders a month covers the $25.
 
 **Code impact of going live: four environment variables plus registering the
 webhook against the new account.** Authorize.net stays the gateway either way.
+
+---
+
+## 20. Fulfilment — packed by hand from the office
+
+Decided 2026-08-20 and built the same day. Orders are picked, packed and posted
+by hand rather than pushed into XPSShipper. That is the right shape at this
+volume — Amazon is expected to carry the volume and the website is low-volume,
+so paying for an integration would buy nothing.
+
+Two things had to exist for it to actually work, and neither did.
+
+### The office is now told when an order is paid
+
+Before this, the paid webhook emailed the **customer** a confirmation and
+stopped. The only signal that something needed shipping was remembering to open
+`/admin/orders`. The first missed order is a week-late shipment and an
+apologetic email.
+
+A paid order now emails everyone in `FULFILMENT_EMAILS`. The message is written
+to be *worked from*, not read: units to pack, items, the full shipping address,
+the customer's email, and a link into admin. It prints as a usable packing slip.
+
+- **One message per recipient**, not one message with several addresses, so
+  nobody can reply-all into a customer thread and no colleague's address is
+  disclosed to the others.
+- **Inside the same status guard as the confirmation**, so a replayed webhook
+  cannot make the office pack the same order twice.
+- **Failures are logged, never thrown.** The customer has paid; a mail problem
+  must not fail the webhook and risk Authorize.net reprocessing the payment.
+  The order is still in `/admin/orders` either way, so the worst case is a
+  missed nudge rather than a lost order.
+- `FULFILMENT_EMAILS` is comma separated and **falls back to `ADMIN_EMAILS`**,
+  so notifications work the moment email is configured without a second
+  variable having to be remembered. With neither set it logs loudly, naming the
+  order — a paid order nobody was told about is the worst outcome here.
+
+### Tracking numbers reach the customer
+
+There was no tracking field anywhere. Marking an order shipped emailed the
+customer a notice containing nothing they could act on, which for hand-packed
+orders generates a support request per order.
+
+`Order` now carries `shippedAt`, `trackingCarrier` and `trackingNumber`. The
+admin form takes a carrier and a number when marking shipped, and the customer's
+notice carries both as a clickable link.
+
+**Tracking is optional throughout.** The number is not always to hand when
+someone clicks, and refusing to ship without it would leave orders stuck in the
+wrong state. Without one, the email reads exactly as it did before.
+
+> **`lib/carriers.ts` returns null for an unrecognised carrier, on purpose.**
+> The email then shows the bare number with no link. A link to the *wrong*
+> carrier's site returns "not found", and the customer concludes the parcel is
+> lost — worse than no link at all. Carrier is only stored alongside a number,
+> and an invalid key is dropped rather than saved.
+
+Carrier detection is deliberately **not** inferred from the number's shape.
+USPS and FedEx formats overlap and both have changed; the person who packed the
+parcel already knows which carrier they used, so the form asks.
+
+### Verified against the real system
+
+Run against the local Postgres and the real admin UI, not just mocks:
+
+| Check | Result |
+|---|---|
+| Notification renders for every configured recipient | both, with correct address and totals |
+| Marking shipped through the form | `status=shipped`, `shippedAt` set |
+| A deliberately whitespace-padded UPS number | stored trimmed, carrier `ups` |
+| Customer email | carried the working UPS tracking link |
+| No recipients configured | logged loudly, naming the order |
+
+### Nothing sends yet
+
+`RESEND_API_KEY` is still unset, so all of this prints to the server console
+instead of being delivered. It starts working when Resend is configured and
+`EMAIL_FROM` becomes `orders@quelldrop.com` (§9) — those genuinely ship
+together.
+
+### Migrations do not run on deploy
+
+**The build is `prisma generate && next build`. It does not run
+`prisma migrate deploy`.** Pushing a schema change without applying it to Neon
+first would deploy code whose queries reference columns that do not exist.
+
+The order used for this change, and the one to repeat:
+
+1. Apply the migration to Neon **first** — additive, nullable columns are safe
+   ahead of the code, which simply ignores them.
+2. Then push.
+
+To run a migration against production, pull the connection string, use it for
+one command, and delete it again:
+
+```
+npx vercel env pull <tmpfile> --environment production
+DATABASE_URL="<from tmpfile>" npx prisma migrate deploy
+```
+
+Delete the file immediately afterwards — it contains every production secret,
+not just the database URL.
+
+### Still open, and it is a people question
+
+- **Who** packs and posts the parcels.
+- **Which address** receives the order notifications. An internal distribution
+  list is better than one person's mailbox.
+- **Who receives returns.** The terms accept unopened returns for 30 days, so
+  someone has to be at the other end of that.
