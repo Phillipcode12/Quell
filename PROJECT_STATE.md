@@ -692,8 +692,8 @@ cheque the company writes — so Ryan can send those normally.
 | Needed | From |
 |---|---|
 | EIN | Ryan — it is on the IRS letter he already pulled |
-| **The address on the articles of organization and the IRS letter** | Ryan. **Unchecked, and it matters** — the carton address is a UPS Store mailbox (§19). If the registration also shows it, Aurora has no registered physical address |
-| Physical business address | The same office as the Dry Eye Center of Brentwood. This is what goes in the no-PO-boxes field, not the carton address |
+| **Physical business address** | **Answered 2026-08-20: 500 Wilson Pike Circle, Suite 103, Brentwood, TN 37027** — the address on the IRS EIN record and a real leased office, shared with the Eye Center of Brentwood (§19). This goes in the no-PO-boxes field. **Not** the carton address, which is a UPS Store mailbox |
+| The address on the articles of organization | Ryan — unchecked. Tidiness rather than a blocker: the EIN record is the one an underwriter matches against, and it already shows Wilson Pike |
 | State and date of formation | Ryan — on the articles of organization; also public record. **Confirm it is Tennessee**; if the LLC was formed elsewhere, the Tennessee governing-law clause in the terms deserves a second look. |
 | Business bank account | Ryan |
 | SSN, DOB, home address, signature | Dr. Rynerson, in person |
@@ -1252,25 +1252,44 @@ half-finished application cannot be parked.
   field. Sharing premises with a related business under the same owner is
   ordinary and not disqualifying.
 
-  **The mismatch worth worrying about is not the website.** The carton and the
-  site both show the mailbox, and that is fine — underwriters check the business
-  address against Secretary of State and EIN records, not against marketing
-  copy, and the form has separate physical and mailing fields precisely because
-  most businesses differ. **The match that matters is the articles of
-  organization and the IRS letter, and nobody has checked what address those
-  carry.** Ryan has both. If they also show the UPS Store, Aurora has no
-  registered physical address anywhere and that needs resolving before
-  submitting.
+  **RESOLVED 2026-08-20. Use the EIN address:**
 
-  **This is inference about how underwriting generally works, not knowledge of
-  Authorize.net's criteria.** One call to 1-888-323-4289 settles it: *"our
-  mailing address is a private mailbox at a UPS Store, our physical operating
-  address is different and is not published — which do you want in the Business
-  Address field?"* Do that rather than guess on an application carrying a
-  personal guarantee.
+  > **500 Wilson Pike Circle, Suite 103, Brentwood, TN 37027**
 
-  Neither the carton nor the legal pages need changing. FDA wants a place of
-  business where the firm can be reached, and a mailing address qualifies.
+  This is the address on Aurora's **IRS EIN record**, which is the strongest
+  possible answer: it is not an address asserted only on the application, it is
+  the one the IRS already associates with the entity — and the EIN record is
+  what an underwriter checks a business address against.
+
+  Verified independently: 500 Wilson Pike Circle is the **Brentwood Business
+  Center**, a professionally managed 106,000 sq ft flex-office building in
+  Maryland Farms, built 1985. **Suite 103 is the Eye Center of Brentwood's
+  corporate office** — a leased tenant suite, with none of the sub-numbering or
+  unrelated-tenant clustering that gives away the UPS Store address.
+
+  | Field | Use |
+  |---|---|
+  | Business Address (No PO Boxes) | 500 Wilson Pike Circle, Suite 103 |
+  | Mailing address, if offered | 330 Franklin Road, Suite 135A, #117 |
+
+  **The website and carton showing the mailbox is fine and needs no change.**
+  The intuitive worry — that the physical address appears nowhere public — is
+  the wrong one. Underwriters check the business address against EIN and
+  Secretary of State records, not marketing copy, and the form has separate
+  physical and mailing fields precisely because most businesses differ. The
+  record that matters already carries the Wilson Pike address.
+
+  Two loose ends, neither blocking:
+
+  - An underwriter looking up Wilson Pike will find the **Eye Center of
+    Brentwood**, not Aurora. Normal for related businesses under one owner
+    sharing premises, and the EIN association explains it.
+  - **Unchecked:** whether the *articles of organization* show Wilson Pike or
+    the UPS Store. The EIN is the more important record, so this is tidiness
+    rather than a blocker — but if both agree, every record lines up.
+
+  FDA wants a place of business where the firm can be reached, so the carton's
+  mailing address is fine there too.
 - **Industry / product description** — *"so Authorize.net can match your
   business to an appropriate acquiring bank."* **This is the high-risk
   determination**, and how an OTC drug making health claims gets categorised
