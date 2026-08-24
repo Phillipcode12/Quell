@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight } from '@/components/icons'
 import { QuellLogoInline } from '@/components/Logo'
-import { BRAND } from '@/lib/product-content'
+import { BRAND, relievesProse } from '@/lib/product-content'
 
 export function FinalCta() {
   return (
@@ -24,9 +24,11 @@ export function FinalCta() {
           {BRAND.slogan}
         </h2>
 
+        {/* Derived from RELIEVES rather than written out, so the claims here
+            cannot drift from the rest of the site — they had. */}
         <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-muted">
-          Preservative-free relief for dryness, irritation, redness, and itching
-          — in a {BRAND.size} bottle.
+          Preservative-free relief for {relievesProse()} — in a {BRAND.size}{' '}
+          bottle.
         </p>
 
         <div className="mt-9 flex flex-wrap justify-center gap-3">

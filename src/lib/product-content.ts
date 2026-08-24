@@ -56,13 +56,59 @@ export const FRONT_PANEL_CLAIMS = [
   'Natural Ingredients',
 ] as const
 
-/** "Relieves" list from the front of the carton. */
-export const RELIEVES = [
-  'Dryness',
-  'Irritation',
-  'Redness',
-  'Itching',
-] as const
+/**
+ * The "Relieves" list shown on the site.
+ *
+ * Deliberately NOT a straight transcription of the carton's front panel — it
+ * lists only what the Drug Facts *Uses* panel below actually supports. See
+ * RELIEVES_WITHHELD.
+ */
+export const RELIEVES = ['Dryness', 'Irritation', 'Itching'] as const
+
+/**
+ * Front-panel claims held back from the site pending regulatory confirmation.
+ *
+ * The carton advertises **redness relief**, and the site did too until
+ * 2026-08-20. Two things are wrong with that:
+ *
+ *  1. `DRUG_FACTS.uses` below does not cover redness. It reads "protectant
+ *     against further irritation or to relieve dryness". Redness appears in
+ *     this product's labelling only under *stop use and ask a doctor if* —
+ *     a caution, which is the opposite of a treatment claim.
+ *  2. Relieving redness is a **vasoconstrictor** claim, and there is no
+ *     vasoconstrictor in the formula. The actives are glycerol, polysorbate 80
+ *     and light mineral oil: two lubricants and an emollient. Nothing in the
+ *     bottle acts on redness.
+ *
+ * FDA expects front-panel claims to be covered by the Uses section, so this is
+ * a packaging correction rather than a site edit — but the site is the surface
+ * we control, and a merchant-account underwriter or a Meta ad reviewer reading
+ * claims the label does not support is an avoidable problem.
+ *
+ * **To restore, both must be true first:**
+ *   1. A regulatory reviewer has confirmed the claim is supportable, and
+ *   2. The carton's Drug Facts *Uses* panel covers it.
+ *
+ * Then move 'Redness' back into RELIEVES above, in third position. Everything
+ * on the site derives from that one array, and `relievesProse()` reproduces
+ * the original wording exactly — "dryness, irritation, redness, and itching".
+ * Nothing else needs editing.
+ */
+export const RELIEVES_WITHHELD = ['Redness'] as const
+
+/**
+ * The "Relieves" list as prose: "dryness, irritation, and itching".
+ *
+ * Exists so the closing CTA reads as a sentence rather than a list, without
+ * keeping a second hand-written copy of the claims that can drift out of step
+ * with RELIEVES — which is exactly what had happened before 2026-08-20.
+ */
+export function relievesProse(): string {
+  const items = RELIEVES.map((r) => r.toLowerCase())
+  if (items.length <= 1) return items[0] ?? ''
+  if (items.length === 2) return `${items[0]} and ${items[1]}`
+  return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`
+}
 
 /** The OTC Drug Facts panel, transcribed from the back of the carton. */
 export const DRUG_FACTS = {
