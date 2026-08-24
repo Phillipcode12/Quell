@@ -10,7 +10,9 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
-    "db:reset": "prisma migrate reset"
+    "db:reset": "prisma migrate reset",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.1",
@@ -38,12 +40,16 @@
     "prisma": "^7.9.1",
     "tailwindcss": "^4",
     "tsx": "^4.23.12",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.11"
   },
   "allowScripts": {
     "prisma@7.9.1": true,
     "@prisma/engines@7.9.1": true,
     "esbuild@0.28.2": true,
     "unrs-resolver@1.12.2": true
+  },
+  "overrides": {
+    "deepmerge-ts": "^8.0.1"
   }
 }
