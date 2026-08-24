@@ -412,7 +412,7 @@ should be a small real purchase you make and then refund.
 | `15%` subscription discount | **My placeholder**, and now dormant — subscriptions are deferred. Still a margin decision before they return. |
 | Authorize.net credentials | **Sandbox is done and working.** Production credentials wait on a **new merchant account** — Quell is no longer sharing BlephEx's. See §13. |
 | Merchant account | **Decided 2026-08-19: Quell gets its own.** Ryan ruled out sharing BlephEx's Stax account because the two companies are taxed and reported separately. Open: Stax's low-volume tier (Nick is quoting) vs Authorize.net's own All-in-One at ~$25/mo + 2.9% + 30¢. Either way the code is unchanged — Authorize.net stays the gateway. |
-| Domain | Not chosen. Lives on `quell-six.vercel.app`. Blocks Meta domain verification and looks like staging to a merchant-account underwriter. **Verified 2026-08-19:** meibum.com's DNS is at GoDaddy (`ns57`/`ns58.domaincontrol.com`), MX points at Microsoft 365, and it has one SPF record — `v=spf1 include:spf.protection.outlook.com -all`. |
+| Domain | **Not bought yet, but decided how — see §18.** Recommendation is `quelleyedrops.com`. Still on `quell-six.vercel.app`, which blocks Meta domain verification, blocks the receipt sender address, and looks like staging to a merchant-account underwriter. **Verified 2026-08-19:** meibum.com's DNS is at GoDaddy (`ns57`/`ns58.domaincontrol.com`), MX points at Microsoft 365, and it has one SPF record — `v=spf1 include:spf.protection.outlook.com -all`. |
 | Customer email address | **None exists.** `EMAIL_FROM` is still `orders@example.com`, a reserved domain that cannot send or receive. `Quell@meibum.com` is the intended address; requested from Ryan as a shared mailbox. Sending also needs Resend DKIM records plus an **edit** to that single SPF record — a second SPF record invalidates both and would break BlephEx's mail. |
 | Fulfilment | **Unanswered and blocking real orders.** Admin marks orders shipped by hand. Nobody has said how a Quell order physically reaches XPSShipper and gets picked, packed and posted. Now also a customer-facing promise: terms accept unopened returns for 30 days, so someone must receive them. |
 | Card statement descriptor | **Resolves with the separate merchant account** — Quell sets its own rather than showing BlephEx's. Still needs choosing, and it affects packaging and email copy, so it has the longest lead time. |
@@ -945,3 +945,171 @@ sharing one email**:
 **Not exercised:** the real path into this page. Checkout cannot complete on
 localhost (§6), so the orders were written directly to the database. The first
 production purchase is the first time the whole sequence runs for real.
+
+---
+
+## 18. The domain — decided how, not yet bought
+
+Nothing is registered yet. This section exists so the reasoning is not
+re-derived from scratch.
+
+### Where to buy it
+
+**On the company's existing GoDaddy / Name.com account.** Confirmed 2026-08-20
+that it is a *company* account, not a personal one, which is what makes this
+the right answer: Dr. Rynerson owns both BlephEx and Aurora, Phillip operates
+the site now but the rights go to Dr. Rynerson, and buying it on an account the
+company already controls means **there is never a transfer to do.** Phillip
+takes delegate access for day-to-day DNS.
+
+> **A correction worth keeping.** An earlier version of this advice said "not
+> GoDaddy." That was overstated. The real concern was never the registrar — it
+> was not putting Quell's records inside *meibum.com's zone*, where a botched
+> SPF edit breaks BlephEx's mail. That risk comes from sharing a **domain**,
+> not a **registrar**. A separate domain has its own zone and carries none of
+> it.
+
+**Never register it personally and plan to transfer later.** Most registrars
+lock transfers for **60 days** after registration and after a registrant
+change, so "I'll move it later" can mean two months of being unable to. The
+classic failure is a personal registration on a personal card that nobody can
+renew once that person moves on.
+
+### Registration settings — all of these matter
+
+| Setting | Value | Why |
+|---|---|---|
+| Registrant Organization | **Aurora Pharmaceuticals, LLC** | The legally meaningful field. Must match the merchant application, the bank and the site's legal pages |
+| Account email | A **company-controlled** address, not a personal one | Access has to survive any one person |
+| Payment method | **Company card** | A personal card fails at renewal after handover |
+| Auto-renew, registrar lock, WHOIS privacy | All on | Expiry takes down site *and* email at once; privacy keeps the owner's details off scrapers |
+| 2FA | On, recovery codes where the company can reach them | This account controls the brand |
+| Term | 2–3 years | Cheap, removes a renewal cliff, reads as more established to an underwriter |
+
+Get the owner's legal name letter-perfect. It has been written both
+"Rynerson" and "Meynerson" in conversation; confirm the spelling before
+anything legal is typed, since it must match across domain, merchant account
+and bank.
+
+### Recommendation: quelleyedrops.com, with quelldrops.com as backup
+
+Three reasons:
+
+1. **"Quell" alone does not survive the phone.** It is a homophone for
+   "quill". The carton prints a phone number and customers call. "Quell eye
+   drops dot com" is self-correcting; "quell dot com" gets spelled wrong.
+2. **There is already an established Quell in health** — `quellrelief.com` is
+   a nerve-stimulation pain wearable, and `quellfitness.com` is a third Quell.
+   An eye-specific domain separates Quell from a different medical product,
+   which helps customers and reduces trademark friction.
+3. **It matches how people search.** Amazon is expected to carry volume, so
+   the site is partly a credential someone checks after seeing the product.
+   "Quell eye drops" is the phrase they type.
+
+It also feeds two open decisions: a clean **DBA** ("Quell Eye Drops") for the
+merchant application, and a **statement descriptor** customers recognise —
+`QUELL EYE DROPS` produces far fewer "what is this charge?" chargebacks than
+`AURORA PHARM`.
+
+**Avoid anything containing `rx`.** It looks appealing for a pharma product
+and would contradict the product's own regulatory status: Quell is OTC, with
+no prescription gating anywhere in the app by design (§2).
+
+### Availability, checked 2026-08-20
+
+Checked by NS lookup. **A nameserver record proves a domain is registered; its
+absence strongly suggests available but is not proof** — confirm in the
+registrar's cart, and watch for premium pricing on the short ones.
+
+**Taken:** `quell.com`, `quell.co`, `getquell.com`, `tryquell.com`,
+`myquell.com`, `usequell.com`, `buyquell.com`, `shopquell.com`,
+`quelleye.com`, `quelleyes.com`, `quelltears.com`, `quellhealth.com`,
+`quellcare.com`
+
+**Appeared free:** `quelleyedrops.com`, `quelldrops.com`, `quelleyecare.com`,
+`quelldryeye.com`, `quelleyedrop.com`, `quelleyerelief.com`, `quellotc.com`
+
+> **Ask Ryan first: does the company already own a Quell domain?**
+> `quelleye.com`, `quelleyes.com`, `quelltears.com`, `getquell.com` and
+> `tryquell.com` are all registered on GoDaddy nameservers. Most are probably
+> squatters, but someone at BlephEx or Aurora may have grabbed one and
+> forgotten — `quelleye.com` would be a genuinely good domain to already own.
+> Not conclusive either way: meibum.com sits on `ns57`/`ns58` and these are on
+> different numbers, but GoDaddy assigns those semi-randomly.
+
+### Once it is bought
+
+1. Add it in Vercel, project `quell`, Settings then Domains.
+2. **Keep DNS at the registrar**, adding Vercel's records, rather than moving
+   nameservers — the same zone is needed shortly for Resend's DKIM records.
+3. **Update `NEXT_PUBLIC_APP_URL` in the Vercel dashboard** and redeploy. Not
+   optional: it builds the Authorize.net return URL, and it is what flips
+   `robots.ts` from `Disallow: /` to allowing indexing.
+4. Confirm HTTPS serves on the real domain and the vercel.app URL still works.
+5. Record registrar, account and renewal date here so it is not tribal
+   knowledge.
+
+### The account-email shortcut
+
+The registrar account needs a company address and `Quell@meibum.com` does not
+exist yet — **the identical problem as the Authorize.net account email.** Both
+are solved by one small ask: any company-controlled address, e.g.
+`admin@meibum.com`, far smaller than requesting a whole new shared mailbox.
+Do not register with a personal address intending to change it later; at some
+registrars a registrant change restarts the 60-day transfer lock.
+
+---
+
+## 19. Authorize.net application — what the form actually asks
+
+The All-in-One plan ($25/mo + 2.9% + 30¢) is the right one, because Quell needs
+its own merchant account. "Gateway Only" would be the pick if the Stax route
+had been taken instead. Pricing confirmed against the live plan page 2026-08-20.
+
+**Clicking the plan *is* the application.** There is no account to create and
+configure afterwards — you are approved and have one, or declined and have
+nothing (and no bill). So do not start it until Dr. Rynerson can sit down with
+you; the ownership section cannot be completed by anyone else and a
+half-finished application cannot be parked.
+
+### Things the form asks that were not on the earlier checklist
+
+- **"Complete information on all owners with 25% or greater equity."** A
+  Treasury requirement, and it is plural. **Aurora's ownership structure has
+  never been established** — the assumption has been Dr. Rynerson alone. If
+  there is a second 25%+ owner, their name, address, DOB and SSN are needed
+  too. Confirm before sitting down or the application stalls.
+- **"Primary owner must be a US Citizen with a Social Security Number."**
+  Confirms this is Dr. Rynerson's section, not Phillip's.
+- **Doing Business As.** Where "Quell Eye Drops" belongs, with Aurora
+  Pharmaceuticals, LLC as the legal name. Tends to drive the card statement
+  descriptor — decide it deliberately here rather than discovering it on
+  customers' statements.
+- **Business Address (No PO Boxes).** Aurora's address is *330 Franklin Road,
+  Suite 135A, **#117***. That `#117` reads like a mailbox within a suite.
+  Check with Ryan it will not trip the no-PO-box rule.
+- **Industry / product description** — *"so Authorize.net can match your
+  business to an appropriate acquiring bank."* **This is the high-risk
+  determination**, and how an OTC drug making health claims gets categorised
+  is the single biggest unknown in the payment path. Word it deliberately.
+- **"I confirm that I am authorized to submit this application."** If Phillip
+  clicks submit for Aurora, Ryan and Dr. Rynerson need to have actually said so.
+
+### Confirm before committing
+
+The plan page lists Virtual Terminal features, not API ones. Quell uses
+**Accept Hosted**, **webhooks**, and the **webhook Signature Key** — all
+standard gateway features, none of them mentioned on that page. Worth one call
+to 1-888-323-4289: *"Does All-in-One include full API access — Accept Hosted,
+webhooks, and the webhook signature key?"*
+
+Also worth noting: the **redness claim** (§9) is on the homepage hero and the
+buy card, and an underwriter reviewing a health product will read it while
+deciding whether Quell is high-risk. It is no longer only a packaging issue.
+
+**Fees at real cart totals:** one bottle ($36.94) costs $1.37; two bottles
+($59.98) costs $2.04. Against roughly $18–20 contribution on a single bottle
+that is comfortable, and about two orders a month covers the $25.
+
+**Code impact of going live: four environment variables plus registering the
+webhook against the new account.** Authorize.net stays the gateway either way.
