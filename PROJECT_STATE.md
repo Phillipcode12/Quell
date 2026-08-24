@@ -539,6 +539,26 @@ That restores the schema and the product, but **not** user accounts.
   mojibake. Use the editor tools for files containing non-ASCII.
 - **Satori (`ImageResponse`) rejects multi-child nodes** without an explicit
   `display`, which JSX interpolation silently creates.
+- **Vercel answered non-GET requests to unmatched routes with HTTP 200.**
+  Found 2026-08-20 while verifying a deploy. A `POST`, `PUT` or `DELETE` to a
+  path with no route was handled by Next's `/_not-found` page and came back
+  **200 with an HTML body**; `GET` correctly returned 404. Every caller here
+  decides success with `if (!res.ok)`, so a mistyped endpoint looked like it
+  worked and failed later as a confusing parse error.
+
+  **It cannot be reproduced locally.** The same build under `next start`
+  returns 404 on all four methods — it is Vercel's routing layer, not Next.
+  That is the transferable lesson: routing and status-code behaviour is one of
+  the things where local and deployed genuinely differ, so check the deployed
+  site rather than assuming parity.
+
+  Fixed by `src/app/api/[...unmatched]/route.ts`, a catch-all returning JSON
+  404 for every method, so unmatched API paths never reach the fallback.
+  Concrete routes still win — Next matches specific segments before a
+  catch-all — and that was verified by calling every real endpoint with the
+  catch-all in place. If it is ever touched, re-check `/api/orders/lookup` **by
+  response body, not status**: it legitimately answers 404 too, and only the
+  message distinguishes a working endpoint from a shadowed one.
 
 ---
 
