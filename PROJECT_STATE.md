@@ -417,7 +417,7 @@ should be a small real purchase you make and then refund.
 |---|---|
 | `$6.95` shipping rate | **My assumption.** You gave the $59 threshold, not the rate. Confirm against real carrier cost. |
 | `15%` subscription discount | **My placeholder**, and now dormant — subscriptions are deferred. Still a margin decision before they return. |
-| Authorize.net credentials | **Sandbox is done and working.** Production credentials wait on a **new merchant account** — Quell is no longer sharing BlephEx's. See §13. |
+| Authorize.net credentials | **Sandbox is done and working. The production account was APPLIED FOR 2026-08-20 (§19) — awaiting decision.** Production credentials wait on a **new merchant account** — Quell is no longer sharing BlephEx's. See §13. |
 | Merchant account | **Decided 2026-08-19: Quell gets its own.** Ryan ruled out sharing BlephEx's Stax account because the two companies are taxed and reported separately. Open: Stax's low-volume tier (Nick is quoting) vs Authorize.net's own All-in-One at ~$25/mo + 2.9% + 30¢. Either way the code is unchanged — Authorize.net stays the gateway. |
 | Domain | **Done 2026-08-20 — https://quelldrop.com is live and canonical** (§18). The other three redirect to it. `NEXT_PUBLIC_APP_URL` still points at the vercel.app host on purpose, so the site stays out of search until it can actually sell; flipping it turns indexing on. |
 | Customer email address | **None exists yet, but the plan changed on 2026-08-20 and got simpler.** `EMAIL_FROM` is still `orders@example.com`, a reserved domain that cannot send or receive. **The sender should now be `orders@quelldrop.com`, not `Quell@meibum.com`** — Quell owns its own domain, whose DNS zone has no MX and no TXT records at all, so Resend's DKIM and SPF records go onto a clean zone. **This removes the meibum.com SPF hazard entirely**: no edit to BlephEx's single existing SPF record, so no way to break their mail. A monitored *inbox* is still needed for replies and returns, and that can still be a Microsoft 365 shared mailbox — but it is no longer on the critical path for *sending*. |
@@ -1325,6 +1325,32 @@ webhook against the new account.** Authorize.net stays the gateway either way.
 
 ---
 
+
+### SUBMITTED 2026-08-20 — awaiting the underwriting decision
+
+The application was completed and filed. Expect a decision in **one to five
+business days**, and remember the **$25/month starts on approval** whether or
+not anything is processed.
+
+> **Account access is gated on Dr. Rynerson, and that is expected.** Logging in
+> after submission triggers identity verification, and the PIN is sent to
+> **Dr. Rynerson** — they are the owner of record, with the SSN and the personal
+> guarantee, so Authorize.net verifies against them rather than whoever filled
+> the form in. Nothing is wrong and nothing is blocked by it: underwriting
+> proceeds without anyone logging in.
+>
+> Account access is only genuinely needed **after approval**, to pull the API
+> Login ID, Transaction Key and Signature Key and to register the webhook.
+>
+> **First thing to do once inside: Account → User Administration, and add
+> Phillip as a separate user.** Today access depends on Dr. Rynerson being
+> reachable, which is fine for a one-time verification and wrong as a permanent
+> arrangement — a system that moves money should not run on one shared login
+> with no audit trail.
+
+If they come back with questions, the likely subjects are the
+Other/Miscellaneous industry code, the shared Wilson Pike address, or the OTC
+drug classification. Answers to all three are in this section.
 
 ### What was actually submitted
 
