@@ -31,6 +31,13 @@ Authorization: Basic base64(apiLoginId:transactionKey)
 Before going live: swap to production credentials, register the webhook against
 the production host, and set `AUTHORIZENET_ENVIRONMENT=production`.
 
+> **The production account is not settled.** The application was submitted
+> 2026-08-20, and Authorize.net **referred it to Zen Payments** — a high-risk
+> ISO — rather than underwriting it directly. Nothing has been signed. **Read
+> §21 before acting on anything from them**, including the question that decides
+> whether going live is ten minutes or a rebuild: does the account keep the
+> Authorize.net gateway?
+
 > **PUSHING TO `main` NOW DEPLOYS.** GitHub was connected to the `quell` project
 > on 2026-08-20 and it deploys on push, with no token and no manual step. Treat
 > a push as a publishing action, not a save — anything committed to `main` is
@@ -417,7 +424,7 @@ should be a small real purchase you make and then refund.
 |---|---|
 | `$6.95` shipping rate | **My assumption.** You gave the $59 threshold, not the rate. Confirm against real carrier cost. |
 | `15%` subscription discount | **My placeholder**, and now dormant — subscriptions are deferred. Still a margin decision before they return. |
-| Authorize.net credentials | **Sandbox is done and working. The production account was APPLIED FOR 2026-08-20 (§19) — awaiting decision.** Production credentials wait on a **new merchant account** — Quell is no longer sharing BlephEx's. See §13. |
+| Authorize.net credentials | **Sandbox is done and working. Applied 2026-08-20 (§19); Authorize.net referred it to Zen Payments, a high-risk ISO — nothing signed, see §21.** Production credentials wait on a **new merchant account** — Quell is no longer sharing BlephEx's. See §13. |
 | Merchant account | **Decided 2026-08-19: Quell gets its own.** Ryan ruled out sharing BlephEx's Stax account because the two companies are taxed and reported separately. Open: Stax's low-volume tier (Nick is quoting) vs Authorize.net's own All-in-One at ~$25/mo + 2.9% + 30¢. Either way the code is unchanged — Authorize.net stays the gateway. |
 | Domain | **Done 2026-08-20 — https://quelldrop.com is live and canonical** (§18). The other three redirect to it. `NEXT_PUBLIC_APP_URL` still points at the vercel.app host on purpose, so the site stays out of search until it can actually sell; flipping it turns indexing on. |
 | Customer email address | **None exists yet, but the plan changed on 2026-08-20 and got simpler.** `EMAIL_FROM` is still `orders@example.com`, a reserved domain that cannot send or receive. **The sender should now be `orders@quelldrop.com`, not `Quell@meibum.com`** — Quell owns its own domain, whose DNS zone has no MX and no TXT records at all, so Resend's DKIM and SPF records go onto a clean zone. **This removes the meibum.com SPF hazard entirely**: no edit to BlephEx's single existing SPF record, so no way to break their mail. A monitored *inbox* is still needed for replies and returns, and that can still be a Microsoft 365 shared mailbox — but it is no longer on the critical path for *sending*. |
@@ -745,11 +752,15 @@ diverging from it.
 4. ~~**Deploy.**~~ Done 2026-08-20. GitHub is connected and pushes deploy; the
    live site was verified current against the URL. This unblocked the merchant
    application and any Meta ad review, both of which check the destination.
-5. **Send Ryan and Dr. Rynerson the questions in §13.** The merchant account has
-   the longest lead time. Two items are now the blockers rather than the
-   domain: **fulfilment**, and **Aurora's ownership structure** — the
-   application needs full details for every owner with 25%+ equity (§19), and
-   nobody has confirmed whether Dr. Rynerson is the sole owner.
+5. **Decide whether to proceed with Zen Payments (§21).** The application was
+   submitted 2026-08-20 and referred to a high-risk ISO; nothing is signed. Get
+   the rate, the reserve, the contract terms, and above all **whether the
+   Authorize.net gateway is retained** — in writing. Chase Nick's Stax quote in
+   parallel, since this changes that comparison.
+5b. **Send Ryan the remaining questions in §13.** **Fulfilment** is the open
+   one: who packs and posts, which address receives the order notifications,
+   and who receives returns. *(Ownership is answered — Dr. Rynerson is the sole
+   owner of Aurora.)*
 6. **`RESEND_API_KEY`** *and* fix `EMAIL_FROM` — it is still
    `orders@example.com`, a reserved domain that cannot send. The moment a Resend
    key appears, that becomes a live bug rather than a dormant one. **Send from
@@ -760,9 +771,10 @@ diverging from it.
 7. **Create the Upstash database and the Sentry project.** Both integrations are
    written and dormant; each needs an account and a credential, nothing more
    (§10).
-8. ~~**Automated tests.**~~ Started 2026-08-20 — 122 tests over `lib/` and the
-   new claim-order route (§16). The gap that remains is integration coverage:
-   the checkout and webhook routes, and anything that needs a database.
+8. ~~**Automated tests.**~~ Started 2026-08-20 — 178 tests over `lib/`, the
+   claim-order and checkout routes, robots, and the product claims (§16). The
+   gap that remains is integration coverage: the webhook route, and anything
+   that needs a real database.
 9. **Production cutover:** production keys, webhook re-registered against the
    real host, `AUTHORIZENET_ENVIRONMENT=production`, real domain. Make the
    first production transaction a small real purchase and refund it —
@@ -851,7 +863,7 @@ npm test          # once
 npm run test:watch
 ```
 
-Vitest, added 2026-08-20. **163 tests, all passing.** Config lives in
+Vitest, added 2026-08-20. **178 tests on `main`, all passing** — plus 10 more in the uncommitted site helper (§22). Config lives in
 `vitest.config.mts` — note the extension: as `.ts` it is loaded as CommonJS and
 Vite warns about ESM syntax on every run.
 
@@ -1543,3 +1555,184 @@ not just the database URL.
   list is better than one person's mailbox.
 - **Who receives returns.** The terms accept unopened returns for 30 days, so
   someone has to be at the other end of that.
+
+---
+
+## 21. Zen Payments — where the application actually went
+
+**Authorize.net did not underwrite the account themselves. They referred it to
+Zen Payments**, an ISO that specialises in **high-risk** merchant accounts and
+places files across a network of partner banks.
+
+Read that referral for what it is: the *"subject to eligibility"* footnote
+resolving, and not in Quell's favour. An OTC drug making health claims is the
+classification risk that was flagged before submitting, and this is what it
+looks like when it lands.
+
+Not a disaster — high-risk processing is a real, workable business — but **it is
+no longer the product that was applied for**, and nothing should be signed on
+the strength of a friendly onboarding call.
+
+### The question that matters most
+
+**Does the account use the Authorize.net gateway?**
+
+- **Yes** → the integration is untouched. Going live is four environment
+  variables and a webhook registration, about ten minutes.
+- **No** → the whole payment integration needs rebuilding. Weeks, not minutes.
+
+The referral came *from* Authorize.net so the gateway almost certainly stays,
+but get it stated explicitly, because everything in this codebase assumes it.
+
+### Get in writing before signing
+
+1. **What the form actually is** — the merchant processing agreement, or an
+   authorisation for underwriting? The agreement carries the personal guarantee.
+2. **The actual rate** — percentage and per-transaction, plus every recurring
+   fee and the chargeback fee.
+3. **Reserve** — is there one, what percentage, what hold period, what release
+   schedule? *This is the one that hurts most:* a rolling reserve ties up
+   working capital on a product with roughly $18–20 contribution per order.
+4. **Contract length, cancellation, renewal.**
+5. **Funding timeline** — transaction to deposit.
+6. **Credit check** — does the process involve one, soft or hard, and **if the
+   file goes to more than one partner bank, does each pull separately?** That
+   last clause matters specifically because Zen places across many banks;
+   several hard inquiries is very different from one.
+
+Published figures suggest a monthly fee plus PCI fee and a per-chargeback fee,
+with rates quoted individually by risk profile — but **none of that came from
+Zen about this account**, so treat it as background, not as terms. One review
+source flags that final contract terms have differed from initial sales quotes,
+which is reason enough to read what is actually signed.
+
+### Verification done on the contact, 2026-08-20
+
+Worth recording because the pattern — an unexpected third party asking for a
+signature and part of an SSN — is exactly what phishing looks like.
+
+- **Mickey Robertson is a real Account Executive at Zen Payments** (Provo,
+  Utah). Consistent LinkedIn, ZoomInfo and org-chart presence, and named
+  positively in Trustpilot reviews.
+- **`zenpayments.com` has actively managed email authentication** — DMARC at
+  `p=quarantine` with reporting to EasyDMARC, SPF covering Microsoft 365,
+  Salesforce and Trustpilot, mail handled by Microsoft 365. So a spoofed
+  message from that domain should land in spam rather than the inbox, which
+  makes mail arriving normally meaningfully more likely to be genuine.
+- **`zendashboard.com`** — the portal the signature form lives on — was
+  registered in 2017, serves a real login app with a valid certificate. But
+  **`zenpayments.com` does not link to it publicly** and its login page carries
+  no Zen branding, so the connection could not be confirmed from outside. Not
+  evidence of anything wrong; simply unverified.
+
+> **Verify a portal out-of-band, never by asking the person who sent it.** Call
+> Zen on a number from `zenpayments.com` itself. None of the reassuring signals
+> above are hard to fake — certificates are free, aged domains can be bought,
+> branding can be copied.
+
+### On the SSN
+
+Being asked for the owner's Social Security number is **normal and legally
+required** — personal guarantee, beneficial-ownership rules for anyone with 25%
+or more equity, and OFAC screening. A provider that did *not* ask would be the
+odd one.
+
+What matters is *how*: **Dr. Rynerson enters it himself, into the provider's own
+form.** Never relayed through Phillip, never by email or text. Note also that
+last-four-digits requests are materially less sensitive than a full SSN.
+
+### Still open
+
+- Whether to proceed with Zen at all. **Nick's Stax quote was never
+  delivered**, and this changes the comparison — worth chasing now that
+  Authorize.net has classified Quell as high-risk.
+- Worth asking Zen directly how the business was classified and what drove the
+  referral. If it is something on the site, that is actionable; and if the file
+  is ever shopped elsewhere, knowing what a processor sees is useful.
+
+---
+
+## 22. Storefront UI — cart, the emu, and the helper
+
+### Shipped
+
+**The cart is findable now** (`5f99702`). The "Go to cart" link after adding was
+a small text link with a broken hover state — `hover:underline` on an
+`inline-flex` underlines the *gaps* between the label, the count and the arrow,
+so the rule arrived in three disconnected pieces. It is now a full-width
+bordered button. The header cart gained an icon and its own bordered chip with
+the count as a corner badge, plus an `aria-label` carrying the count.
+
+**An emu walks across the bottom of the screen when something is added to the
+cart** (`src/components/CartEmu.tsx`). On-brand rather than random: the formula
+contains emu oil and the slogan is "give dry eye the bird".
+
+Three constraints on it, all verified in a browser rather than assumed:
+
+- **It cannot block the page.** `pointer-events: none`, z-index 40 — under the
+  sticky header's 50 — so the cart link it draws attention to stays clickable.
+- **It respects `prefers-reduced-motion`**, handled in CSS (`display: none`
+  under `reduce`) rather than by sniffing the media query in JavaScript. No
+  state, no effect, and it responds if the preference changes mid-session.
+- **It cannot stack.** The trigger is a counter rather than a boolean, passed as
+  a `key`, so adding three times restarts one emu instead of starting three.
+
+**The drawing took four passes** (`8c303c6`), each fixing something visible on
+screen. Worth not repeating: an outline drawing (`fill:none` plus a stroke)
+reads as a stick figure; a circular body reads as a ball; a short neck reads as
+a goose, because emus are mostly neck; evenly spaced parallel feather strokes
+read as a ribcage, because regularity is what gives them away; and a neck drawn
+*after* the body sits on top as a visible seam, so it must be drawn **before**
+the body with a wide base tucked inside the outline.
+
+### Not shipped — the site helper, work in progress
+
+**Uncommitted and deliberately held back.** Phillip is not happy with it yet.
+
+```
+src/components/SiteHelper.tsx        the widget
+src/components/SiteHelper.test.ts    10 content tests
+src/components/EmuFace.tsx           the avatar
+public/images/emu-face.jpg           300x462, cropped from the carton
+src/app/layout.tsx                   MODIFIED — mounts <SiteHelper />
+```
+
+> **`layout.tsx` is modified to mount it.** Committing that file without the
+> component files breaks the Vercel build on a missing import. When shipping
+> anything else, either exclude `layout.tsx` or stash the helper and build
+> against exactly what will deploy — which is how `8c303c6` was verified.
+
+**What it is:** a corner widget with a fixed list of questions, each giving a
+one-line answer and a link to the right page, plus a "Something else" option
+that refuses and hands over to the Drug Facts and the phone number.
+
+**Deliberately not an AI chatbot, and that is the design.** Quell is an
+FDA-regulated drug. A language model on this domain could be asked "will this
+help my blepharitis?" and produce something helpful-sounding — a medical claim,
+on our own site, at scale, unreviewed. That is a worse version of the redness
+problem in §9. This can only emit sentences a human wrote: no model, no API
+call, **no network request at all**, verified by checking the browser's resource
+list. It is also self-hosted rather than Tidio/Crisp/Intercom, because those
+load third-party scripts and set cookies, and the privacy policy states the
+site runs no third-party trackers.
+
+**The tests guard content, not clicking** — that the helper never says
+"redness" (cross-checked against `RELIEVES_WITHHELD`), makes no treatment
+claims, matches `DRUG_FACTS.directions` exactly rather than paraphrasing, and
+that the refusal names a doctor or pharmacist without hedging into an opinion.
+The guarantee is that only reviewed sentences ship; those tests stop someone
+adding a topic that quietly makes a claim.
+
+**The avatar is Quell's own artwork** — the emu's head *and neck* cropped from
+`product-box-bottle-white.jpg`, with black patches composited over the box copy
+either side of the neck. The neck is the point: it is what makes the bird read
+as an emu rather than a generic ruffled face.
+
+> **Regenerating the avatar: mask and resize must be separate sharp passes.**
+> sharp applies `composite` after `resize` regardless of chain order, so bars
+> positioned for the full-resolution crop land in the wrong place if chained —
+> the box text reappears and it is not obvious why. Full recipe is in the
+> comment at the top of `EmuFace.tsx`.
+
+**Next step:** find out what Phillip dislikes about it and iterate. The
+question list, the tone, the shape of the button and the panel are all open.
