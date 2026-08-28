@@ -1548,6 +1548,74 @@ DATABASE_URL="<from tmpfile>" npx prisma migrate deploy
 Delete the file immediately afterwards — it contains every production secret,
 not just the database URL.
 
+### When the account is approved — the cutover, step by step
+
+Written 2026-08-28, assuming the answer to the gateway question above is
+**yes, Authorize.net stays**. If it is no, none of this applies and the
+integration is a rebuild.
+
+**Nothing here is code.** The gateway is already integrated, tested against the
+live sandbox and proven end to end (§8). What changes is four environment
+variables, one webhook registration and a redeploy.
+
+1. **Get the production credentials** from the new merchant account's
+   Authorize.net Merchant Interface: **Account → Settings → API Credentials &
+   Keys**. You need the **API Login ID** and a **new Transaction Key**. The
+   Transaction Key is displayed **once** — if it is lost, it has to be
+   regenerated, which invalidates the old one.
+2. **Generate a Signature Key** in the same screen. It is a separate value from
+   the Transaction Key and it is what the webhook route verifies with. 128 hex
+   characters; the code accepts both derivations and logs which one matched
+   (§6), so a wrong reading shows up in the logs rather than as silence.
+3. **Set four variables on Vercel production**, then redeploy:
+
+   ```
+   AUTHORIZENET_API_LOGIN_ID
+   AUTHORIZENET_TRANSACTION_KEY
+   AUTHORIZENET_SIGNATURE_KEY
+   AUTHORIZENET_ENVIRONMENT = production
+   ```
+
+   > **Use `--value '...'`, never a pipe.** Piping appends a newline that
+   > becomes part of the secret; it cost a whole debugging cycle once already,
+   > and the symptom never points at whitespace (§12).
+
+   > **Environment changes only reach a new deployment.** Existing running
+   > functions keep the old values, so a redeploy is part of the step, not an
+   > afterthought.
+
+4. **Register the webhook against the production host** — the sandbox
+   registration does not carry over:
+
+   ```
+   POST https://api.authorize.net/rest/v1/webhooks
+   Authorization: Basic base64(apiLoginId:transactionKey)
+   ```
+
+   Event `net.authorize.payment.authcapture.created`, URL
+   `https://quelldrop.com/api/webhooks/authorizenet`. Note the host is
+   `api.` not `apitest.`, and the credentials are the production pair.
+5. **Turn on the fraud filters** in the Merchant Interface before taking real
+   money: AVS, CVV and **velocity**. Guest checkout has no account barrier by
+   design, and the app's own rate limiter is still in-process rather than
+   Redis-backed (§10), so the gateway's filters are the real control.
+6. **Make the first live transaction a small real purchase, then refund it.**
+   **Settlement has never been exercised** — the sandbox simulates the
+   processor entirely, so money has never actually moved. This is the step that
+   proves funding, the statement descriptor and the refund path, and it is
+   cheap. Check the descriptor on the real card statement, because that is
+   where a wrong one turns into chargebacks.
+7. **Only then flip `ALLOW_INDEXING` to `true`** and redeploy, so search
+   traffic arrives at a store that can actually take money.
+
+**Do not go live without email.** A card-not-present order with no receipt is a
+chargeback waiting to happen, and the customer has no record of what they
+bought. `RESEND_API_KEY` is unset in Vercel production, so today nothing sends
+at all — no confirmation, no shipping notice, no password reset, and no pack
+notice to the office. See §14 item 6; it is an account and a DNS record, not
+code.
+
+
 ### Still open, and it is a people question
 
 - **Who** packs and posts the parcels.
