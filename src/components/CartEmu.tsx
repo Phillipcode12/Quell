@@ -3,6 +3,26 @@
 import { useEffect, useState } from 'react'
 
 /**
+ * A real emu's colouring, not the site palette: dark shaggy body plumage, a
+ * long pale grey neck, and long tan legs.
+ *
+ * The plumage is deliberately lifted to a mid charcoal rather than true black.
+ * The page background is #060606, so an accurate black bird would be a hole in
+ * the screen — the lighter feather streaks and the pale neck and legs are what
+ * carry the shape. The cart stays brand teal, so the brand colour still does
+ * its job while the bird is allowed to look like a bird.
+ */
+const PLUMAGE = '#3a3e45'
+const PLUMAGE_LIGHT = '#6e747d'
+const PLUMAGE_HIGHLIGHT = '#a9b0b8'
+const NECK = '#b6bcc4'
+const NECK_SHADE = '#8f959d'
+const LEG = '#c4b2a2'
+const CROWN = '#23252b'
+const EYE = '#e8a33d'
+const BEAK = '#9aa0a8'
+
+/**
  * An emu pushes a shopping cart across the bottom of the screen when something
  * is added to the basket.
  *
@@ -53,53 +73,105 @@ export function CartEmu({ trigger }: { trigger: number }) {
       className="pointer-events-none fixed inset-x-0 bottom-0 z-40 overflow-hidden"
       aria-hidden="true"
     >
-      <div key={trigger} className="emu-walk w-[170px] sm:w-[210px]">
-        <svg viewBox="0 0 200 132" className="h-auto w-full">
-          <g
-            className="emu-bob"
-            fill="none"
-            stroke="var(--brand)"
-            strokeWidth="3.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            {/* Cart, out in front. The handle runs back to meet the bird's
-                chest — without that the two shapes read as a bird walking
-                *beside* a trolley rather than pushing one. */}
-            <path d="M130 64h46l-6 26h-34z" />
-            <path d="M130 64l-26-11" />
-            <circle cx="141" cy="98" r="5.5" />
-            <circle cx="165" cy="98" r="5.5" />
+      <div key={trigger} className="emu-walk w-[180px] sm:w-[220px]">
+        <svg viewBox="0 0 200 170" className="h-auto w-full">
+          <g className="emu-bob">
+            {/* Cart, out in front, in brand teal so the bird stays the
+                subject. The handle runs back to meet its chest — without that
+                the two shapes read as a bird walking *beside* a trolley
+                rather than pushing one. */}
+            <g
+              fill="none"
+              stroke="var(--brand)"
+              strokeWidth="3.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M136 100h52l-7 28h-40z" />
+              <path d="M136 100l-30-14" />
+              <circle cx="149" cy="136" r="5.5" />
+              <circle cx="175" cy="136" r="5.5" />
+            </g>
 
-            {/* Body. Wider than it is tall, and drawn as a curve rather than a
-                circle — a circle reads as a ball, and the whole job of this
-                shape is to say "large flightless bird" at a glance. */}
+            {/* Legs — long, tan, and mid-stride: one reaching forward, one
+                trailing back, as in the reference. The thigh is thicker than
+                the shank, which is what stops them reading as wire. */}
+            <g className="emu-leg-back">
+              <path d="M58 116l-14 22 4 24" stroke={LEG} strokeWidth="8" strokeLinecap="round" fill="none" />
+              <path d="M44 162l-9 4M48 162h10" stroke={LEG} strokeWidth="4.5" strokeLinecap="round" fill="none" />
+            </g>
+            <g className="emu-leg-front">
+              <path d="M86 114l16 22-3 24" stroke={LEG} strokeWidth="8" strokeLinecap="round" fill="none" />
+              <path d="M99 160l10 4M95 160h10" stroke={LEG} strokeWidth="4.5" strokeLinecap="round" fill="none" />
+            </g>
+
+            {/* Shaggy plumes along the back only. They were on the belly too,
+                which read as spikes growing downward out of the bird rather
+                than as the loose tail plumage they are meant to be. */}
+            <g fill={PLUMAGE}>
+              <path d="M30 74L8 62l20 14zM26 88L2 84l25 11zM28 104L6 112l23 2z" />
+            </g>
+
+            {/* Neck is drawn BEFORE the body on purpose, so the body overlaps
+                its base and the join disappears under the shoulder. Drawn
+                after, it sat on top as a visible seam — a ribbon stuck to the
+                side rather than a neck growing out of the bird. Its base is
+                deliberately wide and extends well inside the body outline. */}
             <path
-              d="M28 60c0-18 18-26 40-26s31 12 30 27c-1 17-15 29-37 29S28 78 28 60z"
-              fill="var(--brand)"
-              fillOpacity="0.15"
+              d="M78 96c2-16 6-30 12-42 6-13 14-24 24-34l14 8c-11 11-19 23-24 36-4 12-7 24-8 36z"
+              fill={NECK}
+            />
+            {/* Shaded edge down the back of the neck, so it reads as round
+                rather than flat. */}
+            <path
+              d="M78 96c2-16 6-30 12-42 6-13 14-24 24-34l4 2c-11 11-19 24-24 37-4 12-7 24-8 37z"
+              fill={NECK_SHADE}
             />
 
-            {/* Shaggy tail, trailing off the back. Drawn outside the body
-                outline so it is actually visible — the previous version had
-                these tucked inside the fill. */}
-            <path d="M29 58c-8-3-15-1-19 3M28 68c-9-1-16 2-19 6M31 78c-8 2-14 6-16 10" />
+            {/* Body — the dark shaggy mass, tilted forward as in the running
+                reference rather than sitting level. Painted over the neck base
+                above. */}
+            <path
+              d="M22 88c2-22 22-35 46-33 22 2 36 15 34 34-2 21-18 34-42 33S20 109 22 88z"
+              fill={PLUMAGE}
+            />
+            {/* Lighter feather marks. These do most of the work: against a
+                near-black page a flat dark shape would disappear, and the
+                reference's plumage is streaked rather than solid.
 
-            {/* Neck and head. Long and slightly S-curved, which along with the
-                legs is what separates an emu from a generic bird. */}
-            <path d="M89 44c5-13 11-23 19-30 3-3 7-4 10-4" />
-            <circle cx="124" cy="10" r="6.5" fill="var(--brand)" fillOpacity="0.15" />
-            <circle cx="126" cy="8" r="1.4" fill="var(--brand)" stroke="none" />
-            {/* Beak */}
-            <path d="M130 10l12 3-12 3" />
+                Deliberately uneven in length, angle and spacing. An earlier
+                pass used three evenly spaced parallel curves and the result
+                read as ribs rather than feathers — regularity is what gives it
+                away. */}
+            <g stroke={PLUMAGE_LIGHT} strokeWidth="2.6" strokeLinecap="round" fill="none">
+              <path d="M34 76c8-3 15-3 21 0M46 68c7-2 13-1 18 2M30 90c10-3 18-2 25 1M52 84c9-2 16-1 21 2M34 102c7-2 14-2 19 1M56 100c8-1 14 0 19 3" />
+            </g>
+            <g stroke={PLUMAGE_HIGHLIGHT} strokeWidth="1.8" strokeLinecap="round" opacity="0.65" fill="none">
+              <path d="M40 71c5-2 10-2 14 0M62 76c6-1 11 0 15 2M38 96c6-2 11-1 15 1M64 108c6-1 11 0 15 2M48 112c5-1 10 0 14 2" />
+            </g>
 
-            {/* Legs, bending backwards at the hock. Long, as an emu's are. */}
-            <g className="emu-leg-front">
-              <path d="M78 88l6 15-8 15M72 118h13" />
-            </g>
-            <g className="emu-leg-back">
-              <path d="M52 88l-5 15 7 15M48 118h13" />
-            </g>
+            {/* Head — small against that neck. */}
+            <path
+              d="M114 22c-1-8 5-15 13-15 8-1 14 5 14 12s-6 13-13 13c-7 1-13-3-14-10z"
+              fill={NECK}
+            />
+            {/* Darker crown and nape, as in the reference. */}
+            <path
+              d="M115 15c3-6 9-9 15-8 5 1 9 4 10 8-4-3-9-5-14-4-5 1-9 2-11 4z"
+              fill={CROWN}
+            />
+
+            {/* Eye. */}
+            <circle cx="130" cy="19" r="4.4" fill={EYE} />
+            <circle cx="130.5" cy="19.4" r="2.1" fill={CROWN} />
+            <circle cx="131.7" cy="17.8" r="0.9" fill="#ffffff" />
+
+            {/* Beak — short and blunt, angled slightly down. */}
+            <path
+              d="M140 17c6 0 11 2 12 5 0 3-5 5-12 5-3 0-4-2-4-5s1-5 4-5z"
+              fill={BEAK}
+            />
+            <circle cx="144" cy="20" r="0.9" fill={CROWN} />
           </g>
         </svg>
       </div>

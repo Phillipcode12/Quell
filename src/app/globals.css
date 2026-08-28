@@ -134,18 +134,18 @@ body {
 
   .emu-bob {
     animation: emu-bob 0.42s ease-in-out infinite;
-    transform-origin: 64px 62px;
+    transform-origin: 64px 92px;
   }
 
   /* The legs swing in opposite phase, which is what sells the walk. */
   .emu-leg-front {
     animation: emu-stride 0.42s ease-in-out infinite;
-    transform-origin: 78px 88px;
+    transform-origin: 86px 114px;
   }
 
   .emu-leg-back {
     animation: emu-stride 0.42s ease-in-out infinite reverse;
-    transform-origin: 52px 88px;
+    transform-origin: 58px 116px;
   }
 }
 
