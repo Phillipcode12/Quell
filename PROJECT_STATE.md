@@ -1691,9 +1691,11 @@ the body with a wide base tucked inside the outline.
 
 ```
 src/components/SiteHelper.tsx        the widget
-src/components/SiteHelper.test.ts    10 content tests
+src/components/SiteHelper.test.ts    14 content tests
 src/components/EmuFace.tsx           the avatar
-public/images/emu-face.jpg           300x462, cropped from the carton
+public/images/emu-helper.png         428x700, keyed out of the artwork below
+art/emu-helper-source.png            the 1122x1402 original, outside public/
+src/app/globals.css                  MODIFIED — the nudge animation
 src/app/layout.tsx                   MODIFIED — mounts <SiteHelper />
 ```
 
@@ -1704,7 +1706,8 @@ src/app/layout.tsx                   MODIFIED — mounts <SiteHelper />
 
 **What it is:** a corner widget with a fixed list of questions, each giving a
 one-line answer and a link to the right page, plus a "Something else" option
-that refuses and hands over to the Drug Facts and the phone number.
+that refuses and hands over to the Drug Facts and the phone number. Since
+2026-08-28 it also speaks first, once, after 10 seconds — see below.
 
 **Deliberately not an AI chatbot, and that is the design.** Quell is an
 FDA-regulated drug. A language model on this domain could be asked "will this
@@ -1718,21 +1721,70 @@ site runs no third-party trackers.
 
 **The tests guard content, not clicking** — that the helper never says
 "redness" (cross-checked against `RELIEVES_WITHHELD`), makes no treatment
-claims, matches `DRUG_FACTS.directions` exactly rather than paraphrasing, and
-that the refusal names a doctor or pharmacist without hedging into an opinion.
-The guarantee is that only reviewed sentences ship; those tests stop someone
-adding a topic that quietly makes a claim.
+claims, matches `DRUG_FACTS.directions` exactly rather than paraphrasing, that
+the refusal names a doctor or pharmacist without hedging into an opinion, and
+that the nudge is still a verbatim quotation of `EMU_OIL.after`. The guarantee
+is that only reviewed sentences ship; those tests stop someone adding a topic
+that quietly makes a claim.
 
-**The avatar is Quell's own artwork** — the emu's head *and neck* cropped from
-`product-box-bottle-white.jpg`, with black patches composited over the box copy
-either side of the neck. The neck is the point: it is what makes the bird read
-as an emu rather than a generic ruffled face.
+#### The artwork, replaced 2026-08-28
 
-> **Regenerating the avatar: mask and resize must be separate sharp passes.**
-> sharp applies `composite` after `resize` regardless of chain order, so bars
-> positioned for the full-resolution crop land in the wrong place if chained —
-> the box text reappears and it is not obvious why. Full recipe is in the
-> comment at the top of `EmuFace.tsx`.
+**The avatar is now the illustration Phillip supplied**, not the old crop from
+the carton photograph. The original is kept at `art/emu-helper-source.png` —
+deliberately *outside* `public/`, so 1.4MB of source artwork is in the
+repository to regenerate from without being served to every visitor.
 
-**Next step:** find out what Phillip dislikes about it and iterate. The
-question list, the tone, the shape of the button and the panel are all open.
+The bird stands free in the corner now rather than inside a teal-ringed tile:
+the tile only ever existed because the old crop arrived on a black rectangle,
+and a frame around a keyed-out image would put that rectangle back.
+
+> **The white background is keyed out by flooding inward from the border, not
+> by thresholding.** A luminance threshold is the obvious approach and it is
+> wrong here — the beak highlights and the eye glints are white too, so it
+> punches holes straight through the face. Flooding from the edge treats only
+> white *connected to the border* as background. The full recipe, including the
+> feathered edge that stops a white rim appearing on the near-black page, is in
+> the comment at the top of `EmuFace.tsx`.
+
+#### The nudge — the one thing on the site that speaks unprompted
+
+After 10 seconds a speech bubble rises out of the emu: **"Did you know? Quell
+reinforces the tear film's oil layer to help reduce moisture loss."**
+
+**The claim is not written in the component.** It is `EMU_OIL.after`,
+interpolated — the sentence already on the carton panel and the about page,
+reused verbatim so the site holds exactly one copy of it. A second, slightly
+reworded copy is how a claim drifts, and the one line that speaks without being
+asked is the worst place for that to happen. The test asserts the two still
+match.
+
+Mechanics, all verified in the browser rather than assumed:
+
+- **The clock is time on the site, not time on the page.** The visit start is
+  in `sessionStorage`, so a reload at 8 seconds does not restart it; the
+  helper is mounted in the root layout, so client-side navigation never
+  remounts it at all. Verified from a cleared session at a 50ms poll: nothing
+  at 2.07 seconds, bubble at 10.06 seconds.
+- **It speaks once per visit.** Dismissing it, or opening the helper, sets the
+  seen flag; every `sessionStorage` access is wrapped, because it throws
+  outright in some privacy configurations and a nicety must not take the page
+  down with it.
+- **The whole bubble is the button** — clicking it opens the helper, which is
+  the action it is inviting — with a separate ✕ for dismissal.
+- **Reduced motion keeps the bubble.** Only the entrance animation sits inside
+  `prefers-reduced-motion: no-preference`. Unlike the walking emu, this one is
+  not hidden under `reduce`: it carries a sentence, and someone who asked for
+  less movement did not ask for less information.
+- **`role="status"`**, so a screen reader is told politely instead of having
+  focus taken mid-sentence.
+
+**Reviewed with Phillip 2026-08-28.** The artwork and the nudge are approved.
+Two things were tried and rejected, so they do not need proposing again: an
+empty bubble that appeared 700ms ahead of the sentence (built, looked at, cut —
+he did not like it), and typing dots inside it (never built; they would claim a
+reply is being composed on a site with nobody at the other end). The delay was
+30 seconds and is now 10 at his request.
+
+**Next step:** the question list, the tone, and the shape of the panel are
+still open. The production build has not been run against any of this — tests,
+`tsc` and `eslint` are clean, and it has only been exercised under `next dev`.

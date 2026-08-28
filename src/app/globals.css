@@ -184,3 +184,33 @@ body {
     display: none;
   }
 }
+
+/* --- The helper nudge (components/SiteHelper.tsx) --------------------------
+ *
+ * The speech bubble that rises out of the emu after someone has been on the
+ * site for a while. It grows from its bottom-right corner, which is where the
+ * tail is, so it reads as coming *from* the bird rather than appearing beside
+ * it.
+ *
+ * Unlike the walking emu, this is not hidden under `reduce`: it carries a
+ * sentence, and someone who has asked for less movement has not asked for less
+ * information. Under `reduce` it simply appears without the animation.
+ */
+@keyframes helper-nudge-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .helper-nudge {
+    animation: helper-nudge-in 0.35s ease-out both;
+    transform-origin: bottom right;
+  }
+}
+

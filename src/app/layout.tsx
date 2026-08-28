@@ -3,6 +3,7 @@ import './globals.css'
 import { CartProvider } from '@/components/CartProvider'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
+import { SiteHelper } from '@/components/SiteHelper'
 import { getCurrentUser } from '@/lib/auth'
 import { isAdminEmail } from '@/lib/admin'
 import { BRAND } from '@/lib/product-content'
@@ -46,6 +47,7 @@ export default async function RootLayout({ children }: LayoutProps<'/'>) {
           <Header user={user} isAdmin={isAdmin} />
           <main className="flex-1">{children}</main>
           <Footer />
+          <SiteHelper />
         </CartProvider>
       </body>
     </html>
