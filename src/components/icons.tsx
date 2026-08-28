@@ -150,3 +150,13 @@ export function ArrowRight(props: IconProps) {
     </svg>
   )
 }
+
+export function ShoppingCart(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M2.5 3h2.2l2.1 10.4a1.6 1.6 0 0 0 1.6 1.3h7.9a1.6 1.6 0 0 0 1.6-1.2l1.6-6.3H6" />
+      <circle cx="9" cy="19.5" r="1.4" />
+      <circle cx="17" cy="19.5" r="1.4" />
+    </svg>
+  )
+}

@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useCart } from '@/components/CartProvider'
+import { ShoppingCart } from '@/components/icons'
 import { QuellLogoInline } from '@/components/Logo'
 import { SignOutButton } from '@/components/SignOutButton'
 
@@ -39,10 +40,24 @@ export function Header({
         </nav>
 
         <div className="ml-auto flex shrink-0 items-center gap-3 text-sm sm:gap-4 lg:ml-0">
-          <Link href="/cart" className="text-muted hover:text-white">
-            Cart
+          {/* Given its own bordered chip and an icon rather than sitting as
+              plain text among the nav links. This is where people go to check
+              out, so it should be findable at a glance — the icon is what the
+              eye actually scans for, and the count badge sits on it so a full
+              cart reads as full without needing to be parsed. */}
+          <Link
+            href="/cart"
+            aria-label={
+              count > 0
+                ? `Cart, ${count} ${count === 1 ? 'item' : 'items'}`
+                : 'Cart'
+            }
+            className="relative flex items-center gap-2 rounded-lg border border-line px-3 py-2 font-medium text-white transition hover:border-brand hover:bg-brand/10"
+          >
+            <ShoppingCart className="h-5 w-5" />
+            <span className="hidden sm:inline">Cart</span>
             {count > 0 && (
-              <span className="ml-1.5 rounded-full bg-brand px-2 py-0.5 text-xs font-semibold text-black">
+              <span className="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand px-1 text-xs font-bold text-black">
                 {count}
               </span>
             )}

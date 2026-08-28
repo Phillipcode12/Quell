@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { useCart } from '@/components/CartProvider'
 import { ArrowRight } from '@/components/icons'
+import { CartEmu } from '@/components/CartEmu'
 import { formatUsd } from '@/lib/money'
 
 /**
@@ -27,6 +28,8 @@ export function BuyPanel({
   const { add, count } = useCart()
   const [quantity, setQuantity] = useState(1)
   const [justAdded, setJustAdded] = useState(false)
+  // Incremented on every add, so the emu restarts even on a repeat click.
+  const [emuTrigger, setEmuTrigger] = useState(0)
   const confirmTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Stop the pending confirmation from firing into an unmounted component.
@@ -55,6 +58,9 @@ export function BuyPanel({
 
   function addToCart() {
     add(productId, quantity)
+    // A counter rather than a boolean, so adding twice in a row restarts the
+    // emu instead of being swallowed as "already true".
+    setEmuTrigger((n) => n + 1)
     // Only the button's tick is transient — it confirms *this* click. The link
     // below is driven by the cart itself, so it stays put.
     setJustAdded(true)
@@ -97,19 +103,28 @@ export function BuyPanel({
 
       {/* Tied to the cart having contents, not to the click, so it persists
           for as long as there is something to go and check out — including
-          after a reload. */}
+          after a reload.
+
+          Styled as a full-width secondary button rather than a text link. It
+          was a small `text-sm` link before, which was easy to miss at the
+          moment it matters most, and `hover:underline` on an inline-flex
+          underlined the gaps between the label, the count and the arrow too —
+          so the rule arrived in three disconnected pieces. A bordered button
+          has no underline to break. */}
       {count > 0 && (
         <Link
           href="/cart"
-          className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-brand-light hover:underline"
+          className="mt-4 flex w-full items-center justify-center gap-2.5 rounded-lg border-2 border-brand bg-brand/10 px-6 py-3.5 text-base font-semibold text-brand-light transition hover:bg-brand hover:text-black"
         >
           Go to cart
-          <span className="text-muted">
+          <span className="font-normal opacity-80">
             ({count} {count === 1 ? 'item' : 'items'})
           </span>
-          <ArrowRight className="h-4 w-4" />
+          <ArrowRight className="h-5 w-5" />
         </Link>
       )}
+
+      <CartEmu trigger={emuTrigger} />
     </div>
   )
 }

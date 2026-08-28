@@ -114,3 +114,73 @@ body {
 .prose-fineprint li {
   margin-bottom: 0.25rem;
 }
+
+/* --- The cart emu (components/CartEmu.tsx) ---------------------------------
+ *
+ * Walks in from off-screen left and out past the right edge. Distance is in
+ * viewport units so it clears the screen at any width, with a fixed pixel
+ * head start so it begins fully hidden regardless of how wide the emu is.
+ *
+ * Reduced motion is handled here rather than in JavaScript: the animation
+ * rules only apply under `no-preference`, and the emu is hidden outright under
+ * `reduce`. Doing it in CSS means no state, no effect, and it responds if the
+ * preference changes mid-session.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .emu-walk {
+    animation: emu-walk 4s linear forwards;
+    will-change: transform;
+  }
+
+  .emu-bob {
+    animation: emu-bob 0.42s ease-in-out infinite;
+    transform-origin: 64px 62px;
+  }
+
+  /* The legs swing in opposite phase, which is what sells the walk. */
+  .emu-leg-front {
+    animation: emu-stride 0.42s ease-in-out infinite;
+    transform-origin: 78px 88px;
+  }
+
+  .emu-leg-back {
+    animation: emu-stride 0.42s ease-in-out infinite reverse;
+    transform-origin: 52px 88px;
+  }
+}
+
+@keyframes emu-walk {
+  from {
+    transform: translateX(-200px);
+  }
+  to {
+    transform: translateX(100vw);
+  }
+}
+
+@keyframes emu-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes emu-stride {
+  0%,
+  100% {
+    transform: rotate(14deg);
+  }
+  50% {
+    transform: rotate(-14deg);
+  }
+}
+
+/* Someone who has asked their system for less movement gets no bird at all. */
+@media (prefers-reduced-motion: reduce) {
+  .emu-walk {
+    display: none;
+  }
+}
