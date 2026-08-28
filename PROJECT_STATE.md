@@ -426,7 +426,7 @@ should be a small real purchase you make and then refund.
 | `15%` subscription discount | **My placeholder**, and now dormant — subscriptions are deferred. Still a margin decision before they return. |
 | Authorize.net credentials | **Sandbox is done and working. Applied 2026-08-20 (§19); Authorize.net referred it to Zen Payments, a high-risk ISO — nothing signed, see §21.** Production credentials wait on a **new merchant account** — Quell is no longer sharing BlephEx's. See §13. |
 | Merchant account | **Decided 2026-08-19: Quell gets its own.** Ryan ruled out sharing BlephEx's Stax account because the two companies are taxed and reported separately. Open: Stax's low-volume tier (Nick is quoting) vs Authorize.net's own All-in-One at ~$25/mo + 2.9% + 30¢. Either way the code is unchanged — Authorize.net stays the gateway. |
-| Domain | **Done 2026-08-20 — https://quelldrop.com is live and canonical** (§18). The other three redirect to it. `NEXT_PUBLIC_APP_URL` still points at the vercel.app host on purpose, so the site stays out of search until it can actually sell; flipping it turns indexing on. |
+| Domain | **Done 2026-08-20 — https://quelldrop.com is live and canonical** (§18). The other three redirect to it. `NEXT_PUBLIC_APP_URL` is set to `https://quelldrop.com` in Vercel production, so canonical tags, OpenGraph URLs and the sitemap are all correct; indexing is held off separately by `ALLOW_INDEXING`, which is what `robots.txt` reflects. *(Corrected 2026-08-28 — this row previously said the variable still pointed at the vercel.app host, which was no longer true. Verified against `vercel env ls production` and the live canonical tag.)* |
 | Customer email address | **None exists yet, but the plan changed on 2026-08-20 and got simpler.** `EMAIL_FROM` is still `orders@example.com`, a reserved domain that cannot send or receive. **The sender should now be `orders@quelldrop.com`, not `Quell@meibum.com`** — Quell owns its own domain, whose DNS zone has no MX and no TXT records at all, so Resend's DKIM and SPF records go onto a clean zone. **This removes the meibum.com SPF hazard entirely**: no edit to BlephEx's single existing SPF record, so no way to break their mail. A monitored *inbox* is still needed for replies and returns, and that can still be a Microsoft 365 shared mailbox — but it is no longer on the critical path for *sending*. |
 | Fulfilment | **Decided 2026-08-20: packed and posted by hand from the office**, not pushed to XPSShipper. The app now supports that — a paid order emails a fulfilment list, and marking it shipped captures a carrier and tracking number that reach the customer (§20). What is still open is the human side: **who** packs and posts, and who receives returns, since the terms accept unopened returns for 30 days. |
 | Card statement descriptor | **Resolves with the separate merchant account** — Quell sets its own rather than showing BlephEx's. Still needs choosing, and it affects packaging and email copy, so it has the longest lead time. |
@@ -1777,6 +1777,29 @@ Mechanics, all verified in the browser rather than assumed:
   less movement did not ask for less information.
 - **`role="status"`**, so a screen reader is told politely instead of having
   focus taken mid-sentence.
+
+#### It stays off the cart — found in review, 2026-08-28
+
+**The helper was taking taps meant for Continue to payment.** On a 375px
+screen the cart's fields scroll up through the bottom-right corner, and the
+widget is fixed there. Measured on the live site with `elementFromPoint`, each
+field scrolled to the bottom of the viewport: the emu was the top element at
+the right-hand end of the email, last name, street, apt, city and ZIP fields —
+and of **Continue to payment**, the one button on the site that takes money.
+
+Reserving space at the foot of the page does not fix it. The widget is fixed to
+the viewport rather than the document, so mid-scroll positions still pass
+underneath it. Not being there is the fix, which is also what serious
+storefronts do with a chat widget on checkout.
+
+`HIDDEN_ON` in `SiteHelper.tsx` is the list, `/cart` its only entry, and a test
+asserts both that the cart is on it and that no topic link points at a page the
+helper has hidden itself from — an answer that leads somewhere it cannot be
+reached from is a dead end.
+
+`/login` and `/orders` were measured too and are clear: both pages are short
+enough that their buttons sit well above the corner.
+
 
 **Reviewed with Phillip 2026-08-28.** The artwork and the nudge are approved.
 Two things were tried and rejected, so they do not need proposing again: an

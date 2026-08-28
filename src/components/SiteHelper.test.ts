@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { MEDICAL_NOTICE, NUDGE, NUDGE_DELAY_MS, TOPICS } from './SiteHelper'
+import {
+  HIDDEN_ON,
+  MEDICAL_NOTICE,
+  NUDGE,
+  NUDGE_DELAY_MS,
+  TOPICS,
+} from './SiteHelper'
 import { DRUG_FACTS, EMU_OIL, RELIEVES_WITHHELD } from '@/lib/product-content'
 
 /**
@@ -152,5 +158,27 @@ describe('the unprompted nudge', () => {
     // instant: a line that arrives before the page has been read is an
     // interruption, not an aside.
     expect(NUDGE_DELAY_MS).toBeGreaterThanOrEqual(10_000)
+  })
+})
+
+describe('where the helper is allowed to appear', () => {
+  it('stays off the cart', () => {
+    // The cart is the checkout form. A fixed widget in the bottom-right
+    // corner takes taps meant for the fields that scroll past it — including
+    // Continue to payment, measured on the live site. Not being there is the
+    // fix; reserving space at the foot of the page is not, because the widget
+    // is fixed to the viewport rather than the document.
+    expect(HIDDEN_ON).toContain('/cart')
+  })
+
+  it('does not hide itself from the pages its own answers point at', () => {
+    // Every topic link has to lead somewhere the helper can still be reached
+    // from, or the answer is a dead end. /cart is the exception above: the
+    // shipping answer sends people there deliberately, to check out.
+    for (const t of TOPICS) {
+      if (!t.href || t.href === '/cart') continue
+      const path = t.href.split('#')[0] || '/'
+      expect(HIDDEN_ON).not.toContain(path)
+    }
   })
 })

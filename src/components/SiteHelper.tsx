@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { EmuFace } from '@/components/EmuFace'
 import { COMPANY, EMU_OIL } from '@/lib/product-content'
@@ -127,6 +128,26 @@ export const NUDGE = `Did you know? ${EMU_OIL.after}.`
  */
 export const NUDGE_DELAY_MS = 10_000
 
+/**
+ * Pages the helper stays off.
+ *
+ * The cart is the checkout form, and it is long: on a 375px screen its fields
+ * scroll up through the bottom-right corner, so a fixed widget parked there
+ * takes the taps meant for them. Measured on the live site with
+ * elementFromPoint: with each field scrolled to the bottom of the viewport,
+ * the emu was the top element at the right-hand end of the email, last name,
+ * street, apt, city and ZIP fields — and of **Continue to payment**, the one
+ * button on the site that takes money. Tapping the right of it opened the
+ * helper instead of paying.
+ *
+ * Reserving space at the foot of the page does not fix it: the widget is fixed
+ * to the viewport, so mid-scroll positions still pass underneath. Not being
+ * there is the fix, and it is what every serious storefront does with a chat
+ * widget on its checkout — the page where someone is paying is not the page to
+ * put a mascot in front of.
+ */
+export const HIDDEN_ON = ['/cart']
+
 /** Session keys: when the visit started, and whether the emu has spoken. */
 const NUDGE_START_KEY = 'quell.helper.visitStart'
 const NUDGE_SEEN_KEY = 'quell.helper.nudgeSeen'
@@ -142,6 +163,7 @@ export const MEDICAL_NOTICE =
   'I can only point you around the site — I can’t give medical advice or answer questions about your symptoms. Please read the Drug Facts, and speak to your doctor or pharmacist about anything health-related.'
 
 export function SiteHelper() {
+  const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [topic, setTopic] = useState<Topic | null>(null)
   const [showMedicalNotice, setShowMedicalNotice] = useState(false)
@@ -210,6 +232,8 @@ export function SiteHelper() {
     setTopic(null)
     setShowMedicalNotice(false)
   }
+
+  if (HIDDEN_ON.includes(pathname)) return null
 
   return (
     // Sits above the emu animation (z-40) but below the sticky header (z-50),
