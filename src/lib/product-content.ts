@@ -150,6 +150,16 @@ export const DRUG_FACTS = {
   ],
 } as const
 
+/**
+ * The returns policy in one line, for the point of purchase.
+ *
+ * The page at /terms is the authoritative text and this is only a summary, so
+ * it says less rather than saying it differently: unopened, 30 days. It
+ * deliberately omits the refund amount and the damaged-order replacement,
+ * because a summary that starts listing exceptions is a policy with two versions.
+ */
+export const RETURNS_SUMMARY = '30-day returns on unopened bottles'
+
 /** Emu oil panel, transcribed from the side of the carton. */
 export const EMU_OIL = {
   body: 'Emu oil is an all natural oil used by the Aboriginal people of Australia for thousands of years to nourish and protect the body. In artificial tears, it provides soothing support of the tear film’s oil layer to reduce moisture loss.',

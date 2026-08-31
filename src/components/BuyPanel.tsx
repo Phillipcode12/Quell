@@ -3,9 +3,15 @@
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { useCart } from '@/components/CartProvider'
-import { ArrowRight } from '@/components/icons'
+import { ArrowRight, Droplet, ShieldCheck, Truck } from '@/components/icons'
 import { CartEmu } from '@/components/CartEmu'
 import { formatUsd } from '@/lib/money'
+import { DRUG_FACTS, RETURNS_SUMMARY } from '@/lib/product-content'
+import {
+  FREE_SHIPPING_THRESHOLD_CENTS,
+  STANDARD_SHIPPING_CENTS,
+  remainingForFreeShipping,
+} from '@/lib/shipping'
 
 /**
  * Buy controls for the single SKU.
@@ -56,6 +62,18 @@ export function BuyPanel({
     (_, i) => i + 1,
   )
 
+  /**
+   * The free-shipping threshold is $59.00 against a $29.99 bottle, which is a
+   * two-pack by design — and the page never said so. The cart worked this out
+   * only after someone had already committed to one.
+   */
+  const shortfall = remainingForFreeShipping(priceCents * quantity)
+  const qualifyingQuantity = Math.ceil(FREE_SHIPPING_THRESHOLD_CENTS / priceCents)
+  const canQualify =
+    shortfall > 0 &&
+    qualifyingQuantity > quantity &&
+    qualifyingQuantity <= options.length
+
   function addToCart() {
     add(productId, quantity)
     // A counter rather than a boolean, so adding twice in a row restarts the
@@ -101,6 +119,19 @@ export function BuyPanel({
         </button>
       </div>
 
+      {canQualify && (
+        <button
+          onClick={() => setQuantity(qualifyingQuantity)}
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-brand/40 bg-brand/10 px-4 py-3 text-sm text-brand-light transition hover:border-brand hover:bg-brand/20"
+        >
+          <Truck className="h-4 w-4 shrink-0" />
+          <span>
+            Make it {qualifyingQuantity} and shipping is free — saves{' '}
+            {formatUsd(STANDARD_SHIPPING_CENTS)}
+          </span>
+        </button>
+      )}
+
       {/* Tied to the cart having contents, not to the click, so it persists
           for as long as there is something to go and check out — including
           after a reload.
@@ -123,6 +154,41 @@ export function BuyPanel({
           <ArrowRight className="h-5 w-5" />
         </Link>
       )}
+
+      {/*
+        The three things a first-time buyer of an unfamiliar eye drop wants to
+        know at the moment they decide, none of which were visible here before:
+        what shipping costs, whether they can send it back, and — the one that
+        otherwise becomes a support call — that the liquid really is meant to
+        look like that.
+      */}
+      <ul className="mt-5 space-y-2.5 border-t border-line pt-4 text-sm text-muted">
+        <li className="flex items-start gap-2.5">
+          <Truck className="mt-0.5 h-4 w-4 shrink-0 text-brand-light" />
+          <span>
+            Free shipping over {formatUsd(FREE_SHIPPING_THRESHOLD_CENTS)},
+            otherwise a flat {formatUsd(STANDARD_SHIPPING_CENTS)}. US only.
+          </span>
+        </li>
+        <li className="flex items-start gap-2.5">
+          <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-brand-light" />
+          <span>
+            {RETURNS_SUMMARY} —{' '}
+            <Link href="/terms" className="underline hover:text-white">
+              see terms
+            </Link>
+            .
+          </span>
+        </li>
+        <li className="flex items-start gap-2.5">
+          <Droplet className="mt-0.5 h-4 w-4 shrink-0 text-brand-light" />
+          {/* Straight from the Drug Facts panel rather than paraphrased, so
+              the reassurance cannot drift from what the label says. */}
+          <span>
+            {DRUG_FACTS.otherInformation[0]} — that is expected, not a fault.
+          </span>
+        </li>
+      </ul>
 
       <CartEmu trigger={emuTrigger} />
     </div>
