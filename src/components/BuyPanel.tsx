@@ -6,7 +6,7 @@ import { useCart } from '@/components/CartProvider'
 import { ArrowRight, Droplet, ShieldCheck, Truck } from '@/components/icons'
 import { CartEmu } from '@/components/CartEmu'
 import { formatUsd } from '@/lib/money'
-import { DRUG_FACTS, RETURNS_SUMMARY } from '@/lib/product-content'
+import { APPEARANCE_NOTE, RETURNS_SUMMARY } from '@/lib/product-content'
 import {
   FREE_SHIPPING_THRESHOLD_CENTS,
   STANDARD_SHIPPING_CENTS,
@@ -187,11 +187,9 @@ export function BuyPanel({
         </li>
         <li className="flex items-start gap-2.5">
           <Droplet className="mt-0.5 h-4 w-4 shrink-0 text-brand-light" />
-          {/* Straight from the Drug Facts panel rather than paraphrased, so
-              the reassurance cannot drift from what the label says. */}
-          <span>
-            {DRUG_FACTS.otherInformation[0]} — that is expected, not a fault.
-          </span>
+          {/* Kept in product-content.ts with the other customer-facing copy,
+              and tied there to the Drug Facts wording it restates. */}
+          <span>{APPEARANCE_NOTE}</span>
         </li>
       </ul>
 

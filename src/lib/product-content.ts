@@ -160,6 +160,22 @@ export const DRUG_FACTS = {
  */
 export const RETURNS_SUMMARY = '30-day returns on unopened bottles'
 
+/**
+ * The appearance reassurance shown beside the buy button, written by Phillip.
+ *
+ * The colour is the most likely "is this spoiled?" support call and return on
+ * this product, so it is said plainly at the point of purchase rather than
+ * left in the FAQ.
+ *
+ * It must stay consistent with what the label says — DRUG_FACTS.otherInformation
+ * carries "Product appears as a milky brown solution", and the FAQ explains the
+ * natural oil-based ingredients behind it. This is a friendlier phrasing of the
+ * same fact, not a new claim: if the label wording ever changes, change this
+ * too.
+ */
+export const APPEARANCE_NOTE =
+  'The eye drops have a naturally milky-brown appearance. This is normal and does not indicate a problem with the product.'
+
 /** Emu oil panel, transcribed from the side of the carton. */
 export const EMU_OIL = {
   body: 'Emu oil is an all natural oil used by the Aboriginal people of Australia for thousands of years to nourish and protect the body. In artificial tears, it provides soothing support of the tear film’s oil layer to reduce moisture loss.',
