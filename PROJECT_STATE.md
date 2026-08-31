@@ -427,7 +427,7 @@ should be a small real purchase you make and then refund.
 | Authorize.net credentials | **Sandbox is done and working. Applied 2026-08-20 (§19); Authorize.net referred it to Zen Payments, a high-risk ISO — nothing signed, see §21.** Production credentials wait on a **new merchant account** — Quell is no longer sharing BlephEx's. See §13. |
 | Merchant account | **Decided 2026-08-19: Quell gets its own.** Ryan ruled out sharing BlephEx's Stax account because the two companies are taxed and reported separately. Open: Stax's low-volume tier (Nick is quoting) vs Authorize.net's own All-in-One at ~$25/mo + 2.9% + 30¢. Either way the code is unchanged — Authorize.net stays the gateway. |
 | Domain | **Done 2026-08-20 — https://quelldrop.com is live and canonical** (§18). The other three redirect to it. `NEXT_PUBLIC_APP_URL` is set to `https://quelldrop.com` in Vercel production, so canonical tags, OpenGraph URLs and the sitemap are all correct; indexing is held off separately by `ALLOW_INDEXING`, which is what `robots.txt` reflects. *(Corrected 2026-08-28 — this row previously said the variable still pointed at the vercel.app host, which was no longer true. Verified against `vercel env ls production` and the live canonical tag.)* |
-| Customer email address | **Settled 2026-08-31, except for the Resend key.** Quell has no mailbox of its own yet, so Phillip's is used for everything inbound: `FULFILMENT_EMAILS` and `EMAIL_REPLY_TO` are both `Phillip.moore@meibum.com`, in `.env` and in Vercel production. **The sender is unchanged and must stay `orders@quelldrop.com`** — see the From/Reply-To split below, which is what keeps meibum.com out of it. `EMAIL_FROM` was still `orders@example.com` in Vercel until 2026-08-31 and has been corrected. **The sender should now be `orders@quelldrop.com`, not `Quell@meibum.com`** — Quell owns its own domain, whose DNS zone has no MX and no TXT records at all, so Resend's DKIM and SPF records go onto a clean zone. **This removes the meibum.com SPF hazard entirely**: no edit to BlephEx's single existing SPF record, so no way to break their mail. A Quell-branded mailbox is still wanted eventually — receipts arriving from `orders@quelldrop.com` but answered by a person at meibum.com is a seam customers can see — but nothing is blocked on it. |
+| Customer email address | **Settled and working, 2026-08-31 (§20).** Quell has no mailbox of its own yet, so Phillip's is used for everything inbound: `FULFILMENT_EMAILS` and `EMAIL_REPLY_TO` are both `Phillip.moore@meibum.com`, in `.env` and in Vercel production. **The sender is unchanged and must stay `orders@quelldrop.com`** — see the From/Reply-To split below, which is what keeps meibum.com out of it. `EMAIL_FROM` was still `orders@example.com` in Vercel until 2026-08-31 and has been corrected. **The sender should now be `orders@quelldrop.com`, not `Quell@meibum.com`** — Quell owns its own domain, whose DNS zone has no MX and no TXT records at all, so Resend's DKIM and SPF records go onto a clean zone. **This removes the meibum.com SPF hazard entirely**: no edit to BlephEx's single existing SPF record, so no way to break their mail. A Quell-branded mailbox is still wanted eventually — receipts arriving from `orders@quelldrop.com` but answered by a person at meibum.com is a seam customers can see — but nothing is blocked on it. |
 | Fulfilment | **Decided 2026-08-20: packed and posted by hand from the office**, not pushed to XPSShipper. The app now supports that — a paid order emails a fulfilment list, and marking it shipped captures a carrier and tracking number that reach the customer (§20). What is still open is the human side: **who** packs and posts, and who receives returns, since the terms accept unopened returns for 30 days. |
 | Card statement descriptor | **Resolves with the separate merchant account** — Quell sets its own rather than showing BlephEx's. Still needs choosing, and it affects packaging and email copy, so it has the longest lead time. |
 | `$29.99` price | Matches the Dry Eye Rescue retail listing as of 2026-08-13. |
@@ -810,15 +810,14 @@ diverging from it.
    one: who packs and posts, which address receives the order notifications,
    and who receives returns. *(Ownership is answered — Dr. Rynerson is the sole
    owner of Aurora.)*
-6. **`RESEND_API_KEY` — now the only thing between here and working email.**
-   Everything else was settled 2026-08-31: `EMAIL_FROM` is
-   `orders@quelldrop.com` in Vercel (it was still `orders@example.com`),
-   and `FULFILMENT_EMAILS` and `EMAIL_REPLY_TO` both point at
-   `Phillip.moore@meibum.com`, so every paid order and every customer reply
-   reaches a mailbox that exists. What remains is a Resend account, verifying
-   quelldrop.com in it, and adding the DKIM and SPF records it gives you to
-   Quell's own zone — which is empty, so nothing can break (§9). **Nothing
-   sends at all until that key exists**, including password resets.
+6. ~~**`RESEND_API_KEY` and the sender address.**~~ **Done 2026-08-31 —
+   email works, verified against a real inbox and Resend's delivery log (§20).**
+   `EMAIL_FROM` is `orders@quelldrop.com` (it was the unsendable
+   `orders@example.com`), and `FULFILMENT_EMAILS` and `EMAIL_REPLY_TO` both
+   point at `Phillip.moore@meibum.com`, so paid orders and customer replies
+   reach a mailbox that exists. **Not yet exercised: the order emails
+   themselves** — the receipt and the pack notice have never been sent by a
+   real order, only rendered (`npx tsx scripts/preview-emails.ts`).
 6b. ~~**Domain.**~~ Done 2026-08-20 — `quelldrop.com` is live and canonical
    (§18). This unblocked the merchant application and Meta domain verification.
 7. **Create the Upstash database and the Sentry project.** Both integrations are
@@ -1608,12 +1607,35 @@ Run against the local Postgres and the real admin UI, not just mocks:
 | Customer email | carried the working UPS tracking link |
 | No recipients configured | logged loudly, naming the order |
 
-### Nothing sends yet
+### Email works — verified 2026-08-31
 
-`RESEND_API_KEY` is still unset, so all of this prints to the server console
-instead of being delivered. It starts working when Resend is configured and
-`EMAIL_FROM` becomes `orders@quelldrop.com` (§9) — those genuinely ship
-together.
+**Resend is configured and mail is being delivered for real.** Proven end to
+end rather than assumed: a password reset was triggered against the live site,
+it arrived in the recipient's inbox, and it appears in Resend's own delivery
+log. Both halves matter — the inbox proves delivery, the Resend log proves the
+send actually left the application.
+
+Setup, for the record: Resend account on the work address, domain
+`quelldrop.com` verified with three DNS records at GoDaddy (DKIM `TXT` on
+`resend._domainkey`, SPF `TXT` and a bounce `MX` on `send`), added by hand
+rather than through the auto-configure integration — that integration wants
+write access to the GoDaddy account, which also holds **meibum.com**, and the
+whole point of sending as quelldrop.com is that BlephEx's zone is never
+touched. All three were checked from an outside resolver before verifying, and
+the DKIM key was compared character by character rather than by eye.
+
+**No tracking records.** Resend issued no tracking CNAME, so links in emails
+are not rewritten and no open-tracking pixel is embedded. That keeps the
+privacy policy true as written.
+
+> **The first send appeared to fail and had not.** A password reset was
+> triggered before any account existed *in the production database* — local and
+> deployed have separate databases, and the account had only ever been created
+> locally. `forgot-password` only sends when the user exists, and returns the
+> same neutral message either way, so nothing was sent and nothing was logged.
+> Resend's empty log was the evidence that settled it. **Production had zero
+> accounts**, which also meant nobody could open `/admin/orders` on the live
+> site — admin needs a signed-in session as well as the allowlist.
 
 ### Migrations do not run on deploy
 
