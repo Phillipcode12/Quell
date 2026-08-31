@@ -16,7 +16,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <Hero />
+      <Hero product={product} />
       <WhyItWorks />
       <BuySection product={product} />
       <HowToUse />

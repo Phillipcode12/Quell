@@ -863,6 +863,44 @@ diverging from it.
    settlement has never been exercised, since the sandbox simulates the
    processor entirely.
 
+### Storefront review — the agreed list, 2026-08-31
+
+A full pass over the live site produced seven items. **Phillip agreed to all
+seven**, to be worked in this order. They are conversion and trust work, not
+defects: nothing here is broken.
+
+1. ~~**The buy control is four screens down.**~~ **Done 2026-08-31.** The
+   homepage runs to ~9,350px on a phone — about twelve screens — and the buy
+   panel did not start until 3,214px. Someone who arrived already sold had to
+   scroll past two thousand pixels of science to spend money. The hero now
+   carries the price and a real add-to-cart (`home/HeroBuy.tsx`); the panel
+   below keeps the quantity selector, stock badge and detail. **No second
+   quantity selector in the hero on purpose** — two on one page is a question
+   asked twice, and the cart can change quantity anyway.
+2. **No social proof anywhere.** No reviews, ratings, testimonials or
+   practitioner endorsement. For a $29.99 unknown-brand OTC drug bought online
+   this is the largest single gap on the site, and it is worth more than any
+   design change. **Blocked on real content** — it cannot be invented, and on a
+   drug site a fabricated testimonial is a regulatory problem as well as a
+   dishonest one. Three genuine customer quotes would do.
+3. **Nothing prompts the second bottle.** Free shipping begins at $59.00 and the
+   product is $29.99, so the threshold is built for a two-pack that is never
+   offered. The cart already computes "add $29.01 more"; the same prompt belongs
+   at the buy panel.
+4. **"Milky brown solution" is buried** in the FAQ and step 3 of How to Use. It
+   is the most likely "is this spoiled?" support call and return on this
+   product, and it belongs beside the buy button.
+5. **The returns policy is not visible where the decision is made.** Free
+   shipping shows at the buy panel; 30-day returns do not. First purchase from
+   an unfamiliar brand is exactly when that matters.
+6. **The helper nudge covers the hero's "Why it works" button** on a phone. Same
+   family as the checkout-button defect already fixed — see §22.
+7. **Two credibility snags on /about.** Aurora Pharmaceuticals **LLC** owns the
+   trademark while Aurora Pharmaceuticals **Inc** manufactures — accurate, and
+   recorded in §9, but one sentence apart it reads as a typo. And "Online:
+   meibum.com" sends Quell customers to BlephEx's site, the same brand seam as
+   the email address.
+
 ### Smaller things left on the floor
 
 - ~~`scripts\stop-local.ps1` kills every `node` process.~~ Fixed and verified

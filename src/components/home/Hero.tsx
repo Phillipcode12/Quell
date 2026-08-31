@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { HeroBuy } from '@/components/home/HeroBuy'
 import { ArrowRight, Truck } from '@/components/icons'
 import { formatUsd } from '@/lib/money'
 import { BRAND, FRONT_PANEL_CLAIMS, RELIEVES } from '@/lib/product-content'
@@ -11,7 +12,18 @@ import { FREE_SHIPPING_THRESHOLD_CENTS } from '@/lib/shipping'
 const BLEND_MASK =
   'radial-gradient(ellipse 66% 62% at 50% 46%, #000 50%, rgba(0,0,0,0.65) 72%, transparent 88%)'
 
-export function Hero() {
+/**
+ * The product the hero sells directly. Null only if the catalogue is empty,
+ * which is a broken deployment rather than a state worth designing for — the
+ * hero falls back to linking at the buy panel.
+ */
+type HeroProduct = {
+  id: string
+  priceCents: number
+  stockQuantity: number
+} | null
+
+export function Hero({ product }: { product: HeroProduct }) {
   return (
     <section className="relative overflow-hidden border-b border-line">
       <div
@@ -51,21 +63,29 @@ export function Hero() {
             {RELIEVES.join(' · ')}
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href="#buy"
-              className="inline-flex items-center gap-2 rounded-lg bg-brand px-6 py-3.5 font-semibold text-black transition hover:bg-brand-light"
-            >
-              Buy Quell — {BRAND.size}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href="#science"
-              className="rounded-lg border border-line px-6 py-3.5 font-medium text-white transition hover:border-brand hover:bg-white/5"
-            >
-              Why it works
-            </Link>
-          </div>
+          {product ? (
+            <HeroBuy
+              productId={product.id}
+              priceCents={product.priceCents}
+              soldOut={product.stockQuantity <= 0}
+            />
+          ) : (
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="#buy"
+                className="inline-flex items-center gap-2 rounded-lg bg-brand px-6 py-3.5 font-semibold text-black transition hover:bg-brand-light"
+              >
+                Buy Quell — {BRAND.size}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href="#science"
+                className="rounded-lg border border-line px-6 py-3.5 font-medium text-white transition hover:border-brand hover:bg-white/5"
+              >
+                Why it works
+              </Link>
+            </div>
+          )}
 
           <ul className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-line pt-7 text-sm text-muted">
             {/* The sentence above now ends on "Preservative-Free", so showing it
