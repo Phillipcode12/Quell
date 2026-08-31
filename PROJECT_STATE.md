@@ -1924,13 +1924,66 @@ Three constraints on it, all verified in a browser rather than assumed:
 - **It cannot stack.** The trigger is a counter rather than a boolean, passed as
   a `key`, so adding three times restarts one emu instead of starting three.
 
-**The drawing took four passes** (`8c303c6`), each fixing something visible on
-screen. Worth not repeating: an outline drawing (`fill:none` plus a stroke)
-reads as a stick figure; a circular body reads as a ball; a short neck reads as
-a goose, because emus are mostly neck; evenly spaced parallel feather strokes
-read as a ribcage, because regularity is what gives them away; and a neck drawn
-*after* the body sits on top as a visible seam, so it must be drawn **before**
-the body with a wide base tucked inside the outline.
+**The hand-drawn bird was replaced on 2026-08-31** with Phillip's artwork,
+rigged. The drawing's lessons are kept below because they still apply to any
+future vector work, but the SVG itself is gone.
+
+#### The running rig — 2026-08-31
+
+**What the drawing could never get right was the gait.** It swung two whole legs
+like pendulums from a fixed pivot. An emu does not run that way: the knee drives
+up and forward, the lower leg folds under the bird, then snaps out to reach.
+That needs a joint, not a swing.
+
+So the artwork is cut into three sprites and rigged with **two bones per leg**.
+`emu-run-thigh.png` rotates about the hip; `emu-run-shank.png` is nested
+inside it and rotates about the knee, so the knee's rotation adds to the
+thigh's the way a real joint chain behaves. Both legs use the same two sprites
+half a cycle apart, so they cannot drift out of agreement.
+
+**How the cutting was done, since it is the fiddly part:**
+
+- The white background is keyed out by flooding inward from the border, the
+  same technique as the helper avatar — a luminance threshold punches holes
+  through the beak and the pale neck feathers.
+- The two legs in the source are drawn in different poses and **do not overlap
+  horizontally**, which is what makes cutting one of them cleanly possible. The
+  trailing leg is the one taken: fully extended, so both segments are visible
+  along their whole length.
+- **The legs are removed from the body along a curve that follows the belly,
+  not a rectangle.** A rectangle leaves two tells, both of which appeared on the
+  first attempt: a dead-straight horizontal edge where it crosses feathers, and
+  a notch wherever two rectangles fail to meet.
+- The drawn speed lines and the ground smear are erased. They are *drawn*
+  motion, and would have sat frozen while the rig moved.
+- **Both legs render behind the body**, so the cut edge where the thigh left
+  the feathers is covered by the silhouette — the same rule the neck taught.
+
+> **The check that the geometry is right: set both rotations to zero.** The rig
+> then reproduces the original leg exactly, with the knee join invisible. If it
+> does not, the measured joint coordinates are wrong, and no amount of tuning
+> the angles will hide it. That test caught nothing in the end, but it is what
+> made the first bad-looking result diagnosable as wrong *angles* rather than
+> wrong *geometry*.
+
+The cycle is written in `globals.css` as world angles converted to nested
+rotations, with each keyframe labelled by the pose it represents. Sprites are
+served `unoptimized`: the rig is scaled by a CSS transform the image optimizer
+cannot see, so it under-resolves them otherwise.
+
+> **Verifying a CSS animation: read `document.getAnimations()`, not
+> `getComputedStyle`.** Transform animations run on the compositor, and
+> sampling computed style from the main thread returns the same value every
+> time — which reads exactly like a frozen animation and sent me looking for a
+> bug that was not there. `getAnimations()` reports `playState` and a
+> `currentTime` that actually advances.
+
+**Lessons from the drawing it replaced**, still true for vector work: an outline
+drawing (`fill:none` plus a stroke) reads as a stick figure; a circular body
+reads as a ball; a short neck reads as a goose, because emus are mostly neck;
+evenly spaced parallel feather strokes read as a ribcage, because regularity is
+what gives them away; and a neck drawn *after* the body sits on top as a visible
+seam.
 
 ### Not shipped — the site helper, work in progress
 

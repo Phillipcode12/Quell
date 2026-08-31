@@ -117,41 +117,105 @@ body {
 
 /* --- The cart emu (components/CartEmu.tsx) ---------------------------------
  *
- * Walks in from off-screen left and out past the right edge. Distance is in
- * viewport units so it clears the screen at any width, with a fixed pixel
- * head start so it begins fully hidden regardless of how wide the emu is.
+ * A rigged bird, not a drawing: three sprites cut from the artwork, with two
+ * bones per leg. See the comment at the top of CartEmu.tsx for the geometry
+ * and why the legs are behind the body.
+ *
+ * It runs in from off-screen left and out past the right edge. Distance is in
+ * viewport units so it clears the screen at any width, with a fixed pixel head
+ * start so it begins fully hidden regardless of how wide the bird is.
  *
  * Reduced motion is handled here rather than in JavaScript: the animation
  * rules only apply under `no-preference`, and the emu is hidden outright under
  * `reduce`. Doing it in CSS means no state, no effect, and it responds if the
  * preference changes mid-session.
  */
+.emu-rig {
+  /* One stride: both legs complete a full cycle in this time. */
+  --emu-step: 0.46s;
+  position: relative;
+  width: 470px;
+  height: 380px;
+  transform: scale(var(--emu-scale));
+  transform-origin: bottom left;
+}
+
+.emu-bob {
+  position: absolute;
+  inset: 0;
+}
+
+.emu-body {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+
+/* Zero-sized: these are joints, and their only job is to be a point to rotate
+   about. The sprite hanging off each one is offset so the joint lands on it. */
+.emu-leg,
+.emu-thigh,
+.emu-shank {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.emu-leg {
+  /* Behind the body, so the cut edge where the thigh left the feathers is
+     covered by the silhouette rather than showing as a seam. */
+  z-index: 1;
+}
+
+.emu-thigh,
+.emu-shank {
+  transform-origin: 0 0;
+}
+
+.emu-thigh > img,
+.emu-shank > img {
+  position: absolute;
+  max-width: none;
+}
+
+/* The far leg reads as far by being fractionally offset and a shade darker,
+   which is cheaper and steadier than drawing a second pair of sprites. */
+.emu-leg-far {
+  filter: brightness(0.72);
+  transform: translate(-14px, -4px);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .emu-walk {
     animation: emu-walk 4s linear forwards;
     will-change: transform;
   }
 
+  /* Two footfalls per stride, so the body rises and falls twice as often as
+     one leg completes its cycle. */
   .emu-bob {
-    animation: emu-bob 0.42s ease-in-out infinite;
-    transform-origin: 64px 92px;
+    animation: emu-bob calc(var(--emu-step) / 2) ease-in-out infinite;
   }
 
-  /* The legs swing in opposite phase, which is what sells the walk. */
-  .emu-leg-front {
-    animation: emu-stride 0.42s ease-in-out infinite;
-    transform-origin: 86px 114px;
+  .emu-thigh {
+    animation: emu-thigh var(--emu-step) linear infinite;
   }
 
-  .emu-leg-back {
-    animation: emu-stride 0.42s ease-in-out infinite reverse;
-    transform-origin: 58px 116px;
+  .emu-shank {
+    animation: emu-shank var(--emu-step) linear infinite;
+  }
+
+  /* Half a cycle apart: one leg reaches while the other drives back. */
+  .emu-leg-far .emu-thigh,
+  .emu-leg-far .emu-shank {
+    animation-delay: calc(var(--emu-step) / -2);
   }
 }
 
 @keyframes emu-walk {
   from {
-    transform: translateX(-200px);
+    transform: translateX(-260px);
   }
   to {
     transform: translateX(100vw);
@@ -164,21 +228,59 @@ body {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-3px);
+    transform: translateY(-6px);
   }
 }
 
-@keyframes emu-stride {
-  0%,
-  100% {
-    transform: rotate(14deg);
+/* The gait, in the rig's own terms. Measured off the artwork as world angles —
+ * thigh 64deg from horizontal, shank 142deg — then converted to the nested
+ * rotations these two elements actually apply. Written out because the numbers
+ * are meaningless without knowing what pose each one is:
+ *
+ *    0%   push-off, leg extended behind      (the pose the artwork was drawn in)
+ *   25%   knee drives up and forward, lower leg folded under
+ *   50%   the kick: the shank snaps out to reach
+ *   75%   foot plants under the body, leg near straight
+ */
+@keyframes emu-thigh {
+  0% {
+    transform: rotate(6deg);
+  }
+  25% {
+    transform: rotate(-29deg);
   }
   50% {
-    transform: rotate(-14deg);
+    transform: rotate(-19deg);
+  }
+  75% {
+    transform: rotate(14deg);
+  }
+  100% {
+    transform: rotate(6deg);
   }
 }
 
-/* Someone who has asked their system for less movement gets no bird at all. */
+@keyframes emu-shank {
+  0% {
+    transform: rotate(-3deg);
+  }
+  25% {
+    transform: rotate(12deg);
+  }
+  50% {
+    transform: rotate(-45deg);
+  }
+  75% {
+    transform: rotate(-56deg);
+  }
+  100% {
+    transform: rotate(-3deg);
+  }
+}
+
+/* Someone who has asked their system for less movement gets no bird at all.
+   It is decoration and carries no information — unlike the helper's nudge,
+   which keeps its sentence and drops only the animation. */
 @media (prefers-reduced-motion: reduce) {
   .emu-walk {
     display: none;
