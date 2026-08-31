@@ -63,6 +63,11 @@ export function BuyPanel({
   )
 
   /**
+   * Worded "normally $6.95" rather than "saves $6.95": spending $29.99 more to
+   * avoid $6.95 of shipping is not a saving unless two bottles were already
+   * wanted. Standard retail says it anyway; nothing else on this site claims
+   * more than it can support, and this is not the place to start.
+   *
    * The free-shipping threshold is $59.00 against a $29.99 bottle, which is a
    * two-pack by design — and the page never said so. The cart worked this out
    * only after someone had already committed to one.
@@ -126,7 +131,7 @@ export function BuyPanel({
         >
           <Truck className="h-4 w-4 shrink-0" />
           <span>
-            Make it {qualifyingQuantity} and shipping is free — saves{' '}
+            Make it {qualifyingQuantity} and shipping is free — normally{' '}
             {formatUsd(STANDARD_SHIPPING_CENTS)}
           </span>
         </button>
