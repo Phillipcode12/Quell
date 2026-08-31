@@ -162,13 +162,21 @@ describe('the unprompted nudge', () => {
 })
 
 describe('where the helper is allowed to appear', () => {
-  it('stays off the cart', () => {
-    // The cart is the checkout form. A fixed widget in the bottom-right
-    // corner takes taps meant for the fields that scroll past it — including
-    // Continue to payment, measured on the live site. Not being there is the
-    // fix; reserving space at the foot of the page is not, because the widget
-    // is fixed to the viewport rather than the document.
-    expect(HIDDEN_ON).toContain('/cart')
+  it('stays off every page that exists to be filled in', () => {
+    // A fixed widget in the bottom-right corner takes taps meant for whatever
+    // scrolls under it. Measured twice: Continue to payment on /cart, and
+    // Create account on /register once the confirm field made the form taller.
+    // The rule is the category rather than the measurement, because /register
+    // measured clear until one field was added.
+    for (const path of [
+      '/cart',
+      '/login',
+      '/register',
+      '/forgot-password',
+      '/reset-password',
+    ]) {
+      expect(HIDDEN_ON, `${path} must not carry the helper`).toContain(path)
+    }
   })
 
   it('does not hide itself from the pages its own answers point at', () => {

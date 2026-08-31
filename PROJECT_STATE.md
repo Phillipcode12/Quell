@@ -465,6 +465,29 @@ the header from the request failed 2 tests.
 
 ---
 
+### Passwords — show/hide and confirm, 2026-08-31
+
+`components/PasswordField.tsx` is a password input with a reveal toggle, used
+by `AuthForm` (login and registration) and `ResetPasswordForm`. Registration
+now asks for the password twice, matching what the reset form already did.
+
+Three things in it are load-bearing:
+
+- **`type="button"` on the toggle.** A bare `<button>` inside a form defaults
+  to submit, so revealing the password would submit the form.
+- **`autoComplete` is passed through, never overridden** — password managers
+  key off `new-password` versus `current-password` to decide between offering
+  to generate and offering to fill.
+- **The confirmation is checked in the client and stripped before the request.**
+  It is a typing aid, not a credential; the API only ever receives one
+  password, so there is nothing for it to compare.
+
+Verified in a browser rather than assumed: revealing flips the input to text
+and the label to "Hide password" without submitting the form, and a mismatch
+shows the error with no API call made at all.
+
+---
+
 ## 10. Known limitations before launch
 
 - **Rate limiting is Redis-capable but running in-process.** `lib/rate-limit.ts`
@@ -1913,7 +1936,7 @@ Mechanics, all verified in the browser rather than assumed:
 - **`role="status"`**, so a screen reader is told politely instead of having
   focus taken mid-sentence.
 
-#### It stays off the cart — found in review, 2026-08-28
+#### It stays off any page you fill in — 2026-08-28, widened 2026-08-31
 
 **The helper was taking taps meant for Continue to payment.** On a 375px
 screen the cart's fields scroll up through the bottom-right corner, and the
@@ -1927,13 +1950,27 @@ the viewport rather than the document, so mid-scroll positions still pass
 underneath it. Not being there is the fix, which is also what serious
 storefronts do with a chat widget on checkout.
 
-`HIDDEN_ON` in `SiteHelper.tsx` is the list, `/cart` its only entry, and a test
-asserts both that the cart is on it and that no topic link points at a page the
-helper has hidden itself from — an answer that leads somewhere it cannot be
-reached from is a dead end.
+**It happened again on 2026-08-31, which is why the rule is now the category
+rather than the measurement.** Adding the confirm-password field to
+registration made that form taller and pushed **Create account** under the
+nudge bubble: only the leftmost 12px of the button was still clickable.
+`/register` had measured clear before that field existed.
 
-`/login` and `/orders` were measured too and are clear: both pages are short
-enough that their buttons sit well above the corner.
+So `HIDDEN_ON` now carries `/cart`, `/login`, `/register`,
+`/forgot-password` and `/reset-password` — every page whose whole job is
+being filled in and submitted. `/login` and `/reset-password` measure clear
+today; they are on the list because a pixel margin is not a property worth
+defending one page at a time. Nothing is lost, since no topic answers a
+question about accounts or checkout.
+
+`/orders` deliberately stays off the list: the helper's own tracking answer
+links there, and a test asserts no topic points at a page the helper has hidden
+itself from — an answer that leads somewhere it cannot be reached from is a
+dead end.
+
+> **Do not write `**/cart**` in a block comment.** The `*/` inside it closes
+> the comment early and the rest of the file becomes syntax errors. That cost a
+> cycle while writing the comment above.
 
 
 **Reviewed with Phillip 2026-08-28.** The artwork and the nudge are approved.

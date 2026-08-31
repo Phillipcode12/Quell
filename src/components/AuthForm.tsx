@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
+import { PasswordField } from '@/components/PasswordField'
 
 export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
   const router = useRouter()
@@ -19,6 +20,16 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
 
     const form = new FormData(event.currentTarget)
     const payload = Object.fromEntries(form) as Record<string, string>
+
+    // Checked here rather than server-side: the confirmation is a typing aid,
+    // not a credential. The API only ever receives one password, so there is
+    // nothing for it to compare.
+    if (isRegister && payload.password !== payload.confirm) {
+      setError('Those passwords don\u2019t match.')
+      setLoading(false)
+      return
+    }
+    delete payload.confirm
 
     try {
       const res = await fetch(
@@ -80,14 +91,24 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
             required
           />
 
-          <Field
+          <PasswordField
             label="Password"
             name="password"
-            type="password"
             autoComplete={isRegister ? 'new-password' : 'current-password'}
+            minLength={isRegister ? 8 : undefined}
             required
             hint={isRegister ? 'At least 8 characters.' : undefined}
           />
+
+          {isRegister && (
+            <PasswordField
+              label="Confirm password"
+              name="confirm"
+              autoComplete="new-password"
+              minLength={8}
+              required
+            />
+          )}
 
           {!isRegister && (
             <p className="text-right text-sm">

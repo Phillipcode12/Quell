@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
+import { PasswordField } from '@/components/PasswordField'
 
 export function ResetPasswordForm() {
   const router = useRouter()
@@ -78,32 +79,22 @@ export function ResetPasswordForm() {
         </p>
 
         <form onSubmit={onSubmit} className="mt-6 space-y-4">
-          <label className="block">
-            <span className="text-sm font-medium">New password</span>
-            <input
-              name="password"
-              type="password"
-              autoComplete="new-password"
-              minLength={8}
-              required
-              className="mt-1.5 w-full rounded-md border border-line bg-surface-2 px-3 py-2.5 text-white outline-none focus:border-brand"
-            />
-            <span className="mt-1 block text-xs text-muted">
-              At least 8 characters.
-            </span>
-          </label>
+          <PasswordField
+            label="New password"
+            name="password"
+            autoComplete="new-password"
+            minLength={8}
+            required
+            hint="At least 8 characters."
+          />
 
-          <label className="block">
-            <span className="text-sm font-medium">Confirm password</span>
-            <input
-              name="confirm"
-              type="password"
-              autoComplete="new-password"
-              minLength={8}
-              required
-              className="mt-1.5 w-full rounded-md border border-line bg-surface-2 px-3 py-2.5 text-white outline-none focus:border-brand"
-            />
-          </label>
+          <PasswordField
+            label="Confirm password"
+            name="confirm"
+            autoComplete="new-password"
+            minLength={8}
+            required
+          />
 
           {error && (
             <p className="rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-300">

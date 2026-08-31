@@ -129,24 +129,40 @@ export const NUDGE = `Did you know? ${EMU_OIL.after}.`
 export const NUDGE_DELAY_MS = 10_000
 
 /**
- * Pages the helper stays off.
+ * Pages the helper stays off: every page whose whole job is completing a form.
  *
- * The cart is the checkout form, and it is long: on a 375px screen its fields
- * scroll up through the bottom-right corner, so a fixed widget parked there
- * takes the taps meant for them. Measured on the live site with
- * elementFromPoint: with each field scrolled to the bottom of the viewport,
- * the emu was the top element at the right-hand end of the email, last name,
- * street, apt, city and ZIP fields — and of **Continue to payment**, the one
- * button on the site that takes money. Tapping the right of it opened the
- * helper instead of paying.
+ * **The rule is deliberately broader than the measured failures.** Two were
+ * found by measurement, both the same shape — a fixed widget in the
+ * bottom-right corner taking the taps meant for the control underneath it.
  *
- * Reserving space at the foot of the page does not fix it: the widget is fixed
- * to the viewport, so mid-scroll positions still pass underneath. Not being
- * there is the fix, and it is what every serious storefront does with a chat
- * widget on its checkout — the page where someone is paying is not the page to
- * put a mascot in front of.
+ * On `/cart`, at 375px, the checkout fields scroll up through the corner. With
+ * each scrolled to the bottom of the viewport the emu was the top element at
+ * the right-hand end of the email, last name, street, apt, city and ZIP fields
+ * — and of **Continue to payment**, the one button on the site that takes
+ * money.
+ *
+ * On `/register`, adding the confirm-password field made the form taller and
+ * pushed **Create account** under the nudge bubble: only the leftmost 12px of
+ * that button was still clickable.
+ *
+ * `/login` and `/reset-password` measured clear — but `/register` measured
+ * clear too, right up until one field was added. Pixel margins are not a
+ * property worth defending one page at a time, so the rule is the category
+ * rather than the measurement: if the page exists to be filled in and
+ * submitted, the helper stays away. Nothing is lost, because no topic here
+ * answers a question about accounts or checkout.
+ *
+ * Reserving space at the foot of the page is not an alternative. The widget is
+ * fixed to the viewport rather than the document, so mid-scroll positions
+ * still pass underneath it.
  */
-export const HIDDEN_ON = ['/cart']
+export const HIDDEN_ON = [
+  '/cart',
+  '/login',
+  '/register',
+  '/forgot-password',
+  '/reset-password',
+]
 
 /** Session keys: when the visit started, and whether the emu has spoken. */
 const NUDGE_START_KEY = 'quell.helper.visitStart'
