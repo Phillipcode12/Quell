@@ -54,3 +54,6 @@ next-env.d.ts
 
 .vercel
 .env*
+
+# Rendered by scripts/preview-emails.ts. Output, not source.
+/email-preview
