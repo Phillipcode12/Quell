@@ -142,9 +142,32 @@ async function handleAuthCapture(event: WebhookEvent) {
 
   if (updated.count > 0) {
     await drawDownStock(order.id)
-    await sendOrderConfirmation(order.id)
-    // Inside the same guard as the confirmation, so a replayed webhook cannot
-    // make the office pack the order twice.
-    await sendNewOrderNotification(order.id)
+
+    // Both sends sit inside the same guard, so a replayed webhook cannot make
+    // the office pack the order twice.
+    //
+    // They are settled independently rather than awaited in sequence. Sending
+    // is already written not to throw on a rejected send — it logs and returns
+    // — but a DNS failure or a socket reset rejects the fetch itself, and in
+    // sequence that would take the second send down with the first. The
+    // asymmetry is what matters: if the customer's receipt fails, the office
+    // must still be told to pack an order that has been paid for. A missing
+    // receipt is a support call; an unshipped paid order is a refund.
+    const [confirmation, notification] = await Promise.allSettled([
+      sendOrderConfirmation(order.id),
+      sendNewOrderNotification(order.id),
+    ])
+
+    for (const [what, result] of [
+      ['confirmation', confirmation],
+      ['fulfilment notification', notification],
+    ] as const) {
+      if (result.status === 'rejected') {
+        console.error(
+          `[webhook] ${what} failed for order ${orderNumber}:`,
+          result.reason,
+        )
+      }
+    }
   }
 }

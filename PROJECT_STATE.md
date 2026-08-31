@@ -771,10 +771,12 @@ diverging from it.
 7. **Create the Upstash database and the Sentry project.** Both integrations are
    written and dormant; each needs an account and a credential, nothing more
    (§10).
-8. ~~**Automated tests.**~~ Started 2026-08-20 — 178 tests over `lib/`, the
-   claim-order and checkout routes, robots, and the product claims (§16). The
-   gap that remains is integration coverage: the webhook route, and anything
-   that needs a real database.
+8. ~~**Automated tests.**~~ Started 2026-08-20, 215 tests as of 2026-08-31
+   (§16). The webhook route — the money path — was covered on 2026-08-31 and
+   the tests were checked by mutation; writing them found and fixed a real
+   defect in how the two post-payment emails were sequenced. **The gap that
+   remains is anything needing a real database**: every Prisma call in the
+   suite is still mocked.
 9. **Production cutover:** production keys, webhook re-registered against the
    real host, `AUTHORIZENET_ENVIRONMENT=production`, real domain. Make the
    first production transaction a small real purchase and refund it —
@@ -863,7 +865,7 @@ npm test          # once
 npm run test:watch
 ```
 
-Vitest, added 2026-08-20. **178 tests on `main`, all passing** — plus 10 more in the uncommitted site helper (§22). Config lives in
+Vitest, added 2026-08-20. **215 tests on `main`, all passing.** Config lives in
 `vitest.config.mts` — note the extension: as `.ts` it is loaded as CommonJS and
 Vite warns about ESM syntax on every run.
 
@@ -879,6 +881,8 @@ Vite warns about ESM syntax on every run.
 | `lib/admin.test.ts` | The allowlist, including that an unset `ADMIN_EMAILS` admits nobody |
 | `lib/money.test.ts` | Cents-to-dollars, including negatives for refunds |
 | `api/auth/claim-order/route.test.ts` | The new route (§17), including that it links exactly one order |
+| `api/webhooks/authorizenet/route.test.ts` | **The money path.** Every refusal before a payload is read, the events it ignores, the amount-mismatch guard, the pending-scoped update that makes a replay safe, and that every downstream failure still answers 200 |
+| `components/SiteHelper.test.ts` | That the helper can only say reviewed sentences, and stays off the checkout form (§22) |
 | `app/robots.test.ts` | Both indexing guards, including that a missing flag fails closed |
 | `lib/carriers.test.ts` | Tracking URLs, and that an unknown carrier links nowhere rather than wrongly |
 | `lib/fulfilment.test.ts` | Who receives order notifications, and the ADMIN_EMAILS fallback |
@@ -904,6 +908,37 @@ The suite was itself checked by mutation rather than assumed to work: changing
 `>=` to `>` in `shippingCentsFor`, dropping the `gte` guard from the stock
 decrement, and swapping two keys in the gateway request each made the relevant
 tests fail, and only those.
+
+### The webhook tests, added 2026-08-31
+
+**This was the largest gap in the suite and the least comfortable one.** The
+route decides whether money that has already moved is recorded, whether stock
+leaves the shelf, and whether anyone is told to pack a box — and the only
+evidence it behaved was one live sandbox run and one accidental replay (§8).
+
+21 tests now cover its decisions. **Still unit tests**: Prisma, the gateway
+lookup, stock and mail are mocked, so the database is not covered and neither
+is the signature maths, which no unit test can prove (see above). Signature
+verification is stubbed deliberately — what is under test is what the route
+does with the answer.
+
+**Checked by mutation, not assumed.** Four guarantees were each broken in turn
+and the suite caught all four:
+
+| Mutation | Tests that failed |
+|---|---|
+| Drop `status: 'pending'` from the update — the replay defence | 2 |
+| Stop comparing the charged amount to the order total | 1 |
+| Await the two sends in sequence rather than settling them apart | 1 |
+| Return 500 on a downstream failure, so the gateway would retry | 3 |
+
+**Writing them found one real defect, since fixed.** The confirmation and the
+office notification were awaited in sequence, so a rejected send of the first
+would skip the second entirely — mail sending is written not to throw on a
+rejected *send*, but a DNS failure or socket reset rejects the fetch itself.
+The asymmetry is the point: a missing receipt is a support call, an unshipped
+paid order that has been charged for is a refund. They are now settled
+independently inside the same replay guard, and each failure is logged by name.
 
 ### Resolution gotcha, if a new test file fails to import
 
