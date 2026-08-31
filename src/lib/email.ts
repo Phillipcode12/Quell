@@ -20,6 +20,25 @@ function fromAddress() {
   return process.env.EMAIL_FROM ?? `${BRAND.name} <onboarding@resend.dev>`
 }
 
+/**
+ * Where a customer's reply goes, which is not where the mail is sent from.
+ *
+ * The From address has to be on a domain verified with the mail provider —
+ * quelldrop.com — because that is what SPF and DKIM authenticate. Reply-To
+ * carries no such requirement: it is a header saying "answer to this", and it
+ * may be any address on any domain. Nothing about meibum.com's DNS is involved
+ * in setting it, which is the whole point: BlephEx's live SPF record is never
+ * edited.
+ *
+ * This matters because quelldrop.com has no MX record, so it cannot receive
+ * mail. Without a Reply-To, a customer answering their receipt is writing to a
+ * mailbox that does not exist and nobody ever learns they tried.
+ */
+function replyToAddress() {
+  const configured = process.env.EMAIL_REPLY_TO?.trim()
+  return configured && configured.length > 0 ? configured : null
+}
+
 type Message = {
   to: string
   subject: string
@@ -34,6 +53,7 @@ async function deliver(message: Message) {
         '',
         '─── EMAIL (not sent — RESEND_API_KEY is unset) ───',
         `To:      ${message.to}`,
+        ...(replyToAddress() ? [`Reply-To: ${replyToAddress()}`] : []),
         `Subject: ${message.subject}`,
         '',
         message.text,
@@ -44,6 +64,8 @@ async function deliver(message: Message) {
     return { delivered: false as const }
   }
 
+  const replyTo = replyToAddress()
+
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
@@ -53,6 +75,9 @@ async function deliver(message: Message) {
     body: JSON.stringify({
       from: fromAddress(),
       to: [message.to],
+      // Omitted rather than sent empty when unset: an empty reply_to is not
+      // the same as no reply_to, and some providers reject it.
+      ...(replyTo ? { reply_to: replyTo } : {}),
       subject: message.subject,
       html: message.html,
       text: message.text,

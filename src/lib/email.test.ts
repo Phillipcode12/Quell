@@ -187,3 +187,44 @@ describe('sendShippingNoticeEmail', () => {
     expect(sent()[0].to).toEqual(['ada@example.com'])
   })
 })
+
+describe('the reply-to address', () => {
+  /**
+   * From and Reply-To answer different questions, and conflating them is what
+   * would have forced an edit to BlephEx's live SPF record.
+   *
+   * From has to be a domain verified with the provider, because that is what
+   * SPF and DKIM authenticate — quelldrop.com. Reply-To is only a header
+   * saying where answers go: it needs no authentication and may be any address
+   * on any domain. That separation is what lets receipts come from Quell while
+   * replies reach a mailbox that actually exists, without meibum.com's DNS
+   * being touched at all.
+   *
+   * It matters because quelldrop.com has no MX record and cannot receive mail.
+   * With no Reply-To, a customer answering their receipt writes into a void
+   * and nobody ever learns they tried.
+   */
+  it('sends replies to the configured address while sending from Quell', async () => {
+    vi.stubEnv('EMAIL_REPLY_TO', 'Phillip.moore@meibum.com')
+    await sendShippingNoticeEmail(ORDER)
+
+    const body = sent()[0]
+    expect(body.reply_to).toBe('Phillip.moore@meibum.com')
+    // The sender is unchanged: it must stay on the verified domain.
+    expect(body.from).toContain('orders@quelldrop.com')
+  })
+
+  it('omits reply_to entirely when unset, rather than sending it empty', async () => {
+    vi.stubEnv('EMAIL_REPLY_TO', '')
+    await sendShippingNoticeEmail(ORDER)
+
+    expect('reply_to' in sent()[0]).toBe(false)
+  })
+
+  it('applies to the pack notice too, so the office can answer a customer', async () => {
+    vi.stubEnv('EMAIL_REPLY_TO', 'Phillip.moore@meibum.com')
+    await sendNewOrderNotificationEmail(ORDER, ['warehouse@example.com'])
+
+    expect(sent()[0].reply_to).toBe('Phillip.moore@meibum.com')
+  })
+})

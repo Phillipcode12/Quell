@@ -427,7 +427,7 @@ should be a small real purchase you make and then refund.
 | Authorize.net credentials | **Sandbox is done and working. Applied 2026-08-20 (§19); Authorize.net referred it to Zen Payments, a high-risk ISO — nothing signed, see §21.** Production credentials wait on a **new merchant account** — Quell is no longer sharing BlephEx's. See §13. |
 | Merchant account | **Decided 2026-08-19: Quell gets its own.** Ryan ruled out sharing BlephEx's Stax account because the two companies are taxed and reported separately. Open: Stax's low-volume tier (Nick is quoting) vs Authorize.net's own All-in-One at ~$25/mo + 2.9% + 30¢. Either way the code is unchanged — Authorize.net stays the gateway. |
 | Domain | **Done 2026-08-20 — https://quelldrop.com is live and canonical** (§18). The other three redirect to it. `NEXT_PUBLIC_APP_URL` is set to `https://quelldrop.com` in Vercel production, so canonical tags, OpenGraph URLs and the sitemap are all correct; indexing is held off separately by `ALLOW_INDEXING`, which is what `robots.txt` reflects. *(Corrected 2026-08-28 — this row previously said the variable still pointed at the vercel.app host, which was no longer true. Verified against `vercel env ls production` and the live canonical tag.)* |
-| Customer email address | **None exists yet, but the plan changed on 2026-08-20 and got simpler.** `EMAIL_FROM` is still `orders@example.com`, a reserved domain that cannot send or receive. **The sender should now be `orders@quelldrop.com`, not `Quell@meibum.com`** — Quell owns its own domain, whose DNS zone has no MX and no TXT records at all, so Resend's DKIM and SPF records go onto a clean zone. **This removes the meibum.com SPF hazard entirely**: no edit to BlephEx's single existing SPF record, so no way to break their mail. A monitored *inbox* is still needed for replies and returns, and that can still be a Microsoft 365 shared mailbox — but it is no longer on the critical path for *sending*. |
+| Customer email address | **Settled 2026-08-31, except for the Resend key.** Quell has no mailbox of its own yet, so Phillip's is used for everything inbound: `FULFILMENT_EMAILS` and `EMAIL_REPLY_TO` are both `Phillip.moore@meibum.com`, in `.env` and in Vercel production. **The sender is unchanged and must stay `orders@quelldrop.com`** — see the From/Reply-To split below, which is what keeps meibum.com out of it. `EMAIL_FROM` was still `orders@example.com` in Vercel until 2026-08-31 and has been corrected. **The sender should now be `orders@quelldrop.com`, not `Quell@meibum.com`** — Quell owns its own domain, whose DNS zone has no MX and no TXT records at all, so Resend's DKIM and SPF records go onto a clean zone. **This removes the meibum.com SPF hazard entirely**: no edit to BlephEx's single existing SPF record, so no way to break their mail. A Quell-branded mailbox is still wanted eventually — receipts arriving from `orders@quelldrop.com` but answered by a person at meibum.com is a seam customers can see — but nothing is blocked on it. |
 | Fulfilment | **Decided 2026-08-20: packed and posted by hand from the office**, not pushed to XPSShipper. The app now supports that — a paid order emails a fulfilment list, and marking it shipped captures a carrier and tracking number that reach the customer (§20). What is still open is the human side: **who** packs and posts, and who receives returns, since the terms accept unopened returns for 30 days. |
 | Card statement descriptor | **Resolves with the separate merchant account** — Quell sets its own rather than showing BlephEx's. Still needs choosing, and it affects packaging and email copy, so it has the longest lead time. |
 | `$29.99` price | Matches the Dry Eye Rescue retail listing as of 2026-08-13. |
@@ -436,6 +436,32 @@ should be a small real purchase you make and then refund.
 | Returns policy | **Decided 2026-08-19.** Unopened, original packaging, 30 days, refund of product price; original shipping not refunded. Opened drops never returnable (sterility). Damaged, incorrect or broken-seal orders replaced free within 30 days. Refunds are achievable today through the Authorize.net merchant interface; store credit was considered and dropped because no credit or coupon mechanism exists anywhere in the codebase. |
 | Seller of record | **Changed 2026-08-19 to Aurora Pharmaceuticals, LLC**, confirmed by Ryan against the IRS letter and articles of organization. `COMPANY` now carries Aurora's name and its 330 Franklin Road address; the phone is shared with BlephEx and stays. `MANUFACTURER` is deliberately left as **Aurora Pharmaceuticals, Inc** because that is what the carton prints — the suffix is wrong on the box and is a packaging correction, not a site edit. |
 | **Front-panel claims** | The carton advertises **redness relief**, but the Drug Facts *Uses* section does not cover it and the formula has no vasoconstrictor. FDA expects front-panel claims to match Uses. Affects packaging, not just the site. Needs regulatory review. |
+
+---
+
+### From and Reply-To are different questions — 2026-08-31
+
+**The From address must be a domain verified with the mail provider**, because
+that is what SPF and DKIM authenticate. That is `orders@quelldrop.com` and it
+should not change: sending as `meibum.com` would mean editing BlephEx's live
+SPF record, and a domain may hold only one. Theirs is
+`v=spf1 include:spf.protection.outlook.com -all` — a hard fail, on mail that
+runs the company. A typo there breaks BlephEx's email, company-wide, with
+nothing pointing at DNS as the cause.
+
+**Reply-To carries no such requirement.** It is a header saying where answers
+go. Any address, any domain, no authentication, no DNS. So receipts send as
+Quell and replies land in a mailbox that exists, with meibum.com's zone
+untouched — which is the whole reason the two are configured separately.
+
+This matters because **quelldrop.com has no MX record and cannot receive mail**
+(verified 2026-08-31: no MX, no TXT, nameservers at GoDaddy). Without a
+Reply-To, a customer answering their receipt writes into a void and nobody ever
+learns they tried.
+
+`EMAIL_REPLY_TO` is omitted from the payload entirely when unset rather than
+sent empty, and `lib/email.test.ts` covers both. Checked by mutation: deleting
+the header from the request failed 2 tests.
 
 ---
 
@@ -761,11 +787,15 @@ diverging from it.
    one: who packs and posts, which address receives the order notifications,
    and who receives returns. *(Ownership is answered — Dr. Rynerson is the sole
    owner of Aurora.)*
-6. **`RESEND_API_KEY`** *and* fix `EMAIL_FROM` — it is still
-   `orders@example.com`, a reserved domain that cannot send. The moment a Resend
-   key appears, that becomes a live bug rather than a dormant one. **Send from
-   `orders@quelldrop.com`**: the DKIM and SPF records go on Quell's own zone,
-   which is empty, so meibum.com is never touched (§9).
+6. **`RESEND_API_KEY` — now the only thing between here and working email.**
+   Everything else was settled 2026-08-31: `EMAIL_FROM` is
+   `orders@quelldrop.com` in Vercel (it was still `orders@example.com`),
+   and `FULFILMENT_EMAILS` and `EMAIL_REPLY_TO` both point at
+   `Phillip.moore@meibum.com`, so every paid order and every customer reply
+   reaches a mailbox that exists. What remains is a Resend account, verifying
+   quelldrop.com in it, and adding the DKIM and SPF records it gives you to
+   Quell's own zone — which is empty, so nothing can break (§9). **Nothing
+   sends at all until that key exists**, including password resets.
 6b. ~~**Domain.**~~ Done 2026-08-20 — `quelldrop.com` is live and canonical
    (§18). This unblocked the merchant application and Meta domain verification.
 7. **Create the Upstash database and the Sentry project.** Both integrations are
@@ -865,7 +895,7 @@ npm test          # once
 npm run test:watch
 ```
 
-Vitest, added 2026-08-20. **215 tests on `main`, all passing.** Config lives in
+Vitest, added 2026-08-20. **218 tests on `main`, all passing.** Config lives in
 `vitest.config.mts` — note the extension: as `.ts` it is loaded as CommonJS and
 Vite warns about ESM syntax on every run.
 
@@ -1499,7 +1529,9 @@ stopped. The only signal that something needed shipping was remembering to open
 `/admin/orders`. The first missed order is a week-late shipment and an
 apologetic email.
 
-A paid order now emails everyone in `FULFILMENT_EMAILS`. The message is written
+A paid order now emails everyone in `FULFILMENT_EMAILS`, which is
+`Phillip.moore@meibum.com` as of 2026-08-31 — an interim answer to the people
+question below, not a resolution of it. The message is written
 to be *worked from*, not read: units to pack, items, the full shipping address,
 the customer's email, and a link into admin. It prints as a usable packing slip.
 
