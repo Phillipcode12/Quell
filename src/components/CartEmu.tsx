@@ -41,7 +41,14 @@ import { useEffect, useState } from 'react'
 /** Both frames share this size — they are cut from one bounding box. */
 const FRAME = { w: 512, h: 336 }
 
-/** Rendered width of the bird. */
+/**
+ * The drawing area, in the frames' own coordinates, widened to leave room for
+ * the cart ahead of the bird. Everything is expressed in this space so the
+ * cart and the artwork scale as one.
+ */
+const STAGE = { w: 720, h: FRAME.h }
+
+/** Rendered width of the bird itself. The stage is proportionally wider. */
 const DISPLAY_WIDTH = 230
 
 export function CartEmu({ trigger }: { trigger: number }) {
@@ -73,8 +80,8 @@ export function CartEmu({ trigger }: { trigger: number }) {
         <div
           className="emu-run"
           style={{
-            width: DISPLAY_WIDTH,
-            height: (DISPLAY_WIDTH * FRAME.h) / FRAME.w,
+            width: (DISPLAY_WIDTH * STAGE.w) / FRAME.w,
+            height: (DISPLAY_WIDTH * STAGE.h) / FRAME.w,
           }}
         >
           {[1, 2].map((n) => (
@@ -92,8 +99,36 @@ export function CartEmu({ trigger }: { trigger: number }) {
               priority
               unoptimized
               aria-hidden="true"
+              style={{ width: `${(FRAME.w / STAGE.w) * 100}%` }}
             />
           ))}
+
+          {/*
+            The cart, out in front and in brand teal so the bird stays the
+            subject. Carried over from the drawing this animation replaced, and
+            the reason it is drawn rather than photographed is the handle: it
+            has to run back and meet the bird's chest, or the two shapes read
+            as a bird walking *beside* a trolley rather than pushing one.
+
+            Drawn in the stage's coordinates so it scales with the artwork.
+          */}
+          <svg
+            className="emu-cart"
+            viewBox={`0 0 ${STAGE.w} ${STAGE.h}`}
+            fill="none"
+            stroke="var(--brand)"
+            strokeWidth={11}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            {/* Basket, then the handle back to the chest, then the wheels on
+                the same ground line the bird's feet run along. */}
+            <path d="M506 188h190l-26 104H532z" />
+            <path d="M506 188l-96-38" />
+            <circle cx="556" cy="310" r="18" />
+            <circle cx="652" cy="310" r="18" />
+          </svg>
         </div>
       </div>
     </div>

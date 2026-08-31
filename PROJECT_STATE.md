@@ -1952,6 +1952,16 @@ Three things that matter about how the frames were made:
   cropped to **one shared bounding box**, so the swap cannot shift the bird by a
   pixel.
 
+**The cart came back with it.** Replacing the SVG bird quietly dropped the
+shopping cart it had been pushing, which is the whole point of the animation —
+it fires on *add to cart*. The original teal outline cart is carried over from
+that drawing and refitted to the artwork, kept in brand teal so the bird stays
+the subject. **The handle has to run back and meet the chest**: without it the
+two shapes read as a bird walking *beside* a trolley rather than pushing one.
+It is drawn in a widened stage coordinate space shared with the frames, so cart
+and bird scale as one, and its wheels sit on the same ground line the feet run
+along.
+
 The swap uses `steps(1)`, deliberately: a cross-fade between two leg positions
 reads as a ghost rather than a stride. Frame 2 is `opacity: 0` in the base
 style, so a browser running no animations shows one bird rather than two
