@@ -591,6 +591,30 @@ That restores the schema and the product, but **not** user accounts.
   route* 404s, while all the route files sit untouched on disk. It looks like
   deleted code. It is a stale cache. Delete `.next` and restart. Stopping the
   server cleanly avoids it.
+- **Vercel "Sensitive" environment variables are write-only, and `vercel env
+  add` defaults to them.** Nothing can read the value back — not the
+  dashboard, not `vercel env pull`, not the CLI. A pull returns the literal
+  string `[SENSITIVE]` for every one of them, which is 11 characters, so even
+  a length check tells you nothing. **A wrong value is therefore
+  undiagnosable**: the only move is to overwrite and retest, and any evidence
+  of what was actually stored is destroyed in the process.
+
+  This cost a cycle on 2026-08-31. `EMAIL_REPLY_TO` was set, `env ls` showed
+  it present, and replies still went to the unmonitored `orders@quelldrop.com`
+  — with no way to see what was stored. Re-adding it readably and redeploying
+  fixed it, but which of the two was the cause can no longer be established.
+
+  **Store as Sensitive only what is genuinely a credential.** An email address
+  that appears in the headers of every message sent is not a secret, and making
+  it unreadable buys nothing while costing the ability to verify it:
+
+  ```
+  vercel env add EMAIL_REPLY_TO production --value '...' --no-sensitive --force
+  ```
+
+  `RESEND_API_KEY`, `AUTH_SECRET`, `DATABASE_URL` and the Authorize.net keys
+  stay Sensitive. `EMAIL_FROM`, `EMAIL_REPLY_TO` and `FULFILMENT_EMAILS` are
+  Config, and were each verified against the expected string after the change.
 - **Piping a value into `vercel env add` appends a newline**, and the newline
   becomes part of the stored secret. This burned an entire debugging cycle: the
   Transaction Key was rejected as "length is greater than MaxLength" (17 chars
@@ -1627,6 +1651,18 @@ the DKIM key was compared character by character rather than by eye.
 **No tracking records.** Resend issued no tracking CNAME, so links in emails
 are not rewritten and no open-tracking pixel is embedded. That keeps the
 privacy policy true as written.
+
+**Reply-To is proven, not merely configured.** The first delivered email still
+replied to `orders@quelldrop.com`, which has no inbox — the exact black hole
+the setting exists to prevent. Cause was the Vercel Sensitive-variable trap in
+§12; after re-storing the value readably and redeploying, replying to a real
+received email fills in `Phillip.moore@meibum.com`. Verified by replying to a
+message in a real mail client, not by reading configuration.
+
+**Still unproven: the order emails.** The receipt and the pack notice have
+never been sent by a real order, and `FULFILMENT_EMAILS` was stored the same
+unreadable way, so "every order reaches Phillip" is verified only as far as the
+stored string. A sandbox order settles it.
 
 > **The first send appeared to fail and had not.** A password reset was
 > triggered before any account existed *in the production database* — local and
