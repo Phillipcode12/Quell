@@ -11,27 +11,21 @@ import { useEffect, useState } from 'react'
  * "give dry eye the bird". It is a small reward for a deliberate action, so it
  * is deliberately restrained — low on the screen, gone in a few seconds.
  *
- * **This replaced a hand-drawn SVG bird on 2026-08-31.** The artwork is now
- * Phillip's, cut into three pieces and rigged, rather than approximated in
- * paths. What the SVG could never get right was the gait: it swung two whole
- * legs like pendulums, and an emu does not run that way. It drives the knee up
- * and forward, folds the lower leg under itself, then snaps it out to reach —
- * which needs a joint, not a swing.
+ * **This replaced a hand-drawn SVG bird on 2026-08-31**, which swung two whole
+ * legs like pendulums from fixed pivots. The artwork is Phillip's.
  *
- * **The rig is two bones per leg.** `emu-run-thigh.png` rotates about the hip;
- * `emu-run-shank.png` is nested inside it and rotates about the knee, so the
- * knee's own rotation is added to the thigh's exactly as a real joint chain
- * behaves. Both legs use the same two sprites, half a cycle apart, so they
- * cannot drift out of agreement with each other.
+ * **Two frames, alternating — that is the entire animation.** Frame 1 is the
+ * drawing as supplied: one leg extended behind, one tucked forward. Frame 2 is
+ * the same two legs with their hip anchors exchanged, so the bird is caught in
+ * the opposite half of its stride. Swapping between them at the step rate
+ * reads as running, and nothing else moves except the body's bob.
  *
- * **Both legs are drawn behind the body.** The thigh sprite has a cut edge
- * where it left the feathers; the body silhouette covers it. This is the same
- * rule the old drawing learned the hard way — the neck had to be drawn *before*
- * the body or the join showed as a seam.
+ * Two things about how frame 2 was built:
  *
- * Geometry comes from measuring the source artwork, and every offset below is
- * in the sprites' own pixels at export scale. The zero pose reproduces the
- * original leg exactly, seam invisible, which is how the numbers were checked.
+ *  - **The legs are exchanged, not mirrored.** Mirroring would point the toes
+ *    backwards, which is instantly wrong on a bird.
+ *  - **Both frames are cropped to one shared bounding box**, so swapping them
+ *    cannot shift the bird by a pixel.
  *
  * Three constraints, unchanged from the drawing this replaced:
  *
@@ -39,55 +33,16 @@ import { useEffect, useState } from 'react'
  *    sits below the sticky header's z-index.
  *  - **It must respect `prefers-reduced-motion`.** Handled in CSS: no bird at
  *    all under `reduce`. It is decoration and carries no information, unlike
- *    the helper's nudge, which stays.
+ *    the helper's nudge, which keeps its sentence.
  *  - **It must not stack up.** Adding three times restarts one emu rather than
  *    starting three.
  */
 
-/** Sprite sizes and joint positions, in export pixels. */
-const BODY = { w: 470, h: 217, socketX: 157, socketY: 199 }
-const THIGH = { w: 53, h: 46, hipX: 21, hipY: 6, kneeX: 37, kneeY: 38 }
-const SHANK = { w: 150, h: 120, kneeX: 136, kneeY: 10 }
+/** Both frames share this size — they are cut from one bounding box. */
+const FRAME = { w: 512, h: 336 }
 
-/** Rendered width of the bird. The rig is authored at BODY.w and scaled. */
-const DISPLAY_WIDTH = 210
-
-function Leg({ className }: { className: string }) {
-  return (
-    <div
-      className={className}
-      style={{ left: BODY.socketX, top: BODY.socketY }}
-    >
-      <div className="emu-thigh">
-        <Image
-          src="/images/emu-run-thigh.png"
-          alt=""
-          width={THIGH.w}
-          height={THIGH.h}
-          style={{ left: -THIGH.hipX, top: -THIGH.hipY }}
-          unoptimized
-          aria-hidden="true"
-        />
-        {/* Nested, so the knee inherits the thigh's rotation the way a joint
-            chain does rather than needing it added by hand. */}
-        <div
-          className="emu-shank"
-          style={{ left: THIGH.kneeX - THIGH.hipX, top: THIGH.kneeY - THIGH.hipY }}
-        >
-          <Image
-            src="/images/emu-run-shank.png"
-            alt=""
-            width={SHANK.w}
-            height={SHANK.h}
-            style={{ left: -SHANK.kneeX, top: -SHANK.kneeY }}
-            unoptimized
-            aria-hidden="true"
-          />
-        </div>
-      </div>
-    </div>
-  )
-}
+/** Rendered width of the bird. */
+const DISPLAY_WIDTH = 230
 
 export function CartEmu({ trigger }: { trigger: number }) {
   // The last trigger whose run has finished. Deriving visibility by comparison
@@ -116,23 +71,29 @@ export function CartEmu({ trigger }: { trigger: number }) {
     >
       <div key={trigger} className="emu-walk">
         <div
-          className="emu-rig"
-          style={{ ['--emu-scale' as string]: DISPLAY_WIDTH / BODY.w }}
+          className="emu-run"
+          style={{
+            width: DISPLAY_WIDTH,
+            height: (DISPLAY_WIDTH * FRAME.h) / FRAME.w,
+          }}
         >
-          <div className="emu-bob">
-            <Leg className="emu-leg emu-leg-far" />
+          {[1, 2].map((n) => (
             <Image
-              className="emu-body"
-              src="/images/emu-run-body.png"
+              key={n}
+              className={`emu-frame emu-frame-${n}`}
+              src={`/images/emu-run-${n}.png`}
               alt=""
-              width={BODY.w}
-              height={BODY.h}
+              width={FRAME.w}
+              height={FRAME.h}
+              // Eager and unoptimised: the run starts the moment this mounts,
+              // so a lazily-fetched frame would simply be missing for it — and
+              // a lazy image inside a transformed container is never fetched at
+              // all, which is how the previous version shipped legless.
               priority
               unoptimized
               aria-hidden="true"
             />
-            <Leg className="emu-leg emu-leg-near" />
-          </div>
+          ))}
         </div>
       </div>
     </div>
