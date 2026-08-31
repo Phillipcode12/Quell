@@ -412,7 +412,11 @@ decremented once, despite two deliveries of the same event.
 sat at `pending` rather than being wrongly marked paid. Payment recorded only
 from a verified webhook is what made that the outcome.
 
-**Still not exercised:** Stax settlement. The sandbox simulates the processor
+**THE WHOLE ORDER CHAIN, INCLUDING EMAIL, WAS RE-PROVEN 2026-08-31** on the
+live site with Resend configured — the first time the receipt and the pack
+notice have ever actually been delivered. Detail in §20.
+
+**Still not exercised:** settlement. The sandbox simulates the processor
 entirely, so money has never actually moved. The first production transaction
 should be a small real purchase you make and then refund.
 
@@ -1659,10 +1663,37 @@ the setting exists to prevent. Cause was the Vercel Sensitive-variable trap in
 received email fills in `Phillip.moore@meibum.com`. Verified by replying to a
 message in a real mail client, not by reading configuration.
 
-**Still unproven: the order emails.** The receipt and the pack notice have
-never been sent by a real order, and `FULFILMENT_EMAILS` was stored the same
-unreadable way, so "every order reaches Phillip" is verified only as far as the
-stored string. A sandbox order settles it.
+**Proven end to end by a real order, 2026-08-31.** A sandbox purchase was put
+through the live site — order `Q-9BEE9NJD`, transaction `120089508321`,
+$29.99 + $6.95 = $36.94:
+
+| Step | Evidence |
+|---|---|
+| Server-side pricing | $36.94, computed from the database, not trusted from the browser |
+| Stock held only on payment | 248 before *and during* checkout; 247 after |
+| Webhook signature | verified, using the **"text"** key derivation (§6) |
+| Order `pending` → `paid` | with the real transaction id |
+| Replay safety | **several deliveries arrived**; the order paid once and stock moved once |
+| Receipt | delivered to the customer address given at checkout |
+| **Pack notice** | **delivered to `Phillip.moore@meibum.com`** |
+
+The two emails were sent to *different* addresses deliberately, so each path
+was proven separately rather than one standing in for the other.
+
+**The pack notice landed in junk.** That is reputation, not configuration:
+`quelldrop.com` carries GoDaddy's default DMARC record —
+`v=DMARC1; p=reject; adkim=r; aspf=r` — the strictest policy there is, and the
+mail passes it. DKIM signs as `quelldrop.com` and the `send.quelldrop.com`
+return path aligns under relaxed mode, which is *why* it was delivered rather
+than bounced. A new sending domain with no history gets filtered; marking the
+sender safe and accumulating volume is the fix. **Nothing to add to DNS** — and
+note `p=reject` means anything that ever sends as quelldrop.com without
+alignment will be rejected outright, so a second sending service would need its
+own DKIM before it could send at all.
+
+**Two test orders are deliberately left in production:** `Q-9BEE9NJD` (paid,
+the successful test) and `Q-6DFPFKZD` (pending, an abandoned checkout from the
+same session — it holds no stock). Kept as a record rather than cancelled.
 
 > **The first send appeared to fail and had not.** A password reset was
 > triggered before any account existed *in the production database* — local and
