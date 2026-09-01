@@ -13,7 +13,7 @@ export const FREE_SHIPPING_THRESHOLD_CENTS = 5_900 // $59.00
  * shipping threshold was specified but the paid rate was not. Confirm it
  * against what FedEx 2-Day actually costs you before launch.
  */
-export const STANDARD_SHIPPING_CENTS = 695 // $6.95
+export const STANDARD_SHIPPING_CENTS = 1000 // $10.00
 
 /**
  * Carrier-neutral labels. Naming a carrier or a delivery window in the

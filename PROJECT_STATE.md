@@ -186,7 +186,7 @@ src/lib/product-content.ts   ALL label copy: Drug Facts, warnings, directions,
                              ingredients, emu oil panel, company details, FAQ.
                              Single source of truth — change packaging, change
                              this one file. DRUG_FACTS must match the carton.
-src/lib/shipping.ts          Free over $59, else flat $6.95, US only
+src/lib/shipping.ts          Free over $59, else flat $10.00, US only
 src/lib/authorizenet.ts      Gateway client: hosted page token, transaction
                              lookup, webhook signature verification
 src/lib/order-number.ts      Short public reference, e.g. "Q-7F3K9M2A"
@@ -426,7 +426,7 @@ should be a small real purchase you make and then refund.
 
 | Item | Status |
 |---|---|
-| `$6.95` shipping rate | **My assumption.** You gave the $59 threshold, not the rate. Confirm against real carrier cost. |
+| `$10.00` shipping rate | **Settled 2026-09-01 — Phillip set it.** It was $6.95, which was my assumption rather than a quoted rate. The two sandbox orders of 2026-08-17 were charged $36.94 under the old figure, so the records of them below keep that number; a single-bottle order is now $39.99. |
 | `15%` subscription discount | **My placeholder**, and now dormant — subscriptions are deferred. Still a margin decision before they return. |
 | Authorize.net credentials | **Sandbox is done and working. Applied 2026-08-20 (§19); Authorize.net referred it to Zen Payments, a high-risk ISO — nothing signed, see §21.** Production credentials wait on a **new merchant account** — Quell is no longer sharing BlephEx's. See §13. |
 | Merchant account | **Decided 2026-08-19: Quell gets its own.** Ryan ruled out sharing BlephEx's Stax account because the two companies are taxed and reported separately. Open: Stax's low-volume tier (Nick is quoting) vs Authorize.net's own All-in-One at ~$25/mo + 2.9% + 30¢. Either way the code is unchanged — Authorize.net stays the gateway. |

@@ -9,7 +9,6 @@ import { formatUsd } from '@/lib/money'
 import { APPEARANCE_NOTE, RETURNS_SUMMARY } from '@/lib/product-content'
 import {
   FREE_SHIPPING_THRESHOLD_CENTS,
-  STANDARD_SHIPPING_CENTS,
   remainingForFreeShipping,
 } from '@/lib/shipping'
 
@@ -63,10 +62,10 @@ export function BuyPanel({
   )
 
   /**
-   * Worded "normally $6.95" rather than "saves $6.95": spending $29.99 more to
-   * avoid $6.95 of shipping is not a saving unless two bottles were already
-   * wanted. Standard retail says it anyway; nothing else on this site claims
-   * more than it can support, and this is not the place to start.
+   * The offer states no amount at all. It said "saves $6.95" first, which is
+   * not a saving unless two bottles were already wanted, then "normally
+   * $6.95" — and the plain version turned out to be the one that survives a
+   * change of rate as well as a change of mind.
    *
    * The free-shipping threshold is $59.00 against a $29.99 bottle, which is a
    * two-pack by design — and the page never said so. The cart worked this out
@@ -130,10 +129,7 @@ export function BuyPanel({
           className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-brand/40 bg-brand/10 px-4 py-3 text-sm text-brand-light transition hover:border-brand hover:bg-brand/20"
         >
           <Truck className="h-4 w-4 shrink-0" />
-          <span>
-            Make it {qualifyingQuantity} and shipping is free — normally{' '}
-            {formatUsd(STANDARD_SHIPPING_CENTS)}
-          </span>
+          <span>Make it {qualifyingQuantity} and shipping is free.</span>
         </button>
       )}
 
@@ -161,20 +157,16 @@ export function BuyPanel({
       )}
 
       {/*
-        The three things a first-time buyer of an unfamiliar eye drop wants to
-        know at the moment they decide, none of which were visible here before:
-        what shipping costs, whether they can send it back, and — the one that
+        What a first-time buyer of an unfamiliar eye drop wants to know at the
+        moment they decide: whether they can send it back, and — the one that
         otherwise becomes a support call — that the liquid really is meant to
         look like that.
+
+        Shipping is deliberately not repeated here. The free-shipping line
+        already sits directly above the buy controls, and saying it twice in
+        one panel reads as padding.
       */}
       <ul className="mt-5 space-y-2.5 border-t border-line pt-4 text-sm text-muted">
-        <li className="flex items-start gap-2.5">
-          <Truck className="mt-0.5 h-4 w-4 shrink-0 text-brand-light" />
-          <span>
-            Free shipping over {formatUsd(FREE_SHIPPING_THRESHOLD_CENTS)},
-            otherwise a flat {formatUsd(STANDARD_SHIPPING_CENTS)}. US only.
-          </span>
-        </li>
         <li className="flex items-start gap-2.5">
           <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-brand-light" />
           <span>

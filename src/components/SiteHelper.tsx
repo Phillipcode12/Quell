@@ -76,7 +76,7 @@ export const TOPICS: Topic[] = [
     id: 'shipping',
     question: 'How much is shipping?',
     answer:
-      'Free on orders over $59.00, otherwise a flat $6.95. We ship within the United States only.',
+      'Free on orders over $59.00, otherwise a flat $10.00. We ship within the United States only.',
     href: '/cart',
     linkLabel: 'Go to cart',
   },

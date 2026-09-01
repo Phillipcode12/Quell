@@ -41,11 +41,15 @@ describe('shippingCentsFor', () => {
     expect(shippingCentsFor(ONE_BOTTLE * 2)).toBe(0)
   })
 
-  it('produces the totals two real sandbox orders were charged', () => {
-    // $29.99 + $6.95 = $36.94 -- the amount that actually went through the
-    // gateway on 2026-08-17. This is the arithmetic the customer sees.
+  it('produces the total a single-bottle order is charged', () => {
+    // $29.99 + $10.00 = $39.99. This is the arithmetic the customer sees.
+    //
+    // The rate was $6.95 until 2026-09-01, when Phillip set the real one, so
+    // the two sandbox orders of 2026-08-17 were charged $36.94 and the records
+    // of them in PROJECT_STATE stay at that figure. This test tracks the
+    // current rate, not that history.
     const subtotal = ONE_BOTTLE
-    expect(subtotal + shippingCentsFor(subtotal)).toBe(3694)
+    expect(subtotal + shippingCentsFor(subtotal)).toBe(3999)
   })
 })
 
