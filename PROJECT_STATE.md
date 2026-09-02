@@ -912,7 +912,12 @@ diverging from it.
 4. ~~**Deploy.**~~ Done 2026-08-20. GitHub is connected and pushes deploy; the
    live site was verified current against the URL. This unblocked the merchant
    application and any Meta ad review, both of which check the destination.
-5. **Decide whether to proceed with Zen Payments (§21).** The application was
+5. ~~**Decide whether to proceed with Zen Payments (§21).**~~ **Resolved
+   2026-09-01 — approved and live.** The account came through Zen Payments /
+   START Merchant Services with the **Authorize.net gateway retained**, which
+   was the question the whole decision hung on, so the integration was
+   untouched. The rate, reserve and contract terms are still worth having in
+   writing (§21). Originally: the application was
    submitted 2026-08-20 and referred to a high-risk ISO; nothing is signed. Get
    the rate, the reserve, the contract terms, and above all **whether the
    Authorize.net gateway is retained** — in writing. Chase Nick's Stax quote in
@@ -961,25 +966,42 @@ defects: nothing here is broken.
    below keeps the quantity selector, stock badge and detail. **No second
    quantity selector in the hero on purpose** — two on one page is a question
    asked twice, and the cart can change quantity anyway.
-2. **No social proof anywhere.** No reviews, ratings, testimonials or
+2. **No social proof anywhere — now the biggest gap on the site.** The store
+   is live and indexed, so strangers arrive with no reason to trust an unknown
+   brand. Phillip has patient comments saved; they need a regulatory read
+   before publishing (see below). Originally: no reviews, ratings, testimonials or
    practitioner endorsement. For a $29.99 unknown-brand OTC drug bought online
    this is the largest single gap on the site, and it is worth more than any
    design change. **Blocked on real content** — it cannot be invented, and on a
    drug site a fabricated testimonial is a regulatory problem as well as a
    dishonest one. Three genuine customer quotes would do.
-3. **Nothing prompts the second bottle.** Free shipping begins at $59.00 and the
+3. ~~**Nothing prompts the second bottle.**~~ **Done 2026-08-31.** A prompt
+   under Add to cart offers to make it 2 and sets the quantity; it states no
+   amount, which survived the shipping rate changing from $6.95 to $10.00 the
+   next day. Originally: free shipping begins at $59.00 and the
    product is $29.99, so the threshold is built for a two-pack that is never
    offered. The cart already computes "add $29.01 more"; the same prompt belongs
    at the buy panel.
-4. **"Milky brown solution" is buried** in the FAQ and step 3 of How to Use. It
+4. ~~**"Milky brown solution" is buried.**~~ **Done 2026-08-31**, reworded by
+   Phillip 2026-09-01 and now beside the buy button. Originally: buried in the FAQ and step 3 of How to Use. It
    is the most likely "is this spoiled?" support call and return on this
    product, and it belongs beside the buy button.
-5. **The returns policy is not visible where the decision is made.** Free
+5. ~~**The returns policy is not visible where the decision is made.**~~
+   **Done 2026-08-31** — 30-day returns now sits at the buy panel, linking to
+   /terms which stays authoritative. Originally: free
    shipping shows at the buy panel; 30-day returns do not. First purchase from
    an unfamiliar brand is exactly when that matters.
-6. **The helper nudge covers the hero's "Why it works" button** on a phone. Same
+6. ~~**The helper covers the hero buttons on a phone.**~~ **Done 2026-09-01,
+   and it was worse than first measured** — at 375x667 the widget covered **Add
+   to cart** as well, so the primary buy control was unreachable on an ordinary
+   phone. It now stays out of the first screen entirely, tracking scroll in
+   both directions. Originally: covers the "Why it works" button. Same
    family as the checkout-button defect already fixed — see §22.
-7. **Two credibility snags on /about.** Aurora Pharmaceuticals **LLC** owns the
+7. **Partly done — the footer duplicate is fixed (2026-09-01), /about is not.**
+   The footer printed the company address twice, once as the LLC and once as
+   "Manufactured by ... Inc"; the manufacturer line was removed there and kept
+   on /drug-facts where label information belongs. **Still open on /about:**
+   Aurora Pharmaceuticals **LLC** owns the
    trademark while Aurora Pharmaceuticals **Inc** manufactures — accurate, and
    recorded in §9, but one sentence apart it reads as a typo. And "Online:
    meibum.com" sends Quell customers to BlephEx's site, the same brand seam as
