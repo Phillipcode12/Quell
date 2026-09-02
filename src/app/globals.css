@@ -115,6 +115,23 @@ body {
   margin-bottom: 0.25rem;
 }
 
+/* --- Password fields (components/PasswordField.tsx) ------------------------
+ *
+ * Edge and IE draw their own reveal button inside every password input, via
+ * ::-ms-reveal. Next to our own toggle that is two eyes side by side, one of
+ * which is not ours and does not match the design or the aria state. Chrome
+ * and Safari draw nothing, which is why it only shows up for some people.
+ *
+ * Hidden rather than adopted: the native control cannot be labelled, cannot
+ * carry aria-pressed, and disappears the moment the field is not type=password
+ * — so relying on it would mean the button vanishing exactly when it is
+ * supposed to say "Hide password".
+ */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
 /* --- The cart emu (components/CartEmu.tsx) ---------------------------------
  *
  * Two frames of the same bird, swapped at the step rate. Frame 1 is the

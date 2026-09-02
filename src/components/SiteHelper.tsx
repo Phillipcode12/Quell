@@ -184,8 +184,40 @@ export function SiteHelper() {
   const [topic, setTopic] = useState<Topic | null>(null)
   const [showMedicalNotice, setShowMedicalNotice] = useState(false)
   const [nudge, setNudge] = useState(false)
+  const [pastFirstScreen, setPastFirstScreen] = useState(false)
   const panelRef = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
+
+  /**
+   * The widget stays out of the first screen entirely.
+   *
+   * It is fixed to the bottom-right corner, and on a short phone that corner is
+   * exactly where a hero's buttons land. Measured at 375x667 — an ordinary
+   * iPhone size — the widget covered **Add to cart**, all of **Why it works**,
+   * and **Go to cart**. The primary buy button on the site was unreachable
+   * with a thumb.
+   *
+   * Waiting for one screen of scrolling fixes the whole class of it rather
+   * than one page's arithmetic: above the fold belongs to whatever the page is
+   * selling, and a visitor who has not scrolled has not yet asked for help.
+   *
+   * It follows the scroll in **both** directions. Latching it on once shown
+   * seemed tidier — no flicker — but scrolling down and back up is precisely
+   * what someone does before deciding to buy, and it put the widget back over
+   * **Add to cart**. Verified: at 375x667 the centre and right of that button
+   * were unreachable again on the way back up.
+   *
+   * A scroll listener rather than an IntersectionObserver because there is no
+   * single element to observe: every page has a different thing at the top,
+   * and the rule is about the viewport, not about any one of them.
+   */
+  useEffect(() => {
+    const check = () =>
+      setPastFirstScreen(window.scrollY > window.innerHeight * 0.75)
+    check()
+    window.addEventListener('scroll', check, { passive: true })
+    return () => window.removeEventListener('scroll', check)
+  }, [])
 
   /**
    * The nudge fires once per visit, NUDGE_DELAY_MS after the visit began.
@@ -249,7 +281,7 @@ export function SiteHelper() {
     setShowMedicalNotice(false)
   }
 
-  if (HIDDEN_ON.includes(pathname)) return null
+  if (HIDDEN_ON.includes(pathname) || !pastFirstScreen) return null
 
   return (
     // Sits above the emu animation (z-40) but below the sticky header (z-50),
