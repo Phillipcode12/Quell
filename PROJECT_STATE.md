@@ -528,6 +528,53 @@ shows the error with no API call made at all.
 
 ---
 
+### Security audit — 2026-09-01, after going live
+
+Run once the site was taking real money and open to search engines. **Nothing
+was found exposed.** What was checked, so it can be repeated rather than
+re-reasoned:
+
+**No credential reaches the browser.** All ten client JS chunks the homepage
+loads were downloaded and scanned along with the served HTML — 845KB — for
+every secret name and shape: `AUTHORIZENET_*`, `AUTH_SECRET`,
+`DATABASE_URL`, `RESEND_API_KEY`, `postgres://` URLs, `re_`-prefixed keys
+and any 64+ character hex string. **Zero hits.** The four `re_` matches were
+Sentry's `before_send` hooks.
+
+**No secret is in git.** `.env*` is ignored and untracked; the only committed
+env file is `.env.example`, which holds placeholders and a local-dev Postgres
+password.
+
+**The API surface behaves.** Unmatched `/api/` paths return JSON 404 on all
+five methods; admin routes 404 to anonymous visitors rather than 403;
+`/account` redirects; order lookup returns a byte-identical response for a
+real order with the wrong email and a fake order with the wrong email, so it
+is not an oracle for which orders exist; the webhook rejects unsigned
+deliveries with 400.
+
+**Security headers added** in `next.config.ts` — `X-Frame-Options: DENY`,
+`X-Content-Type-Options: nosniff`, `Referrer-Policy:
+strict-origin-when-cross-origin`, a `Permissions-Policy` denying camera,
+microphone and geolocation, and `poweredByHeader: false`. Vercel already sends
+HSTS. Verified live.
+
+**Deliberately not added: a Content-Security-Policy.** On a site with inline
+styles that redirects out to a hosted payment page, a guessed CSP silently
+breaks checkout. It needs its own pass with the payment flow actually tested.
+
+> **One finding, unresolved by choice: `DATABASE_URL` is stored as Config,
+> not Secret**, so its value can be read back from the Vercel dashboard or
+> `vercel env pull`. It was created that way by the Neon integration, and
+> changing a variable the integration manages risks breaking credential
+> rotation on a live store. The severity is low — anyone who can read it
+> already has project access, which lets them deploy code that reads the
+> database anyway — so this is defence in depth, not a hole. Worth doing on a
+> quiet day, with the integration's behaviour checked first.
+
+**Still true from §10:** the rate limiter is in-process rather than Redis-backed
+(mitigated now that the gateway's AVS, CCV and velocity filters are on), and
+Sentry has no project, so a production crash is still invisible.
+
 ## 10. Known limitations before launch
 
 - **Rate limiting is Redis-capable but running in-process.** `lib/rate-limit.ts`
