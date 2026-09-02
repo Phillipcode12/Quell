@@ -58,15 +58,19 @@ export default function AboutPage() {
           </p>
 
           <h2>Who makes Quell</h2>
+          {/* The LLC is the entity, confirmed by Ryan 2026-09-01. The carton
+              still prints "Inc" and is to be corrected at the next print run;
+              /drug-facts keeps MANUFACTURER because that page reproduces the
+              panel as printed, and matching the physical label is the point of
+              it.
+
+              This comment sits outside the <p> deliberately: inside, between
+              two text nodes, JSX collapses the whitespace around it and the
+              sentences render joined — "trademark.The drops". */}
           <p>
             Quell is a product of {COMPANY.name}, whose eye care work centres on
             the eyelid and the tear film — the same territory this formula
             targets. {COMPANY.legalName} owns the {BRAND.trademark} trademark.
-            {/* The LLC is the entity, confirmed by Ryan 2026-09-01. The carton
-                still prints "Inc" and is to be corrected at the next print run;
-                /drug-facts keeps MANUFACTURER because that page reproduces the
-                panel as printed, and matching the physical label is the point
-                of it. */}
             The drops themselves are manufactured by {COMPANY.legalName} of{' '}
             {COMPANY.addressLines[1]}.
           </p>
