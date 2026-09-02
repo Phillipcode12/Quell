@@ -58,22 +58,15 @@ export default function AboutPage() {
           </p>
 
           <h2>Who makes Quell</h2>
-          {/* The LLC is the entity, confirmed by Ryan 2026-09-01. The carton
-              still prints "Inc" and is to be corrected at the next print run;
-              /drug-facts keeps MANUFACTURER because that page reproduces the
-              panel as printed, and matching the physical label is the point of
-              it.
+          {/* Deliberately just the entity and its address. The address is
+              literal rather than {COMPANY.addressLines[1]} because that renders
+              "Brentwood, TN 37027, USA" with a comma before USA, and this is
+              the wording Phillip asked for. The legal name still comes from the
+              constant so it cannot drift.
 
-              This comment sits outside the <p> deliberately: inside, between
-              two text nodes, JSX collapses the whitespace around it and the
-              sentences render joined — "trademark.The drops". */}
-          <p>
-            Quell is a product of {COMPANY.name}, whose eye care work centres on
-            the eyelid and the tear film — the same territory this formula
-            targets. {COMPANY.legalName} owns the {BRAND.trademark} trademark.
-            The drops themselves are manufactured by {COMPANY.legalName} of{' '}
-            {COMPANY.addressLines[1]}.
-          </p>
+              The carton still prints "Inc"; /drug-facts keeps MANUFACTURER
+              because that page reproduces the panel as printed. */}
+          <p>{COMPANY.legalName} of Brentwood, TN 37027 USA.</p>
 
           <h2>What Quell is</h2>
           <p>
