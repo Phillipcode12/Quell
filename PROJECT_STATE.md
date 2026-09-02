@@ -599,7 +599,27 @@ Sentry has no project, so a production crash is still invisible.
   §17. Still worth knowing what it deliberately does *not* do: it never links
   more than the single order whose number was presented, so it is not a route
   into someone else's order history.
-- **Sentry is wired but dormant.** `src/instrumentation.ts` and
+- ~~**Sentry is wired but dormant.**~~ **Live and proven 2026-09-01.** A
+  project exists, `SENTRY_DSN` and `NEXT_PUBLIC_SENTRY_DSN` are set in Vercel
+  production, and capture was verified end to end rather than assumed: a
+  route that throws was deployed from a working copy, hit until it returned
+  500, confirmed as an issue in the Sentry dashboard, then removed. `main`
+  never carried it.
+
+  > **Do not name a temporary route `_something`.** Next treats a folder
+  > beginning with an underscore as private and excludes it from routing, so
+  > `/api/_sentry-check` was answered by the API catch-all's JSON 404 and no
+  > error was ever thrown. It looked exactly like Sentry failing to capture.
+
+  **The repo is deliberately not connected to Sentry.** The integration offers
+  suspect commits and source context in exchange for read access to a private
+  repository that now holds the merchant application details and business
+  context. The trade is poor here: source maps are not uploaded either
+  (`withSentryConfig` is off, below), so browser stack traces stay minified
+  whether or not the repo is linked — and the errors that matter most, the
+  webhook and checkout, are server-side and legible already.
+
+  Original note, still accurate about the configuration: `src/instrumentation.ts` and
   `src/instrumentation-client.ts` initialise only when `SENTRY_DSN` /
   `NEXT_PUBLIC_SENTRY_DSN` are set, and **no Sentry project exists**, so a
   production crash is still invisible. `sendDefaultPii` is off and session
@@ -936,9 +956,11 @@ diverging from it.
    real order, only rendered (`npx tsx scripts/preview-emails.ts`).
 6b. ~~**Domain.**~~ Done 2026-08-20 — `quelldrop.com` is live and canonical
    (§18). This unblocked the merchant application and Meta domain verification.
-7. **Create the Upstash database and the Sentry project.** Both integrations are
-   written and dormant; each needs an account and a credential, nothing more
-   (§10).
+7. **Create the Upstash database.** ~~And the Sentry project~~ — **Sentry is
+   done 2026-09-01 and verified capturing a real server error (§10).** Upstash
+   remains: written, dormant, needs an account and a credential. Less urgent
+   now that the gateway's AVS, CCV and velocity filters are on, which are the
+   real defence against card testing.
 8. ~~**Automated tests.**~~ Started 2026-08-20, 215 tests as of 2026-08-31
    (§16). The webhook route — the money path — was covered on 2026-08-31 and
    the tests were checked by mutation; writing them found and fixed a real
