@@ -34,6 +34,23 @@ export const metadata: Metadata = {
     description,
   },
   alternates: { canonical: '/' },
+  /**
+   * Google Search Console ownership.
+   *
+   * Not a secret — it is served in the page source, and it proves nothing on
+   * its own. It must not be removed: Search Console rechecks periodically and
+   * silently unverifies the property if it disappears, taking the search
+   * performance data and indexing reports with it.
+   *
+   * The property is currently owned by a personal Google account, because
+   * Phillip.moore@meibum.com could not become a Google Account while it held
+   * an existing Drive visitor session. Add the work identity as an Owner under
+   * Settings → Users and permissions once that is sorted; the property does
+   * not need re-verifying to change hands.
+   */
+  verification: {
+    google: 'DwaOWhNA6YcSvkyFzr-XcKcYmwYndFCV3M2mNuvl0FU',
+  },
 }
 
 export default async function RootLayout({ children }: LayoutProps<'/'>) {
