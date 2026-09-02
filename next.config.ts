@@ -39,7 +39,52 @@ const ALIAS_HOSTS = [
   'www.quelltears.com',
 ]
 
+/**
+ * Response headers sent on every route.
+ *
+ * Vercel already sends HSTS. These are the rest of the cheap, non-breaking
+ * ones — no Content-Security-Policy, which on a site using inline styles and
+ * a payment redirect needs its own careful pass rather than a guess that
+ * silently breaks checkout.
+ */
+const SECURITY_HEADERS = [
+  {
+    // Clickjacking. The real risk on this site is an attacker framing the
+    // cart or an admin page inside their own and harvesting what is typed —
+    // and nothing here is ever legitimately embedded in another site.
+    key: 'X-Frame-Options',
+    value: 'DENY',
+  },
+  {
+    // Stops a browser second-guessing a declared Content-Type, which is how
+    // an uploaded or user-influenced file gets treated as script.
+    key: 'X-Content-Type-Options',
+    value: 'nosniff',
+  },
+  {
+    // Full URLs stay inside the origin. Order-tracking links carry an order
+    // number in the query string, and this keeps it out of the Referer header
+    // sent to anywhere else.
+    key: 'Referrer-Policy',
+    value: 'strict-origin-when-cross-origin',
+  },
+  {
+    // Nothing here needs a camera, a microphone or a location.
+    key: 'Permissions-Policy',
+    value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+  },
+]
+
 const nextConfig: NextConfig = {
+  // Removes "X-Powered-By: Next.js". Version fingerprinting is not a
+  // vulnerability by itself, but it tells someone scanning for known Next
+  // issues exactly where to aim.
+  poweredByHeader: false,
+
+  async headers() {
+    return [{ source: '/:path*', headers: SECURITY_HEADERS }]
+  },
+
   async redirects() {
     return ALIAS_HOSTS.map((host) => ({
       source: '/:path*',
