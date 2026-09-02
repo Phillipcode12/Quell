@@ -1766,9 +1766,14 @@ note `p=reject` means anything that ever sends as quelldrop.com without
 alignment will be rejected outright, so a second sending service would need its
 own DKIM before it could send at all.
 
-**Two test orders are deliberately left in production:** `Q-9BEE9NJD` (paid,
-the successful test) and `Q-6DFPFKZD` (pending, an abandoned checkout from the
-same session — it holds no stock). Kept as a record rather than cancelled.
+**The test orders were cleaned up on 2026-09-01.** Seven are `cancelled` and
+one remains `paid`: `Q-7DAGMJPS`, the live $1.00 charge, kept open until it is
+refunded at the gateway so the two systems agree. Cancelling restores stock for
+a paid order and leaves it alone for a pending one, and sends no email —
+afterwards stock read **249**, which is the 250 baseline less the single unit
+still held by that open order. Cancelled orders are kept rather than deleted:
+they are the record of everything done before going live, and the customers
+view counts only paid or shipped, so they do not appear as customers.
 
 > **The first send appeared to fail and had not.** A password reset was
 > triggered before any account existed *in the production database* — local and
