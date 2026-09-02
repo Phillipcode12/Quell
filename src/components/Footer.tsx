@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { QuellLogoInline } from '@/components/Logo'
-import { BRAND, COMPANY, MANUFACTURER } from '@/lib/product-content'
+import { BRAND, COMPANY } from '@/lib/product-content'
 import { formatUsd } from '@/lib/money'
 import { FREE_SHIPPING_THRESHOLD_CENTS, SHIPPING_LABEL } from '@/lib/shipping'
 
@@ -83,10 +83,6 @@ export function Footer() {
             {COMPANY.addressLines.map((line) => (
               <p key={line}>{line}</p>
             ))}
-            <p className="mt-3">
-              Manufactured by {MANUFACTURER.name},{' '}
-              {MANUFACTURER.addressLines.join(', ')}
-            </p>
           </div>
           <div className="sm:text-right">
             <p>
