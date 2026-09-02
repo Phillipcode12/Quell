@@ -6,7 +6,6 @@ import {
   BRAND,
   COMPANY,
   DRUG_FACTS,
-  MANUFACTURER,
   RELIEVES,
 } from '@/lib/product-content'
 
@@ -63,8 +62,13 @@ export default function AboutPage() {
             Quell is a product of {COMPANY.name}, whose eye care work centres on
             the eyelid and the tear film — the same territory this formula
             targets. {COMPANY.legalName} owns the {BRAND.trademark} trademark.
-            The drops themselves are manufactured by {MANUFACTURER.name} of{' '}
-            {MANUFACTURER.addressLines[1]}
+            {/* The LLC is the entity, confirmed by Ryan 2026-09-01. The carton
+                still prints "Inc" and is to be corrected at the next print run;
+                /drug-facts keeps MANUFACTURER because that page reproduces the
+                panel as printed, and matching the physical label is the point
+                of it. */}
+            The drops themselves are manufactured by {COMPANY.legalName} of{' '}
+            {COMPANY.addressLines[1]}.
           </p>
 
           <h2>What Quell is</h2>
