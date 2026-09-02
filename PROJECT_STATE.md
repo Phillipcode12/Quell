@@ -8,7 +8,9 @@ Update it when something here stops being true.
 ## 0. Deployed
 
 **https://quelldrop.com** — the canonical address since 2026-08-20 (§18).
-Vercel project `quell1/quell`, Neon Postgres, Authorize.net **sandbox**.
+Vercel project `quell1/quell`, Neon Postgres, Authorize.net **PRODUCTION —
+live and taking real card payments since 2026-09-01** (gateway `2866990`,
+merchant account via Zen Payments / START Merchant Services).
 `quelleye.com`, `quelleyes.com` and `quelltears.com` all 308 to it, and
 **https://quell-six.vercel.app still works as a fallback** — deliberately not
 redirected, so the site stays reachable if DNS is ever misconfigured.
@@ -19,7 +21,14 @@ non-staging origin; the flag is off. `NEXT_PUBLIC_APP_URL` is already
 correct while the site stays out of search. Set the flag when the store can
 actually sell — see the end of §18.
 
-Webhook registered on the sandbox account (id `9a679451-e09e-44b5-add9-5f2edb28d4fb`)
+The **production** webhook is registered through the Merchant Interface (Account
+→ Settings → Business Settings → Webhooks) against
+`https://quelldrop.com/api/webhooks/authorizenet`, event
+`net.authorize.payment.authcapture.created`, status Active. Only that event: the
+route deliberately ignores refunds, voids and subscriptions, so subscribing to
+them would add noise to the logs and nothing else.
+
+The older sandbox webhook (id `9a679451-e09e-44b5-add9-5f2edb28d4fb`)
 for `net.authorize.payment.authcapture.created`. Registered through the REST API
 rather than the Merchant Interface:
 
@@ -416,7 +425,34 @@ from a verified webhook is what made that the outcome.
 live site with Resend configured — the first time the receipt and the pack
 notice have ever actually been delivered. Detail in §20.
 
-**Still not exercised:** settlement. The sandbox simulates the processor
+**LIVE ON THE PRODUCTION GATEWAY, 2026-09-01.** A real card was charged through
+quelldrop.com and every link held:
+
+| Step | Evidence |
+|---|---|
+| Live token | `accept.authorize.net`, 3,253 characters — not `test.` |
+| Real charge | `Q-7DAGMJPS`, **$1.00**, transaction `121807006102` |
+| Webhook signature | verified, **"text"** derivation, against the production key |
+| `pending` → `paid` | with the real transaction id |
+| Stock | 244 → 243, exactly once |
+| Receipt | delivered to the address given at checkout |
+| Pack notice | delivered to `Phillip.moore@meibum.com` |
+
+The two emails went to *different* inboxes deliberately, so each path proved
+itself rather than one standing in for the other.
+
+**The test cost a dollar on purpose.** The price was temporarily set to $1.00 in
+the production database and the free-shipping threshold to $0, both restored
+immediately afterwards and verified back at $29.99 / $10.00. The threshold
+change was deployed from a working copy with `vercel deploy --prod` rather than
+committed, so `main` never carried it. **Settlement works the same at $1 as at
+$40** — there is no reason to prove it with a large charge.
+
+**Still not fully exercised:** the refund leg. The charge settles overnight and
+is refunded after; Authorize.net will not refund an unsettled transaction, only
+void it, and voiding would have skipped the very thing being tested.
+
+The old note, for context: the sandbox simulates the processor
 entirely, so money has never actually moved. The first production transaction
 should be a small real purchase you make and then refund.
 
@@ -433,7 +469,7 @@ should be a small real purchase you make and then refund.
 | Domain | **Done 2026-08-20 — https://quelldrop.com is live and canonical** (§18). The other three redirect to it. `NEXT_PUBLIC_APP_URL` is set to `https://quelldrop.com` in Vercel production, so canonical tags, OpenGraph URLs and the sitemap are all correct; indexing is held off separately by `ALLOW_INDEXING`, which is what `robots.txt` reflects. *(Corrected 2026-08-28 — this row previously said the variable still pointed at the vercel.app host, which was no longer true. Verified against `vercel env ls production` and the live canonical tag.)* |
 | Customer email address | **Settled and working, 2026-08-31 (§20).** Quell has no mailbox of its own yet, so Phillip's is used for everything inbound: `FULFILMENT_EMAILS` and `EMAIL_REPLY_TO` are both `Phillip.moore@meibum.com`, in `.env` and in Vercel production. **The sender is unchanged and must stay `orders@quelldrop.com`** — see the From/Reply-To split below, which is what keeps meibum.com out of it. `EMAIL_FROM` was still `orders@example.com` in Vercel until 2026-08-31 and has been corrected. **The sender should now be `orders@quelldrop.com`, not `Quell@meibum.com`** — Quell owns its own domain, whose DNS zone has no MX and no TXT records at all, so Resend's DKIM and SPF records go onto a clean zone. **This removes the meibum.com SPF hazard entirely**: no edit to BlephEx's single existing SPF record, so no way to break their mail. A Quell-branded mailbox is still wanted eventually — receipts arriving from `orders@quelldrop.com` but answered by a person at meibum.com is a seam customers can see — but nothing is blocked on it. |
 | Fulfilment | **Decided 2026-08-20: packed and posted by hand from the office**, not pushed to XPSShipper. The app now supports that — a paid order emails a fulfilment list, and marking it shipped captures a carrier and tracking number that reach the customer (§20). What is still open is the human side: **who** packs and posts, and who receives returns, since the terms accept unopened returns for 30 days. |
-| Card statement descriptor | **Resolves with the separate merchant account** — Quell sets its own rather than showing BlephEx's. Still needs choosing, and it affects packaging and email copy, so it has the longest lead time. |
+| Card statement descriptor | **Known and needs changing, 2026-09-01.** The first live charge showed on the bank statement as **`AURORA PHARMACE`** — the legal entity, truncated. **Customers buy "Quell" and will not recognise it**, and "I don't recognise this charge" is the commonest cause of chargebacks; on a high-risk account a chargeback ratio is what gets processing withdrawn. Ask Zen/START to change it to carry the brand — `QUELL EYE DROPS`, or better `QUELL QUELLDROP.COM`, since a URL in the descriptor lets people look it up. |
 | `$29.99` price | Matches the Dry Eye Rescue retail listing as of 2026-08-13. |
 | Brand teal | Site uses `#00A7B5`; print file converts to `#4AC1A8`. One token change if you want to match print. |
 | Legal pages | **Rewritten 2026-08-18/19 and reviewed.** No placeholders, no template banners, every claim checked against the code. Three false statements were fixed: the cart is `localStorage` and never reaches the server, there is no marketing email, and the site runs no analytics at all — the policy now says so. Governing law is **Tennessee**; shipping is **US-only**, matching `SHIPPABLE_COUNTRIES`. Note the privacy policy now states the site uses no advertising trackers — **installing a Meta Pixel makes that false and must be changed in the same release.** |
@@ -857,11 +893,12 @@ diverging from it.
    defect in how the two post-payment emails were sequenced. **The gap that
    remains is anything needing a real database**: every Prisma call in the
    suite is still mocked.
-9. **Production cutover:** production keys, webhook re-registered against the
-   real host, `AUTHORIZENET_ENVIRONMENT=production`, real domain. Make the
-   first production transaction a small real purchase and refund it —
-   settlement has never been exercised, since the sandbox simulates the
-   processor entirely.
+9. ~~**Production cutover.**~~ **Done 2026-09-01 — the store takes real money.**
+   Production credentials in Vercel, `AUTHORIZENET_ENVIRONMENT=production`,
+   webhook registered against `quelldrop.com`, and a real $1.00 card payment
+   proven end to end including both emails (§8). **What remains:** refund that
+   charge once it settles, turn on the AVS/CVV/velocity filters, fix the
+   statement descriptor (§9), and cancel the test orders in `/admin/orders`.
 
 ### Storefront review — the agreed list, 2026-08-31
 
