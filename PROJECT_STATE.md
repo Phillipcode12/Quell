@@ -25,6 +25,13 @@ Two things were left for today:
    order `Q-7DAGMJPS` in `/admin/orders` so the site and the gateway agree,
    which also returns stock to 250.
 
+And one thing to check rather than do, because two sections of this file
+disagreed about it and neither can be trusted: **are the gateway's AVS, CVV and
+velocity fraud filters actually on?** Merchant Interface → Account → Fraud
+Detection Suite. Guest checkout has no account barrier and the app's own rate
+limiter is still in-process, so those filters are the real defence against card
+testing on a live store (§14 item 7).
+
 Also outstanding, waiting on other people: Zen on the **statement descriptor**
 (currently `AURORA PHARMACE`, §9) and the **written terms** (§21), and Ryan on
 **fulfilment** — who packs, who takes returns (§13).
@@ -490,7 +497,7 @@ should be a small real purchase you make and then refund.
 |---|---|
 | `$10.00` shipping rate | **Settled 2026-09-01 — Phillip set it.** It was $6.95, which was my assumption rather than a quoted rate. The two sandbox orders of 2026-08-17 were charged $36.94 under the old figure, so the records of them below keep that number; a single-bottle order is now $39.99. |
 | `15%` subscription discount | **My placeholder**, and now dormant — subscriptions are deferred. Still a margin decision before they return. |
-| Authorize.net credentials | **Sandbox is done and working. Applied 2026-08-20 (§19); Authorize.net referred it to Zen Payments, a high-risk ISO — nothing signed, see §21.** Production credentials wait on a **new merchant account** — Quell is no longer sharing BlephEx's. See §13. |
+| Authorize.net credentials | **Settled 2026-09-01 — production credentials are in Vercel and the store takes real cards** (gateway `2866990`, §0). The account came through Zen Payments / START Merchant Services with the Authorize.net gateway retained, so the integration was untouched. Rate, reserve and contract terms are still not in writing (§21). Originally: applied 2026-08-20 (§19), referred to a high-risk ISO, nothing signed, and production waiting on a merchant account of Quell's own rather than BlephEx's. |
 | Merchant account | **Decided 2026-08-19: Quell gets its own.** Ryan ruled out sharing BlephEx's Stax account because the two companies are taxed and reported separately. Open: Stax's low-volume tier (Nick is quoting) vs Authorize.net's own All-in-One at ~$25/mo + 2.9% + 30¢. Either way the code is unchanged — Authorize.net stays the gateway. |
 | Domain | **Done 2026-08-20 — https://quelldrop.com is live and canonical** (§18). The other three redirect to it. `NEXT_PUBLIC_APP_URL` is set to `https://quelldrop.com` in Vercel production, so canonical tags, OpenGraph URLs and the sitemap are all correct; indexing is held off separately by `ALLOW_INDEXING`, which is what `robots.txt` reflects. *(Corrected 2026-08-28 — this row previously said the variable still pointed at the vercel.app host, which was no longer true. Verified against `vercel env ls production` and the live canonical tag.)* |
 | Customer email address | **Settled and working, 2026-08-31 (§20).** Quell has no mailbox of its own yet, so Phillip's is used for everything inbound: `FULFILMENT_EMAILS` and `EMAIL_REPLY_TO` are both `Phillip.moore@meibum.com`, in `.env` and in Vercel production. **The sender is unchanged and must stay `orders@quelldrop.com`** — see the From/Reply-To split below, which is what keeps meibum.com out of it. `EMAIL_FROM` was still `orders@example.com` in Vercel until 2026-08-31 and has been corrected. **The sender should now be `orders@quelldrop.com`, not `Quell@meibum.com`** — Quell owns its own domain, whose DNS zone has no MX and no TXT records at all, so Resend's DKIM and SPF records go onto a clean zone. **This removes the meibum.com SPF hazard entirely**: no edit to BlephEx's single existing SPF record, so no way to break their mail. A Quell-branded mailbox is still wanted eventually — receipts arriving from `orders@quelldrop.com` but answered by a person at meibum.com is a seam customers can see — but nothing is blocked on it. |
@@ -597,9 +604,12 @@ breaks checkout. It needs its own pass with the payment flow actually tested.
 > database anyway — so this is defence in depth, not a hole. Worth doing on a
 > quiet day, with the integration's behaviour checked first.
 
-**Still true from §10:** the rate limiter is in-process rather than Redis-backed
-(mitigated now that the gateway's AVS, CCV and velocity filters are on), and
-Sentry has no project, so a production crash is still invisible.
+**Still true from §10:** the rate limiter is in-process rather than Redis-backed.
+Whether the gateway's AVS, CVV and velocity filters are on is **unconfirmed** —
+see §14 item 7. *(Corrected 2026-09-02: this paragraph used to end "Sentry has no
+project, so a production crash is still invisible", which stopped being true the
+same day it was written — Sentry went live 2026-09-01 and was proven capturing a
+real server error, §10.)*
 
 ## 10. Known limitations before launch
 
@@ -984,9 +994,12 @@ diverging from it.
    (§18). This unblocked the merchant application and Meta domain verification.
 7. **Create the Upstash database.** ~~And the Sentry project~~ — **Sentry is
    done 2026-09-01 and verified capturing a real server error (§10).** Upstash
-   remains: written, dormant, needs an account and a credential. Less urgent
-   now that the gateway's AVS, CCV and velocity filters are on, which are the
-   real defence against card testing.
+   remains: written, dormant, needs an account and a credential. **How urgent
+   depends on the fraud filters, and their state is unconfirmed** — this line
+   used to say they were on while item 9 below said they still needed turning
+   on, and nothing recorded here establishes which was true. They are the real
+   defence against card testing, so check before deciding Upstash can wait:
+   Merchant Interface → Account → Fraud Detection Suite (AVS, CVV, velocity).
 8. ~~**Automated tests.**~~ Started 2026-08-20, 215 tests as of 2026-08-31
    (§16). The webhook route — the money path — was covered on 2026-08-31 and
    the tests were checked by mutation; writing them found and fixed a real
@@ -997,8 +1010,9 @@ diverging from it.
    Production credentials in Vercel, `AUTHORIZENET_ENVIRONMENT=production`,
    webhook registered against `quelldrop.com`, and a real $1.00 card payment
    proven end to end including both emails (§8). **What remains:** refund that
-   charge once it settles, turn on the AVS/CVV/velocity filters, fix the
-   statement descriptor (§9), and cancel the test orders in `/admin/orders`.
+   charge once it settles, **confirm the AVS/CVV/velocity filters are on**
+   (unconfirmed — see item 7), fix the statement descriptor (§9), and cancel
+   the test orders in `/admin/orders`.
 
 ### Storefront review — the agreed list, 2026-08-31
 
@@ -2019,10 +2033,12 @@ variables, one webhook registration and a redeploy.
 
 **Do not go live without email.** A card-not-present order with no receipt is a
 chargeback waiting to happen, and the customer has no record of what they
-bought. `RESEND_API_KEY` is unset in Vercel production, so today nothing sends
-at all — no confirmation, no shipping notice, no password reset, and no pack
-notice to the office. See §14 item 6; it is an account and a DNS record, not
-code.
+bought. **This was satisfied before launch: `RESEND_API_KEY` is set in Vercel
+production and mail is proven end to end** — see "Email works — verified
+2026-08-31" earlier in this section, and the live order of 2026-09-01, which
+delivered both the receipt and the pack notice.
+*(Corrected 2026-09-02; this read "unset ... today nothing sends at all", which
+was true when written on 2026-08-20 and stopped being true on 2026-08-31.)*
 
 
 ### Still open, and it is a people question
