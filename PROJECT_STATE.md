@@ -5,6 +5,32 @@ Update it when something here stops being true.
 
 ---
 
+## Start here — next session, 2026-09-02
+
+**The store is live and takes real card payments.** Treat pushes accordingly:
+`main` deploys to a shop with a working checkout, and it is now indexed by
+Google, so mistakes are public.
+
+Two things were left for today:
+
+1. **The testimonials.** Phillip has patient comments saved on his computer.
+   They become the social-proof section — the biggest remaining gap on the site
+   (§14). **They need a regulatory read before publishing**: a comment saying a
+   drop cured a condition is a claim the label does not support, and publishing
+   it in a customer's words still makes it on Quell's own site. Same discipline
+   as the withheld redness claim (§9).
+2. **Refund the $1.00 live test** — transaction `121807006102`, Merchant
+   Interface → Transactions. It had to settle overnight first; Authorize.net
+   will not refund an unsettled transaction, only void it. Afterwards, cancel
+   order `Q-7DAGMJPS` in `/admin/orders` so the site and the gateway agree,
+   which also returns stock to 250.
+
+Also outstanding, waiting on other people: Zen on the **statement descriptor**
+(currently `AURORA PHARMACE`, §9) and the **written terms** (§21), and Ryan on
+**fulfilment** — who packs, who takes returns (§13).
+
+---
+
 ## 0. Deployed
 
 **https://quelldrop.com** — the canonical address since 2026-08-20 (§18).
@@ -474,7 +500,7 @@ should be a small real purchase you make and then refund.
 | Brand teal | Site uses `#00A7B5`; print file converts to `#4AC1A8`. One token change if you want to match print. |
 | Legal pages | **Rewritten 2026-08-18/19 and reviewed.** No placeholders, no template banners, every claim checked against the code. Three false statements were fixed: the cart is `localStorage` and never reaches the server, there is no marketing email, and the site runs no analytics at all — the policy now says so. Governing law is **Tennessee**; shipping is **US-only**, matching `SHIPPABLE_COUNTRIES`. Note the privacy policy now states the site uses no advertising trackers — **installing a Meta Pixel makes that false and must be changed in the same release.** |
 | Returns policy | **Decided 2026-08-19.** Unopened, original packaging, 30 days, refund of product price; original shipping not refunded. Opened drops never returnable (sterility). Damaged, incorrect or broken-seal orders replaced free within 30 days. Refunds are achievable today through the Authorize.net merchant interface; store credit was considered and dropped because no credit or coupon mechanism exists anywhere in the codebase. |
-| Seller of record | **Changed 2026-08-19 to Aurora Pharmaceuticals, LLC**, confirmed by Ryan against the IRS letter and articles of organization. `COMPANY` now carries Aurora's name and its 330 Franklin Road address; the phone is shared with BlephEx and stays. `MANUFACTURER` is deliberately left as **Aurora Pharmaceuticals, Inc** because that is what the carton prints — the suffix is wrong on the box and is a packaging correction, not a site edit. |
+| Seller of record | **Changed 2026-08-19 to Aurora Pharmaceuticals, LLC**, confirmed by Ryan against the IRS letter and articles of organization. `COMPANY` now carries Aurora's name and its 330 Franklin Road address; the phone is shared with BlephEx and stays. **Settled 2026-09-01: Phillip confirmed the LLC is in fact the entity, and the carton will be corrected at the next print run.** /about now names the LLC throughout. `MANUFACTURER` is still **Aurora Pharmaceuticals, Inc** and /drug-facts still prints it, deliberately — that page reproduces the panel as it appears on the box, so matching the physical label is the point of it. **When the carton is reprinted, change the constant and the two agree again.** |
 | **Front-panel claims** | The carton advertises **redness relief**, but the Drug Facts *Uses* section does not cover it and the formula has no vasoconstrictor. FDA expects front-panel claims to match Uses. Affects packaging, not just the site. Needs regulatory review. |
 
 ---
@@ -1019,11 +1045,15 @@ defects: nothing here is broken.
    phone. It now stays out of the first screen entirely, tracking scroll in
    both directions. Originally: covers the "Why it works" button. Same
    family as the checkout-button defect already fixed — see §22.
-7. **Partly done — the footer duplicate is fixed (2026-09-01), /about is not.**
-   The footer printed the company address twice, once as the LLC and once as
-   "Manufactured by ... Inc"; the manufacturer line was removed there and kept
-   on /drug-facts where label information belongs. **Still open on /about:**
-   Aurora Pharmaceuticals **LLC** owns the
+7. ~~**Two credibility snags on /about.**~~ **Done 2026-09-01.** The footer
+   printed the company address twice, once as the LLC and once as "Manufactured
+   by ... Inc"; that line was removed there and kept on /drug-facts where label
+   information belongs. On /about, **"Who makes Quell" is now one line** —
+   `Aurora Pharmaceuticals, LLC of Brentwood, TN 37027 USA.` — after Ryan
+   confirmed the LLC is the entity (see §9). The **meibum.com link stays**:
+   Phillip pointed out it is the owner's main site and is printed on the
+   carton, so a customer checking the box against the site finds the same
+   address. Originally: Aurora Pharmaceuticals **LLC** owns the
    trademark while Aurora Pharmaceuticals **Inc** manufactures — accurate, and
    recorded in §9, but one sentence apart it reads as a typo. And "Online:
    meibum.com" sends Quell customers to BlephEx's site, the same brand seam as
