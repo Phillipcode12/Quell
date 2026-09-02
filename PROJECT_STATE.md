@@ -1375,6 +1375,35 @@ intact and no console errors. Every public route returns 200 on the new domain,
 `/admin/orders` still 404s signed out, and `robots.txt` still returns
 `Disallow: /`.
 
+### Indexed and in Search Console — 2026-09-01
+
+**`ALLOW_INDEXING` is `true` and the site is open to search engines.** Flipped
+once the store could actually take money, which is what the flag existed to
+wait for. It is stored as readable Config rather than a Secret, so its value
+can be verified rather than taken on trust (§12).
+
+`robots.txt` now serves `Allow: /` with `/api/`, `/account`, `/cart`,
+`/checkout/` and `/admin` disallowed, and points at the sitemap. The five
+public pages are in it — home, drug-facts, about, privacy, terms.
+
+**Google Search Console is verified.** The ownership meta tag is in the root
+layout's `metadata.verification.google`. **Do not remove it**: Google rechecks
+periodically and silently unverifies the property if it disappears, taking the
+search performance data with it.
+
+> **The property is owned by a personal Google account, deliberately.**
+> `Phillip.moore@meibum.com` could not be made into a Google Account: it was
+> already in use as a **Drive visitor session** — the PIN-code identity Google
+> gives someone who opens a shared file without an account — and Google will
+> not create an account on an address holding one. Deleting the session would
+> have cost access to every Drive file shared with that address, with each
+> owner having to re-invite him. Not worth it to save a step. **Add the work
+> identity as an Owner** under Settings → Users and permissions once it has a
+> Google Account; a property does not need re-verifying to change hands.
+
+Expect nothing in Search Console for several days — a new domain takes days to
+weeks to index. The useful panels are **Coverage** first, then **Performance**.
+
 ### Indexing is a separate switch from the URL
 
 **Fixed 2026-08-20.** `NEXT_PUBLIC_APP_URL` is now `https://quelldrop.com` in
