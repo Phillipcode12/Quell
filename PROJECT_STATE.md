@@ -43,10 +43,12 @@ Working tree clean, `main` in sync, nothing left running.
 **Shipped:**
 
 - **First-party visit counting** (§23). `/admin/analytics`, the Traffic tab:
-  live count, visits for today / 7 / 30 days, a 14-day chart, and how people
-  arrived — search, link or direct — with the referring host. **It is a counter
-  and stores no page paths**, by decision. Migration applied to Neon before the
-  push, in that order.
+  live count; visits, orders and revenue for today / 7 / 30 days; a 14-day
+  chart; how people arrived — search, link or direct — with the referring host;
+  and a **month-by-month table, all time** with conversion and average order
+  value. **It is a counter and stores no page paths**, and **nothing is ever
+  deleted**, both by decision. Migration applied to Neon before the push, in
+  that order.
 - **Product, Organization and WebSite structured data** (§24). The site had
   none. No `aggregateRating` and no `review`, guarded by tests — see item 1
   above for why that matters when the testimonials land.
@@ -427,9 +429,11 @@ grouped case-insensitively.
 > states the site uses no advertising trackers. A mailing list means updating
 > the policy and adding consent first.
 
-**`/admin/analytics`** ("Traffic") — added 2026-09-02. Live count, visits for
-today / 7 / 30 days, a 14-day chart, how people arrived (search / link /
-direct) and which sites sent them. **It is a counter: it does not record which
+**`/admin/analytics`** ("Traffic") — added 2026-09-02. Live count; visits,
+orders and revenue for today / 7 / 30 days; a 14-day chart; how people arrived
+(search / link / direct) and which sites sent them; and a **month-by-month
+table, all time** carrying visits, orders, revenue, average order value,
+conversion and the source split. **It is a counter: it does not record which
 pages anyone read.** Built first-party rather than installed; see §23 for why
 and for what it deliberately does not store.
 
@@ -1193,9 +1197,17 @@ Meta tags load on a patient referral form.
 
 **What is stored:** a random per-tab id, how they arrived, a referring host, and
 two timestamps. **No page path, no IP address, no user agent, no cookie**, and
-nothing tying a visit to a customer or an order. Rows are deleted after **90
-days**, pruned opportunistically from the collector on roughly 1 request in 50
-rather than by a cron nobody would remember.
+nothing tying a visit to a customer or an order.
+
+**Nothing is ever deleted — Phillip's call, 2026-09-02.** The original 90-day
+prune is gone. History is only worth having once there is something to compare
+against, and a shop's interesting question is year on year. The cost is
+negligible and the code says so, so nobody re-adds pruning out of caution: a
+Visit row is an id, a word, a hostname and two timestamps, and a hundred
+thousand is single-digit megabytes. **What makes indefinite retention
+defensible is what is not stored** — keeping an anonymous count forever is a
+different proposition from keeping a browsing history forever, and the
+no-page-path decision already ruled the second one out.
 
 The session id lives in `sessionStorage`, not a cookie, so it dies with the tab
 and cannot follow anyone between visits. That is load-bearing for the policy
@@ -1304,6 +1316,44 @@ Two things here are load-bearing and are easy to break by tidying:
 > concerns one product, so reading /drug-facts reveals about what visiting at
 > all reveals. On DECB a page names a condition, and that site already collects
 > patient data with no privacy policy at all.
+
+### Orders and revenue, on the same axes — 2026-09-02
+
+Visits alone answer half a question. The dashboard now carries **orders,
+revenue, average order value and conversion** for the same day, month and
+all-time views, because traffic that does not convert and conversion without
+traffic are different problems and only seeing them side by side says which one
+the shop has.
+
+Four judgements in the aggregation, each of which would misreport if changed:
+
+- **Only `paid` and `shipped` count as a sale.** A `pending` order is a
+  checkout that may never finish; a `cancelled` one has been refunded or never
+  charged. This is the same rule `/admin/customers` uses and **the two must not
+  drift apart**.
+- **A month with sales but no visit records is still shown**, visits at zero.
+  Orders predate the counter, and hiding real revenue is the worse error.
+- **No conversion figure when nobody visited.** 0/0 is not 0%; a zero there
+  would be a claim about traffic that did not exist.
+- **Dashes, not `$0.00`,** on a month with no orders, so an empty month cannot
+  be misread as a month of free ones.
+
+Two things to know before anyone reconciles these numbers against something
+else:
+
+- **Orders are dated by `createdAt`,** because there is no paid-at column. The
+  gap is seconds — the webhook marks an order paid moments after checkout — but
+  it will **not** agree exactly with a processor statement, which uses
+  settlement dates.
+- **Months are UTC**, matching the stored timestamps and the daily figures.
+
+Monthly figures come from `date_trunc` in raw SQL, because Prisma cannot group
+by a truncated date. **The counts are cast to `int` in SQL on purpose**:
+Postgres `bigint` arrives as a JavaScript `BigInt`, which `JSON.stringify`
+refuses, and a server component would then fail at render rather than at the
+query. If the table ever outgrows one grouped scan the answer is a rollup
+table, but that is a problem for hundreds of thousands of visits, not for this
+shop.
 
 > Relevant to the compensation discussion: the proposal to Ryan prices Quell at
 > a percentage of sales through quelldrop.com, against his expectation that most
