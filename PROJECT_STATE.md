@@ -5,105 +5,89 @@ Update it when something here stops being true.
 
 ---
 
-## Start here — next session, 2026-09-02
+## Start here — next session
 
-**The store is live and takes real card payments.** Treat pushes accordingly:
-`main` deploys to a shop with a working checkout, and it is now indexed by
-Google, so mistakes are public.
+**The store is live and takes real card payments.** `main` deploys to a shop
+with a working checkout, and Google indexes it, so mistakes are public. Apply
+migrations to Neon **before** pushing (§20) — the tracker in the root layout
+means a missing table would hit every page, not one route.
 
-**Open, in the order they matter:**
+### Open, in the order they matter
 
 1. **The testimonials.** Phillip has patient comments saved on his computer.
    They become the social-proof section — the biggest remaining gap on the site
-   (§14), and the site has had search traffic since 2026-09-01, so strangers
+   (§14), and the shop has had search traffic since 2026-09-01, so strangers
    are arriving now with no reason to trust an unknown brand. **They need a
    regulatory read before publishing**: a comment saying a drop cured a
    condition is a claim the label does not support, and publishing it in a
-   customer's words still makes it on Quell's own site. Same discipline as the
-   withheld redness claim (§9). Note this now also governs structured data —
-   marking a review up as JSON-LD publishes the claim to every search engine at
-   once (§24).
+   customer's words still makes it Quell's claim. Same discipline as the
+   withheld redness claim (§9). **This now governs structured data too** —
+   marking a review up as JSON-LD publishes that claim to every search engine
+   at once, which is a higher bar than a page (§24).
 2. **SEO items 2 and 3** (§24) — the homepage title carries no search terms,
-   and Bing Webmaster Tools is not set up. Both parked by Phillip; the title is
-   brand voice and his call.
-
-### Settled 2026-09-02 — the fraud filters are on
-
-**Phillip confirmed it against the Merchant Interface**: the Advanced Fraud
-Detection Suite filters, daily velocity among them, were configured earlier and
-are in place. So the line telling anyone to *turn them on* was the stale one,
-not the line saying they were on.
-
-Recorded as confirmed by the person with gateway access, which is the only place
-this can be established — it is not checkable from the codebase or from outside,
-and no amount of reading this file would have settled it.
-
-### Closed 2026-09-02 — the live test charge is fully reconciled
-
-Both halves are done, and they are two separate actions:
-
-- **Refunded at the gateway.** Transaction `121807006102`, refunded by Phillip
-  in the Authorize.net Merchant Interface. Reported by him; **not independently
-  verified** — the Authorize.net API credentials are stored as Secrets in Vercel
-  and cannot be read back, so there is no way to query the transaction from
-  here. That is the correct storage for a credential and is not worth changing.
-- **Cancelled on the site.** Order `Q-7DAGMJPS` reads `cancelled` and **stock is
-  back to 250**, verified directly against the production database. All nine
-  production orders are cancelled — there has still been no real customer order.
-
-> **The two are not the same action, and the app can only do one of them.**
-> Cancelling in `/admin/orders` moves no money; the app has no refund path at
-> all — `grep -ri refund src/` finds only copy and one webhook comment — and the
-> admin's own confirm dialog says *"Refunding is done in the Authorize.net
-> merchant interface."* That was misread once on 2026-09-02, and this file
-> briefly recorded the charge as reconciled when only the cancel had happened.
->
-> **For any paid order, do both, gateway first:** refund at Authorize.net, then
-> cancel in the admin. Gateway first so a failure there does not leave the site
-> claiming a refund that never happened.
->
-> This matters more than a dollar. **If a customer asks to cancel and only the
-> admin button is clicked, they wait for a refund that never arrives and their
-> next move is a chargeback** — and on a high-risk account the chargeback ratio
-> is what gets processing withdrawn (§21).
-
-### Shipped 2026-09-02 — visit counting is live
-
-Nine commits pushed. The `20260902160000_visits` migration was applied to Neon
-**before** the push, in that order, and the pulled env file was deleted straight
-after. `prisma migrate status` against production reports up to date.
-
-Verified against the live site rather than assumed: `/api/track` answers 204 for
-a direct arrival and for a search arrival, ignores Googlebot,
-`/admin/analytics` 404s to anonymous visitors, and the rows landed in the
-production database with the right source — `google.com` classified as
-`search`. The two deploy-test rows were deleted afterwards, so the numbers on
-the dashboard are real from the start.
-
-**One genuine visit was already recorded during the deploy window**, which is
-the first real traffic data the shop has ever had.
-
-The privacy policy question is settled for now: the word "analytics" came out of
-the no-tracking sentence, nothing on the page is false, and the one optional
-sentence about the collected-automatically list is still unwritten. See §23.
-
-**The statement descriptor is set to `QUELL DROP`** (§9) — form completed with
-Dr. Rynerson. One thing remains: **confirm it on a real statement.** It has not
-been seen on one yet, because the test charge that would have shown it was
-refunded, so the next real order is the first chance.
-
-**The Authorize.net gateway business name needs no change — settled
-2026-09-02.** The descriptor comes from the merchant account, not the gateway,
-so it was never the lever. The one place it could still have surfaced was the
-**hosted payment page**, where customers are redirected to type their card
-details — **Phillip checked, and that page shows "Quell".** So the brand is what
-a customer sees at the moment they hand over a card, and `QUELL DROP` is what
-they see afterwards on the statement. Aurora Pharmaceuticals appears nowhere in
-the buying flow, which is the outcome that was wanted. Closed; do not re-open
-it.
+   and Bing Webmaster Tools is not set up. Both parked by Phillip. The title is
+   brand voice and his call, not an engineering one.
+3. **Confirm `QUELL DROP` on a real statement.** The descriptor is set (§9) but
+   has never been seen on one, because the test charge that would have shown it
+   was refunded. The next real order is the first chance.
 
 **Waiting on other people:** the **written terms** from Zen (§21), and Ryan on
 **fulfilment** — who packs, who takes returns (§13).
+
+---
+
+### Where 2026-09-02 ended — 24 commits, all pushed
+
+Working tree clean, `main` in sync, nothing left running.
+
+**Shipped:**
+
+- **First-party visit counting** (§23). `/admin/analytics`, the Traffic tab:
+  live count, visits for today / 7 / 30 days, a 14-day chart, and how people
+  arrived — search, link or direct — with the referring host. **It is a counter
+  and stores no page paths**, by decision. Migration applied to Neon before the
+  push, in that order.
+- **Product, Organization and WebSite structured data** (§24). The site had
+  none. No `aggregateRating` and no `review`, guarded by tests — see item 1
+  above for why that matters when the testimonials land.
+- **The vercel.app fallback is out of the index.** `robots.ts` checked the
+  configured URL rather than the serving host, so `quell-six.vercel.app` was
+  serving `Allow: /` for the identical shop. Three guards now.
+- **The emu's nudge** is smaller and takes itself away after 8 seconds (§22).
+- **Two admins added** — `docjmrmd@gmail.com` and `ryan.peterson@meibum.com`
+  (§7). Neither has registered yet; they become admins the moment they do.
+  `ADMIN_EMAILS` moved from Secret to Config so it can be read back.
+
+**Settled:**
+
+- **The fraud filters are on.** Confirmed by Phillip against the Merchant
+  Interface — AFDS, daily velocity among them, configured earlier. The stale
+  line was the one saying to turn them on. This makes Upstash less urgent,
+  though still worth doing (§14 item 7).
+- **The live test charge is reconciled.** `121807006102` refunded at the
+  gateway, order `Q-7DAGMJPS` cancelled on the site, stock back to 250 and
+  verified against the production database. All nine production orders are
+  cancelled; **there has still been no real customer order.**
+- **The statement descriptor is `QUELL DROP`** — Account Change Form completed
+  with Dr. Rynerson (§9).
+- **The Authorize.net gateway business name needs no change.** The descriptor
+  comes from the merchant account, not the gateway. Phillip checked the hosted
+  payment page and it shows **"Quell"**, so Aurora Pharmaceuticals appears
+  nowhere in the buying flow. Closed; do not re-open it from Zen's email.
+- **The privacy policy** keeps its own wording. The word "analytics" came out
+  of the no-tracking sentence and nothing on the page is false. One optional
+  sentence about the collected-automatically list is still unwritten (§23).
+
+> **The one process rule to carry forward.** Cancelling an order in
+> `/admin/orders` **moves no money** — the app has no refund path at all, and
+> the admin's own confirm dialog says refunding is done in the Authorize.net
+> merchant interface. This was misread once today. **For any paid order, do
+> both, gateway first:** refund at Authorize.net, then cancel in the admin, so a
+> failure at the gateway never leaves the site claiming a refund that did not
+> happen. If a customer asks to cancel and only the admin button is clicked,
+> they wait for a refund that never arrives and their next move is a chargeback
+> — and on a high-risk account the chargeback ratio is what gets processing
+> withdrawn (§21).
 
 ---
 
