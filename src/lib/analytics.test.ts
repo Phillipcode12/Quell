@@ -1,17 +1,18 @@
 import { describe, expect, it } from 'vitest'
-import { isBot, normalisePath, referrerHost } from '@/lib/analytics'
+import { classifySource, isBot, referrerHost } from '@/lib/analytics'
 
 /**
- * The pure parts of the tracker: what gets counted, and what gets stored.
+ * The pure parts of the counter: what gets counted, and how an arrival is
+ * labelled.
  *
  * The database reads are not covered here for the same reason nothing else in
- * this suite covers Prisma — every call would be mocked, and a mocked
- * groupBy proves only that the mock was called.
+ * this suite covers Prisma — every call would be mocked, and a mocked groupBy
+ * proves only that the mock was called.
  *
- * What is worth testing is the filtering, because both directions are wrong in
- * a way nobody notices: a bot counted as a customer quietly inflates every
- * number on the dashboard, and a real visitor dropped as a bot quietly deflates
- * them. Neither shows up as an error.
+ * What is worth testing is the classification, because every way of getting it
+ * wrong is silent: a bot counted as a customer inflates every number, a real
+ * visitor dropped as a bot deflates them, and a mislabelled source sends the
+ * shop's marketing effort at the wrong channel.
  */
 
 describe('isBot', () => {
@@ -46,47 +47,6 @@ describe('isBot', () => {
   })
 })
 
-describe('normalisePath', () => {
-  it('keeps ordinary paths', () => {
-    expect(normalisePath('/')).toBe('/')
-    expect(normalisePath('/cart')).toBe('/cart')
-    expect(normalisePath('/orders/Q-7DAGMJPS')).toBe('/orders/Q-7DAGMJPS')
-  })
-
-  it('drops the query string, which can carry an email', () => {
-    expect(normalisePath('/orders?email=someone@example.com')).toBe('/orders')
-    expect(normalisePath('/checkout#step2')).toBe('/checkout')
-  })
-
-  it('refuses anything that is not a plain absolute path', () => {
-    // A protocol-relative path would record another site as one of ours.
-    expect(normalisePath('//evil.example.com/x')).toBeNull()
-    expect(normalisePath('https://evil.example.com/x')).toBeNull()
-    expect(normalisePath('cart')).toBeNull()
-    expect(normalisePath('')).toBeNull()
-    expect(normalisePath(null)).toBeNull()
-    expect(normalisePath(42)).toBeNull()
-  })
-
-  it('refuses an over-long path rather than truncating it', () => {
-    // Truncating would store a path that was never visited.
-    expect(normalisePath('/' + 'a'.repeat(600))).toBeNull()
-  })
-
-  it('does not count the admin area', () => {
-    // Otherwise checking the numbers inflates them, and the site looks busier
-    // the more often it is checked.
-    expect(normalisePath('/admin')).toBeNull()
-    expect(normalisePath('/admin/orders')).toBeNull()
-    expect(normalisePath('/admin/analytics')).toBeNull()
-  })
-
-  it('does not mistake a customer page for the admin area', () => {
-    // A path that merely starts with the same letters is a real page.
-    expect(normalisePath('/administration-of-drops')).toBe('/administration-of-drops')
-  })
-})
-
 describe('referrerHost', () => {
   it('reduces a referrer to its bare host', () => {
     expect(referrerHost('https://www.google.com/search?q=dry+eye+drops')).toBe('google.com')
@@ -109,5 +69,39 @@ describe('referrerHost', () => {
     const host = referrerHost('https://www.google.com/search?q=is+my+eye+infected')
     expect(host).toBe('google.com')
     expect(host).not.toContain('infected')
+  })
+})
+
+describe('classifySource', () => {
+  it('calls a search engine a search', () => {
+    const engines = [
+      'google.com',
+      'google.co.uk',
+      'bing.com',
+      'duckduckgo.com',
+      'search.yahoo.com',
+      'ecosia.org',
+      'yandex.ru',
+      'perplexity.ai',
+      'chatgpt.com',
+    ]
+    for (const host of engines) expect(classifySource(host), host).toBe('search')
+  })
+
+  it('calls any other site a link', () => {
+    const sites = ['news.ycombinator.com', 'reddit.com', 'dryeyerescue.com', 'meibum.com']
+    for (const host of sites) expect(classifySource(host), host).toBe('link')
+  })
+
+  it('calls no referrer direct', () => {
+    // Typed, bookmarked, from an email or a messaging app — all arrive bare.
+    expect(classifySource(null)).toBe('direct')
+  })
+
+  it('errs towards link rather than inventing search', () => {
+    // The engine list is always incomplete. Under-reporting search is the safe
+    // way to be wrong; over-reporting it would credit SEO for traffic it never
+    // earned.
+    expect(classifySource('some-new-search-engine.example')).toBe('link')
   })
 })

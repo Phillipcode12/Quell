@@ -155,41 +155,38 @@ model OrderItem {
   unitPriceCents Int
 }
 
-/// One page view, recorded first-party.
+/// One visit, recorded first-party.
 ///
-/// Deliberately minimal. This exists so the shop's own admin can answer "how
-/// many people came, what did they look at, how many are here now" without
-/// sending a single visitor to a third party — the privacy policy's promise of
-/// no third-party trackers stays true, which matters more than usual on a drug
-/// site.
+/// A counter, deliberately. It stores that someone came and roughly how they
+/// found us, and nothing about what they read — there is no page path here and
+/// there must not be one. The shop's own admin can answer "how many people came
+/// and how many are here now" without sending a single visitor to a third
+/// party, which keeps the privacy policy's promise of no advertising trackers
+/// and no third-party cookies true.
 ///
 /// What is NOT stored, and must not be added without a policy change:
-/// no IP address, no user-agent string, no cookie, no full referrer URL, and
-/// nothing that ties a view to a customer or an order.
-model PageView {
-  id   String @id @default(cuid())
-  /// Pathname only — never the query string, which can carry an email from a
-  /// pasted link.
-  path String
+/// no page path, no IP address, no user-agent string, no cookie, no full
+/// referrer URL, and nothing tying a visit to a customer or an order.
+model Visit {
+  /// The random per-tab id from sessionStorage, used directly as the key so a
+  /// visit is one row however many pages it turns into. Not a cookie: it dies
+  /// when the tab closes, so it cannot follow anyone between visits.
+  id String @id
 
-  /// Random per-tab id from sessionStorage, not a cookie. It groups a visit
-  /// together and powers the live count, and it dies when the tab closes, so
-  /// it cannot follow anyone between visits.
-  sessionId String
+  /// How they arrived — "search", "link" or "direct". Set once, when the visit
+  /// is created, and never overwritten: after the first page the referrer is
+  /// our own site, which would relabel every visit as direct.
+  source String
 
-  /// Referring host only, e.g. "google.com". The full URL is dropped: search
-  /// pages put the query in it, and that is the visitor's words, not ours.
+  /// Referring host only, e.g. "google.com". Null for a direct arrival. The
+  /// full URL is dropped: search pages put the query in it, and that is the
+  /// visitor's words, not ours.
   referrerHost String?
 
-  /// True for a keep-alive from an open tab, false for a real page load.
-  /// Both prove someone is here, so both feed the live count; only real loads
-  /// are counted as views, or sitting on one page for ten minutes would read
-  /// as ten visits to it.
-  ping Boolean @default(false)
+  startedAt  DateTime @default(now())
+  /// Bumped on every page load and keep-alive. This is what "here now" means.
+  lastSeenAt DateTime @default(now())
 
-  createdAt DateTime @default(now())
-
-  @@index([createdAt])
-  @@index([sessionId, createdAt])
-  @@index([path, createdAt])
+  @@index([startedAt])
+  @@index([lastSeenAt])
 }

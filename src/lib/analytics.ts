@@ -2,25 +2,28 @@ import 'server-only'
 import { prisma } from '@/lib/db'
 
 /**
- * First-party visitor counting.
+ * First-party visit counting.
  *
  * The whole point of doing this ourselves rather than installing Vercel
- * Analytics or Plausible is the privacy policy: it promises no analytics, no
- * advertising trackers and no third-party cookies. Only the first of those
- * three has to change for this. Nothing about a visitor leaves our servers, and
- * still no cookie is set — the session id lives in sessionStorage.
+ * Analytics or Plausible is the privacy policy: it promises no advertising
+ * trackers and no third-party cookies, and both stay true this way. Nothing
+ * about a visitor leaves our servers, and no cookie is set — the id lives in
+ * sessionStorage.
  *
- * The trade is honest: this counts visits, pages and referrers. It does not do
- * funnels, cohorts or attribution, and it never will without a lot more code.
+ * It is a counter and nothing more. It records that someone came, roughly how
+ * they found us, and when they were last seen. **It does not record which pages
+ * they read**, by decision on 2026-09-02: page paths would make a visit a
+ * reconstructible browsing trail, and a counter answers the question that was
+ * actually being asked.
  */
 
-/** A tab is "here now" if it has reported inside this window. */
+/** A visit is "here now" if it has reported inside this window. */
 export const LIVE_WINDOW_MS = 5 * 60 * 1000
 
 /**
- * How long views are kept. Ninety days answers "how did last quarter go"
- * without accumulating a permanent record of what individual people read.
- * Enforced by pruneOldViews, called from the collector.
+ * How long visits are kept. Ninety days answers "how did last quarter go"
+ * without keeping a permanent record. Enforced by pruneOldVisits, called from
+ * the collector.
  */
 export const RETENTION_DAYS = 90
 
@@ -64,6 +67,50 @@ export function isBot(userAgent: string | null | undefined): boolean {
 }
 
 /**
+ * Search engines, for telling "they searched for us" from "someone linked us".
+ *
+ * Matched on the registrable-ish host, so `www.google.co.uk` and
+ * `news.google.com` both count. It is a list, so it is always incomplete — an
+ * unlisted engine is recorded as a link rather than as search, which is the
+ * safe way to be wrong: it under-reports search rather than inventing it.
+ */
+const SEARCH_HOSTS = [
+  'google.',
+  'bing.',
+  'duckduckgo.',
+  'yahoo.',
+  'ecosia.',
+  'startpage.',
+  'qwant.',
+  'brave.',
+  'yandex.',
+  'baidu.',
+  'searx.',
+  'ask.com',
+  'aol.com',
+  'perplexity.',
+  'chatgpt.com',
+  'openai.com',
+]
+
+/** How a visitor arrived. */
+export type Source = 'search' | 'link' | 'direct'
+
+export const SOURCE_LABELS: Record<Source, string> = {
+  search: 'Found us in a search',
+  link: 'Clicked a link on another site',
+  direct: 'Came straight here',
+}
+
+export const SOURCE_NOTES: Record<Source, string> = {
+  search:
+    'A search engine sent them. Which words they typed is not recorded here — that is in Google Search Console.',
+  link: 'Another website linked to us. The site is named in the table below.',
+  direct:
+    'No referring site: typed or pasted the address, a bookmark, a link in an email or a message, or an app that strips the referrer.',
+}
+
+/**
  * Reduce a referrer to its bare host, or null.
  *
  * Three things are dropped on purpose: the path and query string, because a
@@ -87,136 +134,105 @@ export function referrerHost(
   return bare
 }
 
-/**
- * Keep a pathname and drop everything else.
- *
- * The client sends the path it rendered, but it is still input from a browser,
- * so it is treated as untrusted: anything that is not a plain absolute path is
- * refused rather than cleaned up, and a very long one is refused rather than
- * truncated into something that looks real.
- */
-export function normalisePath(input: unknown): string | null {
-  if (typeof input !== 'string') return null
-  const path = input.trim()
-  if (!path.startsWith('/') || path.startsWith('//')) return null
-  if (path.length > 512) return null
-  // Strip a query or fragment if one is sent anyway.
-  const clean = path.split(/[?#]/)[0]
-  if (clean.length === 0) return null
-  // The shop's own staff are not traffic. Without this, checking the numbers
-  // adds to them, and the more often they are checked the busier the site
-  // appears to be.
-  if (clean === '/admin' || clean.startsWith('/admin/')) return null
-  return clean
+/** Classify an arrival from its referring host. */
+export function classifySource(host: string | null): Source {
+  if (!host) return 'direct'
+  return SEARCH_HOSTS.some((s) => host === s.replace(/\.$/, '') || host.includes(s))
+    ? 'search'
+    : 'link'
 }
 
 // --- reads, for the admin page ---------------------------------------------
 
-export type Totals = {
-  views: number
-  visits: number
+/** Visits started since a point in time. */
+export async function visitsSince(since: Date): Promise<number> {
+  return prisma.visit.count({ where: { startedAt: { gte: since } } })
 }
 
-/** Views and distinct sessions since a point in time. */
-export async function totalsSince(since: Date): Promise<Totals> {
-  const [views, sessions] = await Promise.all([
-    // Views are real page loads only; keep-alives are not page loads.
-    prisma.pageView.count({ where: { createdAt: { gte: since }, ping: false } }),
-    // Visits count every tab that was here, keep-alive or not.
-    prisma.pageView.findMany({
-      where: { createdAt: { gte: since } },
-      distinct: ['sessionId'],
-      select: { sessionId: true },
-    }),
-  ])
-  return { views, visits: sessions.length }
-}
-
-/** Tabs that have reported inside LIVE_WINDOW_MS. */
+/** Visits seen inside LIVE_WINDOW_MS. */
 export async function liveVisitors(now = new Date()): Promise<number> {
-  const sessions = await prisma.pageView.findMany({
-    where: { createdAt: { gte: new Date(now.getTime() - LIVE_WINDOW_MS) } },
-    distinct: ['sessionId'],
-    select: { sessionId: true },
+  return prisma.visit.count({
+    where: { lastSeenAt: { gte: new Date(now.getTime() - LIVE_WINDOW_MS) } },
   })
-  return sessions.length
 }
 
-export type PathCount = { path: string; views: number }
+export type SourceCount = { source: Source; visits: number }
 
-export async function topPaths(since: Date, take = 12): Promise<PathCount[]> {
-  const rows = await prisma.pageView.groupBy({
-    by: ['path'],
-    where: { createdAt: { gte: since }, ping: false },
-    _count: { path: true },
-    orderBy: { _count: { path: 'desc' } },
-    take,
+/** How people arrived, commonest first, with every source always present. */
+export async function sourceBreakdown(since: Date): Promise<SourceCount[]> {
+  const rows = await prisma.visit.groupBy({
+    by: ['source'],
+    where: { startedAt: { gte: since } },
+    _count: { source: true },
   })
-  return rows.map((row) => ({ path: row.path, views: row._count.path }))
+
+  const counts = new Map<string, number>(rows.map((r) => [r.source, r._count.source]))
+  const all: Source[] = ['search', 'link', 'direct']
+
+  // Every source is listed even at zero. A missing row reads as "no data";
+  // an explicit zero reads as "nobody arrived that way", which is the fact.
+  return all
+    .map((source) => ({ source, visits: counts.get(source) ?? 0 }))
+    .sort((a, b) => b.visits - a.visits)
 }
 
-export type ReferrerCount = { host: string; views: number }
+export type ReferrerCount = { host: string; visits: number }
 
 export async function topReferrers(since: Date, take = 10): Promise<ReferrerCount[]> {
-  const rows = await prisma.pageView.groupBy({
+  const rows = await prisma.visit.groupBy({
     by: ['referrerHost'],
-    where: { createdAt: { gte: since }, referrerHost: { not: null }, ping: false },
+    where: { startedAt: { gte: since }, referrerHost: { not: null } },
     _count: { referrerHost: true },
     orderBy: { _count: { referrerHost: 'desc' } },
     take,
   })
   return rows
     .filter((row): row is typeof row & { referrerHost: string } => row.referrerHost !== null)
-    .map((row) => ({ host: row.referrerHost, views: row._count.referrerHost }))
+    .map((row) => ({ host: row.referrerHost, visits: row._count.referrerHost }))
 }
 
-export type DayCount = { day: string; views: number; visits: number }
+export type DayCount = { day: string; visits: number }
 
 /**
- * Views and visits per day, oldest first, with empty days filled in.
+ * Visits per day, oldest first, with empty days filled in.
  *
  * Days are counted in UTC, matching how the timestamps are stored. A day that
- * saw nothing still appears with zeroes, because a gap in a chart has to be
+ * saw nothing still appears with a zero, because a gap in a chart has to be
  * visible as a gap rather than closed up into a shorter, healthier-looking
  * line.
  */
-export async function dailyCounts(days: number, now = new Date()): Promise<DayCount[]> {
+export async function dailyVisits(days: number, now = new Date()): Promise<DayCount[]> {
   const start = new Date(now)
   start.setUTCHours(0, 0, 0, 0)
   start.setUTCDate(start.getUTCDate() - (days - 1))
 
-  const rows = await prisma.pageView.findMany({
-    where: { createdAt: { gte: start } },
-    select: { createdAt: true, sessionId: true, ping: true },
+  const rows = await prisma.visit.findMany({
+    where: { startedAt: { gte: start } },
+    select: { startedAt: true },
   })
 
-  const buckets = new Map<string, { views: number; sessions: Set<string> }>()
+  const buckets = new Map<string, number>()
   for (let i = 0; i < days; i++) {
     const d = new Date(start)
     d.setUTCDate(start.getUTCDate() + i)
-    buckets.set(d.toISOString().slice(0, 10), { views: 0, sessions: new Set() })
+    buckets.set(d.toISOString().slice(0, 10), 0)
   }
 
   for (const row of rows) {
-    const key = row.createdAt.toISOString().slice(0, 10)
-    const bucket = buckets.get(key)
-    if (!bucket) continue
-    if (!row.ping) bucket.views += 1
-    bucket.sessions.add(row.sessionId)
+    const key = row.startedAt.toISOString().slice(0, 10)
+    const current = buckets.get(key)
+    if (current === undefined) continue
+    buckets.set(key, current + 1)
   }
 
-  return [...buckets.entries()].map(([day, bucket]) => ({
-    day,
-    views: bucket.views,
-    visits: bucket.sessions.size,
-  }))
+  return [...buckets.entries()].map(([day, visits]) => ({ day, visits }))
 }
 
-/** Drop views past the retention window. */
-export async function pruneOldViews(now = new Date()): Promise<number> {
+/** Drop visits past the retention window. */
+export async function pruneOldVisits(now = new Date()): Promise<number> {
   const cutoff = new Date(now.getTime() - RETENTION_DAYS * 24 * 60 * 60 * 1000)
-  const { count } = await prisma.pageView.deleteMany({
-    where: { createdAt: { lt: cutoff } },
+  const { count } = await prisma.visit.deleteMany({
+    where: { startedAt: { lt: cutoff } },
   })
   return count
 }
