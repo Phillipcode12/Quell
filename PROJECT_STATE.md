@@ -1278,10 +1278,11 @@ Two things here are load-bearing and are easy to break by tidying:
 
 ---
 
-## 24. SEO — reviewed 2026-09-02, nothing done yet
+## 24. SEO — reviewed 2026-09-02, one of three done
 
-**Phillip asked to park these and review later.** Recorded so the review starts
-from evidence rather than from scratch.
+**Phillip parked the rest to review later.** Recorded so that review starts
+from evidence rather than from scratch. Item 1 was built the same day because it
+needed no decision from anyone; items 2 and 3 still wait on him.
 
 **Current visibility: none.** Searches for the product name, the brand and
 `site:quelldrop.com` return nothing from the domain. What ranks for the product
@@ -1291,13 +1292,32 @@ to months — but it is the baseline to measure against.
 
 ### The three items, in the order they are worth doing
 
-1. **No structured data anywhere.** Every page returns zero
-   `application/ld+json` blocks. **Product + Offer schema** is what puts price,
-   availability and currency into a Google result instead of a plain blue link;
-   **Organization schema** ties the site to the seller. Every field it needs —
-   price, size, SKU, availability, brand — already exists in
-   `product-content.ts`, so this is assembling data we hold, not inventing any.
-   Highest value of the three and needs no decision from anyone.
+1. ~~**No structured data anywhere.**~~ **Done 2026-09-02 (`c1a907c`).**
+   Three blocks now ship: **Product + Offer** on the homepage, **Organization**
+   and **WebSite** site-wide. Verified on production — 29.99 USD, InStock, real
+   SKU and product image, absolute quelldrop.com URLs.
+
+   Three rules are encoded in `lib/structured-data.ts` and guarded by tests,
+   because this is read by machines and published to every engine at once, so a
+   wrong value travels further than a wrong value on the page and nobody
+   looking at the site would spot it:
+
+   - **No `aggregateRating`, no `review`.** Those put stars in a search
+     result. Quell has none, and inventing them is a Google policy violation as
+     well as a lie told at scale. **When real reviews exist they need the same
+     regulatory read as the testimonials** — marking up "it cured my dry eye"
+     publishes that claim to every search engine at once.
+   - **Price and availability are read from the product row**, the same one the
+     page renders, so the two cannot disagree. Zero stock emits `OutOfStock`.
+   - **The description is the product record's own reviewed copy**, not a second
+     version written for search engines that could drift from the label. A test
+     asserts the withheld redness claim appears in none of the three blocks.
+
+   Deliberately not included: `hasMerchantReturnPolicy` and `shippingDetails`.
+   Both are real and documented, but a machine-readable returns policy is a
+   commitment published everywhere, and it is worth writing deliberately rather
+   than as a footnote to this. Their absence costs only a "recommended field"
+   note in Search Console.
 
 2. **The homepage title carries no search terms.** It is
    `Quell — Give your dry eye the bird!`, and nobody searches that phrase. The
