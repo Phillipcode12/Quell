@@ -37,7 +37,7 @@ testing on a live store (§14 item 7).
 Two commits sit on local `main` and have **not** been pushed.
 
 1. Corrections to this file (four things that had stopped being true).
-2. **First-party visitor counting** (§7, §23). This one adds a table, so the
+2. **First-party visit counting** (§7, §23). This one adds a table, so the
    ordering in §20 applies and getting it wrong takes the site down:
    **apply the migration to Neon first, then push.** The build does not run
    `prisma migrate deploy`, so pushing first deploys code that queries a
@@ -397,10 +397,11 @@ grouped case-insensitively.
 > states the site uses no advertising trackers. A mailing list means updating
 > the policy and adding consent first.
 
-**`/admin/analytics`** ("Traffic") — added 2026-09-02. Live count, visits and
-views for today / 7 / 30 days, a 14-day chart, most-viewed pages and referring
-sites. Built first-party rather than installed; see §23 for why and for what it
-does not store.
+**`/admin/analytics`** ("Traffic") — added 2026-09-02. Live count, visits for
+today / 7 / 30 days, a 14-day chart, how people arrived (search / link /
+direct) and which sites sent them. **It is a counter: it does not record which
+pages anyone read.** Built first-party rather than installed; see §23 for why
+and for what it deliberately does not store.
 
 Access is the `ADMIN_EMAILS` allowlist (comma separated) — in `.env` locally,
 in the Vercel dashboard for the deployed site. **Unset means nobody** — it fails
@@ -1137,12 +1138,11 @@ FDA-regulated drug that was worth the extra code — and it is the same class of
 finding that turned up as Critical on centersfordryeye.com, where Google and
 Meta tags load on a patient referral form.
 
-**What is stored:** a path, a random per-tab id, a referring host, a timestamp,
-and a flag saying whether the row was a page load or a keep-alive. **No IP
-address, no user agent, no cookie**, and nothing tying a view to a customer or
-an order. Rows are deleted after **90 days**, pruned opportunistically from the
-collector on roughly 1 request in 50 rather than by a cron nobody would
-remember.
+**What is stored:** a random per-tab id, how they arrived, a referring host, and
+two timestamps. **No page path, no IP address, no user agent, no cookie**, and
+nothing tying a visit to a customer or an order. Rows are deleted after **90
+days**, pruned opportunistically from the collector on roughly 1 request in 50
+rather than by a cron nobody would remember.
 
 The session id lives in `sessionStorage`, not a cookie, so it dies with the tab
 and cannot follow anyone between visits. That is load-bearing for the policy
@@ -1159,8 +1159,8 @@ All three would have shipped silently, and none showed up as an error:
   a re-render can fire one again anywhere; three navigations produced six rows.
   Fixed with a ref holding the last reported path.
 - **The keep-alive counted as a view.** Reading one page for ten minutes read as
-  ten views of it. Pings are flagged and excluded from view counts; they still
-  feed the live count, which is all they are for.
+  ten views of it. Moot now that the model is one row per visit, but it is the
+  reason the redesign came out simpler rather than merely different.
 - **The chart bars rendered at zero pixels.** A percentage height against a
   content-sized flex parent resolves to nothing, so a full day of traffic drew
   an empty panel indistinguishable from no data.
@@ -1207,20 +1207,50 @@ Given the FDA finding on the sister sites, and that a missing privacy policy is
 the Critical item on centersfordryeye.com, this is worth putting to Michael
 rather than settling on engineering grounds alone.
 
-### What "page view" means here, since it was asked
+### It counts visits, not pages — and that is deliberate
 
-Every individual page, not one site-wide counter — that is what makes the
-most-viewed table possible. Within a single visit the sequence is
-reconstructible: *this tab opened /, then /cart, then /drug-facts, over four
-minutes.*
+**Phillip's call, 2026-09-02, after asking what "page view" actually meant.**
+The first build recorded every page opened, which made a visit a
+reconstructible browsing trail: *this tab opened /, then /cart, then
+/drug-facts.* Anonymous, but a trail. He asked for a plain counter instead, and
+that is what shipped (`3007ba1`).
 
-It cannot be tied to a person: no IP, no fingerprint, no name, no account or
-order link, and the tab id dies with the tab. It is an anonymous browsing trail,
-which on Quell is close to harmless because every page concerns one product — a
-visitor reading /drug-facts reveals about what visiting the site at all reveals.
-**That reasoning does not transfer to centersfordryeye.com**, where the page
-someone opened would name their condition. Do not reuse this design there
-without thinking again.
+**There is no page path in the schema. Do not add one back without a policy
+change** — the privacy policy is written against a counter, and a path column
+quietly turns it into something else.
+
+The model follows the decision rather than working around it. `Visit` is keyed
+on the sessionStorage id, so a visit is **one row** however many pages it turns
+into — not one per page load plus one per minute of reading. Far fewer rows, and
+no ping flag is needed: with only visits counted, a keep-alive cannot inflate
+anything, it only moves `lastSeenAt`, which is all the live count reads.
+
+### How they arrived
+
+Added at the same time, from the referrer we were already receiving and
+throwing away. Three buckets — **search**, **link**, **direct** — with the
+referring host beside it, so "clicked a link" says which link.
+
+Search terms are **not** recorded and should not be. Google strips them from the
+referrer, they are the visitor's own words, and Search Console already has them.
+
+Two things here are load-bearing and are easy to break by tidying:
+
+- **`source` is written on create and never on update.** After the first page
+  the referrer is our own domain, which correctly reduces to null — so writing
+  it on every report would relabel every multi-page visit as "direct", and
+  search and link traffic would quietly vanish from the numbers. Verified
+  against the running site: a search visit's second page bumped `lastSeenAt`
+  and kept `source=search`.
+- **An unlisted search engine is recorded as a link, not as search.** The engine
+  list is always incomplete. Under-reporting search is the safe way to be wrong;
+  the alternative credits SEO for traffic it never earned.
+
+> **Do not copy this design to centersfordryeye.com without thinking again.**
+> Dropping the path mattered less here than it would there: every Quell page
+> concerns one product, so reading /drug-facts reveals about what visiting at
+> all reveals. On DECB a page names a condition, and that site already collects
+> patient data with no privacy policy at all.
 
 > Relevant to the compensation discussion: the proposal to Ryan prices Quell at
 > a percentage of sales through quelldrop.com, against his expectation that most
