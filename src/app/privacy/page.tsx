@@ -58,10 +58,24 @@ export default function PrivacyPage() {
               A cookie used to keep you signed in. Your cart is stored in your
               own browser and is never sent to us.
             </li>
+            <li>
+              <strong>Page views</strong> — which pages are opened, when, and the
+              website that linked you here, so we can see how the shop is used.
+              We record the page address, the time, and the site you came from.
+              We do not record your IP address, your browser, or anything that
+              identifies you, and these records are never connected to your
+              account or your orders. To count one visit as one visit, your
+              browser tab is given a random number that is stored in the tab
+              itself and thrown away the moment you close it. It is not a cookie
+              and it cannot follow you to another visit. We delete these records
+              after 90 days.
+            </li>
           </ul>
           <p>
-            We do not use analytics, advertising trackers, or third-party
-            cookies on this site.
+            We count page views ourselves, on our own servers. We do not use
+            Google Analytics or any other analytics company, we do not use
+            advertising trackers, and we set no third-party cookies on this
+            site. Nothing about your visit is sent to anyone else.
           </p>
 
           <h3>Payment information</h3>

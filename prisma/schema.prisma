@@ -35,10 +35,10 @@ model PasswordResetToken {
 
   /// SHA-256 of the token that was emailed. The raw token is never stored, so
   /// a leaked database can't be used to reset anyone's password.
-  tokenHash String   @unique
+  tokenHash String    @unique
   expiresAt DateTime
   usedAt    DateTime?
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
 
   @@index([userId])
 }
@@ -153,4 +153,43 @@ model OrderItem {
 
   quantity       Int
   unitPriceCents Int
+}
+
+/// One page view, recorded first-party.
+///
+/// Deliberately minimal. This exists so the shop's own admin can answer "how
+/// many people came, what did they look at, how many are here now" without
+/// sending a single visitor to a third party — the privacy policy's promise of
+/// no third-party trackers stays true, which matters more than usual on a drug
+/// site.
+///
+/// What is NOT stored, and must not be added without a policy change:
+/// no IP address, no user-agent string, no cookie, no full referrer URL, and
+/// nothing that ties a view to a customer or an order.
+model PageView {
+  id   String @id @default(cuid())
+  /// Pathname only — never the query string, which can carry an email from a
+  /// pasted link.
+  path String
+
+  /// Random per-tab id from sessionStorage, not a cookie. It groups a visit
+  /// together and powers the live count, and it dies when the tab closes, so
+  /// it cannot follow anyone between visits.
+  sessionId String
+
+  /// Referring host only, e.g. "google.com". The full URL is dropped: search
+  /// pages put the query in it, and that is the visitor's words, not ours.
+  referrerHost String?
+
+  /// True for a keep-alive from an open tab, false for a real page load.
+  /// Both prove someone is here, so both feed the live count; only real loads
+  /// are counted as views, or sitting on one page for ten minutes would read
+  /// as ten visits to it.
+  ping Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([sessionId, createdAt])
+  @@index([path, createdAt])
 }

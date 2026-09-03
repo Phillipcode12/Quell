@@ -10,6 +10,7 @@ import Link from 'next/link'
 const TABS = [
   { key: 'orders', label: 'Orders', href: '/admin/orders' },
   { key: 'customers', label: 'Customers', href: '/admin/customers' },
+  { key: 'analytics', label: 'Traffic', href: '/admin/analytics' },
 ] as const
 
 export type AdminTab = (typeof TABS)[number]['key']
