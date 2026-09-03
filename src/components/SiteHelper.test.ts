@@ -4,6 +4,7 @@ import {
   MEDICAL_NOTICE,
   NUDGE,
   NUDGE_DELAY_MS,
+  NUDGE_VISIBLE_MS,
   TOPICS,
 } from './SiteHelper'
 import { DRUG_FACTS, EMU_OIL, RELIEVES_WITHHELD } from '@/lib/product-content'
@@ -188,5 +189,38 @@ describe('where the helper is allowed to appear', () => {
       const path = t.href.split('#')[0] || '/'
       expect(HIDDEN_ON).not.toContain(path)
     }
+  })
+})
+
+describe('how long the nudge stays up', () => {
+  it('leaves long enough to read the sentence it is showing', () => {
+    // The nudge takes itself away on a timer, so the sentence and the timer
+    // are one decision rather than two. This is the guard for the day someone
+    // lengthens NUDGE without noticing it now has to be read against a clock.
+    //
+    // 160 words per minute is a deliberately slow reading speed: the sentence
+    // arrives unannounced, in a corner, over whatever the person was actually
+    // reading, so they start from a standing stop. NOTICE_MS is the pause
+    // before that — seeing something appear and deciding to look at it.
+    //
+    // At the current wording this passes with a little under half a second to
+    // spare, so it is genuinely close. Anyone adding a few words here will see
+    // this fail, which is the point.
+    const NOTICE_MS = 2_000
+    const words = NUDGE.trim().split(/\s+/).length
+    const msToRead = (words / 160) * 60_000
+    const needed = Math.round(msToRead + NOTICE_MS)
+
+    expect(
+      NUDGE_VISIBLE_MS,
+      `NUDGE is ${words} words: about ${Math.round(msToRead)}ms to read plus ${NOTICE_MS}ms to notice it = ${needed}ms, but it is only shown for ${NUDGE_VISIBLE_MS}ms. Either shorten NUDGE or raise NUDGE_VISIBLE_MS.`,
+    ).toBeGreaterThanOrEqual(needed)
+  })
+
+  it('is shown for less time than it waits before speaking', () => {
+    // Not a hard requirement, but a nudge that lingers longer than it waited
+    // has stopped being a nudge. If these ever cross, it was probably not
+    // intended.
+    expect(NUDGE_VISIBLE_MS).toBeLessThan(NUDGE_DELAY_MS)
   })
 })

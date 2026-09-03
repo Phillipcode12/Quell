@@ -129,6 +129,20 @@ export const NUDGE = `Did you know? ${EMU_OIL.after}.`
 export const NUDGE_DELAY_MS = 10_000
 
 /**
+ * How long the nudge stays up before taking itself away.
+ *
+ * It has one sentence to offer and it has already been ignored once by
+ * anyone still scrolling; a bubble that sits in the corner until it is
+ * clicked is nagging rather than helping. Going quietly also shrinks the
+ * window in which it can sit over something the visitor wants to tap, which
+ * is the failure this widget has already caused twice (see HIDDEN_ON).
+ *
+ * The countdown pauses while the pointer or keyboard focus is on it — see the
+ * effect below.
+ */
+export const NUDGE_VISIBLE_MS = 8_000
+
+/**
  * Pages the helper stays off: every page whose whole job is completing a form.
  *
  * **The rule is deliberately broader than the measured failures.** Two were
@@ -184,9 +198,11 @@ export function SiteHelper() {
   const [topic, setTopic] = useState<Topic | null>(null)
   const [showMedicalNotice, setShowMedicalNotice] = useState(false)
   const [nudge, setNudge] = useState(false)
+  const [nudgeHeld, setNudgeHeld] = useState(false)
   const [pastFirstScreen, setPastFirstScreen] = useState(false)
   const panelRef = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
+  const nudgeRef = useRef<HTMLDivElement>(null)
 
   /**
    * The widget stays out of the first screen entirely.
@@ -252,6 +268,58 @@ export function SiteHelper() {
     const timer = setTimeout(() => setNudge(true), remaining)
     return () => clearTimeout(timer)
   }, [])
+
+  /**
+   * The nudge takes itself away after NUDGE_VISIBLE_MS.
+   *
+   * **The countdown pauses while it is being attended to** — pointer over it,
+   * or keyboard focus inside it. Without that, a bubble can vanish from under
+   * a cursor already travelling towards it, and the click lands on whatever
+   * was behind it. That is the same failure as the two recorded in HIDDEN_ON,
+   * arrived at from the opposite direction, and it would be a needless way to
+   * reintroduce it.
+   *
+   * Auto-dismissal marks the nudge as seen, exactly like dismissing it by
+   * hand: it has had its turn, and repeating it later in the visit is the
+   * nagging this is meant to avoid.
+   */
+  useEffect(() => {
+    if (!nudge || open || nudgeHeld) return
+    const timer = setTimeout(dismissNudge, NUDGE_VISIBLE_MS)
+    return () => clearTimeout(timer)
+  }, [nudge, open, nudgeHeld])
+
+  /**
+   * What counts as "being attended to": pointer over it, or focus inside it.
+   *
+   * **Native listeners on the element rather than React's onMouseEnter.**
+   * React synthesises enter and leave from delegated mouseover/mouseout, and
+   * that synthesis could not be exercised in a browser: the pause looked
+   * wired, and measuring it showed the state never changed. Native
+   * `mouseenter`/`mouseleave` fire directly on the element, do not fire again
+   * when the pointer crosses between the bubble and its own close button, and
+   * can be triggered in a test without pretending to be a real cursor.
+   *
+   * `focusin`/`focusout` rather than `focus`/`blur` because those two do not
+   * bubble, and the focus lands on a button inside this div rather than on the
+   * div itself.
+   */
+  useEffect(() => {
+    const el = nudgeRef.current
+    if (!el) return
+    const hold = () => setNudgeHeld(true)
+    const release = () => setNudgeHeld(false)
+    el.addEventListener('mouseenter', hold)
+    el.addEventListener('mouseleave', release)
+    el.addEventListener('focusin', hold)
+    el.addEventListener('focusout', release)
+    return () => {
+      el.removeEventListener('mouseenter', hold)
+      el.removeEventListener('mouseleave', release)
+      el.removeEventListener('focusin', hold)
+      el.removeEventListener('focusout', release)
+    }
+  }, [nudge, open])
 
   /** Spoken once. Opening the helper counts, so it never talks over itself. */
   function dismissNudge() {
@@ -402,16 +470,17 @@ export function SiteHelper() {
       */}
       {nudge && !open && (
         <div
+          ref={nudgeRef}
           role="status"
           aria-live="polite"
-          className="helper-nudge relative w-[calc(100vw-6rem)] max-w-[17rem]"
+          className="helper-nudge relative w-[calc(100vw-6rem)] max-w-[15rem]"
         >
           <button
             onClick={() => {
               setOpen(true)
               dismissNudge()
             }}
-            className="block w-full rounded-2xl rounded-br-md border border-line bg-surface px-4 py-3 pr-9 text-left text-sm leading-relaxed text-white shadow-2xl transition hover:border-brand hover:bg-surface-2"
+            className="block w-full rounded-2xl rounded-br-md border border-line bg-surface px-3.5 py-2.5 pr-8 text-left text-[13px] leading-relaxed text-white shadow-2xl transition hover:border-brand hover:bg-surface-2"
           >
             {NUDGE}
           </button>
