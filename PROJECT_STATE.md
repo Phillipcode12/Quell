@@ -34,14 +34,33 @@ Google, so mistakes are public.
    and Bing Webmaster Tools is not set up. Both parked by Phillip; the title is
    brand voice and his call.
 
-### Closed 2026-09-02 — the live test charge is reconciled
+### Half closed 2026-09-02 — the order is cancelled, the money is not back
 
-**Refunded and cancelled.** Transaction `121807006102` refunded in the Merchant
-Interface once it had settled, and order `Q-7DAGMJPS` cancelled in
-`/admin/orders`. Verified against the production database afterwards: the order
-reads `cancelled` and **stock is back to 250**, so the shop and the gateway
-agree. All nine orders in production are cancelled — there has not been a real
-customer order yet.
+**Order `Q-7DAGMJPS` is cancelled** in `/admin/orders`, verified against the
+production database: it reads `cancelled` and **stock is back to 250**. All nine
+orders in production are cancelled — there has still been no real customer
+order.
+
+**The $1.00 has NOT been refunded.** Transaction `121807006102` is still a
+settled charge at the gateway. Refund it at **https://account.authorize.net**
+(Production) — Search → Transaction ID → `121807006102` → **Refund**, which
+asks for the card's last four digits. It is settled, so Refund is the action,
+not Void.
+
+> **Cancelling an order in `/admin/orders` does not move any money, and the app
+> has no refund path at all** — `grep -ri refund src/` finds only copy and one
+> webhook comment. The admin's own confirm dialog says so: *"Refunding is done
+> in the Authorize.net merchant interface."* This was misread once, on 2026-09-02,
+> and this file briefly recorded the charge as reconciled when it was not.
+>
+> **The process for any paid order is both actions, gateway first:** refund at
+> Authorize.net, then cancel in the admin. Gateway first so a failure there does
+> not leave the site claiming a refund that never happened.
+>
+> This matters more than a dollar. **If a customer asks to cancel and only the
+> admin button is clicked, they wait for a refund that never arrives and their
+> next move is a chargeback** — and on a high-risk account the chargeback ratio
+> is what gets processing withdrawn (§21).
 
 ### Shipped 2026-09-02 — visit counting is live
 
