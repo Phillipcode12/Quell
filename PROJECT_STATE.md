@@ -2403,29 +2403,62 @@ evenly spaced parallel feather strokes read as a ribcage, because regularity is
 what gives them away; and a neck drawn *after* the body sits on top as a visible
 seam.
 
-### Not shipped — the site helper, work in progress
+### The site helper — shipped and live
 
-**Uncommitted and deliberately held back.** Phillip is not happy with it yet.
+*(This section was headed "Not shipped — work in progress" and described the
+files as uncommitted. That stopped being true when it deployed; corrected
+2026-09-02.)*
 
 ```
 src/components/SiteHelper.tsx        the widget
-src/components/SiteHelper.test.ts    14 content tests
+src/components/SiteHelper.test.ts    content tests, plus the nudge timing
 src/components/EmuFace.tsx           the avatar
 public/images/emu-helper.png         428x700, keyed out of the artwork below
 art/emu-helper-source.png            the 1122x1402 original, outside public/
-src/app/globals.css                  MODIFIED — the nudge animation
-src/app/layout.tsx                   MODIFIED — mounts <SiteHelper />
+src/app/globals.css                  the nudge animation
+src/app/layout.tsx                   mounts <SiteHelper />
 ```
-
-> **`layout.tsx` is modified to mount it.** Committing that file without the
-> component files breaks the Vercel build on a missing import. When shipping
-> anything else, either exclude `layout.tsx` or stash the helper and build
-> against exactly what will deploy — which is how `8c303c6` was verified.
 
 **What it is:** a corner widget with a fixed list of questions, each giving a
 one-line answer and a link to the right page, plus a "Something else" option
 that refuses and hands over to the Drug Facts and the phone number. Since
 2026-08-28 it also speaks first, once, after 10 seconds — see below.
+
+#### The nudge shrank and now leaves on its own — 2026-09-02
+
+Phillip's request. `NUDGE_VISIBLE_MS` is **8 seconds**, after which the bubble
+dismisses itself and marks itself seen, exactly as if it had been closed by
+hand. It is also smaller: `max-w-[15rem]` rather than 17rem, tighter padding,
+13px rather than 14px. Measured live on quelldrop.com at 226x80.
+
+Both changes cut the same way as `HIDDEN_ON`: this widget has already taken
+taps meant for **Continue to payment** and **Create account**, and every second
+it is on screen is a second it can be over something.
+
+**The countdown pauses while it is being attended to** — pointer over it, or
+focus inside it. Without that, the bubble can vanish from under a cursor
+already travelling towards it and the click lands on whatever was behind, which
+is the same failure arrived at from the other direction.
+
+> **That pause uses native listeners on a ref, not React's `onMouseEnter`, and
+> it should stay that way.** The React version looked correct and was not:
+> measured in a browser, the held state never changed, because React synthesises
+> enter and leave from delegated `mouseover`/`mouseout` and a dispatched event
+> does not drive that synthesis. Native `mouseenter`/`mouseleave` fire on the
+> element itself, do not re-fire when the pointer crosses onto the bubble's own
+> close button, and can be exercised in a browser without a real cursor.
+> `focusin`/`focusout` rather than `focus`/`blur`, because those do not bubble
+> and the focus lands on a button inside the div.
+
+Verified on production rather than asserted: untouched it dismisses after
+8058ms; held under the pointer it survived 20s and then went 8079ms after the
+pointer left.
+
+**The timer and the copy are one decision.** A test asserts `NUDGE` can be read
+in `NUDGE_VISIBLE_MS` at a slow 160wpm plus two seconds to notice it. At fifteen
+words there is under half a second of slack, so it will fail if anyone
+lengthens the sentence by about three words — which is the intent, not a
+nuisance.
 
 **Deliberately not an AI chatbot, and that is the design.** Quell is an
 FDA-regulated drug. A language model on this domain could be asked "will this
