@@ -51,9 +51,9 @@ Two commits sit on local `main` and have **not** been pushed.
 
    Delete the file straight afterwards; it holds every production secret.
 
-   **The privacy policy was deliberately left unchanged** — Phillip's call on
-   2026-09-02. That is the open question attached to this push, not the
-   migration. See §23.
+   **The privacy policy has been settled** — the word "analytics" came out of
+   the no-tracking sentence and nothing on the page is now false. One optional
+   sentence is still unwritten; see §23 before pushing.
 
 Also outstanding, waiting on other people: Zen on the **statement descriptor**
 (currently `AURORA PHARMACE`, §9) and the **written terms** (§21), and Ryan on
@@ -1175,34 +1175,52 @@ these was querying the real table after driving the real site.
 - **Not a funnel tool.** It counts visits, pages and referrers. Anything more —
   conversion by source, cohorts, attribution — is a lot more code.
 
-### The privacy policy was deliberately not updated
+### What the privacy policy says now, and the one gap left
 
-**Phillip's decision, 2026-09-02, made with the recommendation in front of him.
-Do not re-litigate it — but do not let it go unrecorded either.**
+Phillip made two calls on 2026-09-02, in this order. **Do not re-litigate
+either — but the remaining gap is real and is recorded here on purpose.**
 
-`/privacy` still reads *"We do not use analytics, advertising trackers, or
-third-party cookies on this site"*, and its list of what is collected
-automatically still names only server logs and the sign-in cookie.
+**First** he kept the policy exactly as it was. The full replacement paragraph
+that had been drafted is preserved in `a635e6d` if it is ever wanted.
 
-Two of those three clauses survive this change intact: the counting is
-first-party, so no advertising tracker is involved and no third-party cookie is
-set. What does not survive is the word **analytics**, and the omission of page
-views from the collected-automatically list.
+**Second**, on learning what was actually being stored, he removed the single
+word **analytics** from the no-tracking sentence (`d7ef81f`). It now reads:
 
-**Nothing is inconsistent while this sits unpushed.** It becomes inconsistent
-the moment it deploys. So the decision point is the push.
+> We do not use advertising trackers or third-party cookies on this site.
 
-If it is revisited, the smallest honest fix is two edits, not the paragraph that
-was originally drafted and reverted in `a635e6d` — that commit holds the fuller
-wording if it is ever wanted:
+**That sentence is true.** The counting is first-party and sets no cookie, so
+both surviving clauses hold, and the outright false statement — the larger half
+of the problem — is gone.
 
-1. Add page views to the "Information collected automatically" list.
-2. Change "We do not use analytics" to name what is actually true — that the
-   counting is first-party and nothing is sent to any analytics company.
+**The gap that remains** is the "Information collected automatically" list. It
+names two things: server logs, and the sign-in cookie. Page views are now a
+third thing collected automatically and are not listed. So the policy no longer
+says anything false; it is silent about a category it enumerates elsewhere.
 
-Given the FDA finding on the sister sites and that a missing privacy policy is
+One sentence closes it, and it needs no other change:
+
+> Which pages are opened and when, recorded on our own servers so we can see
+> how the site is used. This is not linked to you, your account or your orders,
+> and nothing is sent to any analytics company.
+
+Given the FDA finding on the sister sites, and that a missing privacy policy is
 the Critical item on centersfordryeye.com, this is worth putting to Michael
-rather than deciding on engineering grounds alone.
+rather than settling on engineering grounds alone.
+
+### What "page view" means here, since it was asked
+
+Every individual page, not one site-wide counter — that is what makes the
+most-viewed table possible. Within a single visit the sequence is
+reconstructible: *this tab opened /, then /cart, then /drug-facts, over four
+minutes.*
+
+It cannot be tied to a person: no IP, no fingerprint, no name, no account or
+order link, and the tab id dies with the tab. It is an anonymous browsing trail,
+which on Quell is close to harmless because every page concerns one product — a
+visitor reading /drug-facts reveals about what visiting the site at all reveals.
+**That reasoning does not transfer to centersfordryeye.com**, where the page
+someone opened would name their condition. Do not reuse this design there
+without thinking again.
 
 > Relevant to the compensation discussion: the proposal to Ryan prices Quell at
 > a percentage of sales through quelldrop.com, against his expectation that most
