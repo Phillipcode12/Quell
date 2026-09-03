@@ -10,6 +10,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/`, lastModified: now, priority: 1 },
     { url: `${base}/drug-facts`, lastModified: now, priority: 0.8 },
     { url: `${base}/about`, lastModified: now, priority: 0.6 },
+    // Linked only from the nav, so without this it would be findable but
+    // undeclared — the sitemap is the one place a crawler is told it exists.
+    { url: `${base}/reviews`, lastModified: now, priority: 0.6 },
     { url: `${base}/privacy`, lastModified: now, priority: 0.3 },
     { url: `${base}/terms`, lastModified: now, priority: 0.3 },
   ]

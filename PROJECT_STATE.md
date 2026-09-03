@@ -14,22 +14,18 @@ means a missing table would hit every page, not one route.
 
 ### Open, in the order they matter
 
-1. **The testimonials.** Phillip has patient comments saved on his computer.
-   They become the social-proof section — the biggest remaining gap on the site
-   (§14), and the shop has had search traffic since 2026-09-01, so strangers
-   are arriving now with no reason to trust an unknown brand. **They need a
-   regulatory read before publishing**: a comment saying a drop cured a
-   condition is a claim the label does not support, and publishing it in a
-   customer's words still makes it Quell's claim. Same discipline as the
-   withheld redness claim (§9). **This now governs structured data too** —
-   marking a review up as JSON-LD publishes that claim to every search engine
-   at once, which is a higher bar than a page (§24).
-2. **SEO items 2 and 3** (§24) — the homepage title carries no search terms,
+1. **SEO items 2 and 3** (§24) — the homepage title carries no search terms,
    and Bing Webmaster Tools is not set up. Both parked by Phillip. The title is
    brand voice and his call, not an engineering one.
-3. **Confirm `QUELL DROP` on a real statement.** The descriptor is set (§9) but
+2. **Confirm `QUELL DROP` on a real statement.** The descriptor is set (§9) but
    has never been seen on one, because the test charge that would have shown it
    was refunded. The next real order is the first chance.
+3. **Fulfilment is still unassigned, and Ryan may not know the shop is live.**
+   On 2026-09-03 he created an account and wrote *"I didn't realize that you
+   were so close to go-live"* — the store has taken real cards since
+   2026-09-01. Nobody has agreed who packs, who posts, or who receives returns
+   (§13). No real order has arrived yet, so nothing is stranded, but that is
+   timing rather than a system.
 
 **Waiting on other people:** the **written terms** from Zen (§21), and Ryan on
 **fulfilment** — who packs, who takes returns (§13).
@@ -1387,6 +1383,61 @@ duplicated.
 > a percentage of sales through quelldrop.com, against his expectation that most
 > volume comes through Amazon. Until 2026-09-02 nobody could see what the
 > website's traffic actually was. Now they can.
+
+---
+
+## 25. The reviews page — shipped 2026-09-03
+
+**`/reviews`, approved by Michael before it went live.** Social proof was the
+biggest gap on the site (§14) and this closes it.
+
+Six quotes supplied by Phillip, permission given, **names substituted**. The
+page says so in its own fine print, because a pseudonym passed off as a real
+name is the one dishonesty a page like this cannot afford.
+
+### The rule for adding a quote
+
+Live in `product-content.ts` beside the label copy, not in the component,
+because **a testimonial is a claim Quell is making** — quoting someone does not
+move the responsibility to them. `product-content.test.ts` enforces what the
+label supports: no redness, no comparative superiority, no duration of action,
+no cure or condition language, every quote attributed, and the disclosure
+intact.
+
+Two submissions were held back on 2026-09-03 and are recorded in the code so
+nobody re-adds them:
+
+- **"Best eyedrops I've ever used"** — comparative superiority, the same shape
+  of sentence the FDA cited on centersfordryeye.com.
+- **"They last all day"** — contradicts `DRUG_FACTS.directions` on this very
+  site, which says one drop three times a day. **A claim our own label
+  disproves is the worst kind**, because the evidence against it is one click
+  away.
+
+The guards were checked by mutation: reinserting that quote fails exactly two
+tests, naming `"best "` and `"all day"`.
+
+### Two design decisions worth keeping
+
+**The layout is uneven on purpose.** A grid of identical cards is what a
+fabricated review wall looks like — same slots, same sizes. Quotes of genuinely
+different lengths, set at genuinely different sizes and widths, read as six
+different people because that is what they are. Nothing is centred, no two
+blocks share a width, and the avatar alternates sides.
+
+**The avatars are illustrations, never photographs, and `Avatar.tsx` says so
+where the next person will read it.** The names are substituted, so a photograph
+beside a quote would assert something untrue about a real person; a drawing does
+not. Phillip supplied all six as cartoons; the drawn SVG fallback stays in the
+component for anyone added later without art. Art is downscaled to 512px — it
+renders at 44, and full-size sources would have put megabytes into the repo for
+no visible difference.
+
+### Not on the homepage
+
+Reached from the nav and nowhere else, so the homepage stays one argument
+ending at the buy panel. It is in the sitemap for that reason: nav-only linking
+means a crawler would otherwise have to stumble on it.
 
 ---
 

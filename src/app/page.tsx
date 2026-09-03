@@ -23,6 +23,9 @@ export default async function HomePage() {
       <JsonLd data={productSchema(product)} />
       <Hero product={product} />
       <WhyItWorks />
+      {/* No testimonials here on purpose: they have their own page, reached
+          from the nav, so this page stays one argument ending at the buy
+          panel rather than pausing halfway through. */}
       <BuySection product={product} />
       <HowToUse />
       <Lifestyle />
