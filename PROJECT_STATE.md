@@ -11,26 +11,37 @@ Update it when something here stops being true.
 `main` deploys to a shop with a working checkout, and it is now indexed by
 Google, so mistakes are public.
 
-Two things were left for today:
+**Open, in the order they matter:**
 
-1. **The testimonials.** Phillip has patient comments saved on his computer.
+1. **Confirm the gateway's AVS, CVV and velocity fraud filters are on.**
+   Merchant Interface → Account → Fraud Detection Suite. Two sections of this
+   file once disagreed about this and neither could be trusted, so it is a
+   check rather than a claim. Guest checkout has no account barrier and the
+   app's own rate limiter is still in-process, so those filters are the real
+   defence against card testing on a live store (§14 item 7). **Still
+   unconfirmed** — the highest-risk unknown on the shop.
+2. **The testimonials.** Phillip has patient comments saved on his computer.
    They become the social-proof section — the biggest remaining gap on the site
-   (§14). **They need a regulatory read before publishing**: a comment saying a
-   drop cured a condition is a claim the label does not support, and publishing
-   it in a customer's words still makes it on Quell's own site. Same discipline
-   as the withheld redness claim (§9).
-2. **Refund the $1.00 live test** — transaction `121807006102`, Merchant
-   Interface → Transactions. It had to settle overnight first; Authorize.net
-   will not refund an unsettled transaction, only void it. Afterwards, cancel
-   order `Q-7DAGMJPS` in `/admin/orders` so the site and the gateway agree,
-   which also returns stock to 250.
+   (§14), and the site has had search traffic since 2026-09-01, so strangers
+   are arriving now with no reason to trust an unknown brand. **They need a
+   regulatory read before publishing**: a comment saying a drop cured a
+   condition is a claim the label does not support, and publishing it in a
+   customer's words still makes it on Quell's own site. Same discipline as the
+   withheld redness claim (§9). Note this now also governs structured data —
+   marking a review up as JSON-LD publishes the claim to every search engine at
+   once (§24).
+3. **SEO items 2 and 3** (§24) — the homepage title carries no search terms,
+   and Bing Webmaster Tools is not set up. Both parked by Phillip; the title is
+   brand voice and his call.
 
-And one thing to check rather than do, because two sections of this file
-disagreed about it and neither can be trusted: **are the gateway's AVS, CVV and
-velocity fraud filters actually on?** Merchant Interface → Account → Fraud
-Detection Suite. Guest checkout has no account barrier and the app's own rate
-limiter is still in-process, so those filters are the real defence against card
-testing on a live store (§14 item 7).
+### Closed 2026-09-02 — the live test charge is reconciled
+
+**Refunded and cancelled.** Transaction `121807006102` refunded in the Merchant
+Interface once it had settled, and order `Q-7DAGMJPS` cancelled in
+`/admin/orders`. Verified against the production database afterwards: the order
+reads `cancelled` and **stock is back to 250**, so the shop and the gateway
+agree. All nine orders in production are cancelled — there has not been a real
+customer order yet.
 
 ### Shipped 2026-09-02 — visit counting is live
 
