@@ -12,7 +12,7 @@ export function WhyItWorks() {
   return (
     <section
       id="science"
-      className="scroll-mt-24 border-b border-line bg-surface py-20 sm:py-24"
+      className="scroll-mt-32 lg:scroll-mt-24 border-b border-line bg-surface py-20 sm:py-24"
     >
       <div className="mx-auto max-w-6xl px-6">
         <div className="max-w-2xl">

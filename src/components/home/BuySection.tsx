@@ -61,7 +61,7 @@ const highlights = [
 export function BuySection({ product }: { product: BuyProduct | null }) {
   if (!product) {
     return (
-      <section id="buy" className="scroll-mt-24 border-b border-line py-20 sm:py-24">
+      <section id="buy" className="scroll-mt-32 lg:scroll-mt-24 border-b border-line py-20 sm:py-24">
         <div className="mx-auto max-w-6xl px-6">
           <p className="rounded-xl border border-line bg-surface p-6 text-muted">
             Product not loaded. Run{' '}
@@ -74,7 +74,7 @@ export function BuySection({ product }: { product: BuyProduct | null }) {
   }
 
   return (
-    <section id="buy" className="scroll-mt-24 border-b border-line py-20 sm:py-24">
+    <section id="buy" className="scroll-mt-32 lg:scroll-mt-24 border-b border-line py-20 sm:py-24">
       <div className="mx-auto max-w-3xl px-6">
         <div className="rounded-3xl border border-line bg-surface p-8 sm:p-10">
           <div className="flex flex-wrap items-start justify-between gap-6">
