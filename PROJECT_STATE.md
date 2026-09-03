@@ -38,6 +38,37 @@ means a missing table would hit every page, not one route.
 
    Hobby also cannot have team members at all, so Ryan and Dr. Rynerson cannot
    be added to Vercel until this is upgraded (§7).
+
+   **What $20 buys, confirmed against vercel.com/pricing on 2026-09-03:** $20
+   per **developer** seat, and **viewer seats are unlimited and free** — so Ryan
+   and Dr. Rynerson cost nothing to add, and the bill stays $20 for as long as
+   Phillip is the only person deploying. Pro also includes **$20/month of usage
+   credit**; metered usage past it is pay-as-you-go (data transfer $0.15/GB,
+   edge requests from $2/million), which this shop is nowhere near.
+
+   > **Check Spend Management on the day you upgrade. It is on by default on
+   > Pro, and its default action is to pause production deployments.**
+   >
+   > That is the same `503 DEPLOYMENT_PAUSED` this upgrade exists to avoid,
+   > only triggered by a spend cap rather than a terms violation — and it fires
+   > across **every project on the team**, not just the one that spent the
+   > money. Two things make it worse than it sounds: the check runs every few
+   > minutes rather than continuously, so the site keeps serving and accruing
+   > past the cap before it trips; and **paused projects do not resume when the
+   > cap is raised** — each one is resumed by hand from the dashboard.
+   >
+   > For a shop taking orders, a $40 invoice beats a dead checkout. Set the cap
+   > with real headroom, keep the 50/75/100% alerts (SMS is available at 100%),
+   > and decide the auto-pause switch deliberately rather than inheriting it.
+   > Settings → Billing → Spend Management, and it needs the Owner or Billing
+   > role.
+
+   **Reimbursement.** Ryan asked on 2026-09-03 whether Phillip needed
+   reimbursing for hosting. Nothing is owed yet — the site is on the free plan.
+   When it upgrades, it should go on Aurora billing from the start rather than
+   Phillip's card and a claim afterwards: it is the company's cost, and it
+   keeps the account cleanly theirs when the personal-account question (§7)
+   comes back around.
 3. **Confirm `QUELL DROP` on a real statement.** The descriptor is set (§9) but
    has never been seen on one, because the test charge that would have shown it
    was refunded. The next real order is the first chance.
