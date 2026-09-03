@@ -88,10 +88,17 @@ the no-tracking sentence, nothing on the page is false, and the one optional
 sentence about the collected-automatically list is still unwritten. See §23.
 
 **The statement descriptor is set to `QUELL DROP`** (§9) — form completed with
-Dr. Rynerson. Two things remain on it: **call Authorize.net on 877-447-3938** to
-change the business name on the gateway, which Zen will not do, and **confirm
-the descriptor on a real statement** — it has not been seen on one yet, since
-the test charge that would have shown it was refunded.
+Dr. Rynerson. One thing remains: **confirm it on a real statement.** It has not
+been seen on one yet, because the test charge that would have shown it was
+refunded, so the next real order is the first chance.
+
+**Phillip decided on 2026-09-02 not to change the business name on the
+Authorize.net gateway**, and that is sound: the descriptor comes from the
+merchant account, which the form changed, not from the gateway. The one place
+it could still surface is the **hosted payment page** — customers are
+redirected to Authorize.net's own form to type their card details, and that
+page can show a merchant name. Unverified either way; walking a cart through to
+the payment screen without paying would settle it in half a minute.
 
 **Waiting on other people:** the **written terms** from Zen (§21), and Ryan on
 **fulfilment** — who packs, who takes returns (§13).
