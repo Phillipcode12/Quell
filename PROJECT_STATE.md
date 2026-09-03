@@ -92,13 +92,15 @@ Dr. Rynerson. One thing remains: **confirm it on a real statement.** It has not
 been seen on one yet, because the test charge that would have shown it was
 refunded, so the next real order is the first chance.
 
-**Phillip decided on 2026-09-02 not to change the business name on the
-Authorize.net gateway**, and that is sound: the descriptor comes from the
-merchant account, which the form changed, not from the gateway. The one place
-it could still surface is the **hosted payment page** — customers are
-redirected to Authorize.net's own form to type their card details, and that
-page can show a merchant name. Unverified either way; walking a cart through to
-the payment screen without paying would settle it in half a minute.
+**The Authorize.net gateway business name needs no change — settled
+2026-09-02.** The descriptor comes from the merchant account, not the gateway,
+so it was never the lever. The one place it could still have surfaced was the
+**hosted payment page**, where customers are redirected to type their card
+details — **Phillip checked, and that page shows "Quell".** So the brand is what
+a customer sees at the moment they hand over a card, and `QUELL DROP` is what
+they see afterwards on the statement. Aurora Pharmaceuticals appears nowhere in
+the buying flow, which is the outcome that was wanted. Closed; do not re-open
+it.
 
 **Waiting on other people:** the **written terms** from Zen (§21), and Ryan on
 **fulfilment** — who packs, who takes returns (§13).
