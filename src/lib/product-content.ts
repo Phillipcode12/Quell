@@ -274,19 +274,29 @@ export const TESTIMONIALS = [
     name: 'Ming',
     quote:
       'These drops feel soothing and comfortable, and I really like how my eyes feel after using them. I’ve been very happy with Quell.',
+    avatar: { skin: 'tan', hair: 'black', style: 'bob' },
   },
   {
     name: 'Raj',
     quote:
       'I really like the feel of these drops. They’re easy to use and don’t leave a heavy or sticky feeling behind.',
+    avatar: { skin: 'brown', hair: 'black', style: 'short', beard: true },
   },
   {
     name: 'Susan',
     quote: 'Feels good, provides relief, love the Quell drops, reasonably priced.',
+    avatar: { skin: 'light', hair: 'blonde', style: 'long' },
+  },
+  {
+    name: 'William',
+    quote:
+      'I’ve really enjoyed using Quell. The drops are simple to use and fit easily into my daily routine.',
+    avatar: { skin: 'light', hair: 'brown', style: 'short' },
   },
   {
     name: 'Marcus',
     quote: 'Great eye drops. I love the Quell drops!',
+    avatar: { skin: 'deep', hair: 'black', style: 'buzz' },
   },
 ] as const
 
