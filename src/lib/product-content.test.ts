@@ -3,6 +3,8 @@ import {
   DRUG_FACTS,
   RELIEVES,
   RELIEVES_WITHHELD,
+  TESTIMONIALS,
+  TESTIMONIALS_NOTE,
   relievesProse,
 } from './product-content'
 
@@ -73,5 +75,96 @@ describe('relievesProse', () => {
     expect(relievesProse()).toMatch(/^[a-z]+(, [a-z]+)*, and [a-z]+$/)
     expect(relievesProse()).not.toMatch(/,\s*and\s*$/)
     expect(relievesProse()).not.toMatch(/,,/)
+  })
+})
+
+describe('what a testimonial is allowed to say', () => {
+  /**
+   * A quotation is not a defence.
+   *
+   * These words appear on Quell's own site, so they are Quell's claims however
+   * they are attributed. Every rule below was written against something that
+   * was actually submitted on 2026-09-03 and held back, not against a
+   * hypothetical.
+   */
+  const quotes = TESTIMONIALS.map((t) => t.quote)
+  const all = quotes.join(' ').toLowerCase()
+
+  it('never claims redness relief', () => {
+    // Withheld from the site entirely, pending regulatory confirmation. The
+    // testimonials must not be the back door it returns through.
+    expect(RELIEVES_WITHHELD).toContain('Redness')
+    expect(all).not.toContain('redness')
+    expect(all).not.toContain('red eye')
+  })
+
+  it('makes no comparative superiority claim', () => {
+    // "Best drops I've ever used" was submitted and held back. It is a claim
+    // about every competing product, and the same shape of sentence is what
+    // the FDA cited on the sister site.
+    for (const phrase of [
+      'best ',
+      'better than',
+      'the only',
+      'nothing else',
+      'more effective',
+      'strongest',
+      'number one',
+      '#1',
+    ]) {
+      expect(all, `testimonial contains "${phrase}"`).not.toContain(phrase)
+    }
+  })
+
+  it('makes no duration-of-action claim', () => {
+    // "They last all day" was submitted and held back. The Drug Facts panel on
+    // this same site directs one drop three times a day, so an all-day claim
+    // is contradicted by our own label — the worst kind, because the evidence
+    // against it is one click away.
+    expect(DRUG_FACTS.directions).toContain('3 times per day')
+    for (const phrase of [
+      'all day',
+      'lasts hours',
+      'last hours',
+      'hours of',
+      'one drop is enough',
+      'only need one',
+    ]) {
+      expect(all, `testimonial contains "${phrase}"`).not.toContain(phrase)
+    }
+  })
+
+  it('claims no cure and treats no condition', () => {
+    for (const phrase of [
+      'cured',
+      'cure',
+      'healed',
+      'fixed my',
+      'treats',
+      'treatment for',
+      'blepharitis',
+      'infection',
+      'disease',
+      'symptoms',
+      'diagnos',
+    ]) {
+      expect(all, `testimonial contains "${phrase}"`).not.toContain(phrase)
+    }
+  })
+
+  it('says the names are aliases', () => {
+    // Real quotes, permission given, but the names are substituted. A
+    // pseudonym presented as a real name is a small dishonesty on a page whose
+    // entire job is being believed.
+    expect(TESTIMONIALS_NOTE.toLowerCase()).toContain('names have been changed')
+    expect(TESTIMONIALS_NOTE.toLowerCase()).toContain('permission')
+  })
+
+  it('attributes every quote and leaves none empty', () => {
+    expect(TESTIMONIALS.length).toBeGreaterThan(0)
+    for (const t of TESTIMONIALS) {
+      expect(t.name.trim().length, 'a quote with no name').toBeGreaterThan(0)
+      expect(t.quote.trim().length, `${t.name} has an empty quote`).toBeGreaterThan(0)
+    }
   })
 })

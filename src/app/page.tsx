@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/db'
 import { Hero } from '@/components/home/Hero'
 import { WhyItWorks } from '@/components/home/WhyItWorks'
+import { Testimonials } from '@/components/home/Testimonials'
 import { BuySection } from '@/components/home/BuySection'
 import { HowToUse } from '@/components/home/HowToUse'
 import { Lifestyle } from '@/components/home/Lifestyle'
@@ -23,6 +24,9 @@ export default async function HomePage() {
       <JsonLd data={productSchema(product)} />
       <Hero product={product} />
       <WhyItWorks />
+      {/* Before the buy panel: someone who has read the science is deciding,
+          and the quotes belong between the argument and the price. */}
+      <Testimonials />
       <BuySection product={product} />
       <HowToUse />
       <Lifestyle />

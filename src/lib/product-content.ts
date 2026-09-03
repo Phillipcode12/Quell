@@ -231,3 +231,71 @@ export const FAQS = [
     a: 'Store between 15° and 30°C (59° to 86°F). Do not touch the tip of the bottle to any surface, which avoids contaminating the solution.',
   },
 ] as const
+
+/**
+ * Customer testimonials.
+ *
+ * **Every word here is a claim Quell is making about its own product**, in the
+ * customer's voice rather than ours. Quoting someone does not move the
+ * responsibility to them: it appears on our site, so it is ours. This is the
+ * same discipline as RELIEVES_WITHHELD, and it is why these live beside the
+ * label copy rather than inside a component.
+ *
+ * Supplied by Phillip on 2026-09-03. **Permission was given and the names are
+ * aliases** — the site says so, because a pseudonym presented as a real name is
+ * the kind of small dishonesty that undermines everything around it.
+ *
+ * ### The rule for adding one
+ *
+ * The test is not "did they say it" but **"does the label support it"**. A
+ * genuine quotation of an unsupported claim is still an unsupported claim.
+ *
+ * Safe: how it feels, how it handles, whether they liked it. Sensory and
+ * experiential language claims nothing a reviewer can demand evidence for.
+ *
+ * Not safe, and all three have already been seen in submissions:
+ *
+ *  - **A condition or outcome** the Uses panel does not cover. `DRUG_FACTS.uses`
+ *    is "a protectant against further irritation or to relieve dryness of the
+ *    eye" — and redness is withheld entirely (RELIEVES_WITHHELD).
+ *  - **Comparative superiority.** "Best drops I've ever used" is a claim about
+ *    every other product on the shelf. The same shape of sentence is what the
+ *    FDA cited on centersfordryeye.com.
+ *  - **Duration of action.** "They last all day" was submitted and held back:
+ *    it contradicts `DRUG_FACTS.directions`, which says one drop three times a
+ *    day. A claim the site's own Drug Facts panel disproves is the worst kind,
+ *    because the contradiction is on the same website.
+ *
+ * `product-content.test.ts` enforces the first two mechanically. The third
+ * needs a human, which is why nothing here ships without Michael.
+ */
+export const TESTIMONIALS = [
+  {
+    name: 'Ming',
+    quote:
+      'These drops feel soothing and comfortable, and I really like how my eyes feel after using them. I’ve been very happy with Quell.',
+  },
+  {
+    name: 'Raj',
+    quote:
+      'I really like the feel of these drops. They’re easy to use and don’t leave a heavy or sticky feeling behind.',
+  },
+  {
+    name: 'Susan',
+    quote: 'Feels good, provides relief, love the Quell drops, reasonably priced.',
+  },
+  {
+    name: 'Marcus',
+    quote: 'Great eye drops. I love the Quell drops!',
+  },
+] as const
+
+/**
+ * Shown under the testimonials.
+ *
+ * The names are aliases, and saying so costs nothing while a pseudonym passed
+ * off as a real name would be exactly the kind of small dishonesty this site
+ * has otherwise been careful to avoid.
+ */
+export const TESTIMONIALS_NOTE =
+  'Real customers, quoted with permission. Names have been changed for privacy.'
