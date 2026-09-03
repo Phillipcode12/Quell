@@ -66,9 +66,9 @@ const PLACEMENT: Record<
   },
   Marcus: {
     align: 'self-end',
-    width: 'max-w-md',
-    indent: 'sm:mr-12 lg:mr-24',
-    size: 'text-xl sm:text-2xl leading-snug',
+    width: 'max-w-2xl',
+    indent: 'sm:mr-8 lg:mr-16',
+    size: 'text-xl leading-snug',
     avatar: 'h-16 w-16 sm:h-20 sm:w-20',
   },
   Susan: {
@@ -119,18 +119,15 @@ export default function ReviewsPage() {
       </div>
 
       <div className="relative mx-auto max-w-5xl px-6 py-20 sm:py-28">
+        {/* No uppercase eyebrow above the heading here, unlike the homepage
+            sections: it would just say "Reviews" over "Reviews". */}
         <header className="max-w-2xl">
-          <span className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">
+          <h1 className="text-4xl font-semibold leading-[1.1] tracking-tight text-white sm:text-5xl">
             Reviews
-          </span>
-          <h1 className="mt-5 text-4xl font-semibold leading-[1.1] tracking-tight text-white sm:text-5xl">
-            In their words.
           </h1>
-          {/* The authenticity line sits here rather than in the fine print at
-              the bottom. It is the first thing a sceptical reader wants and the
-              last place they would look for it. */}
           <p className="mt-5 text-lg leading-relaxed text-muted">
-            {TESTIMONIALS_NOTE}
+            See what customers are saying about their experience with{' '}
+            {BRAND.name}.
           </p>
         </header>
 
@@ -162,7 +159,7 @@ export default function ReviewsPage() {
 
                   <div className="min-w-0">
                     <blockquote
-                      className={`${p.size} font-light text-white [text-wrap:balance]`}
+                      className={`${p.size} font-light text-white [text-wrap:pretty]`}
                     >
                       {t.quote}
                     </blockquote>
@@ -177,11 +174,13 @@ export default function ReviewsPage() {
         </div>
 
         <div className="mt-24 border-t border-line pt-8 sm:mt-32">
-          {/* Fine print only. The authenticity line moved to the header, so
-              repeating it here would say the same thing twice on one page. */}
+          {/* The disclosure lives here rather than under the heading, which is
+              now a plain introduction. It still has to appear somewhere: the
+              names are substituted, and a pseudonym passed off as a real name
+              is the one dishonesty this page cannot afford. */}
           <p className="text-xs leading-relaxed text-muted">
-            Individual experience varies. {BRAND.trademark} is an
-            over-the-counter drug — read the{' '}
+            {TESTIMONIALS_NOTE} Individual experience varies. {BRAND.trademark}{' '}
+            is an over-the-counter drug — read the{' '}
             <Link href="/drug-facts" className="text-brand-light hover:underline">
               Drug Facts
             </Link>{' '}

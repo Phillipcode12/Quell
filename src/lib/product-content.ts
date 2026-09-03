@@ -337,22 +337,23 @@ export const TESTIMONIALS = [
 ] as const
 
 /**
- * The line that says these are real, shown at the top of the reviews page.
+ * The line that says these are real, shown in the fine print on /reviews.
  *
- * **Naming the exact edit is what makes it believable.** "Real reviews from
- * real customers" is what a page of invented ones says too, so the claim
- * carries no information. Saying precisely what was changed — the names, the
- * spelling, and nothing else — is a sentence a fabricated page could not
- * write, and it is the specificity rather than the insistence that does the
- * work.
+ * **Being specific is what makes it believable.** "Real reviews from real
+ * customers" is what a page of invented ones says too, so the claim carries no
+ * information. Naming who they are, that they agreed, and what was changed is
+ * a sentence a fabricated page could not write — the specificity does the work
+ * rather than the insistence.
  *
- * It also has to stay true. Susan's "reasonably prices" was corrected to
- * "priced", so "we corrected spelling" is in there because it happened; if
- * anything more than that is ever edited, this line has to change with it.
+ * **It has to stay true, and it currently is: the only change made to any of
+ * these quotes is the substituted names.** Susan's line briefly read
+ * "reasonably prices" here, which was a slip in transcription rather than her
+ * word, so restoring "priced" corrected the record instead of editing her. If a
+ * quote's wording is ever genuinely changed, this line has to change with it.
  *
  * The names being aliases is stated for its own sake: a pseudonym passed off
  * as a real name is exactly the small dishonesty this site has otherwise been
  * careful to avoid.
  */
 export const TESTIMONIALS_NOTE =
-  'People who bought Quell and agreed to let us publish what they said. We changed the names for privacy and corrected spelling — that is the whole edit.'
+  'People who bought Quell and agreed to let us publish what they said. We changed the names for privacy.'
