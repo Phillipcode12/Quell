@@ -274,24 +274,55 @@ export const TESTIMONIALS = [
     name: 'Ming',
     quote:
       'These drops feel soothing and comfortable, and I really like how my eyes feel after using them. I’ve been very happy with Quell.',
-    avatar: { skin: 'tan', hair: 'black', style: 'bob' },
+    avatar: {
+      skin: 'tan',
+      hair: 'black',
+      style: 'short',
+      image: '/images/testimonials/ming.png',
+    },
   },
   {
     name: 'Raj',
     quote:
       'I really like the feel of these drops. They’re easy to use and don’t leave a heavy or sticky feeling behind.',
-    avatar: { skin: 'brown', hair: 'black', style: 'short', beard: true },
+    avatar: {
+      skin: 'brown',
+      hair: 'black',
+      style: 'short',
+      image: '/images/testimonials/raj.png',
+    },
   },
   {
     name: 'Susan',
     quote: 'Feels good, provides relief, love the Quell drops, reasonably priced.',
-    avatar: { skin: 'light', hair: 'blonde', style: 'long' },
+    avatar: {
+      skin: 'light',
+      hair: 'brown',
+      style: 'long',
+      image: '/images/testimonials/susan.png',
+    },
   },
   {
     name: 'William',
     quote:
       'I’ve really enjoyed using Quell. The drops are simple to use and fit easily into my daily routine.',
-    avatar: { skin: 'light', hair: 'brown', style: 'short' },
+    avatar: {
+      skin: 'light',
+      hair: 'brown',
+      style: 'short',
+      image: '/images/testimonials/william.png',
+    },
+  },
+  {
+    name: 'Margaret',
+    quote:
+      'I’ve tried a lot of eye drops over the years, and Quell has become the one I reach for. I’m very pleased with how it feels and works for me.',
+    avatar: {
+      skin: 'light',
+      hair: 'grey',
+      style: 'bob',
+      image: '/images/testimonials/margaret.png',
+    },
   },
   {
     name: 'Marcus',

@@ -1,7 +1,6 @@
 import { prisma } from '@/lib/db'
 import { Hero } from '@/components/home/Hero'
 import { WhyItWorks } from '@/components/home/WhyItWorks'
-import { Testimonials } from '@/components/home/Testimonials'
 import { BuySection } from '@/components/home/BuySection'
 import { HowToUse } from '@/components/home/HowToUse'
 import { Lifestyle } from '@/components/home/Lifestyle'
@@ -24,9 +23,9 @@ export default async function HomePage() {
       <JsonLd data={productSchema(product)} />
       <Hero product={product} />
       <WhyItWorks />
-      {/* Before the buy panel: someone who has read the science is deciding,
-          and the quotes belong between the argument and the price. */}
-      <Testimonials />
+      {/* No testimonials here on purpose: they have their own page, reached
+          from the nav, so this page stays one argument ending at the buy
+          panel rather than pausing halfway through. */}
       <BuySection product={product} />
       <HowToUse />
       <Lifestyle />
