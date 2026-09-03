@@ -32,6 +32,27 @@ Detection Suite. Guest checkout has no account barrier and the app's own rate
 limiter is still in-process, so those filters are the real defence against card
 testing on a live store (§14 item 7).
 
+### Unpushed, and one of them needs a migration run first — 2026-09-02
+
+Two commits sit on local `main` and have **not** been pushed.
+
+1. Corrections to this file (four things that had stopped being true).
+2. **First-party visitor counting** (§7, §23). This one adds a table, so the
+   ordering in §20 applies and getting it wrong takes the site down:
+   **apply the migration to Neon first, then push.** The build does not run
+   `prisma migrate deploy`, so pushing first deploys code that queries a
+   `PageView` table which does not exist — on every page, because the tracker
+   is in the root layout.
+
+   ```
+   npx vercel env pull <tmpfile> --environment production
+   DATABASE_URL="<from tmpfile>" npx prisma migrate deploy
+   ```
+
+   Delete the file straight afterwards; it holds every production secret.
+
+   It also **changes the privacy policy**, so read that wording before pushing.
+
 Also outstanding, waiting on other people: Zen on the **statement descriptor**
 (currently `AURORA PHARMACE`, §9) and the **written terms** (§21), and Ryan on
 **fulfilment** — who packs, who takes returns (§13).
@@ -355,7 +376,7 @@ Authorize.net gotchas, all already handled in `lib/authorizenet.ts`:
 
 ## 7. Admin
 
-Two tabs, linked by `components/admin/AdminTabs.tsx`:
+Three tabs, linked by `components/admin/AdminTabs.tsx`:
 
 **`/admin/orders`** — orders with customer, items, totals, shipping address;
 counters; inline stock editor; mark shipped / cancel.
@@ -373,6 +394,11 @@ grouped case-insensitively.
 > disclosures were removed because no such system exists, and the policy now
 > states the site uses no advertising trackers. A mailing list means updating
 > the policy and adding consent first.
+
+**`/admin/analytics`** ("Traffic") — added 2026-09-02. Live count, visits and
+views for today / 7 / 30 days, a 14-day chart, most-viewed pages and referring
+sites. Built first-party rather than installed; see §23 for why and for what it
+does not store.
 
 Access is the `ADMIN_EMAILS` allowlist (comma separated) — in `.env` locally,
 in the Vercel dashboard for the deployed site. **Unset means nobody** — it fails
@@ -505,7 +531,7 @@ should be a small real purchase you make and then refund.
 | Card statement descriptor | **Known and needs changing, 2026-09-01.** The first live charge showed on the bank statement as **`AURORA PHARMACE`** — the legal entity, truncated. **Customers buy "Quell" and will not recognise it**, and "I don't recognise this charge" is the commonest cause of chargebacks; on a high-risk account a chargeback ratio is what gets processing withdrawn. Ask Zen/START to change it to carry the brand — `QUELL EYE DROPS`, or better `QUELL QUELLDROP.COM`, since a URL in the descriptor lets people look it up. |
 | `$29.99` price | Matches the Dry Eye Rescue retail listing as of 2026-08-13. |
 | Brand teal | Site uses `#00A7B5`; print file converts to `#4AC1A8`. One token change if you want to match print. |
-| Legal pages | **Rewritten 2026-08-18/19 and reviewed.** No placeholders, no template banners, every claim checked against the code. Three false statements were fixed: the cart is `localStorage` and never reaches the server, there is no marketing email, and the site runs no analytics at all — the policy now says so. Governing law is **Tennessee**; shipping is **US-only**, matching `SHIPPABLE_COUNTRIES`. Note the privacy policy now states the site uses no advertising trackers — **installing a Meta Pixel makes that false and must be changed in the same release.** |
+| Legal pages | **Rewritten 2026-08-18/19 and reviewed.** No placeholders, no template banners, every claim checked against the code. Three false statements were fixed: the cart is `localStorage` and never reaches the server, there is no marketing email, and the site ran no analytics at all. **Updated 2026-09-02 (§23): the site now counts page views itself**, and the policy describes exactly what is stored and for how long. Governing law is **Tennessee**; shipping is **US-only**, matching `SHIPPABLE_COUNTRIES`. The policy still states the site sets no third-party cookies and uses no advertising trackers, and that is still true because the counting is first-party — **installing a Meta Pixel or any hosted analytics makes it false and must be changed in the same release.** |
 | Returns policy | **Decided 2026-08-19.** Unopened, original packaging, 30 days, refund of product price; original shipping not refunded. Opened drops never returnable (sterility). Damaged, incorrect or broken-seal orders replaced free within 30 days. Refunds are achievable today through the Authorize.net merchant interface; store credit was considered and dropped because no credit or coupon mechanism exists anywhere in the codebase. |
 | Seller of record | **Changed 2026-08-19 to Aurora Pharmaceuticals, LLC**, confirmed by Ryan against the IRS letter and articles of organization. `COMPANY` now carries Aurora's name and its 330 Franklin Road address; the phone is shared with BlephEx and stays. **Settled 2026-09-01: Phillip confirmed the LLC is in fact the entity, and the carton will be corrected at the next print run.** /about now names the LLC throughout. `MANUFACTURER` is still **Aurora Pharmaceuticals, Inc** and /drug-facts still prints it, deliberately — that page reproduces the panel as it appears on the box, so matching the physical label is the point of it. **When the carton is reprinted, change the constant and the two agree again.** |
 | **Front-panel claims** | The carton advertises **redness relief**, but the Drug Facts *Uses* section does not cover it and the formula has no vasoconstrictor. FDA expects front-panel claims to match Uses. Affects packaging, not just the site. Needs regulatory review. |
@@ -1095,6 +1121,62 @@ defects: nothing here is broken.
   through the merge path. Remove the override once Prisma 8 lands: it drops
   `@prisma/config` from the tree entirely.
 - The Meta ad account is not created. Groundwork in §15.
+
+---
+
+## 23. Visitor counting, and why it is not Google Analytics
+
+Added 2026-09-02. `/admin/analytics`, the "Traffic" tab.
+
+**Why first-party.** The privacy policy promised no analytics, no advertising
+trackers and no third-party cookies. Vercel Analytics or Plausible would have
+broken all three; counting here breaks only the first. On a site selling an
+FDA-regulated drug that was worth the extra code — and it is the same class of
+finding that turned up as Critical on centersfordryeye.com, where Google and
+Meta tags load on a patient referral form.
+
+**What is stored:** a path, a random per-tab id, a referring host, a timestamp,
+and a flag saying whether the row was a page load or a keep-alive. **No IP
+address, no user agent, no cookie**, and nothing tying a view to a customer or
+an order. Rows are deleted after **90 days**, pruned opportunistically from the
+collector on roughly 1 request in 50 rather than by a cron nobody would
+remember.
+
+The session id lives in `sessionStorage`, not a cookie, so it dies with the tab
+and cannot follow anyone between visits. That is load-bearing for the policy
+wording — it is what lets the page still say no tracking cookies are set.
+
+**The admin area is not counted.** Otherwise checking the numbers adds to them,
+and the site looks busier the more often it is looked at.
+
+### Three defects found by checking the database, not the code
+
+All three would have shipped silently, and none showed up as an error:
+
+- **Every page was counted twice.** React runs effects twice in development and
+  a re-render can fire one again anywhere; three navigations produced six rows.
+  Fixed with a ref holding the last reported path.
+- **The keep-alive counted as a view.** Reading one page for ten minutes read as
+  ten views of it. Pings are flagged and excluded from view counts; they still
+  feed the live count, which is all they are for.
+- **The chart bars rendered at zero pixels.** A percentage height against a
+  content-sized flex parent resolves to nothing, so a full day of traffic drew
+  an empty panel indistinguishable from no data.
+
+The lesson is the one already in §16: the tests pass either way. What caught
+these was querying the real table after driving the real site.
+
+### Two things it is not
+
+- **Not Search Console.** Impressions and the queries people typed live there.
+  This counts what happens once they arrive.
+- **Not a funnel tool.** It counts visits, pages and referrers. Anything more —
+  conversion by source, cohorts, attribution — is a lot more code.
+
+> Relevant to the compensation discussion: the proposal to Ryan prices Quell at
+> a percentage of sales through quelldrop.com, against his expectation that most
+> volume comes through Amazon. Until 2026-09-02 nobody could see what the
+> website's traffic actually was. Now they can.
 
 ---
 
