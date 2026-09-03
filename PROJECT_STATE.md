@@ -38,28 +38,29 @@ Recorded as confirmed by the person with gateway access, which is the only place
 this can be established — it is not checkable from the codebase or from outside,
 and no amount of reading this file would have settled it.
 
-### Half closed 2026-09-02 — the order is cancelled, the money is not back
+### Closed 2026-09-02 — the live test charge is fully reconciled
 
-**Order `Q-7DAGMJPS` is cancelled** in `/admin/orders`, verified against the
-production database: it reads `cancelled` and **stock is back to 250**. All nine
-orders in production are cancelled — there has still been no real customer
-order.
+Both halves are done, and they are two separate actions:
 
-**The $1.00 has NOT been refunded.** Transaction `121807006102` is still a
-settled charge at the gateway. Refund it at **https://account.authorize.net**
-(Production) — Search → Transaction ID → `121807006102` → **Refund**, which
-asks for the card's last four digits. It is settled, so Refund is the action,
-not Void.
+- **Refunded at the gateway.** Transaction `121807006102`, refunded by Phillip
+  in the Authorize.net Merchant Interface. Reported by him; **not independently
+  verified** — the Authorize.net API credentials are stored as Secrets in Vercel
+  and cannot be read back, so there is no way to query the transaction from
+  here. That is the correct storage for a credential and is not worth changing.
+- **Cancelled on the site.** Order `Q-7DAGMJPS` reads `cancelled` and **stock is
+  back to 250**, verified directly against the production database. All nine
+  production orders are cancelled — there has still been no real customer order.
 
-> **Cancelling an order in `/admin/orders` does not move any money, and the app
-> has no refund path at all** — `grep -ri refund src/` finds only copy and one
-> webhook comment. The admin's own confirm dialog says so: *"Refunding is done
-> in the Authorize.net merchant interface."* This was misread once, on 2026-09-02,
-> and this file briefly recorded the charge as reconciled when it was not.
+> **The two are not the same action, and the app can only do one of them.**
+> Cancelling in `/admin/orders` moves no money; the app has no refund path at
+> all — `grep -ri refund src/` finds only copy and one webhook comment — and the
+> admin's own confirm dialog says *"Refunding is done in the Authorize.net
+> merchant interface."* That was misread once on 2026-09-02, and this file
+> briefly recorded the charge as reconciled when only the cancel had happened.
 >
-> **The process for any paid order is both actions, gateway first:** refund at
-> Authorize.net, then cancel in the admin. Gateway first so a failure there does
-> not leave the site claiming a refund that never happened.
+> **For any paid order, do both, gateway first:** refund at Authorize.net, then
+> cancel in the admin. Gateway first so a failure there does not leave the site
+> claiming a refund that never happened.
 >
 > This matters more than a dollar. **If a customer asks to cancel and only the
 > admin button is clicked, they wait for a refund that never arrives and their
@@ -1092,10 +1093,10 @@ diverging from it.
    Production credentials in Vercel, `AUTHORIZENET_ENVIRONMENT=production`,
    webhook registered against `quelldrop.com`, and a real $1.00 card payment
    proven end to end including both emails (§8). **What remains:** refund that
-   charge once it settles (**still outstanding** — the order is cancelled but
-   the money has not moved, see Start here) and fix the statement descriptor
-   (§9). The AVS/CVV/velocity filters are confirmed on, and the test orders in
-   `/admin/orders` are all cancelled.
+   charge — **done 2026-09-02**, refunded at the gateway and cancelled on the
+   site. What remains from the cutover is the **statement descriptor** (§9),
+   which is with Zen. The AVS/CVV/velocity filters are confirmed on and the test
+   orders are all cancelled.
 
 ### Storefront review — the agreed list, 2026-08-31
 
