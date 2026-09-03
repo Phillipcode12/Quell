@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { prisma } from '@/lib/db'
 import { clientIp, rateLimit } from '@/lib/rate-limit'
-import { isBot, classifySource, referrerHost, pruneOldVisits } from '@/lib/analytics'
+import { isBot, classifySource, referrerHost } from '@/lib/analytics'
 import { appUrl } from '@/lib/site'
 
 /**
@@ -33,20 +33,6 @@ const schema = z.object({
 
 /** 204 with no body. Every path out of this route returns exactly this. */
 const noContent = () => new NextResponse(null, { status: 204 })
-
-/**
- * Roughly one request in fifty also prunes. Cheap on average, self-maintaining,
- * and no cron to forget about. A failure here must not affect the visitor, so
- * it is swallowed.
- */
-async function maybePrune() {
-  if (Math.random() >= 0.02) return
-  try {
-    await pruneOldVisits()
-  } catch {
-    // Retention is best-effort; the next request will try again.
-  }
-}
 
 export async function POST(request: Request) {
   // Bots first: no reason to spend a rate-limit slot or a database write.
@@ -93,6 +79,5 @@ export async function POST(request: Request) {
     // A missed visit is not worth an error page. Swallow and move on.
   }
 
-  await maybePrune()
   return noContent()
 }

@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { classifySource, isBot, referrerHost } from '@/lib/analytics'
+import {
+  classifySource,
+  formatMonth,
+  isBot,
+  joinMonthly,
+  referrerHost,
+} from '@/lib/analytics'
 
 /**
  * The pure parts of the counter: what gets counted, and how an arrival is
@@ -103,5 +109,69 @@ describe('classifySource', () => {
     // way to be wrong; over-reporting it would credit SEO for traffic it never
     // earned.
     expect(classifySource('some-new-search-engine.example')).toBe('link')
+  })
+})
+
+describe('joining visits and sales by month', () => {
+  const visits = (month: string, v: number) => ({
+    month,
+    visits: v,
+    search: 0,
+    link: 0,
+    direct: v,
+  })
+
+  it('pairs a month that has both', () => {
+    const [row] = joinMonthly(
+      [visits('2026-09-01', 200)],
+      [{ month: '2026-09-01', orders: 4, revenueCents: 15996 }],
+    )
+    expect(row.visits).toBe(200)
+    expect(row.orders).toBe(4)
+    expect(row.revenueCents).toBe(15996)
+    expect(row.conversionPct).toBeCloseTo(2)
+  })
+
+  it('keeps a month with sales but no visit records', () => {
+    // Orders predate the counter, which only started on 2026-09-02. Dropping
+    // those months would hide real revenue, which is the worse error.
+    const rows = joinMonthly([], [{ month: '2026-08-01', orders: 2, revenueCents: 7998 }])
+    expect(rows).toHaveLength(1)
+    expect(rows[0].visits).toBe(0)
+    expect(rows[0].orders).toBe(2)
+  })
+
+  it('reports no conversion rather than zero when nobody visited', () => {
+    // 0/0 is not 0%. A zero would read as "nobody who came bought", which is a
+    // claim about traffic that did not exist.
+    const [row] = joinMonthly([], [{ month: '2026-08-01', orders: 2, revenueCents: 7998 }])
+    expect(row.conversionPct).toBeNull()
+  })
+
+  it('reports zero conversion when people came and none bought', () => {
+    const [row] = joinMonthly([visits('2026-09-01', 500)], [])
+    expect(row.conversionPct).toBe(0)
+    expect(row.revenueCents).toBe(0)
+  })
+
+  it('orders months newest first', () => {
+    const rows = joinMonthly(
+      [visits('2026-07-01', 1), visits('2026-09-01', 3), visits('2026-08-01', 2)],
+      [],
+    )
+    expect(rows.map((r) => r.month)).toEqual(['2026-09-01', '2026-08-01', '2026-07-01'])
+  })
+})
+
+describe('formatMonth', () => {
+  it('reads as a month and a year', () => {
+    expect(formatMonth('2026-09-01')).toBe('September 2026')
+    expect(formatMonth('2027-01-01')).toBe('January 2027')
+  })
+
+  it('does not slip a month at a timezone boundary', () => {
+    // The key is midnight UTC on the first. Formatting it in local time west
+    // of UTC would render December as November.
+    expect(formatMonth('2026-12-01')).toBe('December 2026')
   })
 })

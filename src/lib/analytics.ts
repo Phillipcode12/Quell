@@ -21,11 +21,21 @@ import { prisma } from '@/lib/db'
 export const LIVE_WINDOW_MS = 5 * 60 * 1000
 
 /**
- * How long visits are kept. Ninety days answers "how did last quarter go"
- * without keeping a permanent record. Enforced by pruneOldVisits, called from
- * the collector.
+ * Visits are kept indefinitely. Nothing prunes them, by decision on
+ * 2026-09-02 — the shop wants year-on-year history, and a counter is only
+ * useful once there is something to compare against.
+ *
+ * The cost is negligible and worth stating so nobody re-adds pruning out of
+ * caution: a Visit row is a short id, a word, a hostname and two timestamps.
+ * A hundred thousand visits is single-digit megabytes, which is more traffic
+ * than this shop will see for years.
+ *
+ * What makes indefinite retention defensible here is what is *not* stored —
+ * no page path, no IP, no user agent, no cookie, nothing tying a visit to a
+ * person or an order. Keeping an anonymous count forever is a different
+ * proposition from keeping a browsing history forever, and the second one is
+ * what the no-page-path decision ruled out.
  */
-export const RETENTION_DAYS = 90
 
 /**
  * Bots, so the numbers mean something.
@@ -228,11 +238,213 @@ export async function dailyVisits(days: number, now = new Date()): Promise<DayCo
   return [...buckets.entries()].map(([day, visits]) => ({ day, visits }))
 }
 
-/** Drop visits past the retention window. */
-export async function pruneOldVisits(now = new Date()): Promise<number> {
-  const cutoff = new Date(now.getTime() - RETENTION_DAYS * 24 * 60 * 60 * 1000)
-  const { count } = await prisma.visit.deleteMany({
-    where: { startedAt: { lt: cutoff } },
+
+export type MonthCount = {
+  /** First day of the month, UTC, as `YYYY-MM-01`. */
+  month: string
+  visits: number
+  search: number
+  link: number
+  direct: number
+}
+
+/**
+ * Every month that saw a visit, newest first, with the source split.
+ *
+ * The long view. The daily chart answers "what happened this fortnight"; this
+ * answers "is the shop growing", which only becomes readable once there is a
+ * year to look back on — hence keeping the rows forever.
+ *
+ * Raw SQL because Prisma cannot group by a truncated date, and one grouped
+ * scan is the right shape here: the table is a few rows per visit and the
+ * `startedAt` index covers the ordering. If this ever gets slow the answer is
+ * a monthly rollup table, but that is a problem for hundreds of thousands of
+ * visits, not for this shop.
+ *
+ * Months are UTC, matching `dailyVisits` and the stored timestamps. A month
+ * with no visits at all is simply absent rather than zero-filled: gaps in
+ * *daily* data mislead, but a shop that took no visits in a calendar month has
+ * a real gap and padding the table would hide it.
+ */
+export async function monthlyVisits(): Promise<MonthCount[]> {
+  const rows = await prisma.$queryRaw<
+    { month: Date; visits: number; search: number; link: number; direct: number }[]
+  >`
+    SELECT date_trunc('month', "startedAt") AS month,
+           COUNT(*)::int AS visits,
+           COUNT(*) FILTER (WHERE "source" = 'search')::int AS search,
+           COUNT(*) FILTER (WHERE "source" = 'link')::int   AS link,
+           COUNT(*) FILTER (WHERE "source" = 'direct')::int AS direct
+    FROM "Visit"
+    GROUP BY 1
+    ORDER BY 1 DESC
+  `
+
+  // The counts are cast to int in SQL rather than left as Postgres bigint,
+  // which Prisma hands back as a BigInt that JSON.stringify refuses to
+  // serialise — a server component would fail at render, not at the query.
+  return rows.map((r) => ({
+    month: r.month.toISOString().slice(0, 10),
+    visits: r.visits,
+    search: r.search,
+    link: r.link,
+    direct: r.direct,
+  }))
+}
+
+/** "September 2026" from a `YYYY-MM-DD` month key. */
+export function formatMonth(month: string): string {
+  const [y, m] = month.split('-')
+  const date = new Date(Date.UTC(Number(y), Number(m) - 1, 1))
+  return date.toLocaleString('en-US', {
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
   })
-  return count
+}
+
+// --- orders and revenue -----------------------------------------------------
+
+/**
+ * What counts as a sale.
+ *
+ * `paid` and `shipped` only. A `pending` order is a checkout that started and
+ * may never complete — counting it would report revenue that does not exist —
+ * and a `cancelled` one has been refunded or never charged. This is the same
+ * rule /admin/customers uses, and the two must not drift apart.
+ */
+const SOLD = ['paid', 'shipped']
+
+export type Sales = { orders: number; revenueCents: number }
+
+/** Orders and revenue since a point in time. */
+export async function salesSince(since: Date): Promise<Sales> {
+  const result = await prisma.order.aggregate({
+    where: { status: { in: SOLD }, createdAt: { gte: since } },
+    _count: { _all: true },
+    _sum: { totalCents: true },
+  })
+  return {
+    orders: result._count._all,
+    // _sum is null when nothing matched, which would render as "$null".
+    revenueCents: result._sum.totalCents ?? 0,
+  }
+}
+
+export type DaySales = { day: string; orders: number; revenueCents: number }
+
+/** Orders and revenue per day, oldest first, with empty days filled in. */
+export async function dailySales(days: number, now = new Date()): Promise<DaySales[]> {
+  const start = new Date(now)
+  start.setUTCHours(0, 0, 0, 0)
+  start.setUTCDate(start.getUTCDate() - (days - 1))
+
+  const rows = await prisma.order.findMany({
+    where: { status: { in: SOLD }, createdAt: { gte: start } },
+    select: { createdAt: true, totalCents: true },
+  })
+
+  const buckets = new Map<string, DaySales>()
+  for (let i = 0; i < days; i++) {
+    const d = new Date(start)
+    d.setUTCDate(start.getUTCDate() + i)
+    const key = d.toISOString().slice(0, 10)
+    buckets.set(key, { day: key, orders: 0, revenueCents: 0 })
+  }
+
+  for (const row of rows) {
+    const bucket = buckets.get(row.createdAt.toISOString().slice(0, 10))
+    if (!bucket) continue
+    bucket.orders += 1
+    bucket.revenueCents += row.totalCents
+  }
+
+  return [...buckets.values()]
+}
+
+export type MonthSales = { month: string; orders: number; revenueCents: number }
+
+/**
+ * Orders and revenue per month, keyed the same way as `monthlyVisits` so the
+ * two can be joined on the month string.
+ *
+ * Dated by `createdAt` rather than by when payment landed, because there is no
+ * paid-at column. On this shop the gap is seconds — the webhook marks an order
+ * paid moments after checkout — so the only case it could misfile is an order
+ * created just before midnight UTC and paid just after. Worth knowing before
+ * anyone reconciles this against a processor statement, which uses settlement
+ * dates and will not agree exactly.
+ */
+export async function monthlySales(): Promise<MonthSales[]> {
+  const rows = await prisma.$queryRaw<
+    { month: Date; orders: number; revenue: number }[]
+  >`
+    SELECT date_trunc('month', "createdAt") AS month,
+           COUNT(*)::int AS orders,
+           COALESCE(SUM("totalCents"), 0)::int AS revenue
+    FROM "Order"
+    WHERE "status" IN ('paid', 'shipped')
+    GROUP BY 1
+    ORDER BY 1 DESC
+  `
+
+  return rows.map((r) => ({
+    month: r.month.toISOString().slice(0, 10),
+    orders: r.orders,
+    revenueCents: r.revenue,
+  }))
+}
+
+export type MonthRow = MonthCount & {
+  orders: number
+  revenueCents: number
+  /** Orders per hundred visits, or null when there were no visits to convert. */
+  conversionPct: number | null
+}
+
+/**
+ * Visits and sales for every month either of them happened in.
+ *
+ * Joined here rather than in SQL because they are two independent tables with
+ * no relation between them, and a month can legitimately appear in one and not
+ * the other: sales before counting began have no visits, and most months will
+ * have visits and no sales.
+ */
+export function joinMonthly(
+  visits: MonthCount[],
+  sales: MonthSales[],
+): MonthRow[] {
+  const byMonth = new Map<string, MonthRow>()
+
+  for (const v of visits) {
+    byMonth.set(v.month, { ...v, orders: 0, revenueCents: 0, conversionPct: null })
+  }
+
+  for (const s of sales) {
+    const existing = byMonth.get(s.month)
+    if (existing) {
+      existing.orders = s.orders
+      existing.revenueCents = s.revenueCents
+    } else {
+      // A month with sales but no visit records — anything before counting
+      // began on 2026-09-02. Shown rather than dropped, with visits at zero,
+      // because hiding real revenue would be the worse error.
+      byMonth.set(s.month, {
+        month: s.month,
+        visits: 0,
+        search: 0,
+        link: 0,
+        direct: 0,
+        orders: s.orders,
+        revenueCents: s.revenueCents,
+        conversionPct: null,
+      })
+    }
+  }
+
+  for (const row of byMonth.values()) {
+    row.conversionPct = row.visits > 0 ? (row.orders / row.visits) * 100 : null
+  }
+
+  return [...byMonth.values()].sort((a, b) => (a.month < b.month ? 1 : -1))
 }
