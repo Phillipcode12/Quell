@@ -32,28 +32,25 @@ Detection Suite. Guest checkout has no account barrier and the app's own rate
 limiter is still in-process, so those filters are the real defence against card
 testing on a live store (§14 item 7).
 
-### Unpushed, and one of them needs a migration run first — 2026-09-02
+### Shipped 2026-09-02 — visit counting is live
 
-Two commits sit on local `main` and have **not** been pushed.
+Nine commits pushed. The `20260902160000_visits` migration was applied to Neon
+**before** the push, in that order, and the pulled env file was deleted straight
+after. `prisma migrate status` against production reports up to date.
 
-1. Corrections to this file (four things that had stopped being true).
-2. **First-party visit counting** (§7, §23). This one adds a table, so the
-   ordering in §20 applies and getting it wrong takes the site down:
-   **apply the migration to Neon first, then push.** The build does not run
-   `prisma migrate deploy`, so pushing first deploys code that queries a
-   `PageView` table which does not exist — on every page, because the tracker
-   is in the root layout.
+Verified against the live site rather than assumed: `/api/track` answers 204 for
+a direct arrival and for a search arrival, ignores Googlebot,
+`/admin/analytics` 404s to anonymous visitors, and the rows landed in the
+production database with the right source — `google.com` classified as
+`search`. The two deploy-test rows were deleted afterwards, so the numbers on
+the dashboard are real from the start.
 
-   ```
-   npx vercel env pull <tmpfile> --environment production
-   DATABASE_URL="<from tmpfile>" npx prisma migrate deploy
-   ```
+**One genuine visit was already recorded during the deploy window**, which is
+the first real traffic data the shop has ever had.
 
-   Delete the file straight afterwards; it holds every production secret.
-
-   **The privacy policy has been settled** — the word "analytics" came out of
-   the no-tracking sentence and nothing on the page is now false. One optional
-   sentence is still unwritten; see §23 before pushing.
+The privacy policy question is settled for now: the word "analytics" came out of
+the no-tracking sentence, nothing on the page is false, and the one optional
+sentence about the collected-automatically list is still unwritten. See §23.
 
 Also outstanding, waiting on other people: Zen on the **statement descriptor**
 (currently `AURORA PHARMACE`, §9) and the **written terms** (§21), and Ryan on
