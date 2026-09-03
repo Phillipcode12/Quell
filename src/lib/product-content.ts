@@ -296,7 +296,12 @@ export const TESTIMONIALS = [
   {
     name: 'Marcus',
     quote: 'Great eye drops. I love the Quell drops!',
-    avatar: { skin: 'deep', hair: 'black', style: 'buzz' },
+    avatar: {
+      skin: 'deep',
+      hair: 'black',
+      style: 'buzz',
+      image: '/images/testimonials/marcus.png',
+    },
   },
 ] as const
 

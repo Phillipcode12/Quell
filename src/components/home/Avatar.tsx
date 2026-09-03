@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 /**
  * A flat, cartoon avatar for a testimonial.
  *
@@ -43,15 +45,50 @@ export type AvatarSpec = {
   style: HairStyle
   /** Drawn as a soft jaw shadow, not a full beard. */
   beard?: boolean
+  /**
+   * A supplied illustration under `public/`, which wins over the drawn face.
+   *
+   * Phillip is providing these one at a time, so both paths stay live: a
+   * person with artwork gets it, a person without keeps the drawn fallback,
+   * and the section never has a hole in it while the set is completed.
+   *
+   * **Illustrations only — never photographs.** See the note at the top of
+   * this file: the quotes carry substituted names, so a photograph would
+   * assert something untrue about a real person. A drawing does not.
+   */
+  image?: string
 }
+
+/** Rendered size in CSS pixels. The source art is far larger, so this is what
+ *  Next uses to decide what to actually serve. */
+const RENDER_PX = 44
 
 export function Avatar({
   spec,
+  name,
   className = '',
 }: {
   spec: AvatarSpec
+  /** Only used to caption the image for assistive tech when art is supplied. */
+  name?: string
   className?: string
 }) {
+  if (spec.image) {
+    return (
+      <Image
+        src={spec.image}
+        alt=""
+        width={RENDER_PX * 2}
+        height={RENDER_PX * 2}
+        className={className}
+        // Decorative: the name is right beside it in text, so announcing the
+        // avatar too would say the same thing twice.
+        aria-hidden="true"
+        title={name}
+      />
+    )
+  }
+
   const skin = SKIN[spec.skin]
   const hair = HAIR[spec.hair]
 

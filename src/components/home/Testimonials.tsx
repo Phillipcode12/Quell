@@ -60,6 +60,7 @@ export function Testimonials() {
               <div className="mt-5 flex items-center gap-3">
                 <Avatar
                   spec={t.avatar as AvatarSpec}
+                  name={t.name}
                   className="h-11 w-11 shrink-0 rounded-full ring-1 ring-line"
                 />
                 <p className="text-sm font-medium text-white">{t.name}</p>
