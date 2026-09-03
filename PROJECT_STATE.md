@@ -13,14 +13,7 @@ Google, so mistakes are public.
 
 **Open, in the order they matter:**
 
-1. **Confirm the gateway's AVS, CVV and velocity fraud filters are on.**
-   Merchant Interface → Account → Fraud Detection Suite. Two sections of this
-   file once disagreed about this and neither could be trusted, so it is a
-   check rather than a claim. Guest checkout has no account barrier and the
-   app's own rate limiter is still in-process, so those filters are the real
-   defence against card testing on a live store (§14 item 7). **Still
-   unconfirmed** — the highest-risk unknown on the shop.
-2. **The testimonials.** Phillip has patient comments saved on his computer.
+1. **The testimonials.** Phillip has patient comments saved on his computer.
    They become the social-proof section — the biggest remaining gap on the site
    (§14), and the site has had search traffic since 2026-09-01, so strangers
    are arriving now with no reason to trust an unknown brand. **They need a
@@ -30,9 +23,20 @@ Google, so mistakes are public.
    withheld redness claim (§9). Note this now also governs structured data —
    marking a review up as JSON-LD publishes the claim to every search engine at
    once (§24).
-3. **SEO items 2 and 3** (§24) — the homepage title carries no search terms,
+2. **SEO items 2 and 3** (§24) — the homepage title carries no search terms,
    and Bing Webmaster Tools is not set up. Both parked by Phillip; the title is
    brand voice and his call.
+
+### Settled 2026-09-02 — the fraud filters are on
+
+**Phillip confirmed it against the Merchant Interface**: the Advanced Fraud
+Detection Suite filters, daily velocity among them, were configured earlier and
+are in place. So the line telling anyone to *turn them on* was the stale one,
+not the line saying they were on.
+
+Recorded as confirmed by the person with gateway access, which is the only place
+this can be established — it is not checkable from the codebase or from outside,
+and no amount of reading this file would have settled it.
 
 ### Half closed 2026-09-02 — the order is cancelled, the money is not back
 
@@ -683,8 +687,9 @@ breaks checkout. It needs its own pass with the payment flow actually tested.
 > quiet day, with the integration's behaviour checked first.
 
 **Still true from §10:** the rate limiter is in-process rather than Redis-backed.
-Whether the gateway's AVS, CVV and velocity filters are on is **unconfirmed** —
-see §14 item 7. *(Corrected 2026-09-02: this paragraph used to end "Sentry has no
+The gateway's AVS, CVV and velocity filters **are on** — confirmed by Phillip
+against the Merchant Interface on 2026-09-02 — which is the real mitigation for
+the in-process limiter. *(Corrected 2026-09-02: this paragraph used to end "Sentry has no
 project, so a production crash is still invisible", which stopped being true the
 same day it was written — Sentry went live 2026-09-01 and was proven capturing a
 real server error, §10.)*
@@ -1072,12 +1077,11 @@ diverging from it.
    (§18). This unblocked the merchant application and Meta domain verification.
 7. **Create the Upstash database.** ~~And the Sentry project~~ — **Sentry is
    done 2026-09-01 and verified capturing a real server error (§10).** Upstash
-   remains: written, dormant, needs an account and a credential. **How urgent
-   depends on the fraud filters, and their state is unconfirmed** — this line
-   used to say they were on while item 9 below said they still needed turning
-   on, and nothing recorded here establishes which was true. They are the real
-   defence against card testing, so check before deciding Upstash can wait:
-   Merchant Interface → Account → Fraud Detection Suite (AVS, CVV, velocity).
+   remains: written, dormant, needs an account and a credential. **Less urgent
+   now that the gateway's AVS, CVV and velocity filters are confirmed on**
+   (Phillip, 2026-09-02) — those are the real defence against card testing.
+   Worth doing anyway: the in-process limiter multiplies the limit by the
+   instance count, so checkout and order lookup are far weaker than they read.
 8. ~~**Automated tests.**~~ Started 2026-08-20, 215 tests as of 2026-08-31
    (§16). The webhook route — the money path — was covered on 2026-08-31 and
    the tests were checked by mutation; writing them found and fixed a real
@@ -1088,9 +1092,10 @@ diverging from it.
    Production credentials in Vercel, `AUTHORIZENET_ENVIRONMENT=production`,
    webhook registered against `quelldrop.com`, and a real $1.00 card payment
    proven end to end including both emails (§8). **What remains:** refund that
-   charge once it settles, **confirm the AVS/CVV/velocity filters are on**
-   (unconfirmed — see item 7), fix the statement descriptor (§9), and cancel
-   the test orders in `/admin/orders`.
+   charge once it settles (**still outstanding** — the order is cancelled but
+   the money has not moved, see Start here) and fix the statement descriptor
+   (§9). The AVS/CVV/velocity filters are confirmed on, and the test orders in
+   `/admin/orders` are all cancelled.
 
 ### Storefront review — the agreed list, 2026-08-31
 
