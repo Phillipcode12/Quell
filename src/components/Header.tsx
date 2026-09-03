@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useCart } from '@/components/CartProvider'
 import { ShoppingCart } from '@/components/icons'
 import { QuellLogoInline } from '@/components/Logo'
@@ -26,6 +27,25 @@ export function Header({
   isAdmin?: boolean
 }) {
   const { count } = useCart()
+  const pathname = usePathname()
+
+  /**
+   * The primary button changes job once there is something in the cart.
+   *
+   * Empty, "Buy now" sends people down to the buy panel, which is where the
+   * decision gets made. With something in the cart that is the wrong
+   * destination — they have already decided, and the useful action is
+   * finishing.
+   *
+   * **The label changes with it, deliberately.** The cart icon beside this
+   * already goes to /cart, so a second button with the same destination and a
+   * different promise would read as a bug. "Checkout" says what this one is
+   * for: the icon is "show me my cart", this is "take my money".
+   *
+   * Hidden on /cart itself, where it would point at the page you are on.
+   */
+  const hasItems = count > 0
+  const onCart = pathname === '/cart'
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-background/85 backdrop-blur">
@@ -96,12 +116,20 @@ export function Header({
             </Link>
           )}
 
-          <Link
-            href="/#buy"
-            className="whitespace-nowrap rounded-md bg-brand px-3 py-2 font-semibold text-black transition hover:bg-brand-light sm:px-4"
-          >
-            Buy<span className="hidden sm:inline"> now</span>
-          </Link>
+          {!onCart && (
+            <Link
+              href={hasItems ? '/cart' : '/#buy'}
+              className="whitespace-nowrap rounded-md bg-brand px-3 py-2 font-semibold text-black transition hover:bg-brand-light sm:px-4"
+            >
+              {hasItems ? (
+                'Checkout'
+              ) : (
+                <>
+                  Buy<span className="hidden sm:inline"> now</span>
+                </>
+              )}
+            </Link>
+          )}
         </div>
       </div>
     </header>

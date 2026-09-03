@@ -98,14 +98,20 @@ export function HeroBuy({
       </div>
 
       {/* Driven by the cart rather than by the click, so it stays put once
-          something is in there — unlike the button's transient tick. */}
+          something is in there — unlike the button's transient tick.
+
+          Sized as a real button rather than the text link it used to be. Once
+          there is something in the cart this is the action that finishes the
+          sale, and it was previously the smallest thing in the hero. Outlined
+          rather than solid so it does not fight Add to cart, which still has a
+          job to do — a second bottle is the order this shop most wants. */}
       {count > 0 && (
         <Link
           href="/cart"
-          className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-brand-light hover:text-white hover:underline"
+          className="mt-4 inline-flex items-center gap-2 rounded-lg border-2 border-brand bg-brand/10 px-7 py-4 text-base font-semibold text-white transition hover:bg-brand/20 hover:text-white"
         >
           Go to cart ({count} {count === 1 ? 'item' : 'items'})
-          <ArrowRight className="h-4 w-4" />
+          <ArrowRight className="h-5 w-5" />
         </Link>
       )}
 
