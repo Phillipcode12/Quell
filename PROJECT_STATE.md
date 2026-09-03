@@ -409,11 +409,33 @@ database flag, so nothing in the app can escalate an account. Non-admins get
 **To add an admin:** the person registers a normal account, their email is added
 to `ADMIN_EMAILS`, and the app is restarted (locally) or redeployed (Vercel —
 env changes are baked into a deployment and do not reach running functions).
+**The order does not matter**: the allowlist can name someone who has not
+registered yet, and they become an admin the moment they sign up with that
+address. There is no invitation and nothing to accept.
 
-Current admin: `moorerevenue@outlook.com` (Phillip Moore).
+**Admins, as of 2026-09-02:**
 
-Other accounts in the database are throwaway test signups:
-`kokkpokpopo@gmail.com`, `ewrgwgr@gmail.com`, `sfgnsfbgnsf@yahoo.com`.
+| Email | Who | Account? |
+|---|---|---|
+| `moorerevenue@outlook.com` | Phillip Moore | yes |
+| `docjmrmd@gmail.com` | added 2026-09-02 | **not yet — must register** |
+| `ryan.peterson@meibum.com` | Ryan Peterson | **not yet — must register** |
+
+The two new ones must register at **https://quelldrop.com/register** using
+**exactly** those addresses. The match is case-insensitive but otherwise exact:
+a Gmail dot-variant or a different domain is a different person to this check.
+Until they register they simply have no account, and `/admin` 404s for them as
+it does for anyone.
+
+> **`ADMIN_EMAILS` is now stored as Config, not Secret** (changed 2026-09-02).
+> It was Sensitive, which made it unreadable — `vercel env pull` returned
+> `[SENSITIVE]`, so there was no way to confirm who held admin before
+> overwriting it, and overwriting blind risked removing Phillip's own access.
+> An allowlist of work email addresses is not a credential. This is exactly the
+> case §12 argues for, applied.
+
+Other accounts in the production database are throwaway test signups from the
+local database only; production had exactly one account before this change.
 
 ---
 
@@ -1253,6 +1275,69 @@ Two things here are load-bearing and are easy to break by tidying:
 > a percentage of sales through quelldrop.com, against his expectation that most
 > volume comes through Amazon. Until 2026-09-02 nobody could see what the
 > website's traffic actually was. Now they can.
+
+---
+
+## 24. SEO — reviewed 2026-09-02, nothing done yet
+
+**Phillip asked to park these and review later.** Recorded so the review starts
+from evidence rather than from scratch.
+
+**Current visibility: none.** Searches for the product name, the brand and
+`site:quelldrop.com` return nothing from the domain. What ranks for the product
+is **Dry Eye Rescue's listing**, not the shop. That is expected rather than
+alarming — indexing was only allowed on 2026-09-01 and a new domain takes weeks
+to months — but it is the baseline to measure against.
+
+### The three items, in the order they are worth doing
+
+1. **No structured data anywhere.** Every page returns zero
+   `application/ld+json` blocks. **Product + Offer schema** is what puts price,
+   availability and currency into a Google result instead of a plain blue link;
+   **Organization schema** ties the site to the seller. Every field it needs —
+   price, size, SKU, availability, brand — already exists in
+   `product-content.ts`, so this is assembling data we hold, not inventing any.
+   Highest value of the three and needs no decision from anyone.
+
+2. **The homepage title carries no search terms.** It is
+   `Quell — Give your dry eye the bird!`, and nobody searches that phrase. The
+   title tag is the strongest on-page signal there is. Something like
+   `Quell — Preservative-Free Lubricating Eye Drops` would compete for the
+   words people actually type, with the slogan kept in the H1 where it does its
+   job. **This is a brand-voice decision and is Phillip's to make** — it was
+   deliberately not changed. The meta description is already well written and
+   needs nothing.
+
+3. **Bing Webmaster Tools is not set up.** It imports directly from Google
+   Search Console, which is already verified, so it is a few clicks rather than
+   a fresh domain verification. That is also how to request the recrawl that
+   clears the stale robots.txt judgement described below.
+
+Smaller: the homepage heading order skips a level (`h1` → `h3` → `h2`).
+
+**Everything else checks out** and was verified: viewport, `lang`, canonical
+tags, OpenGraph and Twitter cards with a working image, alt text on every image,
+real 404s, HTTPS, clean URLs, and a sitemap that lists all five public pages.
+
+### Why Bing says the site blocks it
+
+Bing shows *"We would like to show you a description here but the site won't
+allow us."* **robots.txt is correct now** — this is a cached judgement from
+before launch. `robots.ts` fails closed, so until `ALLOW_INDEXING` was set on
+2026-09-01 the file served `Disallow: /`, which is exactly the state that
+produces that message. Bing crawled during those eleven days and has not been
+back. It corrects itself; Bing Webmaster Tools makes it faster.
+
+### Two things found while looking, neither of them SEO
+
+- **A retailer is publishing the claim the site withholds.** Search results
+  describe Quell as relieving "dryness, irritation, **redness** and itching".
+  Redness is held off Quell's own site pending regulatory review (§9). A third
+  party saying it does not put it on our site, but it is worth knowing given
+  the FDA finding on the sister properties.
+- **"Aurora Pharmaceuticals" collides with a veterinary company** of nearly the
+  same name in Minnesota, which has an FDA warning letter. Different company,
+  but it is what a customer finds when they check who makes Quell.
 
 ---
 
