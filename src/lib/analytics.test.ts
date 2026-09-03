@@ -175,3 +175,38 @@ describe('formatMonth', () => {
     expect(formatMonth('2026-12-01')).toBe('December 2026')
   })
 })
+
+describe('bottles are not orders', () => {
+  const visits = (month: string, v: number) => ({
+    month,
+    visits: v,
+    search: 0,
+    link: 0,
+    direct: v,
+  })
+
+  it('counts units separately from order count', () => {
+    // Three orders that between them took five bottles off the shelf. Revenue
+    // and order count both understate what has to be replaced, which is the
+    // whole reason units are tracked at all.
+    const [row] = joinMonthly(
+      [visits('2026-09-01', 100)],
+      [{ month: '2026-09-01', orders: 3, revenueCents: 17995 }],
+      [{ month: '2026-09-01', units: 5 }],
+    )
+    expect(row.orders).toBe(3)
+    expect(row.units).toBe(5)
+  })
+
+  it('leaves units at zero for a month with none', () => {
+    const [row] = joinMonthly([visits('2026-09-01', 100)], [], [])
+    expect(row.units).toBe(0)
+  })
+
+  it('ignores unit rows for months that have no visits and no sales', () => {
+    // Defensive: a units row without a matching month would otherwise create a
+    // half-populated row with no revenue beside it.
+    const rows = joinMonthly([], [], [{ month: '2026-01-01', units: 9 }])
+    expect(rows).toHaveLength(0)
+  })
+})

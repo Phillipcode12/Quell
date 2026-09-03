@@ -397,6 +397,8 @@ export async function monthlySales(): Promise<MonthSales[]> {
 
 export type MonthRow = MonthCount & {
   orders: number
+  /** Bottles, not orders — an order for two counts twice here and once above. */
+  units: number
   revenueCents: number
   /** Orders per hundred visits, or null when there were no visits to convert. */
   conversionPct: number | null
@@ -413,11 +415,12 @@ export type MonthRow = MonthCount & {
 export function joinMonthly(
   visits: MonthCount[],
   sales: MonthSales[],
+  units: MonthUnits[] = [],
 ): MonthRow[] {
   const byMonth = new Map<string, MonthRow>()
 
   for (const v of visits) {
-    byMonth.set(v.month, { ...v, orders: 0, revenueCents: 0, conversionPct: null })
+    byMonth.set(v.month, { ...v, orders: 0, units: 0, revenueCents: 0, conversionPct: null })
   }
 
   for (const s of sales) {
@@ -436,10 +439,16 @@ export function joinMonthly(
         link: 0,
         direct: 0,
         orders: s.orders,
+        units: 0,
         revenueCents: s.revenueCents,
         conversionPct: null,
       })
     }
+  }
+
+  for (const u of units) {
+    const existing = byMonth.get(u.month)
+    if (existing) existing.units = u.units
   }
 
   for (const row of byMonth.values()) {
@@ -447,4 +456,60 @@ export function joinMonthly(
   }
 
   return [...byMonth.values()].sort((a, b) => (a.month < b.month ? 1 : -1))
+}
+
+// --- units sold -------------------------------------------------------------
+
+/**
+ * Bottles off the shelf, which is not the same number as orders.
+ *
+ * An order for two is one order and two units, so revenue and order count both
+ * understate what the stock room has to replace. This is the figure that says
+ * when to reorder.
+ *
+ * Counted from `OrderItem.quantity` on orders that actually sold, using the
+ * same `SOLD` rule as everything else here.
+ */
+export type DayUnits = { day: string; units: number }
+
+export async function dailyUnits(days: number, now = new Date()): Promise<DayUnits[]> {
+  const start = new Date(now)
+  start.setUTCHours(0, 0, 0, 0)
+  start.setUTCDate(start.getUTCDate() - (days - 1))
+
+  const rows = await prisma.orderItem.findMany({
+    where: { order: { status: { in: SOLD }, createdAt: { gte: start } } },
+    select: { quantity: true, order: { select: { createdAt: true } } },
+  })
+
+  const buckets = new Map<string, number>()
+  for (let i = 0; i < days; i++) {
+    const d = new Date(start)
+    d.setUTCDate(start.getUTCDate() + i)
+    buckets.set(d.toISOString().slice(0, 10), 0)
+  }
+
+  for (const row of rows) {
+    const key = row.order.createdAt.toISOString().slice(0, 10)
+    const current = buckets.get(key)
+    if (current === undefined) continue
+    buckets.set(key, current + row.quantity)
+  }
+
+  return [...buckets.entries()].map(([day, units]) => ({ day, units }))
+}
+
+export type MonthUnits = { month: string; units: number }
+
+export async function monthlyUnits(): Promise<MonthUnits[]> {
+  const rows = await prisma.$queryRaw<{ month: Date; units: number }[]>`
+    SELECT date_trunc('month', o."createdAt") AS month,
+           COALESCE(SUM(i."quantity"), 0)::int AS units
+    FROM "OrderItem" i
+    JOIN "Order" o ON o."id" = i."orderId"
+    WHERE o."status" IN ('paid', 'shipped')
+    GROUP BY 1
+    ORDER BY 1 DESC
+  `
+  return rows.map((r) => ({ month: r.month.toISOString().slice(0, 10), units: r.units }))
 }

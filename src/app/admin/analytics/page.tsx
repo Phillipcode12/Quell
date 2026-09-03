@@ -5,11 +5,13 @@ import { getAdminUser } from '@/lib/admin'
 import { AdminTabs } from '@/components/admin/AdminTabs'
 import {
   dailySales,
+  dailyUnits,
   dailyVisits,
   formatMonth,
   joinMonthly,
   liveVisitors,
   monthlySales,
+  monthlyUnits,
   monthlyVisits,
   salesSince,
   sourceBreakdown,
@@ -62,30 +64,44 @@ function dayTitle(
   return `${day.day}: ${visits}, ${orders}, ${formatUsd(sales.revenueCents)}`
 }
 
+type Bar = { day: string; value: number; title: string }
+
 /**
  * A bar per day.
  *
- * Plain divs rather than a charting library: it is one series, the page is
- * already a server component, and a dependency to draw fourteen rectangles
- * would ship more JavaScript than the whole admin section.
+ * Plain divs rather than a charting library: one series, the page is already a
+ * server component, and a dependency to draw fourteen rectangles would ship
+ * more JavaScript than the whole admin section.
+ *
+ * Generalised over the series rather than written twice. The height trick
+ * below is the kind of thing that gets fixed in one copy and left broken in
+ * the other, and it already went wrong once.
  */
-function DailyChart({
-  data,
-  orders,
+function DayBars({
+  title,
+  bars,
+  tone,
+  empty,
 }: {
-  data: { day: string; visits: number }[]
-  orders: Map<string, { orders: number; revenueCents: number }>
+  title: string
+  bars: Bar[]
+  tone: string
+  empty?: string
 }) {
-  const peak = Math.max(1, ...data.map((d) => d.visits))
+  const peak = Math.max(1, ...bars.map((b) => b.value))
+  const allZero = bars.every((b) => b.value === 0)
 
   return (
-    <div className="mt-8 rounded-xl border border-line bg-surface-2 p-5">
-      <h2 className="text-sm font-medium text-muted">Visits per day, last 14 days</h2>
+    <div className="mt-4 rounded-xl border border-line bg-surface-2 p-5">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <h2 className="text-sm font-medium text-muted">{title}</h2>
+        {allZero && empty && <p className="text-xs text-muted">{empty}</p>}
+      </div>
       <div className="mt-5 flex gap-1.5">
-        {data.map((day) => {
-          const height = day.visits === 0 ? 2 : Math.max(4, (day.visits / peak) * 100)
+        {bars.map((bar) => {
+          const height = bar.value === 0 ? 2 : Math.max(4, (bar.value / peak) * 100)
           return (
-            <div key={day.day} className="flex flex-1 flex-col items-center gap-2">
+            <div key={bar.day} className="flex flex-1 flex-col items-center gap-2">
               {/*
                 The fixed height lives on this wrapper, not on the row. A
                 percentage height only resolves against a parent with a
@@ -95,13 +111,13 @@ function DailyChart({
               */}
               <div className="flex h-40 w-full items-end">
                 <div
-                  className={`w-full rounded-sm ${day.visits === 0 ? 'bg-line' : 'bg-brand'}`}
+                  className={`w-full rounded-sm ${bar.value === 0 ? 'bg-line' : tone}`}
                   style={{ height: `${height}%` }}
-                  title={dayTitle(day, orders.get(day.day))}
+                  title={bar.title}
                 />
               </div>
               <span className="text-[10px] tabular-nums text-muted">
-                {day.day.slice(8)}
+                {bar.day.slice(8)}
               </span>
             </div>
           )
@@ -129,6 +145,7 @@ function MonthlyHistory({ data }: { data: MonthRow[] }) {
 
   const totalVisits = data.reduce((sum, m) => sum + m.visits, 0)
   const totalOrders = data.reduce((sum, m) => sum + m.orders, 0)
+  const totalUnits = data.reduce((sum, m) => sum + m.units, 0)
   const totalRevenue = data.reduce((sum, m) => sum + m.revenueCents, 0)
   const peak = Math.max(1, ...data.map((m) => m.visits))
 
@@ -141,18 +158,21 @@ function MonthlyHistory({ data }: { data: MonthRow[] }) {
           visits ·{' '}
           <span className="font-medium tabular-nums text-white">{totalOrders}</span>{' '}
           {totalOrders === 1 ? 'order' : 'orders'} ·{' '}
+          <span className="font-medium tabular-nums text-white">{totalUnits}</span>{' '}
+          {totalUnits === 1 ? 'bottle' : 'bottles'} ·{' '}
           <span className="font-medium tabular-nums text-white">
             {formatUsd(totalRevenue)}
           </span>
         </p>
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[46rem] text-left text-sm">
+        <table className="w-full min-w-[52rem] text-left text-sm">
           <thead className="border-b border-line bg-surface-2 text-muted">
             <tr>
               <th className="px-4 py-3 font-medium">Month</th>
               <th className="px-4 py-3 text-right font-medium">Visits</th>
               <th className="px-4 py-3 text-right font-medium">Orders</th>
+              <th className="px-4 py-3 text-right font-medium">Bottles</th>
               <th className="px-4 py-3 text-right font-medium">Revenue</th>
               <th className="px-4 py-3 text-right font-medium">Per order</th>
               <th className="px-4 py-3 text-right font-medium">Conv.</th>
@@ -179,6 +199,11 @@ function MonthlyHistory({ data }: { data: MonthRow[] }) {
                 </td>
                 <td className="px-4 py-3 text-right font-medium tabular-nums">
                   {m.orders}
+                </td>
+                <td className="px-4 py-3 text-right tabular-nums text-muted">
+                  {/* Bottles, not orders. An order for two shows 1 and 2, and
+                      the second number is the one the stock room replaces. */}
+                  {m.units > 0 ? m.units : '—'}
                 </td>
                 <td className="px-4 py-3 text-right font-medium tabular-nums">
                   {m.revenueCents > 0 ? formatUsd(m.revenueCents) : '—'}
@@ -228,6 +253,8 @@ export default async function AdminAnalyticsPage() {
     weekSales,
     monthAgoSales,
     dailyOrders,
+    dailyUnitsSold,
+    monthUnits,
   ] = await Promise.all([
     liveVisitors(now),
     visitsSince(startOfUtcDay(now)),
@@ -242,9 +269,11 @@ export default async function AdminAnalyticsPage() {
     salesSince(daysAgo(now, 7)),
     salesSince(monthAgo),
     dailySales(14, now),
+    dailyUnits(14, now),
+    monthlyUnits(),
   ])
 
-  const months = joinMonthly(monthVisits, monthSales)
+  const months = joinMonthly(monthVisits, monthSales, monthUnits)
   const ordersByDay = new Map(dailyOrders.map((d) => [d.day, d]))
 
   const liveMinutes = Math.round(LIVE_WINDOW_MS / 60000)
@@ -318,7 +347,26 @@ export default async function AdminAnalyticsPage() {
         </p>
       ) : (
         <>
-          <DailyChart data={daily} orders={ordersByDay} />
+          <DayBars
+            title="Visits per day, last 14 days"
+            tone="bg-brand"
+            bars={daily.map((d) => ({
+              day: d.day,
+              value: d.visits,
+              title: dayTitle(d, ordersByDay.get(d.day)),
+            }))}
+          />
+
+          <DayBars
+            title="Bottles sold per day, last 14 days"
+            tone="bg-brand-light"
+            empty="Nothing sold in this window"
+            bars={dailyUnitsSold.map((d) => ({
+              day: d.day,
+              value: d.units,
+              title: `${d.day}: ${d.units} ${d.units === 1 ? 'bottle' : 'bottles'}`,
+            }))}
+          />
 
           <div className="mt-8 rounded-xl border border-line bg-surface-2 p-5">
             <h2 className="text-sm font-medium text-muted">
