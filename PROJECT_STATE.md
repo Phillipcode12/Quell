@@ -43,12 +43,12 @@ Working tree clean, `main` in sync, nothing left running.
 **Shipped:**
 
 - **First-party visit counting** (§23). `/admin/analytics`, the Traffic tab:
-  live count; visits, orders and revenue for today / 7 / 30 days; a 14-day
-  chart; how people arrived — search, link or direct — with the referring host;
-  and a **month-by-month table, all time** with conversion and average order
-  value. **It is a counter and stores no page paths**, and **nothing is ever
-  deleted**, both by decision. Migration applied to Neon before the push, in
-  that order.
+  live count; visits, orders and revenue for today / 7 / 30 days; **two 14-day
+  charts**, visits and bottles sold; how people arrived — search, link or
+  direct — with the referring host; and a **month-by-month table, all time**
+  with bottles, conversion and average order value. **It is a counter and
+  stores no page paths**, and **nothing is ever deleted**, both by decision.
+  Migration applied to Neon before the push, in that order.
 - **Product, Organization and WebSite structured data** (§24). The site had
   none. No `aggregateRating` and no `review`, guarded by tests — see item 1
   above for why that matters when the testimonials land.
@@ -430,12 +430,13 @@ grouped case-insensitively.
 > the policy and adding consent first.
 
 **`/admin/analytics`** ("Traffic") — added 2026-09-02. Live count; visits,
-orders and revenue for today / 7 / 30 days; a 14-day chart; how people arrived
-(search / link / direct) and which sites sent them; and a **month-by-month
-table, all time** carrying visits, orders, revenue, average order value,
-conversion and the source split. **It is a counter: it does not record which
-pages anyone read.** Built first-party rather than installed; see §23 for why
-and for what it deliberately does not store.
+orders and revenue for today / 7 / 30 days; **two 14-day charts**, visits and
+bottles sold; how people arrived (search / link / direct) and which sites sent
+them; and a **month-by-month table, all time** carrying visits, orders,
+bottles, revenue, average order value, conversion and the source split. **It is
+a counter: it does not record which pages anyone read.** Built first-party
+rather than installed; see §23 for why and for what it deliberately does not
+store.
 
 Access is the `ADMIN_EMAILS` allowlist (comma separated) — in `.env` locally,
 in the Vercel dashboard for the deployed site. **Unset means nobody** — it fails
@@ -1354,6 +1355,33 @@ refuses, and a server component would then fail at render rather than at the
 query. If the table ever outgrows one grouped scan the answer is a rollup
 table, but that is a problem for hundreds of thousands of visits, not for this
 shop.
+
+### Bottles sold, which is not order count — 2026-09-02
+
+A second daily chart and a **Bottles** column in the monthly table, counted from
+`OrderItem.quantity` on orders matching the same `SOLD` rule.
+
+**An order for two is one order and two bottles**, so order count and revenue
+both understate what the stock room has to replace. That gap is the reason this
+exists, and it is why the two numbers sit next to each other rather than one
+standing in for the other.
+
+Both charts render through **one component**. The height fix inside it — a
+percentage height resolves only against a parent with a definite one, or every
+bar draws at zero pixels and looks exactly like no data — is the kind of thing
+that gets fixed in one copy and left broken in the other. It already went wrong
+once on 2026-09-02, which is why the component was generalised rather than
+duplicated.
+
+> **Known and deliberately not fixed: the page runs 15 parallel queries**, plus
+> two for auth. Three are the same visits count over different windows, three
+> the same for sales, three more overlapping daily scans; roughly five would do
+> with conditional aggregation. It is left alone on purpose — the page is
+> admin-only, hit occasionally by three people, every query is index-covered
+> and they run concurrently, and consolidating means hand-written CTEs that are
+> harder to read and easier to get subtly wrong than the small testable
+> functions there now. **Revisit if the page ever feels slow, or if any of it
+> is ever exposed on a customer path.** Not a defect today.
 
 > Relevant to the compensation discussion: the proposal to Ryan prices Quell at
 > a percentage of sales through quelldrop.com, against his expectation that most
