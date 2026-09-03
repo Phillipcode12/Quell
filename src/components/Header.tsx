@@ -11,6 +11,10 @@ type HeaderUser = { id: string; email: string; name: string } | null
 const navLinks = [
   { label: 'Why Quell', href: '/#science' },
   { label: 'How to use', href: '/#how-to-use' },
+  // Sits after "How to use" by choice, though the section itself is higher up
+  // the page — before the buy panel, where it does its work. Nav order is a
+  // menu, not a map of the scroll.
+  { label: 'Reviews', href: '/#reviews' },
   { label: 'Drug Facts', href: '/drug-facts' },
   { label: 'FAQ', href: '/#faq' },
 ]
