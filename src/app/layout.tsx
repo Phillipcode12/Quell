@@ -12,7 +12,24 @@ import { isAdminEmail } from '@/lib/admin'
 import { BRAND } from '@/lib/product-content'
 import { appUrl } from '@/lib/site'
 
-const title = `${BRAND.name} — ${BRAND.slogan}`
+/**
+ * The homepage title.
+ *
+ * It was `Quell — Give your dry eye the bird!`, which is the brand's voice and
+ * carries not one word anybody searches for. Nobody types the slogan; they type
+ * "preservative free eye drops". For a brand two days old with no recognition
+ * to trade on, a title made entirely of the brand and a joke competes for
+ * nothing.
+ *
+ * **The slogan has not gone anywhere** — it is still the h1 on the page, which
+ * is where the voice belongs. This is the string that has to win a search
+ * result against products people have heard of, so it says what the thing is.
+ *
+ * Brand first because branded searches are the ones this will win soonest, and
+ * quelldrop.com is the destination for them. 47 characters, inside what Google
+ * shows without truncating.
+ */
+const title = `${BRAND.name} — ${BRAND.productType}`
 const description = `${BRAND.trademark} ${BRAND.productType}. Patented, MD-developed formula that reinforces the tear film’s oil layer to help reduce moisture loss. ${BRAND.size}.`
 
 export const metadata: Metadata = {

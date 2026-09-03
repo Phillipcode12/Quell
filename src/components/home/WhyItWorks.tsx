@@ -15,10 +15,15 @@ export function WhyItWorks() {
       className="scroll-mt-32 lg:scroll-mt-24 border-b border-line bg-surface py-20 sm:py-24"
     >
       <div className="mx-auto max-w-6xl px-6">
+        {/* An h2, not the styled span it used to be.
+            This is the first section under the hero, and its three cards are
+            h3s — so with only a span above them the page jumped h1 straight to
+            h3, which is the one heading-order break on the homepage. It looks
+            identical; it just stops the outline lying about the structure. */}
         <div className="max-w-2xl">
-          <span className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">
+          <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">
             Why it works
-          </span>
+          </h2>
         </div>
 
         {/* No headline or intro above these — the three cards carry the whole

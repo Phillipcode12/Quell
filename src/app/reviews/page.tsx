@@ -5,7 +5,7 @@ import { BRAND, TESTIMONIALS, TESTIMONIALS_NOTE } from '@/lib/product-content'
 
 export const metadata: Metadata = {
   title: 'Reviews',
-  description: `What people say about ${BRAND.trademark} ${BRAND.productType}.`,
+  description: `Customer reviews of ${BRAND.trademark} ${BRAND.productType}. Real buyers on how the drops feel, how easy they are to use, and how they fit a daily routine.`,
 }
 
 /**

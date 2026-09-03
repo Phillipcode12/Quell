@@ -1,4 +1,9 @@
-import { BRAND, COMPANY } from '@/lib/product-content'
+import { BRAND, COMPANY, FAQS } from '@/lib/product-content'
+import {
+  FREE_SHIPPING_THRESHOLD_CENTS,
+  SHIPPABLE_COUNTRIES,
+  STANDARD_SHIPPING_CENTS,
+} from '@/lib/shipping'
 import { appUrl } from '@/lib/site'
 
 /**
@@ -131,6 +136,105 @@ export function productSchema(product: ProductForSchema | null): JsonLd | null {
         : 'https://schema.org/OutOfStock',
       itemCondition: 'https://schema.org/NewCondition',
       seller: { '@id': `${base}/#organization` },
+      shippingDetails: shippingDetails(),
+      hasMerchantReturnPolicy: returnPolicy(base),
     },
+  }
+}
+
+/**
+ * Shipping and returns, attached to the Offer.
+ *
+ * These are the fields Google wants for a merchant listing, and they are the
+ * reason a result can show "Free delivery over $59" rather than just a price.
+ *
+ * **Every value is read from the code that actually charges people** —
+ * `lib/shipping.ts` for the rates and threshold — so the markup cannot drift
+ * from the checkout. A shipping cost published to Google that disagrees with
+ * the one at the till is worse than publishing nothing.
+ */
+function shippingDetails(): JsonLd[] {
+  // SHIPPABLE_COUNTRIES is US-only. The markup says so rather than implying we
+  // ship anywhere someone can reach the site.
+  const destination = {
+    '@type': 'DefinedRegion',
+    addressCountry: SHIPPABLE_COUNTRIES[0],
+  }
+
+  return [
+    // Free above the threshold. eligibleTransactionVolume is how the "over $59"
+    // condition is expressed — without it this would read as free shipping on
+    // everything, which is a promise the checkout does not keep.
+    {
+      '@type': 'OfferShippingDetails',
+      shippingRate: { '@type': 'MonetaryAmount', value: '0', currency: 'USD' },
+      shippingDestination: destination,
+      eligibleTransactionVolume: {
+        '@type': 'PriceSpecification',
+        priceCurrency: 'USD',
+        minPrice: (FREE_SHIPPING_THRESHOLD_CENTS / 100).toFixed(2),
+      },
+    },
+    // The flat rate below it.
+    {
+      '@type': 'OfferShippingDetails',
+      shippingRate: {
+        '@type': 'MonetaryAmount',
+        value: (STANDARD_SHIPPING_CENTS / 100).toFixed(2),
+        currency: 'USD',
+      },
+      shippingDestination: destination,
+    },
+  ]
+}
+
+/**
+ * The returns policy, as far as it is actually written down.
+ *
+ * `/terms` says: unopened, original packaging, within 30 days of delivery,
+ * refund of the product price, original shipping not refunded.
+ *
+ * **What is deliberately absent is who pays return postage**, because the
+ * terms do not say. Google lists `returnFees` as a recommended field and will
+ * note it missing — that warning is the correct outcome. Guessing it would
+ * publish a commitment nobody at Aurora has made, to every search engine at
+ * once, and this is a drug company that has already been cited for website
+ * copy it could not support.
+ *
+ * `merchantReturnLink` is what carries the conditions. The headline "30 days"
+ * is true; "unopened, in original packaging" is the part a structured field
+ * cannot express, so the link to the authoritative text goes with it.
+ */
+function returnPolicy(base: string): JsonLd {
+  return {
+    '@type': 'MerchantReturnPolicy',
+    applicableCountry: SHIPPABLE_COUNTRIES[0],
+    returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+    merchantReturnDays: 30,
+    merchantReturnLink: `${base}/terms`,
+  }
+}
+
+/**
+ * The FAQ section, marked up.
+ *
+ * Reuses `FAQS` rather than restating anything: the answers on the page and
+ * the answers in the markup are the same strings, so they cannot diverge, and
+ * the regulatory review that cleared the page cleared the markup with it.
+ *
+ * No empty-list guard: FAQS is a const array, so TypeScript can prove it is
+ * never empty and rejected the check as unreachable. If it ever becomes
+ * dynamic, put one back.
+ */
+export function faqSchema(): JsonLd {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    '@id': `${appUrl()}/#faq`,
+    mainEntity: FAQS.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
   }
 }

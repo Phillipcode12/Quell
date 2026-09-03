@@ -11,7 +11,7 @@ import {
 
 export const metadata: Metadata = {
   title: 'About us',
-  description: `Who makes ${BRAND.trademark} and why the formula targets the tear film's oil layer.`,
+  description: `Who makes ${BRAND.trademark} and why the formula reinforces the tear film's oil layer rather than adding more water. Preservative-free, MD-developed, from Brentwood, Tennessee.`,
 }
 
 const values = [

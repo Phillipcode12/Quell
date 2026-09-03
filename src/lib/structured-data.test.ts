@@ -2,11 +2,17 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   organizationSchema,
   productSchema,
+  faqSchema,
   serializeJsonLd,
   websiteSchema,
   type ProductForSchema,
 } from '@/lib/structured-data'
-import { RELIEVES_WITHHELD } from '@/lib/product-content'
+import { FAQS, RELIEVES_WITHHELD } from '@/lib/product-content'
+import {
+  FREE_SHIPPING_THRESHOLD_CENTS,
+  SHIPPABLE_COUNTRIES,
+  STANDARD_SHIPPING_CENTS,
+} from '@/lib/shipping'
 
 /**
  * Structured data is published to every search engine at once and is read by
@@ -151,5 +157,109 @@ describe('serialisation', () => {
     const out = serializeJsonLd(productSchema(PRODUCT) as Record<string, unknown>)
     expect(() => JSON.parse(out)).not.toThrow()
     expect(JSON.parse(out)['@type']).toBe('Product')
+  })
+})
+
+describe('shipping and returns published to search engines', () => {
+  /**
+   * These fields are commitments. A shipping cost or return window in the
+   * markup that disagrees with the checkout or with /terms is a promise made
+   * to every search engine and kept by nobody.
+   */
+  const offer = () =>
+    (productSchema(PRODUCT) as { offers: Record<string, unknown> }).offers
+
+  it('quotes the same shipping the checkout charges', () => {
+    // Read from lib/shipping.ts rather than restated, so the two cannot drift.
+    const details = offer().shippingDetails as Record<string, unknown>[]
+    const rates = details.map(
+      (d) => (d.shippingRate as Record<string, unknown>).value,
+    )
+    expect(rates).toContain((STANDARD_SHIPPING_CENTS / 100).toFixed(2))
+    expect(rates).toContain('0')
+  })
+
+  it('attaches the threshold to the free option, not to shipping generally', () => {
+    // Without eligibleTransactionVolume this reads as free shipping on
+    // everything, which the checkout does not do.
+    const details = offer().shippingDetails as Record<string, unknown>[]
+    const free = details.find(
+      (d) => (d.shippingRate as Record<string, unknown>).value === '0',
+    )
+    const volume = free?.eligibleTransactionVolume as Record<string, unknown>
+    expect(volume, 'free shipping must carry its threshold').toBeDefined()
+    expect(volume.minPrice).toBe((FREE_SHIPPING_THRESHOLD_CENTS / 100).toFixed(2))
+  })
+
+  it('ships only where the shop actually ships', () => {
+    const details = offer().shippingDetails as Record<string, unknown>[]
+    for (const d of details) {
+      const dest = d.shippingDestination as Record<string, unknown>
+      expect(dest.addressCountry).toBe(SHIPPABLE_COUNTRIES[0])
+    }
+  })
+
+  it('states the return window and links to the conditions', () => {
+    const policy = offer().hasMerchantReturnPolicy as Record<string, unknown>
+    expect(policy.merchantReturnDays).toBe(30)
+    // "Unopened, in original packaging" cannot be expressed as a field, so the
+    // link to the authoritative text has to be there.
+    expect(policy.merchantReturnLink).toMatch(/\/terms$/)
+  })
+
+  it('does not claim who pays return postage', () => {
+    // /terms does not say. Guessing publishes a commitment nobody at Aurora
+    // has made. Google noting the field as missing is the correct outcome.
+    const policy = offer().hasMerchantReturnPolicy as Record<string, unknown>
+    expect(policy.returnFees).toBeUndefined()
+    expect(policy.returnShippingFeesAmount).toBeUndefined()
+  })
+})
+
+describe('the FAQ markup', () => {
+  it('is the same answers as the page, not a second copy', () => {
+    const schema = faqSchema() as { mainEntity: Record<string, unknown>[] }
+    expect(schema.mainEntity).toHaveLength(FAQS.length)
+    for (const [i, entry] of schema.mainEntity.entries()) {
+      expect(entry.name).toBe(FAQS[i].q)
+      expect((entry.acceptedAnswer as Record<string, unknown>).text).toBe(FAQS[i].a)
+    }
+  })
+
+  it('never markets redness relief, though it may warn about redness', () => {
+    /**
+     * A blanket ban on the word is wrong here, and this test was written that
+     * way first and failed correctly.
+     *
+     * Redness is withheld as a *claim* (RELIEVES_WITHHELD) but it is required
+     * as a *caution*: the Drug Facts panel says to stop use and ask a doctor if
+     * irritation or redness continues, and one FAQ answer reproduces that. A
+     * warning not to keep using the product is the opposite of advertising what
+     * it treats, and banning the word outright would have deleted label copy
+     * the panel requires.
+     *
+     * So the check is on the claim shape, not the vocabulary.
+     */
+    const json = JSON.stringify(faqSchema()).toLowerCase()
+
+    for (const claim of [
+      'relieves redness',
+      'reduces redness',
+      'relief from redness',
+      'for redness',
+      'treats redness',
+      'clears redness',
+      'redness relief',
+    ]) {
+      expect(json, `FAQ markup claims "${claim}"`).not.toContain(claim)
+    }
+
+    // And where it does appear, it is in the stop-use warning.
+    if (json.includes('redness')) {
+      expect(
+        json.includes('stop use') || json.includes('ask a doctor'),
+        'redness appears outside the stop-use warning',
+      ).toBe(true)
+    }
   })
 })
