@@ -1,9 +1,10 @@
 import type { MetadataRoute } from 'next'
+import { headers } from 'next/headers'
 import { appUrl } from '@/lib/site'
 
 /**
- * Two independent guards, both of which must pass before search engines are
- * let in. Either one alone blocks indexing.
+ * Three independent guards, all of which must pass before search engines are
+ * let in. Any one alone blocks indexing.
  *
  * This used to be a single check on the hostname, which coupled two unrelated
  * questions: *what is our address* and *are we ready to be found*. That
@@ -18,24 +19,43 @@ import { appUrl } from '@/lib/site'
  * Separating them fixes both: the URL can be correct now, and indexing stays
  * off until someone deliberately turns it on.
  *
- *   ALLOW_INDEXING   unset or anything but "true" -> Disallow. Fails closed,
- *                    so a missing variable can never quietly publish the site.
- *   isStagingHost    belt and braces. A *.vercel.app or localhost origin is
- *                    never indexable regardless of the flag, so setting it in
- *                    a preview environment cannot leak a staging build into
- *                    search results.
- *
- * To go live: set ALLOW_INDEXING=true in the Vercel dashboard and redeploy.
- * Do it when the store can actually sell — not before.
+ *   ALLOW_INDEXING    unset or anything but "true" -> Disallow. Fails closed,
+ *                     so a missing variable can never quietly publish the site.
+ *   configured host   NEXT_PUBLIC_APP_URL pointing at a staging origin is
+ *                     never indexable, whatever the flag says.
+ *   serving host      the Host header of the actual request — see below.
  */
-function isStagingHost(url: string) {
+
+/**
+ * The serving-host check, added 2026-09-02 after finding it missing.
+ *
+ * The configured-host check alone did not do what its comment claimed. It
+ * tests NEXT_PUBLIC_APP_URL, which in production is `quelldrop.com` — so the
+ * check passed on **every** host the deployment answers to, and
+ * `quell-six.vercel.app` was serving `Allow: /` for the identical store.
+ * Verified against the live site before the fix, not theorised.
+ *
+ * That fallback host is deliberately not redirected (§0): it stays reachable
+ * so the shop survives a DNS mistake. Reachable by a person and absent from
+ * search results are different things, and only this check delivers the second.
+ *
+ * Reading a header makes this route render per request rather than being
+ * cached, which is the documented trade for using a request-time API here. A
+ * robots.txt is fetched by crawlers a handful of times a day, so the cost is
+ * nil next to serving the wrong file on a host nobody is watching.
+ */
+function isStagingHostname(hostname: string): boolean {
+  if (!hostname) return true // No Host header is not a request we can vouch for.
+  return (
+    hostname.endsWith('.vercel.app') ||
+    hostname === 'localhost' ||
+    hostname.endsWith('.local')
+  )
+}
+
+function isStagingUrl(url: string): boolean {
   try {
-    const { hostname } = new URL(url)
-    return (
-      hostname.endsWith('.vercel.app') ||
-      hostname === 'localhost' ||
-      hostname.endsWith('.local')
-    )
+    return isStagingHostname(new URL(url).hostname)
   } catch {
     // An unparseable URL means something is misconfigured; assume staging and
     // stay out of the index rather than guessing our way into it.
@@ -43,14 +63,26 @@ function isStagingHost(url: string) {
   }
 }
 
-function indexingEnabled() {
+function indexingEnabled(): boolean {
   return process.env.ALLOW_INDEXING === 'true'
 }
 
-export default function robots(): MetadataRoute.Robots {
-  const base = appUrl()
+/** The host being served, lowercased and without any port. */
+async function servingHostname(): Promise<string> {
+  try {
+    const host = (await headers()).get('host') ?? ''
+    return host.split(':')[0].trim().toLowerCase()
+  } catch {
+    // Outside a request — fail closed, consistent with everything else here.
+    return ''
+  }
+}
 
-  if (!indexingEnabled() || isStagingHost(base)) {
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const base = appUrl()
+  const servedFrom = await servingHostname()
+
+  if (!indexingEnabled() || isStagingUrl(base) || isStagingHostname(servedFrom)) {
     return { rules: { userAgent: '*', disallow: '/' } }
   }
 
@@ -62,6 +94,8 @@ export default function robots(): MetadataRoute.Robots {
       // and have no business in search results.
       disallow: ['/api/', '/account', '/cart', '/checkout/', '/admin'],
     },
+    // Always the canonical host, never the host being served: a sitemap on the
+    // fallback domain must still point people at the real one.
     sitemap: `${base}/sitemap.xml`,
   }
 }
