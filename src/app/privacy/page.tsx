@@ -60,8 +60,8 @@ export default function PrivacyPage() {
             </li>
           </ul>
           <p>
-            We do not use analytics, advertising trackers, or third-party
-            cookies on this site.
+            We do not use advertising trackers or third-party cookies on this
+            site.
           </p>
 
           <h3>Payment information</h3>
