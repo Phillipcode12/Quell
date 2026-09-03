@@ -20,12 +20,40 @@ means a missing table would hit every page, not one route.
 2. **Confirm `QUELL DROP` on a real statement.** The descriptor is set (§9) but
    has never been seen on one, because the test charge that would have shown it
    was refunded. The next real order is the first chance.
-3. **Fulfilment is still unassigned, and Ryan may not know the shop is live.**
-   On 2026-09-03 he created an account and wrote *"I didn't realize that you
-   were so close to go-live"* — the store has taken real cards since
-   2026-09-01. Nobody has agreed who packs, who posts, or who receives returns
-   (§13). No real order has arrived yet, so nothing is stranded, but that is
-   timing rather than a system.
+3. **Fulfilment is still unassigned.** Nobody has agreed who packs, who posts,
+   or who receives returns (§13). No real order has arrived yet, so nothing is
+   stranded — but that is timing rather than a system, and the terms promise
+   30-day returns to an address nobody has nominated.
+
+   *(Ryan does know the shop is live: his "I didn't realize that you were so
+   close to go-live" on 2026-09-03 was his reply to Phillip telling him. An
+   earlier version of this file read that as him being unaware. He also created
+   an account that day and is an admin.)*
+
+### Account ownership — worth settling, not urgent
+
+Checked 2026-09-03. **The domain is already on the company's GoDaddy account**,
+which is the one asset that would be painful to recover, and it was bought there
+deliberately so there would never be a transfer to do (§18).
+
+**Vercel is already a Team** (`quell1`, "Quell") rather than a personal account,
+so giving the company access is an invitation rather than a migration.
+
+**The GitHub repository is personal** — `Phillipcode12/Quell`. Git being
+distributed makes this far less severe than it sounds: every clone is a full
+copy with history, so the company is not locked out of the code the way it would
+be locked out of a domain. It is still worth moving to an organisation in
+Aurora's name, for two reasons that are contractual rather than technical: the
+agreement Ryan wants has continuity clauses and this is the concrete instance of
+them, and Phillip's own review of the BlephEx sites flags Tradebuilder holding
+DECB's asset bucket as a continuity risk — holding Quell's repo personally is
+that same pattern with him in the vendor seat.
+
+**The one risk in moving it** is Vercel's GitHub connection: it must be
+re-authorised to the new organisation afterwards, and if that is left half done,
+pushes stop deploying silently. Verify with a real push rather than assuming.
+No credential needs re-entering — neither change touches the environment
+variables.
 
 **Waiting on other people:** the **written terms** from Zen (§21), and Ryan on
 **fulfilment** — who packs, who takes returns (§13).
