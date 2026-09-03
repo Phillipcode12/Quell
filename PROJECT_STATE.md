@@ -87,9 +87,12 @@ The privacy policy question is settled for now: the word "analytics" came out of
 the no-tracking sentence, nothing on the page is false, and the one optional
 sentence about the collected-automatically list is still unwritten. See §23.
 
-Also outstanding, waiting on other people: Zen on the **statement descriptor**
-(currently `AURORA PHARMACE`, §9) and the **written terms** (§21), and Ryan on
-**fulfilment** — who packs, who takes returns (§13).
+**Waiting on other people:** the **statement descriptor** is moving — Zen has
+sent Dr. Rynerson an Account Change Form to sign, and there is a **separate**
+call Phillip must make to Authorize.net on 877-447-3938 (§9, and read the trap
+recorded there before assuming the descriptor is fixed). Still outstanding: the
+**written terms** from Zen (§21), and Ryan on **fulfilment** — who packs, who
+takes returns (§13).
 
 ---
 
@@ -585,7 +588,7 @@ should be a small real purchase you make and then refund.
 | Domain | **Done 2026-08-20 — https://quelldrop.com is live and canonical** (§18). The other three redirect to it. `NEXT_PUBLIC_APP_URL` is set to `https://quelldrop.com` in Vercel production, so canonical tags, OpenGraph URLs and the sitemap are all correct; indexing is held off separately by `ALLOW_INDEXING`, which is what `robots.txt` reflects. *(Corrected 2026-08-28 — this row previously said the variable still pointed at the vercel.app host, which was no longer true. Verified against `vercel env ls production` and the live canonical tag.)* |
 | Customer email address | **Settled and working, 2026-08-31 (§20).** Quell has no mailbox of its own yet, so Phillip's is used for everything inbound: `FULFILMENT_EMAILS` and `EMAIL_REPLY_TO` are both `Phillip.moore@meibum.com`, in `.env` and in Vercel production. **The sender is unchanged and must stay `orders@quelldrop.com`** — see the From/Reply-To split below, which is what keeps meibum.com out of it. `EMAIL_FROM` was still `orders@example.com` in Vercel until 2026-08-31 and has been corrected. **The sender should now be `orders@quelldrop.com`, not `Quell@meibum.com`** — Quell owns its own domain, whose DNS zone has no MX and no TXT records at all, so Resend's DKIM and SPF records go onto a clean zone. **This removes the meibum.com SPF hazard entirely**: no edit to BlephEx's single existing SPF record, so no way to break their mail. A Quell-branded mailbox is still wanted eventually — receipts arriving from `orders@quelldrop.com` but answered by a person at meibum.com is a seam customers can see — but nothing is blocked on it. |
 | Fulfilment | **Decided 2026-08-20: packed and posted by hand from the office**, not pushed to XPSShipper. The app now supports that — a paid order emails a fulfilment list, and marking it shipped captures a carrier and tracking number that reach the customer (§20). What is still open is the human side: **who** packs and posts, and who receives returns, since the terms accept unopened returns for 30 days. |
-| Card statement descriptor | **Known and needs changing, 2026-09-01.** The first live charge showed on the bank statement as **`AURORA PHARMACE`** — the legal entity, truncated. **Customers buy "Quell" and will not recognise it**, and "I don't recognise this charge" is the commonest cause of chargebacks; on a high-risk account a chargeback ratio is what gets processing withdrawn. Ask Zen/START to change it to carry the brand — `QUELL EYE DROPS`, or better `QUELL QUELLDROP.COM`, since a URL in the descriptor lets people look it up. |
+| Card statement descriptor | **In progress, 2026-09-02 — two separate changes, one of them not yet started.** The first live charge showed as **`AURORA PHARMACE`** — the legal entity, truncated. **Customers buy "Quell" and will not recognise it**, and "I don't recognise this charge" is the commonest cause of chargebacks; on a high-risk account the chargeback ratio is what gets processing withdrawn. **(1)** Zen has deployed an **Account Change Form** to update the DBA on the merchant account, sent via Dropbox Sign to `docjmrmd@gmail.com` — **it needs James Rynerson's signature and is blocked until he signs**. **(2)** The business name must be changed **separately on the Authorize.net gateway**; Zen did not set the gateway up and will not do it, so Phillip must call Authorize.net on **877-447-3938**. Not yet done. **The trap:** "update the DBA" is not the same as "set the descriptor to what we want". Confirm with Zen, in writing, what the descriptor will actually read afterwards — `QUELL QUELLDROP.COM` is the goal, because a URL lets someone look the charge up. A DBA change that lands on `AURORA PHARMACEUTICA` fixes nothing. |
 | `$29.99` price | Matches the Dry Eye Rescue retail listing as of 2026-08-13. |
 | Brand teal | Site uses `#00A7B5`; print file converts to `#4AC1A8`. One token change if you want to match print. |
 | Legal pages | **Rewritten 2026-08-18/19 and reviewed.** No placeholders, no template banners, every claim checked against the code. Three false statements were fixed: the cart is `localStorage` and never reaches the server, there is no marketing email, and the site ran no analytics at all. **The last of those three stops being true when the visitor counting deploys (§23), and Phillip decided on 2026-09-02 not to change the policy wording.** Governing law is **Tennessee**; shipping is **US-only**, matching `SHIPPABLE_COUNTRIES`. The no-third-party-cookie and no-advertising-tracker clauses remain true and are worth protecting — **installing a Meta Pixel or any hosted analytics breaks them too.** |
@@ -2435,6 +2438,12 @@ last-four-digits requests are materially less sensitive than a full SSN.
 
 ### Still open
 
+- **The DBA change, 2026-09-02.** Zen deployed an Account Change Form via
+  Dropbox Sign to `docjmrmd@gmail.com` for **James Rynerson to sign** — nothing
+  moves until he does. Zen also stated they will **not** touch the Authorize.net
+  gateway, because they did not set it up: the business name there is Phillip's
+  call to make, on **877-447-3938**. Two systems, two changes, and only one of
+  them is Zen's. See §9 for what to confirm about the resulting descriptor.
 - Whether to proceed with Zen at all. **Nick's Stax quote was never
   delivered**, and this changes the comparison — worth chasing now that
   Authorize.net has classified Quell as high-risk.
