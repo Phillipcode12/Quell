@@ -6,6 +6,8 @@ import { HowToUse } from '@/components/home/HowToUse'
 import { Lifestyle } from '@/components/home/Lifestyle'
 import { Faq } from '@/components/home/Faq'
 import { FinalCta } from '@/components/home/FinalCta'
+import { JsonLd } from '@/components/JsonLd'
+import { productSchema } from '@/lib/structured-data'
 
 export default async function HomePage() {
   // Single-SKU storefront: the homepage is the product page. The full Drug
@@ -16,6 +18,9 @@ export default async function HomePage() {
 
   return (
     <>
+      {/* The price and stock a search result shows come from this. It reads
+          the same product row the page renders, so the two cannot disagree. */}
+      <JsonLd data={productSchema(product)} />
       <Hero product={product} />
       <WhyItWorks />
       <BuySection product={product} />

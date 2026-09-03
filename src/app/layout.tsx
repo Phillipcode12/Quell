@@ -5,6 +5,8 @@ import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import { SiteHelper } from '@/components/SiteHelper'
 import { VisitTracker } from '@/components/VisitTracker'
+import { JsonLd } from '@/components/JsonLd'
+import { organizationSchema, websiteSchema } from '@/lib/structured-data'
 import { getCurrentUser } from '@/lib/auth'
 import { isAdminEmail } from '@/lib/admin'
 import { BRAND } from '@/lib/product-content'
@@ -67,6 +69,10 @@ export default async function RootLayout({ children }: LayoutProps<'/'>) {
           <Footer />
           <SiteHelper />
           <VisitTracker />
+          {/* Site-wide structured data. The product schema is on the
+              homepage, which is the product page. */}
+          <JsonLd data={organizationSchema()} />
+          <JsonLd data={websiteSchema()} />
         </CartProvider>
       </body>
     </html>
