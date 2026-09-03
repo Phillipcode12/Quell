@@ -126,9 +126,11 @@ export default function ReviewsPage() {
           <h1 className="mt-5 text-4xl font-semibold leading-[1.1] tracking-tight text-white sm:text-5xl">
             In their words.
           </h1>
+          {/* The authenticity line sits here rather than in the fine print at
+              the bottom. It is the first thing a sceptical reader wants and the
+              last place they would look for it. */}
           <p className="mt-5 text-lg leading-relaxed text-muted">
-            People who bought {BRAND.trademark} and told us how they got on with
-            it. Nothing here has been tidied up into marketing copy.
+            {TESTIMONIALS_NOTE}
           </p>
         </header>
 
@@ -175,9 +177,11 @@ export default function ReviewsPage() {
         </div>
 
         <div className="mt-24 border-t border-line pt-8 sm:mt-32">
+          {/* Fine print only. The authenticity line moved to the header, so
+              repeating it here would say the same thing twice on one page. */}
           <p className="text-xs leading-relaxed text-muted">
-            {TESTIMONIALS_NOTE} Individual experience varies. {BRAND.trademark}{' '}
-            is an over-the-counter drug — read the{' '}
+            Individual experience varies. {BRAND.trademark} is an
+            over-the-counter drug — read the{' '}
             <Link href="/drug-facts" className="text-brand-light hover:underline">
               Drug Facts
             </Link>{' '}

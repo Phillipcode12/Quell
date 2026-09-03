@@ -152,12 +152,36 @@ describe('what a testimonial is allowed to say', () => {
     }
   })
 
-  it('says the names are aliases', () => {
+  it('discloses the permission and the substituted names', () => {
     // Real quotes, permission given, but the names are substituted. A
     // pseudonym presented as a real name is a small dishonesty on a page whose
     // entire job is being believed.
-    expect(TESTIMONIALS_NOTE.toLowerCase()).toContain('names have been changed')
-    expect(TESTIMONIALS_NOTE.toLowerCase()).toContain('permission')
+    //
+    // Asserted on the two facts rather than on a phrase, so the line can be
+    // reworded — it has been once — without the test becoming a spelling
+    // check. What it must never do is drop either disclosure.
+    const note = TESTIMONIALS_NOTE.toLowerCase()
+    expect(note, 'must say the names are not the real ones').toContain('names')
+
+    // Consent can be worded several honest ways — "with permission", "agreed
+    // to let us publish" — and the current line uses the second because it is
+    // plainer. Matching the idea rather than one phrase keeps the test about
+    // the disclosure instead of the vocabulary; drop the disclosure entirely
+    // and it still fails.
+    const saysConsent = ['permission', 'agreed', 'consent'].some((w) =>
+      note.includes(w),
+    )
+    expect(saysConsent, `note must disclose consent — it reads: "${TESTIMONIALS_NOTE}"`).toBe(true)
+  })
+
+  it('does not claim the quotes are unedited', () => {
+    // Susan's "reasonably prices" was corrected to "priced". A blanket "nothing
+    // has been changed" would therefore be false, and this page's whole
+    // argument is that it can be taken at its word.
+    const note = TESTIMONIALS_NOTE.toLowerCase()
+    for (const phrase of ['unedited', 'nothing has been changed', 'word for word']) {
+      expect(note, `note claims "${phrase}"`).not.toContain(phrase)
+    }
   })
 
   it('attributes every quote and leaves none empty', () => {

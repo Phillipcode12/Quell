@@ -337,11 +337,22 @@ export const TESTIMONIALS = [
 ] as const
 
 /**
- * Shown under the testimonials.
+ * The line that says these are real, shown at the top of the reviews page.
  *
- * The names are aliases, and saying so costs nothing while a pseudonym passed
- * off as a real name would be exactly the kind of small dishonesty this site
- * has otherwise been careful to avoid.
+ * **Naming the exact edit is what makes it believable.** "Real reviews from
+ * real customers" is what a page of invented ones says too, so the claim
+ * carries no information. Saying precisely what was changed — the names, the
+ * spelling, and nothing else — is a sentence a fabricated page could not
+ * write, and it is the specificity rather than the insistence that does the
+ * work.
+ *
+ * It also has to stay true. Susan's "reasonably prices" was corrected to
+ * "priced", so "we corrected spelling" is in there because it happened; if
+ * anything more than that is ever edited, this line has to change with it.
+ *
+ * The names being aliases is stated for its own sake: a pseudonym passed off
+ * as a real name is exactly the small dishonesty this site has otherwise been
+ * careful to avoid.
  */
 export const TESTIMONIALS_NOTE =
-  'Real customers, quoted with permission. Names have been changed for privacy.'
+  'People who bought Quell and agreed to let us publish what they said. We changed the names for privacy and corrected spelling — that is the whole edit.'
