@@ -51,7 +51,9 @@ Two commits sit on local `main` and have **not** been pushed.
 
    Delete the file straight afterwards; it holds every production secret.
 
-   It also **changes the privacy policy**, so read that wording before pushing.
+   **The privacy policy was deliberately left unchanged** — Phillip's call on
+   2026-09-02. That is the open question attached to this push, not the
+   migration. See §23.
 
 Also outstanding, waiting on other people: Zen on the **statement descriptor**
 (currently `AURORA PHARMACE`, §9) and the **written terms** (§21), and Ryan on
@@ -531,7 +533,7 @@ should be a small real purchase you make and then refund.
 | Card statement descriptor | **Known and needs changing, 2026-09-01.** The first live charge showed on the bank statement as **`AURORA PHARMACE`** — the legal entity, truncated. **Customers buy "Quell" and will not recognise it**, and "I don't recognise this charge" is the commonest cause of chargebacks; on a high-risk account a chargeback ratio is what gets processing withdrawn. Ask Zen/START to change it to carry the brand — `QUELL EYE DROPS`, or better `QUELL QUELLDROP.COM`, since a URL in the descriptor lets people look it up. |
 | `$29.99` price | Matches the Dry Eye Rescue retail listing as of 2026-08-13. |
 | Brand teal | Site uses `#00A7B5`; print file converts to `#4AC1A8`. One token change if you want to match print. |
-| Legal pages | **Rewritten 2026-08-18/19 and reviewed.** No placeholders, no template banners, every claim checked against the code. Three false statements were fixed: the cart is `localStorage` and never reaches the server, there is no marketing email, and the site ran no analytics at all. **Updated 2026-09-02 (§23): the site now counts page views itself**, and the policy describes exactly what is stored and for how long. Governing law is **Tennessee**; shipping is **US-only**, matching `SHIPPABLE_COUNTRIES`. The policy still states the site sets no third-party cookies and uses no advertising trackers, and that is still true because the counting is first-party — **installing a Meta Pixel or any hosted analytics makes it false and must be changed in the same release.** |
+| Legal pages | **Rewritten 2026-08-18/19 and reviewed.** No placeholders, no template banners, every claim checked against the code. Three false statements were fixed: the cart is `localStorage` and never reaches the server, there is no marketing email, and the site ran no analytics at all. **The last of those three stops being true when the visitor counting deploys (§23), and Phillip decided on 2026-09-02 not to change the policy wording.** Governing law is **Tennessee**; shipping is **US-only**, matching `SHIPPABLE_COUNTRIES`. The no-third-party-cookie and no-advertising-tracker clauses remain true and are worth protecting — **installing a Meta Pixel or any hosted analytics breaks them too.** |
 | Returns policy | **Decided 2026-08-19.** Unopened, original packaging, 30 days, refund of product price; original shipping not refunded. Opened drops never returnable (sterility). Damaged, incorrect or broken-seal orders replaced free within 30 days. Refunds are achievable today through the Authorize.net merchant interface; store credit was considered and dropped because no credit or coupon mechanism exists anywhere in the codebase. |
 | Seller of record | **Changed 2026-08-19 to Aurora Pharmaceuticals, LLC**, confirmed by Ryan against the IRS letter and articles of organization. `COMPANY` now carries Aurora's name and its 330 Franklin Road address; the phone is shared with BlephEx and stays. **Settled 2026-09-01: Phillip confirmed the LLC is in fact the entity, and the carton will be corrected at the next print run.** /about now names the LLC throughout. `MANUFACTURER` is still **Aurora Pharmaceuticals, Inc** and /drug-facts still prints it, deliberately — that page reproduces the panel as it appears on the box, so matching the physical label is the point of it. **When the carton is reprinted, change the constant and the two agree again.** |
 | **Front-panel claims** | The carton advertises **redness relief**, but the Drug Facts *Uses* section does not cover it and the formula has no vasoconstrictor. FDA expects front-panel claims to match Uses. Affects packaging, not just the site. Needs regulatory review. |
@@ -1172,6 +1174,35 @@ these was querying the real table after driving the real site.
   This counts what happens once they arrive.
 - **Not a funnel tool.** It counts visits, pages and referrers. Anything more —
   conversion by source, cohorts, attribution — is a lot more code.
+
+### The privacy policy was deliberately not updated
+
+**Phillip's decision, 2026-09-02, made with the recommendation in front of him.
+Do not re-litigate it — but do not let it go unrecorded either.**
+
+`/privacy` still reads *"We do not use analytics, advertising trackers, or
+third-party cookies on this site"*, and its list of what is collected
+automatically still names only server logs and the sign-in cookie.
+
+Two of those three clauses survive this change intact: the counting is
+first-party, so no advertising tracker is involved and no third-party cookie is
+set. What does not survive is the word **analytics**, and the omission of page
+views from the collected-automatically list.
+
+**Nothing is inconsistent while this sits unpushed.** It becomes inconsistent
+the moment it deploys. So the decision point is the push.
+
+If it is revisited, the smallest honest fix is two edits, not the paragraph that
+was originally drafted and reverted in `a635e6d` — that commit holds the fuller
+wording if it is ever wanted:
+
+1. Add page views to the "Information collected automatically" list.
+2. Change "We do not use analytics" to name what is actually true — that the
+   counting is first-party and nothing is sent to any analytics company.
+
+Given the FDA finding on the sister sites and that a missing privacy policy is
+the Critical item on centersfordryeye.com, this is worth putting to Michael
+rather than deciding on engineering grounds alone.
 
 > Relevant to the compensation discussion: the proposal to Ryan prices Quell at
 > a percentage of sales through quelldrop.com, against his expectation that most
