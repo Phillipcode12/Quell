@@ -14,13 +14,34 @@ means a missing table would hit every page, not one route.
 
 ### Open, in the order they matter
 
-1. **SEO items 2 and 3** (§24) — the homepage title carries no search terms,
-   and Bing Webmaster Tools is not set up. Both parked by Phillip. The title is
-   brand voice and his call, not an engineering one.
-2. **Confirm `QUELL DROP` on a real statement.** The descriptor is set (§9) but
+1. **Bing Webmaster Tools** (§24) — the last SEO item, and it needs Phillip
+   rather than code. bing.com/webmasters → My Sites → **Import** → sign in with
+   the Google account that owns Search Console → tick quelldrop.com. It carries
+   the verification and sitemaps across, so nothing on the site changes.
+   **Sign in with the personal Google account, not `Phillip.moore@meibum.com`**
+   — the property is verified under the personal one (§18), and the work
+   address will simply show no sites, which looks like the import failed.
+2. **Vercel is on the free Hobby plan, which forbids commercial use.**
+   Decision on 2026-09-03: **leave it, and upgrade on the first real order.**
+   Vercel's own wording is "Hobby teams are for non-commercial personal use
+   only", and their examples of commercial use open with "processing payments
+   from site visitors" — which is exactly what this site does. Enforcement is a
+   **pause**: an email arrives, the site serves `503 DEPLOYMENT_PAUSED` until
+   someone upgrades and resumes it from the dashboard.
+
+   The reasoning for waiting, so it is not mistaken for an oversight: with no
+   orders, a few hours of downtime costs nothing, and $20/month for a shop with
+   no sales is money for nothing. Once orders arrive the same outage is lost
+   sales on an indexed store. **The trigger is the first real order.** Pro is
+   $20 per developer seat, viewer seats free — and it is the company's cost,
+   not Phillip's.
+
+   Hobby also cannot have team members at all, so Ryan and Dr. Rynerson cannot
+   be added to Vercel until this is upgraded (§7).
+3. **Confirm `QUELL DROP` on a real statement.** The descriptor is set (§9) but
    has never been seen on one, because the test charge that would have shown it
    was refunded. The next real order is the first chance.
-3. **Fulfilment is still unassigned.** Nobody has agreed who packs, who posts,
+4. **Fulfilment is still unassigned.** Nobody has agreed who packs, who posts,
    or who receives returns (§13). No real order has arrived yet, so nothing is
    stranded — but that is timing rather than a system, and the terms promise
    30-day returns to an address nobody has nominated.
@@ -1469,66 +1490,89 @@ means a crawler would otherwise have to stumble on it.
 
 ---
 
-## 24. SEO — reviewed 2026-09-02, one of three done
+## 24. SEO — audited 2026-09-02, worked 2026-09-03, one item left
 
-**Phillip parked the rest to review later.** Recorded so that review starts
-from evidence rather than from scratch. Item 1 was built the same day because it
-needed no decision from anyone; items 2 and 3 still wait on him.
+**Five of six findings are fixed and live** (`964e011`). The sixth needs Phillip
+rather than code. Verified on production after the push:
 
-**Current visibility: none.** Searches for the product name, the brand and
-`site:quelldrop.com` return nothing from the domain. What ranks for the product
-is **Dry Eye Rescue's listing**, not the shop. That is expected rather than
-alarming — indexing was only allowed on 2026-09-01 and a new domain takes weeks
-to months — but it is the baseline to measure against.
+```
+title    Quell — Preservative-Free Lubricating Eye Drops
+schema   Answer Brand DefinedRegion FAQPage MerchantReturnPolicy MonetaryAmount
+         Offer OfferShippingDetails Organization PostalAddress PriceSpecification
+         Product Question WebSite
+headings h1 h2 h3 h3 h3 h3
+sitemap lastmod  0
+```
 
-### The three items, in the order they are worth doing
+**Baseline to measure against.** On 2026-09-02, searches for the product name,
+the brand and `site:quelldrop.com` returned nothing from the domain, and what
+ranked for the product was **Dry Eye Rescue's listing**, not the shop. Expected
+rather than alarming — indexing was only allowed on 2026-09-01 and a new domain
+takes weeks to months — but that is where this started.
 
-1. ~~**No structured data anywhere.**~~ **Done 2026-09-02 (`c1a907c`).**
-   Three blocks now ship: **Product + Offer** on the homepage, **Organization**
-   and **WebSite** site-wide. Verified on production — 29.99 USD, InStock, real
-   SKU and product image, absolute quelldrop.com URLs.
+### What was done
 
-   Three rules are encoded in `lib/structured-data.ts` and guarded by tests,
+1. **Structured data**, first shipped 2026-09-02 (`c1a907c`) and extended on
+   2026-09-03. Product + Offer on the homepage, Organization and WebSite
+   site-wide, and now **FAQPage**, **OfferShippingDetails** and
+   **MerchantReturnPolicy**.
+
+   Four rules are encoded in `lib/structured-data.ts` and guarded by tests,
    because this is read by machines and published to every engine at once, so a
    wrong value travels further than a wrong value on the page and nobody
    looking at the site would spot it:
 
-   - **No `aggregateRating`, no `review`.** Those put stars in a search
-     result. Quell has none, and inventing them is a Google policy violation as
-     well as a lie told at scale. **When real reviews exist they need the same
-     regulatory read as the testimonials** — marking up "it cured my dry eye"
-     publishes that claim to every search engine at once.
+   - **No `aggregateRating`, no `review`.** Those put stars in a search result.
+     Marking up the testimonials would publish "it cured my dry eye" to every
+     search engine at once, so **real reviews need the same regulatory read as
+     the page copy** (§25) before they are ever marked up.
    - **Price and availability are read from the product row**, the same one the
      page renders, so the two cannot disagree. Zero stock emits `OutOfStock`.
-   - **The description is the product record's own reviewed copy**, not a second
-     version written for search engines that could drift from the label. A test
-     asserts the withheld redness claim appears in none of the three blocks.
+   - **Shipping and returns are read from `lib/shipping.ts` and `/terms`**, not
+     restated. The free-shipping rate carries `eligibleTransactionVolume`, so it
+     reads as free *over the threshold* rather than free on everything, which is
+     not what the checkout does.
+   - **`returnFees` is deliberately omitted.** /terms does not say who pays
+     return postage. Guessing publishes a commitment nobody at Aurora has made;
+     Search Console noting a missing recommended field is the correct outcome.
 
-   Deliberately not included: `hasMerchantReturnPolicy` and `shippingDetails`.
-   Both are real and documented, but a machine-readable returns policy is a
-   commitment published everywhere, and it is worth writing deliberately rather
-   than as a footnote to this. Their absence costs only a "recommended field"
-   note in Search Console.
+   The FAQ markup is the same answers as the page, asserted entry by entry
+   rather than copied, so the two cannot drift.
 
-2. **The homepage title carries no search terms.** It is
-   `Quell — Give your dry eye the bird!`, and nobody searches that phrase. The
-   title tag is the strongest on-page signal there is. Something like
-   `Quell — Preservative-Free Lubricating Eye Drops` would compete for the
-   words people actually type, with the slogan kept in the H1 where it does its
-   job. **This is a brand-voice decision and is Phillip's to make** — it was
-   deliberately not changed. The meta description is already well written and
-   needs nothing.
+2. **The homepage title now names the product.** It was
+   `Quell — Give your dry eye the bird!` — nobody searches that phrase, and the
+   title tag is the strongest on-page signal there is. It is now
+   `Quell — Preservative-Free Lubricating Eye Drops`, built from
+   `BRAND.productType` so it follows the product rather than being retyped. The
+   slogan still opens the homepage in the H1, where it does its job.
 
-3. **Bing Webmaster Tools is not set up.** It imports directly from Google
-   Search Console, which is already verified, so it is a few clicks rather than
-   a fresh domain verification. That is also how to request the recrawl that
-   clears the stale robots.txt judgement described below.
+3. **The heading order was fixed.** It skipped a level (`h1` → `h3` → `h2`).
 
-Smaller: the homepage heading order skips a level (`h1` → `h3` → `h2`).
+4. **`lastModified` was removed from the sitemap.** It was `new Date()` on every
+   entry, which told Google that every page had changed the moment it asked —
+   every time it asked. Google's documented response to a lastmod it cannot
+   trust is to ignore the field across the whole sitemap, so this was actively
+   costing the signal rather than adding one. Worth adding back the day these
+   pages have real revision dates to report.
 
-**Everything else checks out** and was verified: viewport, `lang`, canonical
-tags, OpenGraph and Twitter cards with a working image, alt text on every image,
-real 404s, HTTPS, clean URLs, and a sitemap that lists all five public pages.
+5. **`robots.ts` gained a serving-host guard.** `quell-six.vercel.app` was
+   serving `Allow: /` for the identical shop, which invites a duplicate of the
+   whole site into the index competing with quelldrop.com. The route now reads
+   the `Host` header and returns `Disallow: /` for anything that is not the
+   configured host — verified against a production build by driving the header.
+   This makes the route dynamic, which is the intended trade.
+
+### The one item left — Bing Webmaster Tools
+
+Not set up. **bing.com/webmasters → My Sites → Import → sign in with Google →
+Allow → tick quelldrop.com → Import.** Imported sites are auto-verified and the
+sitemap comes across, so nothing on the site changes and there is no meta tag to
+add.
+
+> **Sign in with the personal Google account, not `Phillip.moore@meibum.com`.**
+> The Search Console property is verified under the personal one, deliberately
+> and for a reason worth knowing (§18). The work address will simply show no
+> sites, which looks exactly like the import failing.
 
 ### Why Bing says the site blocks it
 
@@ -1537,7 +1581,8 @@ allow us."* **robots.txt is correct now** — this is a cached judgement from
 before launch. `robots.ts` fails closed, so until `ALLOW_INDEXING` was set on
 2026-09-01 the file served `Disallow: /`, which is exactly the state that
 produces that message. Bing crawled during those eleven days and has not been
-back. It corrects itself; Bing Webmaster Tools makes it faster.
+back. It corrects itself; Bing Webmaster Tools makes it faster, and its URL
+Submission tool makes it faster still.
 
 ### Two things found while looking, neither of them SEO
 
