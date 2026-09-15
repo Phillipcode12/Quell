@@ -21,19 +21,14 @@ means a missing table would hit every page, not one route.
    endpoint was already capped at 5/hour per IP throughout. Put **Cloudflare
    Turnstile** on `/register` and `/forgot-password`, then flip the flag
    to `1` (no redeploy needed). The Cloudflare account should be Aurora's.
-2. **Nobody has looked at Resend's bounce and complaint rates** (§26). Those
-   two numbers say whether the 75 unsolicited emails have damaged the sending
-   domain, and therefore whether real order receipts will land in inboxes.
-   `RESEND_API_KEY` is a Vercel Secret and cannot be read back — correct, and
-   it should stay that way — so this is a dashboard check by hand.
-3. **Bing Webmaster Tools** (§24) — the last SEO item, and it needs Phillip
+2. **Bing Webmaster Tools** (§24) — the last SEO item, and it needs Phillip
    rather than code. bing.com/webmasters → My Sites → **Import** → sign in with
    the Google account that owns Search Console → tick quelldrop.com. It carries
    the verification and sitemaps across, so nothing on the site changes.
    **Sign in with the personal Google account, not `Phillip.moore@meibum.com`**
    — the property is verified under the personal one (§18), and the work
    address will simply show no sites, which looks like the import failed.
-4. **Vercel is on the free Hobby plan, which forbids commercial use.**
+3. **Vercel is on the free Hobby plan, which forbids commercial use.**
    Decision on 2026-09-03: **leave it, and upgrade on the first real order.**
    Vercel's own wording is "Hobby teams are for non-commercial personal use
    only", and their examples of commercial use open with "processing payments
@@ -81,10 +76,10 @@ means a missing table would hit every page, not one route.
    Phillip's card and a claim afterwards: it is the company's cost, and it
    keeps the account cleanly theirs when the personal-account question (§7)
    comes back around.
-5. **Confirm `QUELL DROP` on a real statement.** The descriptor is set (§9) but
+4. **Confirm `QUELL DROP` on a real statement.** The descriptor is set (§9) but
    has never been seen on one, because the test charge that would have shown it
    was refunded. The next real order is the first chance.
-6. **Fulfilment is still unassigned.** Nobody has agreed who packs, who posts,
+5. **Fulfilment is still unassigned.** Nobody has agreed who packs, who posts,
    or who receives returns (§13). No real order has arrived yet, so nothing is
    stranded — but that is timing rather than a system, and the terms promise
    30-day returns to an address nobody has nominated.
@@ -250,6 +245,22 @@ guests (`Order.userId` is nullable), `/orders` looks an order up without an
 account, and `/api/auth/claim-order` attaches a guest order to an account
 afterwards. **A customer who buys while this is closed loses nothing.**
 
+> **Guest checkout is permanent, by decision on 2026-09-15.** Phillip's call:
+> people get the choice of an account or a guest purchase, for good — this is
+> not a temporary state that ends when registration reopens. So when Turnstile
+> lands and accounts come back, the account is an *option beside* guest
+> checkout and never a step in front of it. Forcing account creation is one of
+> the most reliable ways to lose a first-time buyer, and this shop already has
+> `claim-order` so the account can be offered *after* the money is taken, which
+> is the right end of the transaction to ask.
+
+The cart and checkout carry **no reference to registration at all** — verified
+by grep, not assumed — so closing it created no dead end there. The one link
+that did point at `/register` was "Create one" under the sign-in form; while
+the flag is off that now reads *"New accounts are paused. You can order as a
+guest."* (`AuthForm` takes `canRegister`, passed from the page because the flag
+is an environment variable and the form is a client component).
+
 ### Reopening — the actual next step
 
 Registration should not reopen until a bot defence sits in front of the form.
@@ -262,10 +273,29 @@ per IP throughout the attack and the bot simply rotated addresses.
 2. Then set `ALLOW_REGISTRATION=1` in Vercel. It is read per request, so
    reopening takes effect on the next request with **no redeploy**.
 
-**Still unchecked: Resend's own numbers.** `RESEND_API_KEY` is a Vercel Secret
-and cannot be read back, which is correct storage and should stay that way. The
-bounce rate and complaint rate in the Resend dashboard are what predict whether
-real receipts will deliver, and nobody has looked at them yet.
+### The damage, checked 2026-09-15: none worth worrying about
+
+Phillip read the Resend dashboard — `RESEND_API_KEY` is a Vercel Secret and
+cannot be read back, which is correct storage and should stay that way, so this
+is a check by hand.
+
+**4–5 bounces, and zero complaints, out of roughly 75 sends.**
+
+**Zero complaints is the number that matters.** A complaint is a recipient
+pressing "this is spam", and it is what actually teaches the filters that
+quelldrop.com sends junk. None were pressed, so the sending domain is intact
+and real order receipts are not starting from a hole.
+
+The bounces are a handful of dead addresses among the harvested list, which is
+exactly what harvested lists contain. At ~6% it sits above the 5% line that
+Amazon SES — which Resend is built on — treats as the point to review an
+account, but on a base of 75 emails that is four or five messages, and the
+sending has stopped, so it decays rather than accrues. **Nothing to do, but
+worth a second look after the first real burst of order receipts**, when the
+denominator is genuine traffic rather than this.
+
+The right conclusion is that this was caught early. Left another month it would
+have been a different answer.
 
 ---
 

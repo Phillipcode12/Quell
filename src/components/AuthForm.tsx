@@ -5,7 +5,21 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { PasswordField } from '@/components/PasswordField'
 
-export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
+export function AuthForm({
+  mode,
+  /**
+   * Whether to offer "Create one" beneath the sign-in form.
+   *
+   * Passed in from the page rather than read here, because the flag lives in
+   * an environment variable and this is a client component. Defaults to true
+   * so the register form — which is only rendered when registration is open
+   * anyway — never has to think about it.
+   */
+  canRegister = true,
+}: {
+  mode: 'login' | 'register'
+  canRegister?: boolean
+}) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [error, setError] = useState<string | null>(null)
@@ -140,15 +154,29 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-muted">
-          {isRegister ? 'Already have an account? ' : "Don't have an account? "}
-          <Link
-            href={isRegister ? '/login' : '/register'}
-            className="font-medium text-brand hover:underline"
-          >
-            {isRegister ? 'Sign in' : 'Create one'}
-          </Link>
-        </p>
+        {/* While registration is closed, "Create one" would send someone to a
+            page that only explains why they can't. Point them at the thing
+            they actually came to do instead — buying has never needed an
+            account. */}
+        {isRegister || canRegister ? (
+          <p className="mt-6 text-center text-sm text-muted">
+            {isRegister ? 'Already have an account? ' : "Don't have an account? "}
+            <Link
+              href={isRegister ? '/login' : '/register'}
+              className="font-medium text-brand hover:underline"
+            >
+              {isRegister ? 'Sign in' : 'Create one'}
+            </Link>
+          </p>
+        ) : (
+          <p className="mt-6 text-center text-sm text-muted">
+            New accounts are paused.{' '}
+            <Link href="/#buy" className="font-medium text-brand hover:underline">
+              You can order as a guest
+            </Link>
+            .
+          </p>
+        )}
       </div>
     </div>
   )
