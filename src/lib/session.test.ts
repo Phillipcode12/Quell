@@ -23,6 +23,7 @@ vi.mock('next/headers', () => ({ cookies: async () => cookieJar }))
 
 const { COOKIE_NAME, createSession, destroySession, readSession } =
   await import('./session')
+const { MAX_AGE_SECONDS } = await import('./session-token')
 
 const SECRET = 'a-test-secret-that-is-long-enough-to-pass'
 const SESSION = { userId: 'user_123', email: 'ada@example.com' }
@@ -53,8 +54,12 @@ describe('createSession then readSession', () => {
       httpOnly: true,
       sameSite: 'lax',
       path: '/',
-      maxAge: 60 * 60 * 24 * 7,
+      maxAge: MAX_AGE_SECONDS,
     })
+    // Asserted against the constant above and separately pinned here, so a
+    // careless edit to the lifetime fails loudly rather than silently
+    // shortening how long customers stay signed in.
+    expect(MAX_AGE_SECONDS).toBe(60 * 60 * 24 * 60)
   })
 
   it('marks the cookie secure in production and not in development', async () => {

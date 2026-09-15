@@ -14,14 +14,26 @@ means a missing table would hit every page, not one route.
 
 ### Open, in the order they matter
 
-1. **Bing Webmaster Tools** (§24) — the last SEO item, and it needs Phillip
+1. **Registration is closed, and reopening it needs Turnstile first** (§26).
+   A bot created 120 accounts in eleven days and used them to make the site
+   send 75 password-reset emails to strangers; `ALLOW_REGISTRATION=0` in
+   Vercel is what stopped it. Rate limiting will not replace that — the
+   endpoint was already capped at 5/hour per IP throughout. Put **Cloudflare
+   Turnstile** on `/register` and `/forgot-password`, then flip the flag
+   to `1` (no redeploy needed). The Cloudflare account should be Aurora's.
+2. **Nobody has looked at Resend's bounce and complaint rates** (§26). Those
+   two numbers say whether the 75 unsolicited emails have damaged the sending
+   domain, and therefore whether real order receipts will land in inboxes.
+   `RESEND_API_KEY` is a Vercel Secret and cannot be read back — correct, and
+   it should stay that way — so this is a dashboard check by hand.
+3. **Bing Webmaster Tools** (§24) — the last SEO item, and it needs Phillip
    rather than code. bing.com/webmasters → My Sites → **Import** → sign in with
    the Google account that owns Search Console → tick quelldrop.com. It carries
    the verification and sitemaps across, so nothing on the site changes.
    **Sign in with the personal Google account, not `Phillip.moore@meibum.com`**
    — the property is verified under the personal one (§18), and the work
    address will simply show no sites, which looks like the import failed.
-2. **Vercel is on the free Hobby plan, which forbids commercial use.**
+4. **Vercel is on the free Hobby plan, which forbids commercial use.**
    Decision on 2026-09-03: **leave it, and upgrade on the first real order.**
    Vercel's own wording is "Hobby teams are for non-commercial personal use
    only", and their examples of commercial use open with "processing payments
@@ -69,10 +81,10 @@ means a missing table would hit every page, not one route.
    Phillip's card and a claim afterwards: it is the company's cost, and it
    keeps the account cleanly theirs when the personal-account question (§7)
    comes back around.
-3. **Confirm `QUELL DROP` on a real statement.** The descriptor is set (§9) but
+5. **Confirm `QUELL DROP` on a real statement.** The descriptor is set (§9) but
    has never been seen on one, because the test charge that would have shown it
    was refunded. The next real order is the first chance.
-4. **Fulfilment is still unassigned.** Nobody has agreed who packs, who posts,
+6. **Fulfilment is still unassigned.** Nobody has agreed who packs, who posts,
    or who receives returns (§13). No real order has arrived yet, so nothing is
    stranded — but that is timing rather than a system, and the terms promise
    30-day returns to an address nobody has nominated.
@@ -166,6 +178,130 @@ Working tree clean, `main` in sync, nothing left running.
 > they wait for a refund that never arrives and their next move is a chargeback
 > — and on a high-risk account the chargeback ratio is what gets processing
 > withdrawn (§21).
+
+---
+
+## 26. The signup bot — found and contained 2026-09-15
+
+**What it looked like from the outside:** a lot of password-reset emails, which
+read as customers struggling to sign in. It was not that.
+
+**What it was:** between 2026-09-05 and 2026-09-15 a bot created **120
+accounts** on a store that had never taken a real order, and used them to make
+the site send **75 password-reset emails to strangers**.
+
+### How it was identified
+
+Three signals, any one suggestive, together conclusive:
+
+1. **Every registration name was a random token** — `BcmEuMKPmMbEoaHJUYeRMqC`,
+   `CjqghTVqIpPfljdaO`, 120 of them, no duplicates. Of 122 accounts, exactly
+   **two** had a name containing a space: Phillip's and Ryan's. Not one was
+   even a single capitalised word.
+2. **Gmail dot-variants of each other** — `r.a.mc.h.o.t.ran.spo.r.tati.o.n@`
+   and `r.am.c.h.otransp.o.rt.at.io.n@`. Gmail ignores dots, so those are one
+   mailbox wearing different masks, which is how one actor manufactures many
+   "unique" addresses.
+3. **Harvested corporate addresses** — five people at one agency, plus a
+   university, a bank, a TV network, and a software company's *published legal
+   contact* address. Nobody at those addresses asked for anything.
+
+**Zero of the 122 accounts ever placed an order.**
+
+### Why it matters, which is not the obvious reason
+
+The accounts were never the target. `/api/auth/forgot-password` only emails an
+address that already has an account, so planting one is how the bot got
+**quelldrop.com** to send mail to a stranger. The site was being used as a free
+mailer.
+
+The cost lands on the sending domain. Every recipient who marks one of those as
+spam teaches the filters that quelldrop.com sends junk, and the bill arrives
+later as real order receipts in the spam folder — slow to accrue, slow to undo.
+Resend's AUP also covers unsolicited sending, and a suspension there stops
+receipts entirely.
+
+> **Two of those strangers completed a reset** — one at a school district, one
+> at a TV network. Real people received the mail, were confused enough to click
+> through, and set a password on an account they never created. Their accounts
+> were among those deleted, which is the right outcome for them as well.
+
+### What was done
+
+- **`ALLOW_REGISTRATION` added** (`src/lib/registration.ts`). Missing or
+  anything other than `1`/`true` means closed, for the same reason `robots.ts`
+  fails closed. Checked **before the rate limit and before any query**, so while
+  closed the endpoint cannot even be used to probe which addresses have
+  accounts. Set to `0` in Vercel production.
+- **120 accounts deleted.** Kept: Phillip and Ryan. `Order.userId` is
+  `onDelete: SetNull`, so all 10 orders survived and were merely detached —
+  verified after the delete. A JSON backup of every deleted row was written
+  before the statement ran.
+- **Sessions made sliding** — see §27.
+
+### Sign-in was deliberately left open
+
+`/login` also carries admin access: `getAdminUser` checks the signed-in user's
+email against `ADMIN_EMAILS`. Closing sign-in would have locked the admin area
+out along with the bot, and Ryan and Dr. Rynerson out of their accounts.
+
+Nothing customer-facing depends on registration: checkout has always accepted
+guests (`Order.userId` is nullable), `/orders` looks an order up without an
+account, and `/api/auth/claim-order` attaches a guest order to an account
+afterwards. **A customer who buys while this is closed loses nothing.**
+
+### Reopening — the actual next step
+
+Registration should not reopen until a bot defence sits in front of the form.
+Rate limiting alone will not do it: registration was already capped at 5/hour
+per IP throughout the attack and the bot simply rotated addresses.
+
+1. **Cloudflare Turnstile** on `/register` and `/forgot-password`. Free,
+   invisible to real users. Needs a Cloudflare account for the site key and
+   secret — **that account should be Aurora's, not Phillip's** (§7).
+2. Then set `ALLOW_REGISTRATION=1` in Vercel. It is read per request, so
+   reopening takes effect on the next request with **no redeploy**.
+
+**Still unchecked: Resend's own numbers.** `RESEND_API_KEY` is a Vercel Secret
+and cannot be read back, which is correct storage and should stay that way. The
+bounce rate and complaint rate in the Resend dashboard are what predict whether
+real receipts will deliver, and nobody has looked at them yet.
+
+---
+
+## 27. Sessions are sliding, since 2026-09-15
+
+Was **7 days, fixed**. Nothing renewed the token, so a customer who signed in
+and came back on day eight was signed out even if they had used the site every
+day in between. For a shop people visit occasionally that is the difference
+between "it remembers me" and "it asks for my password every time" — and a
+password someone is asked for rarely is a password they reset rather than
+recall.
+
+Now **60 days, renewed on use**, so the clock only runs for someone who has
+actually stopped visiting.
+
+**The renewal happens in `src/proxy.ts`.** Cookies cannot be set during a
+server render, so it has to be there. Two things about that file:
+
+- **Next.js 16 renamed `middleware.ts` to `proxy.ts`** and the export to
+  `proxy`. The old name is deprecated, not broken, but new code should use the
+  new one — `node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/proxy.md`.
+- It runs on the **Edge runtime**, which is why the token layer was split out
+  into `src/lib/session-token.ts`. That module is deliberately **not**
+  `server-only` and touches neither `next/headers` nor the database: the token
+  is verified cryptographically and re-signed, so this adds no query to any
+  request. `session.ts` keeps the cookie helpers and imports from it, so the
+  cookie name, the secret and the lifetimes have exactly one definition rather
+  than a copy per runtime that can drift apart silently.
+
+Renewal waits until the token is **more than a day old**. Re-signing on every
+request would put a `Set-Cookie` on every page view for nothing; waiting until
+near expiry would miss anyone whose visits are further apart than the gap left.
+
+**The login form already had the right markup** — `autocomplete="current-password"`
+on sign-in and `new-password` on register and reset — so password managers
+have always offered to save and refill. This is the half the browser cannot do.
 
 ---
 

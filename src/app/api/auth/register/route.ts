@@ -4,6 +4,7 @@ import { prisma } from '@/lib/db'
 import { hashPassword } from '@/lib/auth'
 import { createSession } from '@/lib/session'
 import { clientIp, rateLimit, tooManyRequests } from '@/lib/rate-limit'
+import { REGISTRATION_CLOSED_MESSAGE, registrationOpen } from '@/lib/registration'
 
 const schema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(100),
@@ -13,6 +14,13 @@ const schema = z.object({
 })
 
 export async function POST(request: Request) {
+  // Checked before anything else, including the rate limit: while this is
+  // closed the endpoint does no work at all, so a bot cannot use it to probe
+  // which addresses already have accounts.
+  if (!registrationOpen()) {
+    return NextResponse.json({ error: REGISTRATION_CLOSED_MESSAGE }, { status: 403 })
+  }
+
   // Slows down bulk account creation from a single host.
   const ip = clientIp(request)
   const limited = await rateLimit(`register:ip:${ip}`, {
