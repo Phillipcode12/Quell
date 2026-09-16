@@ -30,6 +30,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Linked only from the nav, so without this it would be reachable but
     // undeclared — the sitemap is the one place a crawler is told it exists.
     { url: `${base}/reviews`, priority: 0.6 },
+    // Approved by Dr. Rynerson on 2026-09-16, which is what was holding this
+    // back. Worth indexing in its own right: "dry eye quiz" and "do I have dry
+    // eye" are searches people actually make, and this answers them.
+    { url: `${base}/self-check`, priority: 0.7 },
     { url: `${base}/privacy`, priority: 0.3 },
     { url: `${base}/terms`, priority: 0.3 },
   ]
