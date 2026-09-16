@@ -308,11 +308,21 @@ export function score(answers: Record<string, unknown>): SelfCheckResult {
  */
 export const HERO_INVITE = {
   /**
-   * Not "Free self-check". It costs an email address, and calling that free is
-   * the small kind of untrue thing that makes a reader distrust the larger
-   * claims beside it. The time is the objection worth answering anyway.
+   * Says what the block *is*, and nothing else.
+   *
+   * Two rejected alternatives, both for reasons worth keeping:
+   *
+   * **"Free self-check"** — it costs an email address, and calling that free is
+   * the small untrue thing that makes a reader doubt the larger claims beside
+   * it.
+   *
+   * **"90-second self-check"** — a specific number beats a vague adjective like
+   * "quick", which is unfalsifiable and which everyone claims. But the body
+   * already says "about ninety seconds" one line below, so in the eyebrow it
+   * was the same fact twice in two lines. The number stays where it does the
+   * most work: next to the ask.
    */
-  eyebrow: '90-second self-check',
+  eyebrow: 'Dry eye self-check',
   heading: 'What are your eyes telling you?',
   body: 'Eight questions, about ninety seconds. You’ll get a symptom score and find out whether your answers fit the pattern of a tear film that evaporates too quickly.',
   cta: 'Take the self-check',
