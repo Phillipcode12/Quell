@@ -35,9 +35,14 @@
  *
  * ### Reopening
  *
- * Set `ALLOW_REGISTRATION=1` in Vercel. It is read per request, so the change
- * takes effect on the next request with **no redeploy**. Reopen once the bot
- * defences are in front of the form (see §26 in PROJECT_STATE.md).
+ * Set `ALLOW_REGISTRATION=1` in Vercel, **then redeploy**. Vercel binds
+ * environment variables to a deployment, so changing one in the dashboard does
+ * nothing to the build already serving traffic — `vercel redeploy <url>
+ * --target production` is enough and rebuilds from the same commit.
+ *
+ * (An earlier version of this comment claimed the change took effect on the
+ * next request with no redeploy. It does not, and acting on that would leave
+ * someone convinced they had reopened registration when they had not.)
  *
  * ### Missing means closed
  *

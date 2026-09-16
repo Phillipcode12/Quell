@@ -20,7 +20,9 @@ means a missing table would hit every page, not one route.
    Vercel is what stopped it. Rate limiting will not replace that — the
    endpoint was already capped at 5/hour per IP throughout. Put **Cloudflare
    Turnstile** on `/register` and `/forgot-password`, then flip the flag
-   to `1` (no redeploy needed). The Cloudflare account should be Aurora's.
+   to `1` **and redeploy** — Vercel binds environment variables to a
+   deployment, so changing one alone does nothing to the build serving
+   traffic.
 2. **Bing Webmaster Tools** (§24) — the last SEO item, and it needs Phillip
    rather than code. bing.com/webmasters → My Sites → **Import** → sign in with
    the Google account that owns Search Console → tick quelldrop.com. It carries
@@ -271,7 +273,10 @@ per IP throughout the attack and the bot simply rotated addresses.
    invisible to real users. Needs a Cloudflare account for the site key and
    secret — **that account should be Aurora's, not Phillip's** (§7).
 2. Then set `ALLOW_REGISTRATION=1` in Vercel. It is read per request, so
-   reopening takes effect on the next request with **no redeploy**.
+   reopening needs `ALLOW_REGISTRATION=1` **and a redeploy**: Vercel binds
+   environment variables to a deployment, so changing one in the dashboard
+   leaves the running build untouched. `vercel redeploy <url> --target
+   production` rebuilds from the same commit and is enough.
 
 ### The damage, checked 2026-09-15: none worth worrying about
 
