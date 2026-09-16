@@ -221,3 +221,43 @@ model Visit {
   @@index([startedAt])
   @@index([lastSeenAt])
 }
+
+/// Someone who gave an email, currently only through the dry eye self-check.
+///
+/// Separate from User on purpose: a subscriber is not an account. They have no
+/// password, cannot sign in, and giving an address here must never create
+/// something that looks like an account they did not ask for.
+model Subscriber {
+  id    String @id @default(cuid())
+  /// Lowercased and unique, so retaking the quiz updates rather than duplicates.
+  email String @unique
+
+  /// Where the address came from, e.g. "self-check". Present from the start
+  /// because a list with two sources and no way to tell them apart is a list
+  /// nobody can safely email.
+  source String
+
+  /// The most recent self-check result. Nullable because a future capture
+  /// point will not have one.
+  ///
+  /// The answers are kept as JSON rather than columns: they are a snapshot of
+  /// a questionnaire whose wording will change, and a column per question
+  /// would quietly start meaning something different when it does.
+  score       Int?
+  band        String?
+  evaporative Boolean?
+  answers     Json?
+  /// True when the safety check was triggered and no score was produced.
+  safetyFlag  Boolean @default(false)
+
+  /// Which advert brought them, same labels as Visit and Order (§29).
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmContent  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([createdAt])
+}

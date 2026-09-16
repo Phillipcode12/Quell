@@ -176,6 +176,9 @@ export const HIDDEN_ON = [
   '/register',
   '/forgot-password',
   '/reset-password',
+  // Someone part-way through answering questions about their own symptoms is
+  // the last person who should be interrupted by a mascot.
+  '/self-check',
 ]
 
 /** Session keys: when the visit started, and whether the emu has spoken. */
