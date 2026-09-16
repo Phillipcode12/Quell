@@ -202,10 +202,21 @@ note here that assumed it was personal. Same for Vercel and GitHub.
 > rotating the secret is a separate deliberate action. So a hostname change
 > needs no Vercel edit and no redeploy — it applies on the next page load.
 
-> **Add `quelleye.com` to the widget's hostname list if that domain is ever
-> used in earnest.** Deploys alias it alongside quelldrop.com, and Turnstile
-> validates the hostname it was loaded on, so the widget is inert there until
-> the hostname is added.
+> **Only `quelldrop.com` needs to be in the widget's hostname list**, and that
+> is the whole list it needs.
+>
+> Aurora owns four domains — `quelldrop.com`, `quelleye.com`, `quelleyes.com`,
+> `quelltears.com` — and all four are attached to the Vercel project, which is
+> why a deploy prints `Aliased https://quelleye.com`. **Attached is not
+> served.** Measured 2026-09-15: only `quelldrop.com` returns 200; the other
+> three and both `www` variants return **308** to `quelldrop.com`. A browser
+> follows the redirect before any page renders, so the widget only ever loads
+> on the canonical host.
+>
+> The general rule, which is the reason not to add them speculatively: the
+> hostname list is the only thing stopping the site key working on somebody
+> else's site, so it should contain hostnames that actually serve pages and
+> nothing else.
 
 ### The trap that cost an hour, so nobody repeats it
 
