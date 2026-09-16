@@ -14,19 +14,14 @@ means a missing table would hit every page, not one route.
 
 ### Open, in the order they matter
 
-1. **Move the Cloudflare account to Aurora** (§28). Turnstile is live and the
-   signup bot is stopped, but the account holding the widget is Phillip's
-   personal one, which puts it on the same list as Vercel and GitHub (§7).
-   Nothing is broken; it is ownership, and it is cheapest to fix before there
-   is traffic depending on it.
-2. **Bing Webmaster Tools** (§24) — the last SEO item, and it needs Phillip
+1. **Bing Webmaster Tools** (§24) — the last SEO item, and it needs Phillip
    rather than code. bing.com/webmasters → My Sites → **Import** → sign in with
    the Google account that owns Search Console → tick quelldrop.com. It carries
    the verification and sitemaps across, so nothing on the site changes.
    **Sign in with the personal Google account, not `Phillip.moore@meibum.com`**
    — the property is verified under the personal one (§18), and the work
    address will simply show no sites, which looks like the import failed.
-3. **Vercel is on the free Hobby plan, which forbids commercial use.**
+2. **Vercel is on the free Hobby plan, which forbids commercial use.**
    Decision on 2026-09-03: **leave it, and upgrade on the first real order.**
    Vercel's own wording is "Hobby teams are for non-commercial personal use
    only", and their examples of commercial use open with "processing payments
@@ -74,10 +69,10 @@ means a missing table would hit every page, not one route.
    Phillip's card and a claim afterwards: it is the company's cost, and it
    keeps the account cleanly theirs when the personal-account question (§7)
    comes back around.
-4. **Confirm `QUELL DROP` on a real statement.** The descriptor is set (§9) but
+3. **Confirm `QUELL DROP` on a real statement.** The descriptor is set (§9) but
    has never been seen on one, because the test charge that would have shown it
    was refunded. The next real order is the first chance.
-5. **Fulfilment is still unassigned.** Nobody has agreed who packs, who posts,
+4. **Fulfilment is still unassigned.** Nobody has agreed who packs, who posts,
    or who receives returns (§13). No real order has arrived yet, so nothing is
    stranded — but that is timing rather than a system, and the terms promise
    30-day returns to an address nobody has nominated.
@@ -96,7 +91,15 @@ deliberately so there would never be a transfer to do (§18).
 **Vercel is already a Team** (`quell1`, "Quell") rather than a personal account,
 so giving the company access is an invitation rather than a migration.
 
-**The GitHub repository is personal** — `Phillipcode12/Quell`. Git being
+> **Corrected 2026-09-15:** Phillip confirms Vercel and GitHub are both on his
+> **company** account, not a personal one, and the same goes for Cloudflare
+> (§28). The paragraph below predates that and is kept only for the one point
+> that still stands on its own: the repo sits in a **user namespace**
+> (`Phillipcode12`) rather than an Aurora **organisation**, which is a
+> different question from whose email logs in. Worth confirming which it is
+> before the continuity clause in Ryan's agreement is drafted.
+
+**The GitHub repository is under a user namespace** — `Phillipcode12/Quell`. Git being
 distributed makes this far less severe than it sounds: every clone is a full
 copy with history, so the company is not locked out of the code the way it would
 be locked out of a domain. It is still worth moving to an organisation in
@@ -190,8 +193,14 @@ and a real visitor in a real browser passes without being asked to do anything.
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Vercel **Config** (readable). Public — it ships in the page source. |
 | `TURNSTILE_SECRET_KEY` | Vercel **Secret** (hidden, cannot be read back). |
 
-Cloudflare account: Phillip's, widget named `quelldrop.com (Spin)`.
-**It should move to an Aurora account** along with Vercel and GitHub (§7).
+Cloudflare account: **Phillip's company account**, widget named
+`quelldrop.com (Spin)` — confirmed by him on 2026-09-15, correcting an earlier
+note here that assumed it was personal. Same for Vercel and GitHub.
+
+> Adding or editing hostnames on the widget does **not** touch the keys. They
+> are a widget setting; the site key and secret key are fixed at creation, and
+> rotating the secret is a separate deliberate action. So a hostname change
+> needs no Vercel edit and no redeploy — it applies on the next page load.
 
 > **Add `quelleye.com` to the widget's hostname list if that domain is ever
 > used in earnest.** Deploys alias it alongside quelldrop.com, and Turnstile
