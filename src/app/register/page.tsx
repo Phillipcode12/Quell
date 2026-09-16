@@ -58,7 +58,10 @@ export default async function RegisterPage() {
 
   return (
     <Suspense>
-      <AuthForm mode="register" />
+      <AuthForm
+        mode="register"
+        siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+      />
     </Suspense>
   )
 }

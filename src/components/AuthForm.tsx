@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { PasswordField } from '@/components/PasswordField'
+import { Turnstile, resetTurnstile } from '@/components/Turnstile'
 
 export function AuthForm({
   mode,
@@ -16,14 +17,18 @@ export function AuthForm({
    * anyway — never has to think about it.
    */
   canRegister = true,
+  /** Turnstile site key. Absent means it is not configured here. */
+  siteKey,
 }: {
   mode: 'login' | 'register'
   canRegister?: boolean
+  siteKey?: string
 }) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [token, setToken] = useState<string | null>(null)
 
   const isRegister = mode === 'register'
 
@@ -45,6 +50,11 @@ export function AuthForm({
     }
     delete payload.confirm
 
+    // Only registration is gated. Sign-in is not: a bot guessing passwords is
+    // already met by the per-account rate limit, and putting a challenge in
+    // front of the form real customers use every visit costs more than it buys.
+    if (isRegister && token) payload.turnstileToken = token
+
     try {
       const res = await fetch(
         isRegister ? '/api/auth/register' : '/api/auth/login',
@@ -58,6 +68,11 @@ export function AuthForm({
 
       if (!res.ok) {
         setError(data.error ?? 'Something went wrong.')
+        if (isRegister) {
+          // The token just spent is single-use and now worthless.
+          resetTurnstile()
+          setToken(null)
+        }
         return
       }
 
@@ -135,6 +150,10 @@ export function AuthForm({
             </p>
           )}
 
+          {isRegister && siteKey && (
+            <Turnstile siteKey={siteKey} onToken={setToken} />
+          )}
+
           {error && (
             <p className="rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-300">
               {error}
@@ -143,7 +162,7 @@ export function AuthForm({
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || (isRegister && Boolean(siteKey) && !token)}
             className="w-full rounded-lg bg-brand px-4 py-3 font-semibold text-black transition hover:bg-brand-light disabled:opacity-60"
           >
             {loading

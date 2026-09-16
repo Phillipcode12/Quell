@@ -2,11 +2,13 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import { Turnstile, resetTurnstile } from '@/components/Turnstile'
 
-export function ForgotPasswordForm() {
+export function ForgotPasswordForm({ siteKey }: { siteKey?: string }) {
   const [sent, setSent] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [token, setToken] = useState<string | null>(null)
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -19,12 +21,17 @@ export function ForgotPasswordForm() {
       const res = await fetch('/api/auth/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: form.get('email') }),
+        body: JSON.stringify({ email: form.get('email'), turnstileToken: token }),
       })
       const data = await res.json()
 
       if (!res.ok) {
         setError(data.error ?? 'Something went wrong.')
+        // A token is single-use, so the one just spent is now worthless
+        // whatever went wrong. Without this the visitor gets one attempt and
+        // then a permanently disabled button.
+        resetTurnstile()
+        setToken(null)
         return
       }
       setSent(data.message)
@@ -75,15 +82,21 @@ export function ForgotPasswordForm() {
                 />
               </label>
 
+              {siteKey && <Turnstile siteKey={siteKey} onToken={setToken} />}
+
               {error && (
                 <p className="rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-300">
                   {error}
                 </p>
               )}
 
+              {/* Disabled until the check passes. `siteKey` being absent means
+                  Turnstile is not configured for this environment, and the
+                  server skips the check too, so the button must not wait for a
+                  token that will never arrive. */}
               <button
                 type="submit"
-                disabled={loading}
+                disabled={loading || (Boolean(siteKey) && !token)}
                 className="w-full rounded-lg bg-brand px-4 py-3 font-semibold text-black transition hover:bg-brand-light disabled:opacity-60"
               >
                 {loading ? 'Sending…' : 'Send reset link'}

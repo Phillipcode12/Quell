@@ -5,12 +5,18 @@ import { hashPassword } from '@/lib/auth'
 import { createSession } from '@/lib/session'
 import { clientIp, rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { REGISTRATION_CLOSED_MESSAGE, registrationOpen } from '@/lib/registration'
+import {
+  TURNSTILE_FAILED_MESSAGE,
+  turnstileEnabled,
+  verifyTurnstile,
+} from '@/lib/turnstile'
 
 const schema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(100),
   // Normalize before validating so " Me@Example.com " is accepted and stored lowercase.
   email: z.string().trim().toLowerCase().pipe(z.email('Enter a valid email')),
   password: z.string().min(8, 'Password must be at least 8 characters').max(200),
+  turnstileToken: z.string().optional(),
 })
 
 export async function POST(request: Request) {
@@ -42,6 +48,15 @@ export async function POST(request: Request) {
       { error: parsed.error.issues[0]?.message ?? 'Invalid input' },
       { status: 400 },
     )
+  }
+
+  // Before the existence check below, which is the part a bot could otherwise
+  // use to learn which addresses already have accounts.
+  if (turnstileEnabled()) {
+    const check = await verifyTurnstile(parsed.data.turnstileToken, ip)
+    if (!check.ok) {
+      return NextResponse.json({ error: TURNSTILE_FAILED_MESSAGE }, { status: 403 })
+    }
   }
 
   const { name, email, password } = parsed.data

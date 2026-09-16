@@ -5,9 +5,15 @@ import { prisma } from '@/lib/db'
 import { sendPasswordResetEmail } from '@/lib/email'
 import { clientIp, rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { appUrl } from '@/lib/site'
+import {
+  TURNSTILE_FAILED_MESSAGE,
+  turnstileEnabled,
+  verifyTurnstile,
+} from '@/lib/turnstile'
 
 const schema = z.object({
   email: z.string().trim().toLowerCase().pipe(z.email('Enter a valid email')),
+  turnstileToken: z.string().optional(),
 })
 
 const TOKEN_TTL_MS = 60 * 60_000 // 1 hour
@@ -31,6 +37,16 @@ export async function POST(request: Request) {
       { error: parsed.error.issues[0]?.message ?? 'Invalid input' },
       { status: 400 },
     )
+  }
+
+  // This is the endpoint the bot was actually after: it is the one that makes
+  // the site send mail to an arbitrary address. Checked after parsing so a
+  // malformed body still gets its 400, but before any database work or email.
+  if (turnstileEnabled()) {
+    const check = await verifyTurnstile(parsed.data.turnstileToken, ip)
+    if (!check.ok) {
+      return NextResponse.json({ error: TURNSTILE_FAILED_MESSAGE }, { status: 403 })
+    }
   }
 
   const { email } = parsed.data
