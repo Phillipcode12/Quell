@@ -285,3 +285,35 @@ export function score(answers: Record<string, unknown>): SelfCheckResult {
     pattern: evaporative ? PATTERN_EVAPORATIVE : PATTERN_UNCLEAR,
   }
 }
+
+/**
+ * The invitation shown on the homepage hero.
+ *
+ * Kept here rather than in the Hero component so it sits with the copy Dr.
+ * Rynerson approved. It describes a symptom questionnaire on a page selling an
+ * FDA-regulated drug, so the next person to review the self-check should find
+ * this in the same file rather than discovering it in a layout six months
+ * later.
+ *
+ * The wording is deliberately the same promise the page itself makes. Two
+ * things it is careful not to do:
+ *
+ *  - **It does not say drops stop working.** That reads as disparagement of
+ *    every other product on the shelf, and it is a comparative claim nobody
+ *    has substantiated. The hook is curiosity about yourself, not doubt about
+ *    a competitor.
+ *  - **It offers a score, not an answer.** "Find out what's wrong with your
+ *    eyes" would be promising a diagnosis in the one place on the site with
+ *    the most traffic.
+ */
+export const HERO_INVITE = {
+  /**
+   * Not "Free self-check". It costs an email address, and calling that free is
+   * the small kind of untrue thing that makes a reader distrust the larger
+   * claims beside it. The time is the objection worth answering anyway.
+   */
+  eyebrow: '90-second self-check',
+  heading: 'What are your eyes telling you?',
+  body: 'Eight questions, about ninety seconds. You’ll get a symptom score and find out whether your answers fit the pattern of a tear film that evaporates too quickly.',
+  cta: 'Take the self-check',
+} as const

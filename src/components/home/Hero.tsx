@@ -1,9 +1,10 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { HeroBuy } from '@/components/home/HeroBuy'
-import { ArrowRight, Truck } from '@/components/icons'
+import { ArrowRight, Clipboard, Truck } from '@/components/icons'
 import { formatUsd } from '@/lib/money'
 import { BRAND, FRONT_PANEL_CLAIMS, RELIEVES } from '@/lib/product-content'
+import { HERO_INVITE } from '@/lib/self-check'
 import { FREE_SHIPPING_THRESHOLD_CENTS } from '@/lib/shipping'
 
 // Fades the photo's white studio background out to the page black instead of
@@ -102,6 +103,41 @@ export function Hero({ product }: { product: HeroProduct }) {
               Free shipping over {formatUsd(FREE_SHIPPING_THRESHOLD_CENTS)}
             </li>
           </ul>
+
+          {/**
+           * The self-check, offered after the trust row rather than beside the
+           * buy buttons.
+           *
+           * It is a genuinely different proposition — the rest of this column
+           * asks someone to buy, and this asks them to find something out — so
+           * it gets its own block instead of becoming a third button competing
+           * with "Add to cart". Bordered and tinted rather than solid for the
+           * same reason the cart link is: nothing here should outrank the
+           * primary action.
+           *
+           * Copy lives in `lib/self-check.ts` with the rest of the wording Dr.
+           * Rynerson approved, because this describes a symptom questionnaire
+           * on a page selling a regulated drug.
+           */}
+          <Link
+            href="/self-check"
+            className="group mt-8 block rounded-xl border border-line bg-surface/60 p-5 transition hover:border-brand/50 hover:bg-brand/[0.07]"
+          >
+            <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-brand">
+              <Clipboard className="h-3.5 w-3.5" />
+              {HERO_INVITE.eyebrow}
+            </span>
+            <span className="mt-2.5 block text-lg font-semibold tracking-tight text-white">
+              {HERO_INVITE.heading}
+            </span>
+            <span className="mt-1.5 block text-sm leading-relaxed text-muted">
+              {HERO_INVITE.body}
+            </span>
+            <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-light">
+              {HERO_INVITE.cta}
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </span>
+          </Link>
         </div>
 
         <div className="relative">
