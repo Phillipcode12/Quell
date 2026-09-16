@@ -2,6 +2,13 @@ import 'server-only'
 import { BRAND, COMPANY } from '@/lib/product-content'
 import { carrierName, trackingUrl } from '@/lib/carriers'
 import { appUrl } from '@/lib/site'
+import {
+  DISCLAIMER,
+  MAX_SCORE,
+  SAFETY_BODY,
+  SAFETY_TITLE,
+  type SelfCheckResult,
+} from '@/lib/self-check'
 
 /**
  * Minimal transactional mail.
@@ -433,4 +440,113 @@ export async function sendPasswordResetEmail(to: string, resetUrl: string) {
   ].join('\n')
 
   return deliver({ to, subject: `Reset your ${BRAND.name} password`, html, text })
+}
+
+/**
+ * The dry eye self-check result.
+ *
+ * **Deliberately the same words as the result screen.** Someone who has just
+ * read their result and then receives a different account of it has been told
+ * two things, and has no way to know which one Aurora stands behind. So the
+ * band, the summary and the pattern all come from `lib/self-check.ts` — the
+ * reviewed copy — rather than being written again here.
+ *
+ * ### Two shapes, and the difference matters
+ *
+ * When the safety check fired there is no score, and this email contains **no
+ * product, no link to the shop, and nothing about relief**. That person told us
+ * they have eye pain or a change in vision; following that with marketing is
+ * the single worst thing this feature could do, and it is enforced here as
+ * well as in the UI because a mail template is exactly the sort of place a
+ * "helpful" product footer gets added later without anyone thinking about it.
+ *
+ * ### It carries no opt-out, and that is correct today
+ *
+ * Nobody is subscribing to anything. This is the result a person asked for,
+ * sent once, which makes it transactional — and an unsubscribe link on a
+ * one-off reply invites people to opt out of a list that does not exist.
+ *
+ * **That changes the day anything else is sent to these addresses.** A second,
+ * unrequested email is marketing, and marketing needs a working opt-out and a
+ * signup that said so at the time. The consent for that has to be collected at
+ * the gate, not assumed afterwards from an address given for a different
+ * purpose.
+ */
+export async function sendSelfCheckResultEmail(
+  to: string,
+  result: SelfCheckResult,
+) {
+  const base = appUrl()
+
+  if (result.safety) {
+    const html = layout(
+      SAFETY_TITLE,
+      `
+      <p style="margin:0 0 16px;line-height:1.6;">${SAFETY_BODY}</p>
+      <p style="margin:0;line-height:1.6;color:#5a6b83;">
+        Keep this email if it helps — the symptoms you reported are worth
+        mentioning to whoever you see.
+      </p>
+    `,
+    )
+
+    const text = [
+      SAFETY_TITLE,
+      '',
+      SAFETY_BODY,
+      '',
+      'Keep this email if it helps — the symptoms you reported are worth mentioning to whoever you see.',
+    ].join('\n')
+
+    return deliver({
+      to,
+      subject: `Your ${BRAND.name} self-check — please see a doctor`,
+      html,
+      text,
+    })
+  }
+
+  const html = layout(
+    'Your dry eye self-check',
+    `
+      <p style="margin:0 0 6px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#5a6b83;">
+        Your score &middot; ${result.score} of ${MAX_SCORE}
+      </p>
+      <p style="margin:0 0 6px;font-size:22px;font-weight:bold;">${result.band.title}</p>
+      <p style="margin:0 0 20px;line-height:1.6;">${result.band.summary}</p>
+
+      <div style="border-left:3px solid #00a7b5;background:#eef8f9;padding:14px 16px;margin:0 0 22px;line-height:1.6;">
+        ${result.pattern}
+      </div>
+
+      <p style="margin:0 0 20px;line-height:1.6;color:#5a6b83;">
+        ${DISCLAIMER}
+      </p>
+
+      <p style="margin:0 0 22px;">
+        <a href="${base}/#science" style="background:#00a7b5;color:#000000;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:bold;display:inline-block;">See how ${BRAND.name} works</a>
+      </p>
+    `,
+  )
+
+  const text = [
+    'Your dry eye self-check',
+    '',
+    `Your score: ${result.score} of ${MAX_SCORE}`,
+    result.band.title,
+    result.band.summary,
+    '',
+    result.pattern,
+    '',
+    DISCLAIMER,
+    '',
+    `See how ${BRAND.name} works: ${base}/#science`,
+  ].join('\n')
+
+  return deliver({
+    to,
+    subject: `Your ${BRAND.name} dry eye self-check result`,
+    html,
+    text,
+  })
 }

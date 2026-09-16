@@ -169,9 +169,12 @@ export function SelfCheck({ siteKey }: { siteKey?: string }) {
                 >
                   Start the self-check
                 </button>
+                {/* Says only what actually happens. An earlier version
+                    promised "occasional dry eye information", which would have
+                    been consent collected for a list nobody is running — and
+                    the wrong kind of promise to make and then not keep. */}
                 <p className="mt-4 text-xs leading-relaxed text-muted">
-                  We’ll email your result and occasional dry eye information.
-                  Unsubscribe any time. We never sell your address.
+                  We’ll email you your result. We never sell your address.
                 </p>
               </form>
             )}

@@ -3,6 +3,7 @@ import * as Sentry from '@sentry/nextjs'
 import { z } from 'zod'
 import { prisma } from '@/lib/db'
 import { campaignFromInput } from '@/lib/campaign'
+import { sendSelfCheckResultEmail } from '@/lib/email'
 import { clientIp, rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { score } from '@/lib/self-check'
 import {
@@ -128,6 +129,29 @@ export async function POST(request: Request) {
       error: error instanceof Error ? error.message : String(error),
     })
     Sentry.captureException(error, { tags: { route: 'self-check' } })
+  }
+
+  /**
+   * Sent after the row is written, and awaited rather than fired and
+   * forgotten.
+   *
+   * The screen says "on its way to <address>", and that sentence has to be
+   * true — it is the only reason anyone has to type a working address when the
+   * score appears regardless. Awaiting it also means a hard bounce surfaces
+   * here rather than silently, which matters because bounce rate is what
+   * protects deliverability for order receipts (§26).
+   *
+   * A failure still does not cost the visitor their result, for the same
+   * reason the database failure above does not.
+   */
+  try {
+    await sendSelfCheckResultEmail(email, result)
+  } catch (error) {
+    console.error('[self-check] failed to send result email', {
+      email,
+      error: error instanceof Error ? error.message : String(error),
+    })
+    Sentry.captureException(error, { tags: { route: 'self-check', step: 'email' } })
   }
 
   return NextResponse.json({ ok: true, result })
