@@ -217,8 +217,20 @@ export const BANDS: Band[] = [
 export const PATTERN_EVAPORATIVE =
   'Your answers fit an evaporation pattern. Blurring that clears when you blink, trouble on screens and in moving air, and relief that fades quickly all describe a tear film that is not holding. The outermost layer of that film is oil.'
 
+/**
+ * Chosen from four options on 2026-09-16, and the reason is worth keeping.
+ *
+ * It is the only phrasing that does not sound faintly apologetic: it puts the
+ * limitation on the tool rather than on the person. That matters beyond this
+ * one screen — a questionnaire that is candid about what it cannot see is the
+ * reason anyone believes the evaporation result when it does appear.
+ *
+ * Previously: "Your answers don't point clearly in one direction. That is
+ * common, and it is one of the reasons an eye exam is more useful than a
+ * questionnaire."
+ */
 export const PATTERN_UNCLEAR =
-  'Your answers don’t point clearly in one direction. That is common, and it is one of the reasons an eye exam is more useful than a questionnaire.'
+  'Your answers don’t form a clear pattern. Nine questions can only see so much — an eye exam sees the part this one can’t.'
 
 export const SAFETY_TITLE = 'See an eye care professional'
 
