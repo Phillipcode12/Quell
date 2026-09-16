@@ -10,6 +10,8 @@ import Link from 'next/link'
 const TABS = [
   { key: 'orders', label: 'Orders', href: '/admin/orders' },
   { key: 'customers', label: 'Customers', href: '/admin/customers' },
+  // Distinct from Customers on purpose: these people gave an email, not money.
+  { key: 'subscribers', label: 'Self-check', href: '/admin/subscribers' },
   { key: 'analytics', label: 'Traffic', href: '/admin/analytics' },
 ] as const
 
