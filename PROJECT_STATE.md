@@ -14,15 +14,11 @@ means a missing table would hit every page, not one route.
 
 ### Open, in the order they matter
 
-1. **Registration is closed, and reopening it needs Turnstile first** (§26).
-   A bot created 120 accounts in eleven days and used them to make the site
-   send 75 password-reset emails to strangers; `ALLOW_REGISTRATION=0` in
-   Vercel is what stopped it. Rate limiting will not replace that — the
-   endpoint was already capped at 5/hour per IP throughout. Put **Cloudflare
-   Turnstile** on `/register` and `/forgot-password`, then flip the flag
-   to `1` **and redeploy** — Vercel binds environment variables to a
-   deployment, so changing one alone does nothing to the build serving
-   traffic.
+1. **Move the Cloudflare account to Aurora** (§28). Turnstile is live and the
+   signup bot is stopped, but the account holding the widget is Phillip's
+   personal one, which puts it on the same list as Vercel and GitHub (§7).
+   Nothing is broken; it is ownership, and it is cheapest to fix before there
+   is traffic depending on it.
 2. **Bing Webmaster Tools** (§24) — the last SEO item, and it needs Phillip
    rather than code. bing.com/webmasters → My Sites → **Import** → sign in with
    the Google account that owns Search Console → tick quelldrop.com. It carries
@@ -175,6 +171,80 @@ Working tree clean, `main` in sync, nothing left running.
 > they wait for a refund that never arrives and their next move is a chargeback
 > — and on a high-risk account the chargeback ratio is what gets processing
 > withdrawn (§21).
+
+---
+
+## 28. Turnstile — shipped 2026-09-15, registration reopened
+
+Cloudflare Turnstile now guards `/api/auth/register` and
+`/api/auth/forgot-password`, and **`ALLOW_REGISTRATION` is back to `1`**. The
+incident in §26 is closed.
+
+Verified on production: a POST to either endpoint with no token returns **403**,
+and a real visitor in a real browser passes without being asked to do anything.
+
+### Where the keys live
+
+| | |
+| --- | --- |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Vercel **Config** (readable). Public — it ships in the page source. |
+| `TURNSTILE_SECRET_KEY` | Vercel **Secret** (hidden, cannot be read back). |
+
+Cloudflare account: Phillip's, widget named `quelldrop.com (Spin)`.
+**It should move to an Aurora account** along with Vercel and GitHub (§7).
+
+> **Add `quelleye.com` to the widget's hostname list if that domain is ever
+> used in earnest.** Deploys alias it alongside quelldrop.com, and Turnstile
+> validates the hostname it was loaded on, so the widget is inert there until
+> the hostname is added.
+
+### The trap that cost an hour, so nobody repeats it
+
+**Turnstile cannot be tested from an automated browser, and it fails silently
+rather than telling you so.**
+
+The symptom: `turnstile.render()` returns a normal widget id, creates its
+wrapper `div` and the hidden `cf-turnstile-response` input, and then leaves the
+container empty. No iframe. No `error-callback`. Nothing in the console. It
+looks exactly like a broken integration.
+
+It is not broken — declining to serve automation is the entire product. What
+misled the diagnosis was that Cloudflare's **test** sitekey renders fine in the
+same automated browser, because a dummy widget never runs a real challenge. So
+"the widget works with test keys and dies with real ones" is not evidence about
+the keys at all.
+
+**The only test that means anything is a human loading the page in an ordinary
+browser.** Phillip did, and it passed without him clicking anything.
+
+Two hours of production behaviour were changed chasing this, including a
+rollback of the sitekey and two redeploys. Reaching for a real browser first
+would have skipped all of it.
+
+### Failure behaviour, deliberately chosen
+
+`turnstileEnabled()` keys on the **site key**, not the secret. Gating on the
+secret would mean that setting the site key and forgetting the secret gives a
+form that shows a widget, has visitors solve it, and verifies nothing —
+protection that looks present and is not, discoverable only by incident. Keying
+on the site key makes that same mistake refuse every request instead.
+
+Everything else fails closed too, **including a Cloudflare outage**: these two
+forms stop working rather than letting everyone through. That is the right way
+round for endpoints nobody needs in an emergency, but it is a trade, and it is
+why `verifyTurnstile` returns a distinguishable reason rather than a bare
+`false`.
+
+With neither key set the check is skipped entirely and the forms render without
+a widget, so local development needs no Cloudflare account. `.env` carries
+Cloudflare's published test keys for that.
+
+### What is still only rate-limited
+
+**Sign-in has no Turnstile**, on purpose. A bot guessing passwords is already
+met by the per-account rate limit, and putting a challenge in front of the form
+real customers use on every visit costs more than it buys. Revisit only if
+credential-stuffing shows up in the logs.
 
 ---
 
