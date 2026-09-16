@@ -113,15 +113,39 @@ the third is worth building.
    any subscribe-and-save**: recurring billing through Authorize.net is a much
    larger job, and the reorder rate this produces is the evidence for whether
    it is worth it.
-3. **Email capture for non-buyers.** Nothing exists today, so every first visit
-   that does not convert is lost permanently — which for a $30 considered
-   health purchase from an unfamiliar brand is most of them. One field, one
-   Resend audience.
+3. ~~**Email capture for non-buyers.**~~ **Done 2026-09-16 — see §30.** It
+   landed as the dry eye self-check rather than a signup box: a questionnaire
+   that answers a question about *you* is a far stronger reason to give an
+   address than a newsletter, and it costs no margin. Live at `/self-check`,
+   linked from the homepage hero, in the sitemap, with an admin tab and CSV
+   export.
 
    > **Whatever gets sent is marketing for an FDA-regulated OTC drug** and
    > needs the same claim discipline as the site: nothing the Drug Facts *Uses*
    > panel does not support, and no redness (§9). A reorder reminder is safe
    > ground because it says nothing about what the product does.
+
+**So the reorder nudge (2) is the next thing to build**, and most of its
+plumbing now exists — `Subscriber` already holds an email and a timestamp, and
+Resend is wired for two templates. Agreed 2026-09-16 to start it next session.
+
+### Where else the self-check mechanism could go
+
+It is more general than a quiz: a gated, scored, emailed assessment that writes
+a qualified lead with campaign attribution. Noted 2026-09-16 while it was fresh.
+
+- **Back-in-stock notify.** Stock is modelled and `OutOfStock` already ships in
+  the structured data, but a sold-out page just loses the visitor today. Same
+  form, same table, a different `source` — which is the field that exists so
+  two sources never blur together.
+- **A practitioner list.** The one worth thinking hardest about. Aurora sells
+  through eye-care professionals, and the same mechanism with different
+  questions — *how many dry eye patients do you see a week?* — collects a lead
+  worth far more than a consumer email. It is also the natural bridge to the
+  BlephEx certification material now filed in the DECB project.
+- **Not** a generic "join our newsletter" box. This works because it gives
+  something back before it asks; a box that only takes converts a fraction as
+  well and teaches people to ignore the site's asks.
 
 ### The Meta Pixel — blocked on a privacy-policy decision
 
@@ -275,6 +299,170 @@ Working tree clean, `main` in sync, nothing left running.
 > they wait for a refund that never arrives and their next move is a chargeback
 > — and on a high-risk account the chargeback ratio is what gets processing
 > withdrawn (§21).
+
+---
+
+## 30. The dry eye self-check — shipped 2026-09-16
+
+**quelldrop.com/self-check**, linked from the homepage hero and in the sitemap.
+Email capture (item 3 of the agreed build) landed as a symptom questionnaire
+rather than a signup box.
+
+Eight questions about symptoms, a score out of 21, a severity band, and a read
+on whether the answers fit an evaporation pattern. Approved by Dr. Rynerson on
+2026-09-16, which is what gated the launch.
+
+### Why a quiz and not a discount wheel
+
+Phillip's first idea was spin-to-win with a coupon. Three things ruled it out,
+and they are worth keeping because the same reasoning applies to the next
+tactic someone suggests:
+
+- **There is no discount system in this app at all** — no codes, no
+  `discountCents` on Order. The wheel is an afternoon; the coupon engine behind
+  it is days of work through the payment path, which is the riskiest code here.
+- **265 visits a month.** A wheel at 8% against a form at 3% is the difference
+  between ~21 emails and ~8. Thirteen emails does not pay for a discount engine.
+- **It fights the positioning.** Everything on the site argues *patented,
+  MD-developed, serious about the tear film*, and a casino wheel would sit on
+  the same page as a Drug Facts panel. Meta also reviews the landing page, and
+  aggressive interstitials on a health product are a known cause of ad
+  rejection.
+
+A quiz answers a question about *you*, which is a far stronger reason to give
+an address than a chance at 15% off — and it costs no margin.
+
+### The regulatory shape, which is the whole design
+
+**It never diagnoses and never prescribes.** Nine results exist: four bands ×
+two pattern states, plus the safety screen. Every one restates what the person
+reported and stops.
+
+> **The word "evaporative" never appears. It says "an evaporation pattern".**
+> *Evaporative dry eye* is a disease classification, and asserting it is a
+> diagnosis. "Your answers fit an evaporation pattern" describes the answers.
+> Both pattern sentences are about *the answers*, never the person — that is
+> the line between a questionnaire and a finding, and it is why neither
+> contains "you have".
+
+**Where it is genuinely thin, recorded honestly:** FTC judges net impression,
+not sentences. The sequence is *here is what your answers describe* → *the
+outer layer of the tear film is oil* → *see how Quell works*, and Quell's pitch
+is that it reinforces the oil layer. No sentence claims Quell reduces
+evaporation; the reader assembles it. That is better than stating it and is not
+a free pass. The single line to revisit if anyone ever challenges this is **"The
+outermost layer of that film is oil."** Dr. Rynerson saw it and approved it.
+
+Everything else is already on the site and transcribed from the carton and
+brand cards: *"reinforces the tear film's oil layer to help reduce moisture
+loss"*, *"minimizing evaporation of the aqueous layer"*. The quiz opened no new
+claim category.
+
+**The questions are original and must stay that way.** OSDI and SPEED are the
+real instruments here and both are copyrighted. These cover similar symptom
+ground because that is what dry eye consists of. **Never cite either, and never
+present this as validated.**
+
+### The safety check is the load-bearing part
+
+Question 9 asks about eye pain, changes in vision, symptoms past 72 hours, and
+redness that will not settle — lifted from Quell's own *stop use and ask a
+doctor if* panel. Any of them and the person gets **no score at all**, a
+different screen, a different email, and **no product anywhere**.
+
+It is enforced in `score()` and in the mail template, not only in the UI. A
+client can be edited, and a mail template is exactly where a helpful product
+footer gets added later by someone who has not thought about it. A test asserts
+that a maxed-out symptom profile plus a flag still yields nothing.
+
+**Red appears on that screen and nowhere else in the flow.** That is what makes
+the colour information rather than decoration — it says *this one is not about
+scoring* before a word is read. Kept to a label, a rule and a footnote: a
+red-washed panel would read as an alarm, and most people answering it have
+ordinary mild dryness.
+
+### Phillip's calls, so they are not re-litigated
+
+- **The email is asked for before the first question**, not after the score.
+  Everyone who takes it is captured; fewer people start. Asked and answered on
+  2026-09-16 after the trade was put in front of him.
+- **Nobody is subscribing.** It is a single transactional reply, so there is no
+  unsubscribe and the gate promises only the result. *If anything else is ever
+  sent to these addresses, both the promise at signup and a working opt-out
+  have to come back first.*
+- **Safety-flagged people may be emailed**, and are included in the CSV export.
+  The flag ships as a column rather than being dropped, so the fact travels
+  with the data and can be filtered later.
+- **The result button points at `#science`, not `#buy`.** It costs no sales —
+  `WhyItWorks` sits directly above `BuySection`, so this lands on the
+  explanation with the buy panel as the next scroll. It also reads better
+  regulatorily: result → explanation → product is information; result → cart
+  reads as *here is your treatment*.
+
+### Where the emails go
+
+`Subscriber` table, separate from `User` — a subscriber has no password and
+cannot sign in. **`/admin/subscribers`** lists them with score, band, pattern
+and campaign, and exports CSV.
+
+**The score is the useful column, not the email.** Someone at 18 with an
+evaporation pattern has said their daily symptoms are not being fixed by what
+they already use; someone at 2 was curious. One list of both throws away the
+only thing this collects that a signup box would not.
+
+The CSV writer guards two different problems: RFC 4180 quoting, and **formula
+injection** — a spreadsheet executes a cell starting with `=`, `+`, `-` or `@`,
+and campaign tags arrive in a URL anyone can craft, so that is reachable rather
+than theoretical. Also a UTF-8 BOM, without which Excel mangles accented
+characters.
+
+### Two things that cost time and should not again
+
+**Turnstile guards this endpoint from day one.** A public form that takes an
+arbitrary email and writes it to a table is the same shape of surface the
+signup bot used (§26). Waiting for an incident would have been choosing to
+repeat it.
+
+**The save failure is reported, not swallowed.** The first version caught
+silently, and the first time it fired — a stale Prisma client in dev — the page
+rendered a perfect result while every signup was thrown away. **A capture
+endpoint that fails invisibly is worse than one that is plainly down**, because
+nobody goes looking. It now reports to console and Sentry.
+
+---
+
+## 31. Local development finally has a database
+
+Until 2026-09-16 there was **no local database at all**: no Postgres installed,
+no Docker, nothing on `localhost:5433`. Every page needing a product or an
+order returned 500 locally, which is why so much of this project has been
+verified against production instead.
+
+Fixed without installing anything: a **separate `quell_dev` database on the
+same Neon server**. `CREATE DATABASE quell_dev` over `DATABASE_URL_UNPOOLED`,
+local `.env` pointed at it, `prisma migrate deploy`, `npm run db:seed`.
+
+Production is the `quell` database on the same host and is untouched by local
+work. Nothing was installed, and no test rows land in production.
+
+> **If local pages start returning 500 again**, check `DATABASE_URL` in `.env`
+> ends in `/quell_dev`. Pointing it at production works and is the wrong answer.
+
+### Migrations are still not run on deploy
+
+`build` is `prisma generate && next build` (§3), so a migration must be applied
+**by hand and before the code that needs it is deployed**:
+
+```
+npx vercel env pull <scratch>/.env.prod --environment=production --yes
+DATABASE_URL="<DATABASE_URL_UNPOOLED from that file>" npx prisma migrate deploy
+```
+
+Unpooled, because Neon's pooled connection goes through pgbouncer and pgbouncer
+breaks DDL. Delete the pulled env file immediately afterwards.
+
+Getting the order backwards takes the site down: the code references a table or
+column that does not exist yet.
 
 ---
 
