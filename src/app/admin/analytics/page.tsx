@@ -14,12 +14,14 @@ import {
   monthlyUnits,
   monthlyVisits,
   salesSince,
+  campaignBreakdown,
   sourceBreakdown,
   topReferrers,
   visitsSince,
   LIVE_WINDOW_MS,
   SOURCE_LABELS,
   SOURCE_NOTES,
+  type CampaignRow,
   type MonthRow,
 } from '@/lib/analytics'
 import { formatUsd } from '@/lib/money'
@@ -140,6 +142,97 @@ function DayBars({
  * conversion without traffic are different problems, and only seeing them side
  * by side tells you which one you have.
  */
+/**
+ * Revenue per campaign.
+ *
+ * The column that matters is **revenue per visit**, not conversion: it is the
+ * one directly comparable to what a click costs. A campaign converting at 4%
+ * on $30 orders is worth less than one converting at 2% on $60 orders, and
+ * only this column says so.
+ *
+ * "No campaign" is listed alongside the rest rather than hidden, because
+ * organic traffic is the baseline any advert has to beat to be worth its cost.
+ */
+function CampaignTable({ rows }: { rows: CampaignRow[] }) {
+  const anyCampaign = rows.some((r) => r.campaign || r.source)
+
+  return (
+    <div className="mt-8">
+      <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-brand">
+        Campaigns
+      </h3>
+      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
+        Where the last 30 days of traffic and revenue came from, split by the{' '}
+        <code className="text-brand-light">utm_source</code> and{' '}
+        <code className="text-brand-light">utm_campaign</code> tags on the link
+        someone arrived through. Untagged links all count as “No campaign”.
+      </p>
+
+      <div className="mt-4 overflow-x-auto rounded-xl border border-line">
+        <table className="w-full min-w-[44rem] text-left text-sm">
+          <thead className="border-b border-line bg-surface-2 text-muted">
+            <tr>
+              <th className="px-4 py-3 font-medium">Campaign</th>
+              <th className="px-4 py-3 text-right font-medium">Visits</th>
+              <th className="px-4 py-3 text-right font-medium">Orders</th>
+              <th className="px-4 py-3 text-right font-medium">Revenue</th>
+              <th className="px-4 py-3 text-right font-medium">Conv.</th>
+              <th className="px-4 py-3 text-right font-medium">Per visit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.length === 0 ? (
+              <tr>
+                <td className="px-4 py-3 text-muted" colSpan={6}>
+                  Nothing yet.
+                </td>
+              </tr>
+            ) : (
+              rows.map((row) => (
+                <tr
+                  key={`${row.source}|${row.medium}|${row.campaign}`}
+                  className="border-b border-line last:border-0"
+                >
+                  <td className="px-4 py-3">
+                    {row.label}
+                    {row.medium && (
+                      <span className="ml-2 text-xs text-muted">{row.medium}</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-right tabular-nums">{row.visits}</td>
+                  <td className="px-4 py-3 text-right tabular-nums">{row.orders}</td>
+                  <td className="px-4 py-3 text-right tabular-nums">
+                    {formatUsd(row.revenueCents)}
+                  </td>
+                  <td className="px-4 py-3 text-right tabular-nums">
+                    {row.conversion === null ? '—' : `${row.conversion.toFixed(1)}%`}
+                  </td>
+                  <td className="px-4 py-3 text-right tabular-nums">
+                    {row.revenuePerVisitCents === null
+                      ? '—'
+                      : formatUsd(row.revenuePerVisitCents)}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {!anyCampaign && (
+        <p className="mt-3 max-w-2xl text-xs leading-relaxed text-muted">
+          No tagged links have been used yet. To attribute an advert, add tags
+          to its destination URL — for example{' '}
+          <code className="text-brand-light">
+            quelldrop.com/?utm_source=facebook&amp;utm_medium=cpc&amp;utm_campaign=dry-eye-launch
+          </code>
+          . Anything untagged keeps counting as “No campaign”.
+        </p>
+      )}
+    </div>
+  )
+}
+
 function MonthlyHistory({ data }: { data: MonthRow[] }) {
   if (data.length === 0) return null
 
@@ -255,6 +348,7 @@ export default async function AdminAnalyticsPage() {
     dailyOrders,
     dailyUnitsSold,
     monthUnits,
+    campaigns,
   ] = await Promise.all([
     liveVisitors(now),
     visitsSince(startOfUtcDay(now)),
@@ -271,6 +365,7 @@ export default async function AdminAnalyticsPage() {
     dailySales(14, now),
     dailyUnits(14, now),
     monthlyUnits(),
+    campaignBreakdown(monthAgo),
   ])
 
   const months = joinMonthly(monthVisits, monthSales, monthUnits)
@@ -422,6 +517,8 @@ export default async function AdminAnalyticsPage() {
               </tbody>
             </table>
           </div>
+
+          <CampaignTable rows={campaigns} />
 
           <MonthlyHistory data={months} />
         </>

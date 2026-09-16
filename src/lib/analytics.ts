@@ -1,5 +1,6 @@
 import 'server-only'
 import { prisma } from '@/lib/db'
+import { campaignLabel } from '@/lib/campaign'
 
 /**
  * First-party visit counting.
@@ -512,4 +513,113 @@ export async function monthlyUnits(): Promise<MonthUnits[]> {
     ORDER BY 1 DESC
   `
   return rows.map((r) => ({ month: r.month.toISOString().slice(0, 10), units: r.units }))
+}
+
+export type CampaignRow = {
+  /** Display label, e.g. "facebook · dry-eye-launch". */
+  label: string
+  source: string | null
+  medium: string | null
+  campaign: string | null
+  visits: number
+  orders: number
+  revenueCents: number
+  /** Orders per visit, as a percentage. Null when there were no visits. */
+  conversion: number | null
+  /** Revenue per visit in cents — the number that says what a click was worth. */
+  revenuePerVisitCents: number | null
+}
+
+/**
+ * Traffic, orders and revenue grouped by campaign.
+ *
+ * ### Why two queries and a join in TypeScript
+ *
+ * Visits and orders are deliberately unlinked — no visit id is ever written on
+ * an order, and no customer is ever written on a visit. Both tables carry the
+ * campaign *label* independently, so they are grouped separately and matched on
+ * that label here. A SQL join would need a relationship that does not exist and
+ * should not be created.
+ *
+ * The consequence worth knowing: a visit and an order in the same row are not
+ * necessarily the same person, only the same campaign. That is what makes the
+ * conversion column an aggregate rate rather than a per-person fact — which is
+ * all anyone should read from it anyway.
+ *
+ * Rows with no campaign tags are included as "No campaign", because organic
+ * traffic is the baseline every advert has to beat.
+ */
+export async function campaignBreakdown(since: Date): Promise<CampaignRow[]> {
+  const [visitRows, orderRows] = await Promise.all([
+    prisma.visit.groupBy({
+      by: ['utmSource', 'utmMedium', 'utmCampaign'],
+      where: { startedAt: { gte: since } },
+      _count: { _all: true },
+    }),
+    prisma.order.groupBy({
+      by: ['utmSource', 'utmMedium', 'utmCampaign'],
+      where: { status: { in: SOLD }, createdAt: { gte: since } },
+      _count: { _all: true },
+      _sum: { totalCents: true },
+    }),
+  ])
+
+  // Null and the empty string must land in the same bucket, or "no campaign"
+  // splits into two rows that each look like half the traffic.
+  const key = (
+    s: string | null,
+    m: string | null,
+    c: string | null,
+  ) => `${s ?? ''}|${m ?? ''}|${c ?? ''}`
+
+  const rows = new Map<string, CampaignRow>()
+
+  const blank = (s: string | null, m: string | null, c: string | null): CampaignRow => ({
+    label: campaignLabel({
+      utmSource: s,
+      utmMedium: m,
+      utmCampaign: c,
+      utmContent: null,
+    }),
+    source: s,
+    medium: m,
+    campaign: c,
+    visits: 0,
+    orders: 0,
+    revenueCents: 0,
+    conversion: null,
+    revenuePerVisitCents: null,
+  })
+
+  for (const v of visitRows) {
+    const k = key(v.utmSource, v.utmMedium, v.utmCampaign)
+    const row = rows.get(k) ?? blank(v.utmSource, v.utmMedium, v.utmCampaign)
+    row.visits += v._count._all
+    rows.set(k, row)
+  }
+
+  for (const o of orderRows) {
+    const k = key(o.utmSource, o.utmMedium, o.utmCampaign)
+    // An order with no matching visit row is normal, not a bug: someone can
+    // buy on a later day than the one the range starts on, or with storage
+    // blocked so the visit was never recorded.
+    const row = rows.get(k) ?? blank(o.utmSource, o.utmMedium, o.utmCampaign)
+    row.orders += o._count._all
+    row.revenueCents += o._sum.totalCents ?? 0
+    rows.set(k, row)
+  }
+
+  for (const row of rows.values()) {
+    if (row.visits > 0) {
+      row.conversion = (row.orders / row.visits) * 100
+      row.revenuePerVisitCents = Math.round(row.revenueCents / row.visits)
+    }
+  }
+
+  // Revenue first, because the question is which advert paid for itself.
+  // Visits break the tie so a campaign with traffic and no sales is visible
+  // rather than buried — that is a result too.
+  return [...rows.values()].sort(
+    (a, b) => b.revenueCents - a.revenueCents || b.visits - a.visits,
+  )
 }

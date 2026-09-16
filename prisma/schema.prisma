@@ -94,6 +94,22 @@ model Order {
   /// pending -> paid (gateway webhook) -> shipped | cancelled
   status String @default("pending")
 
+  /// Which campaign brought this sale, copied from the landing URL at
+  /// checkout. Null for anyone who arrived without campaign tags.
+  ///
+  /// Stored on the order rather than joined from `Visit` on purpose. Revenue
+  /// per campaign is the question worth answering, and answering it this way
+  /// needs no link between a visit and a buyer — the order carries a campaign
+  /// *label*, which is Aurora's own word for an advert, not a fact about the
+  /// person. The visit table stays unlinked to any customer, as designed.
+  ///
+  /// Also the durable copy: a visit row can age out, and these have to survive
+  /// as long as the revenue they explain.
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmContent  String?
+
   /// "one_time" or "subscription". Only "one_time" is reachable today —
   /// recurring billing is deferred to a later Authorize.net ARB phase.
   purchaseMode          String  @default("one_time")
@@ -182,6 +198,21 @@ model Visit {
   /// full URL is dropped: search pages put the query in it, and that is the
   /// visitor's words, not ours.
   referrerHost String?
+
+  /// Campaign tags from the landing URL, set once alongside `source` and for
+  /// the same reason: the parameters are only present on the first page.
+  ///
+  /// These are our own labels, written by whoever built the ad — "facebook",
+  /// "cpc", "dry-eye-launch" — not anything about the visitor. That is why
+  /// they can be stored when a referring URL cannot.
+  ///
+  /// `utm_term` is deliberately NOT among them. On paid search it carries the
+  /// keyword the visitor typed, which is the same thing `referrerHost` exists
+  /// to avoid keeping.
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmContent  String?
 
   startedAt  DateTime @default(now())
   /// Bumped on every page load and keep-alive. This is what "here now" means.

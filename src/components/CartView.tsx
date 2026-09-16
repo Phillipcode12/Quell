@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { useCart } from '@/components/CartProvider'
+import { readCampaign } from '@/lib/campaign-client'
 import { formatUsd } from '@/lib/money'
 import {
   FREE_SHIPPING_LABEL,
@@ -119,6 +120,9 @@ export function CartView({
           shipTo: { ...address, country: 'US' },
           // Ignored by the server when signed in — the account address wins.
           ...(isSignedIn ? {} : { email }),
+          // Whatever advert started this visit, remembered since the landing
+          // page. All-nulls for anyone who arrived without campaign tags.
+          ...readCampaign(),
         }),
       })
       const data = await res.json()

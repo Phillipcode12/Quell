@@ -8,6 +8,7 @@ import {
   isGatewayConfigured,
 } from '@/lib/authorizenet'
 import { generateUniqueOrderNumber } from '@/lib/order-number'
+import { campaignFromInput } from '@/lib/campaign'
 import { clientIp, rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { appUrl } from '@/lib/site'
 import { BRAND } from '@/lib/product-content'
@@ -109,6 +110,20 @@ const schema = z.object({
   /// Only read when signed out. A signed-in buyer's own address always wins,
   /// so a spoofed value cannot redirect someone else's receipt.
   email: z.string().trim().toLowerCase().email('Enter a valid email address.').optional(),
+  /**
+   * Which advert brought this sale, carried from the landing page by the
+   * browser.
+   *
+   * Client-supplied and therefore not trustworthy — but nothing depends on it
+   * being true. It affects no price, no stock, no access; the worst a forged
+   * value does is make Aurora's own marketing report wrong, which is not a
+   * threat anyone has a motive to carry out. Cleaned and length-capped by
+   * `campaignFromInput` all the same.
+   */
+  utmSource: z.string().optional(),
+  utmMedium: z.string().optional(),
+  utmCampaign: z.string().optional(),
+  utmContent: z.string().optional(),
 })
 
 export async function POST(request: Request) {
@@ -230,6 +245,10 @@ export async function POST(request: Request) {
       orderNumber,
       status: 'pending',
       purchaseMode: 'one_time',
+      // Written on the pending order rather than waiting for payment, because
+      // the browser that knows the campaign is here and gone by the time the
+      // gateway webhook lands.
+      ...campaignFromInput(parsed.data),
       subtotalCents,
       shippingCents,
       totalCents,
