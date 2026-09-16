@@ -99,7 +99,7 @@ Phillip's call after a review of what the site is missing. Deliberately ordered:
 the first must exist before ad money is spent, and the second tells you whether
 the third is worth building.
 
-1. **Campaign attribution (UTM).** `lib/analytics.ts` classifies traffic as
+1. ~~**Campaign attribution (UTM).**~~ **Done 2026-09-16 (03c416d, 70cc1e1).** `lib/analytics.ts` classifies traffic as
    `search` / `link` / `direct` only, which is fine for organic and useless the
    day a Meta ad runs — every click lands in `link`. Capture `utm_source`,
    `utm_medium` and `utm_campaign` on first visit, store them on the visit row
@@ -275,6 +275,86 @@ Working tree clean, `main` in sync, nothing left running.
 > they wait for a refund that never arrives and their next move is a chargeback
 > — and on a high-risk account the chargeback ratio is what gets processing
 > withdrawn (§21).
+
+---
+
+## 29. Campaign attribution — shipped 2026-09-16
+
+`/admin` → Traffic now carries a **Campaigns** table: visits, orders, revenue,
+conversion and revenue-per-visit for the last 30 days, grouped by the
+`utm_source` and `utm_campaign` on the link someone arrived through. Untagged
+traffic is listed as "No campaign" rather than hidden, because organic is the
+baseline an advert has to beat.
+
+To attribute an advert, tag its destination:
+
+```
+quelldrop.com/?utm_source=facebook&utm_medium=cpc&utm_campaign=dry-eye-launch
+```
+
+### Three decisions worth not undoing
+
+**Revenue-per-visit leads, not conversion.** It is the column directly
+comparable to what a click costs: 2% conversion on $60 orders beats 4% on $30,
+and only this column says so.
+
+**`utm_term` is never collected.** The other four tags are Aurora's own labels,
+written by whoever built the advert. On paid search `utm_term` carries the words
+the *visitor* typed — the same thing `referrerHost` already exists to avoid
+keeping. A test asserts it never survives parsing.
+
+**Visits and orders are still unlinked.** Both tables carry the campaign label
+independently and `campaignBreakdown` matches them on that label in TypeScript.
+No visit id is written on an order and no customer on a visit. The consequence
+to know when reading the table: a visit and an order in the same row are the
+same *campaign*, not necessarily the same person, so conversion there is an
+aggregate rate and never a per-person fact.
+
+Tags live in `sessionStorage`, per-tab and dying with the tab, so `/privacy`
+stays true about third-party cookies. First tagged arrival in a tab wins, which
+matches how a visit's `source` already behaves.
+
+### The bug this shipped with, and what it should teach
+
+`z.string().optional()` accepts `string | undefined` and **rejects `null`**.
+`captureCampaign` returns all four keys always, with `null` for any tag the URL
+did not carry — so every campaign-tagged request failed its schema outright.
+
+On `/api/track` the route's always-204 design then swallowed it: **the entire
+visit was dropped**, and traffic from an advert would have been invisible in the
+exact report the tags exist to fill. On `/api/checkout` the same mistake was
+waiting and was worse — a customer arriving from an advert would have been told
+"Invalid input" while the cart worked normally for everyone else. An ad campaign
+that could take money from nobody.
+
+**313 unit tests passed throughout.** What caught it was loading the real site
+with a tagged URL and then querying the production database for the row, which
+was not there. The tests exercised tidy partial objects; the browser sends
+nulls, and nothing asserted that shape until afterwards.
+
+Two habits earned their keep here:
+
+- **A silent failure path needs louder verification, not less.** "Always returns
+  204" is right for a tracker and it means the only proof of success is the row.
+- **Send on every report, write on create only.** The first tagged visit was
+  written retrospectively by a later heartbeat once the fix deployed, because
+  the client keeps sending tags it has already sent. That design turned a lost
+  visit into a delayed one.
+
+Both routes now accept `unknown` for these fields and delegate to
+`campaignFromInput`, which rejects non-strings, strips control characters and
+caps length — so no shape of campaign data can cost a visit or a sale.
+
+### Migration
+
+`20260916010000_campaign_attribution` — four nullable columns on `Visit` and on
+`Order`, plus an index on each `utmCampaign`. **Migrations are not run on
+deploy** (§3: `build` is `prisma generate && next build`), so it was applied by
+hand with `prisma migrate deploy` against `DATABASE_URL_UNPOOLED` — Neon's
+pooled connection goes through pgbouncer, which breaks DDL sessions.
+
+It was applied **before** the code that references the columns was deployed.
+That order is not optional: the reverse takes the site down.
 
 ---
 
