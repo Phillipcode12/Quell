@@ -275,12 +275,29 @@ export function SelfCheck({ siteKey }: { siteKey?: string }) {
                   {DISCLAIMER}
                 </p>
 
-                {/* The product appears once, after the result, as an option —
-                    never as the answer to a score. It is omitted entirely when
-                    the safety check fired. */}
+                {/**
+                 * The product appears once, after the result, as an option —
+                 * never as the answer to a score. Omitted entirely when the
+                 * safety check fired.
+                 *
+                 * **Points at `#science`, not `#buy`, and that costs no sales.**
+                 * On the homepage `WhyItWorks` sits directly above
+                 * `BuySection`, so this lands on the explanation with the buy
+                 * panel as the next thing they scroll into — they get both, in
+                 * the order that makes sense.
+                 *
+                 * Three reasons it is not `#buy`. The label promises an
+                 * explanation, and sending it to a price would make the label
+                 * untrue. Someone arriving from an advert may never have seen
+                 * the homepage, so they have just been handed a mechanism and
+                 * no product at all. And the regulatory read is better:
+                 * result → explanation → product is information, while
+                 * result → cart reads as "here is your treatment", which is
+                 * the implied claim this page is carefully built not to make.
+                 */}
                 {!result.safety && (
                   <Link
-                    href="/#buy"
+                    href="/#science"
                     className="mt-7 inline-flex rounded-lg border-2 border-brand bg-brand/10 px-6 py-3 font-semibold text-white transition hover:bg-brand/20"
                   >
                     See how Quell works
