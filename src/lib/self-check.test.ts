@@ -213,3 +213,55 @@ describe('what the copy is not allowed to say', () => {
     expect(PATTERN_EVAPORATIVE.toLowerCase()).toContain('your answers')
   })
 })
+
+describe('the two answer scales', () => {
+  /**
+   * Added 2026-09-16 after Phillip spotted the mismatch: the screen and air
+   * questions were offering "Some days", which does not answer "how often,
+   * when you use a screen". A reader had to guess whether they were reporting
+   * on the trigger or on the week.
+   */
+  const byId = (id: string) => QUESTIONS.find((q) => q.id === id)!
+
+  it('asks trigger questions in occasions, not days', () => {
+    for (const id of ['screens', 'air']) {
+      const labels = byId(id).choices.map((c) => c.label)
+      expect(labels, id).toEqual(['Never', 'Occasionally', 'Frequently', 'Every time'])
+      expect(labels.join(' '), id).not.toContain('day')
+    }
+  })
+
+  it('keeps the day scale for questions about the week', () => {
+    for (const id of ['grit', 'burn', 'blink', 'watering']) {
+      const labels = byId(id).choices.map((c) => c.label)
+      expect(labels, id).toEqual(['Never', 'Some days', 'Most days', 'Every day'])
+    }
+  })
+
+  it('scores both scales identically', () => {
+    // Different words, same 0-3. If these ever diverge the total silently
+    // stops meaning what the bands were written against.
+    for (const id of ['grit', 'screens']) {
+      expect(byId(id).choices.map((c) => c.value)).toEqual([0, 1, 2, 3])
+    }
+  })
+
+  it('offers "All the time" rather than describing a missing answer', () => {
+    const timing = byId('timing')
+    const labels = timing.choices.map((c) => c.label)
+    expect(labels).toEqual(['Morning', 'Afternoon', 'Evening', 'Night', 'All the time'])
+    expect(labels.join(' ')).not.toContain('pattern')
+  })
+
+  it('does not treat constant symptoms as an evaporation marker', () => {
+    // The pattern this question feeds is "worse as the day goes on". Something
+    // present from waking to sleeping is not that, and severity is already
+    // measured elsewhere.
+    const base = { safety: 'clear', blink: 2, screens: 2 }
+    const constant = score({ ...base, timing: 'constant' })
+    const evening = score({ ...base, timing: 'evening' })
+    if (constant.safety || evening.safety) throw new Error('unreachable')
+    expect(constant.evaporative).toBe(false)
+    expect(evening.evaporative).toBe(true)
+  })
+})

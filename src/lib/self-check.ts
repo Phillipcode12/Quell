@@ -45,12 +45,28 @@ export type Question = {
   safety?: boolean
 }
 
-/** Shared frequency scale for the first six questions. */
+/**
+ * Two scales, because two kinds of question are being asked.
+ *
+ * `FREQUENCY` measures something that comes and goes over a week, so it is
+ * counted in days. `EXPOSURE` measures what happens *when a specific thing
+ * happens* — screen use, moving air — and days are the wrong unit for that:
+ * "some days" does not answer "how often, when you use a screen", and a
+ * reader has to guess whether they are reporting on the trigger or the week.
+ * Occasions are the honest unit there.
+ */
 const FREQUENCY: Choice[] = [
   { label: 'Never', value: 0 },
   { label: 'Some days', value: 1 },
   { label: 'Most days', value: 2 },
   { label: 'Every day', value: 3 },
+]
+
+const EXPOSURE: Choice[] = [
+  { label: 'Never', value: 0 },
+  { label: 'Occasionally', value: 1 },
+  { label: 'Frequently', value: 2 },
+  { label: 'Every time', value: 3 },
 ]
 
 export const QUESTIONS: Question[] = [
@@ -72,14 +88,16 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 'screens',
-    prompt: 'After an hour or more on a screen, how often do your eyes feel worse?',
-    choices: FREQUENCY,
+    prompt:
+      'After an hour or more of screen use, how often do your eyes feel worse?',
+    choices: EXPOSURE,
     evaporative: true,
   },
   {
     id: 'air',
-    prompt: 'How often do wind, air conditioning, or heating make your eyes feel worse?',
-    choices: FREQUENCY,
+    prompt:
+      'In wind, air conditioning, or heating, how often do your eyes feel worse?',
+    choices: EXPOSURE,
     evaporative: true,
   },
   {
@@ -114,10 +132,21 @@ export const QUESTIONS: Question[] = [
       { label: 'Afternoon', value: 'afternoon' },
       { label: 'Evening', value: 'evening' },
       { label: 'Night', value: 'night' },
-      // Kept although plain times of day were what was asked for: without it,
-      // anyone whose eyes are bad all day has to invent an answer, and an
-      // invented answer is worse than none.
-      { label: 'No real pattern', value: 'none' },
+      /**
+       * The fifth option exists so nobody has to invent a time of day, and an
+       * invented answer is worse than none.
+       *
+       * "All the time" rather than "no real pattern": it says something true
+       * about the person instead of describing the absence of an answer, and
+       * it is what someone with constant symptoms would actually choose.
+       *
+       * Deliberately **not** an evaporation marker. Constant symptoms point in
+       * no particular direction — the pattern this question contributes to is
+       * *worsening through the day*, and something present from waking to
+       * sleeping is not that. Severity is already measured by the questions
+       * above, so nothing is lost by scoring it neutrally here.
+       */
+      { label: 'All the time', value: 'constant' },
     ],
   },
   {
