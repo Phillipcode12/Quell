@@ -132,3 +132,68 @@ describe('labelling', () => {
     expect(hasCampaign(NO_CAMPAIGN)).toBe(false)
   })
 })
+
+describe('the payload the browser actually sends', () => {
+  /**
+   * Regression guard for a bug that reached production on 2026-09-16.
+   *
+   * `captureCampaign` returns all four keys always, with `null` for any tag
+   * the URL did not carry — so the real request body looks like the object
+   * below, not like a tidy partial. The route schemas used
+   * `z.string().optional()`, which accepts `string | undefined` and **rejects
+   * `null`**, so every campaign-tagged arrival failed validation outright.
+   *
+   * On `/api/track` that silently dropped the whole visit behind the
+   * always-204 response: traffic from an advert was invisible in the exact
+   * report the tags exist to fill. On `/api/checkout` it would have returned
+   * "Invalid input" to a paying customer who clicked an advert, while the cart
+   * worked normally for everyone else — an ad campaign that could take money
+   * from nobody.
+   *
+   * These assert the parsing layer copes with that shape. The routes now
+   * accept `unknown` and delegate here, so no shape of campaign data can cost
+   * a visit or a sale.
+   */
+  it('handles nulls for absent tags, which is the normal case', () => {
+    const fromBrowser = {
+      utmSource: 'facebook',
+      utmMedium: 'cpc',
+      utmCampaign: 'dry-eye-launch',
+      utmContent: null,
+    }
+    expect(campaignFromInput(fromBrowser)).toEqual({
+      utmSource: 'facebook',
+      utmMedium: 'cpc',
+      utmCampaign: 'dry-eye-launch',
+      utmContent: null,
+    })
+  })
+
+  it('handles an all-null payload, which every untagged visitor sends', () => {
+    expect(
+      campaignFromInput({
+        utmSource: null,
+        utmMedium: null,
+        utmCampaign: null,
+        utmContent: null,
+      }),
+    ).toEqual(NO_CAMPAIGN)
+  })
+
+  it('round-trips what captureCampaign stores', () => {
+    // sessionStorage holds JSON, so nulls survive as nulls and undefined
+    // becomes absent. Both must parse.
+    const stored = JSON.stringify({
+      utmSource: 'facebook',
+      utmMedium: null,
+      utmCampaign: 'launch',
+      utmContent: null,
+    })
+    expect(campaignFromInput(JSON.parse(stored))).toEqual({
+      utmSource: 'facebook',
+      utmMedium: null,
+      utmCampaign: 'launch',
+      utmContent: null,
+    })
+  })
+})

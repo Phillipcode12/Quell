@@ -119,11 +119,18 @@ const schema = z.object({
    * value does is make Aurora's own marketing report wrong, which is not a
    * threat anyone has a motive to carry out. Cleaned and length-capped by
    * `campaignFromInput` all the same.
+   *
+   * Accepted as `unknown` rather than `z.string().optional()`, which rejects
+   * `null` — and the browser sends `null` for every tag it does not have. That
+   * would have failed the whole schema and returned "Invalid input" to a real
+   * customer who arrived from an advert: an ad campaign that took payment from
+   * nobody, with the cart working fine for everyone else. `campaignFromInput`
+   * rejects non-strings anyway, so nothing is lost by being permissive here.
    */
-  utmSource: z.string().optional(),
-  utmMedium: z.string().optional(),
-  utmCampaign: z.string().optional(),
-  utmContent: z.string().optional(),
+  utmSource: z.unknown().optional(),
+  utmMedium: z.unknown().optional(),
+  utmCampaign: z.unknown().optional(),
+  utmContent: z.unknown().optional(),
 })
 
 export async function POST(request: Request) {
