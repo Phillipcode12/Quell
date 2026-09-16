@@ -72,15 +72,116 @@ means a missing table would hit every page, not one route.
 3. **Confirm `QUELL DROP` on a real statement.** The descriptor is set (§9) but
    has never been seen on one, because the test charge that would have shown it
    was refunded. The next real order is the first chance.
-4. **Fulfilment is still unassigned.** Nobody has agreed who packs, who posts,
-   or who receives returns (§13). No real order has arrived yet, so nothing is
-   stranded — but that is timing rather than a system, and the terms promise
-   30-day returns to an address nobody has nominated.
+4. **Fulfilment: Ryan does it.** Settled by Phillip on 2026-09-15, closing the
+   longest-standing open question here.
+
+   The software side is already built and needs nothing: the admin alert fires
+   when payment clears (`sendNewOrderNotificationEmail`, to `FULFILMENT_EMAILS`
+   falling back to `ADMIN_EMAILS`), and marking an order shipped with a carrier
+   and tracking number sends the customer a shipping notice. **Two things are
+   worth confirming with Ryan rather than assuming**, because the code cannot
+   settle either:
+
+   - **Is `ryan.peterson@meibum.com` in `FULFILMENT_EMAILS`?** If not, the
+     packing alert for the first order goes to Phillip alone.
+   - **What address receives returns?** `/terms` promises 30-day returns on
+     unopened bottles and names no address. Ryan packing outbound does not
+     automatically mean he receives inbound.
 
    *(Ryan does know the shop is live: his "I didn't realize that you were so
    close to go-live" on 2026-09-03 was his reply to Phillip telling him. An
    earlier version of this file read that as him being unaware. He also created
    an account that day and is an admin.)*
+
+### Agreed next build, in order (2026-09-15)
+
+Phillip's call after a review of what the site is missing. Deliberately ordered:
+the first must exist before ad money is spent, and the second tells you whether
+the third is worth building.
+
+1. **Campaign attribution (UTM).** `lib/analytics.ts` classifies traffic as
+   `search` / `link` / `direct` only, which is fine for organic and useless the
+   day a Meta ad runs — every click lands in `link`. Capture `utm_source`,
+   `utm_medium` and `utm_campaign` on first visit, store them on the visit row
+   beside `source`, and the revenue-per-day chart already in `/admin` becomes
+   revenue per campaign. **Attribution cannot be reconstructed afterwards**, so
+   this has to ship before the spend. Half a day.
+2. **Reorder nudge.** A 10 mL bottle at one drop three times daily in each eye
+   runs out in roughly five to seven weeks, and nothing prompts a second
+   purchase. An email at ~35 days needs only the order date, which is already
+   stored, and Resend, which is already wired. About a day. **Do this before
+   any subscribe-and-save**: recurring billing through Authorize.net is a much
+   larger job, and the reorder rate this produces is the evidence for whether
+   it is worth it.
+3. **Email capture for non-buyers.** Nothing exists today, so every first visit
+   that does not convert is lost permanently — which for a $30 considered
+   health purchase from an unfamiliar brand is most of them. One field, one
+   Resend audience.
+
+   > **Whatever gets sent is marketing for an FDA-regulated OTC drug** and
+   > needs the same claim discipline as the site: nothing the Drug Facts *Uses*
+   > panel does not support, and no redness (§9). A reorder reminder is safe
+   > ground because it says nothing about what the product does.
+
+### The Meta Pixel — blocked on a privacy-policy decision
+
+Raised 2026-09-15 and **not** built, for a reason that is not stylistic.
+
+`/privacy` currently states: *"We do not use advertising trackers or third-party
+cookies on this site."* A Meta Pixel is exactly that, so installing one makes a
+live privacy policy false. Phillip has previously asked for that policy to be
+left as it is, so this is his decision to make knowingly rather than a detail to
+slip past.
+
+Two things to weigh when it comes up:
+
+- **Health sites are the worst neighbourhood for browser pixels.** Meta's own
+  business terms prohibit sending health information, and pixels on
+  health-related sites have produced some of the largest privacy settlements of
+  recent years. A browser pixel auto-collects the page URL, so a visitor
+  reading `/drug-facts` would send Meta that they viewed a page about an eye
+  medication. Aurora already has an FDA finding on the sister properties.
+- **Prefer the Conversions API to the browser pixel.** Server-side survives ad
+  blockers and iOS tracking prevention, which eat a large share of browser
+  events — and it sends exactly the payload we choose ("a purchase happened,
+  value $59.98") rather than auto-collecting URLs. For a regulated product it
+  is both the safer and the more accurate option.
+
+The pixel buys nothing until there is ad spend, so the sequence is: UTM first
+(no privacy implications, works for every channel), Meta's side later, alongside
+the policy edit.
+
+### Meta Conversions API — agreed 2026-09-15, waiting on credentials
+
+Phillip's position, and it is the right one: the point of Meta advertising is
+reaching people who buy products like this, and that needs Aurora's conversion
+signal fed back to Meta. **The Conversions API supplies exactly that** — the
+same custom audiences, lookalikes and Advantage+ optimisation a browser pixel
+would, because it sends the same events. Choosing server-side gives up no
+targeting.
+
+It is also the better integration on its own merits. Ad blockers and iOS
+tracking prevention drop a large share of browser pixel events, while
+server-sent events arrive; and the strongest identifier Meta matches on is a
+hashed email, which this shop already holds at checkout.
+
+**Blocked on Phillip:** a Meta Business account, the dataset (pixel) ID, and a
+CAPI access token. The token is a credential — it goes into Vercel as a
+**Secret**, like `TURNSTILE_SECRET_KEY`, and must never be pasted into a chat.
+
+> **Expectation worth setting before the first campaign.** Lookalike audiences
+> need a seed of roughly 100 buyers (Meta's own minimum) and work better with
+> considerably more. At zero customers there is nothing to model, so early
+> campaigns necessarily run on interest targeting whatever is installed. The
+> reason to wire CAPI *before* launching is that the signal starts accumulating
+> from order one — not because lookalikes will work on day one. They will not.
+
+When it is built, `/privacy` needs Meta added to the list of who data is shared
+with, beside Authorize.net and Resend. That is an addition, not a retraction:
+re-reading the existing sentence — *"We do not use advertising trackers or
+third-party cookies **on this site**"* — server-side CAPI does not contradict
+it, because nothing runs in the visitor's browser and no third-party cookie is
+set. A browser pixel would contradict it outright.
 
 ### Account ownership — worth settling, not urgent
 
