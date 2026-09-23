@@ -2492,6 +2492,50 @@ production purchase is the first time the whole sequence runs for real.
 section for the verified state. The reasoning that led there is kept below so
 it is not re-derived from scratch.
 
+### DNS stays at GoDaddy — decided 2026-09-23
+
+Vercel shows a banner on `quelleye.com` offering to take over the nameservers:
+*"your nameservers are still pointed at another DNS provider… DNS records are
+created automatically, SSL certificates are provisioned and renewed without
+configuration."* **It is an upsell, not a problem report, and the answer is no.**
+
+Measured 2026-09-23, both domains:
+
+```
+NS     ns*.domaincontrol.com        (GoDaddy)
+A      216.198.79.1, 64.29.17.1     (Vercel anycast)
+MX     none
+TXT    none
+
+quelleye.com   HTTPS 308 -> quelldrop.com
+quelldrop.com  HTTPS 200, serves the site
+```
+
+Everything the banner offers already exists: both domains resolve to Vercel and
+both have working SSL. There is nothing to fix.
+
+Three reasons to leave it:
+
+- **It would split the DNS.** Aurora owns four domains — quelldrop.com,
+  quelleye.com, quelleyes.com, quelltears.com — all managed in one GoDaddy
+  account. Moving one to Vercel means two places to check when something is
+  wrong, which is worse than either keeping all four together or moving all
+  four.
+- **quelleye.com only redirects.** It does not serve the app, so there is no
+  deployment on it whose DNS needs managing.
+- **Downside with no upside.** A nameserver change takes up to 48 hours and
+  records can resolve inconsistently meanwhile. That is a real if small risk
+  accepted in exchange for nothing.
+
+> **What would change the answer: email.** Neither domain has an MX record
+> today, which is why transactional mail carries a Reply-To of
+> `Phillip.moore@meibum.com` (§ email). If Aurora ever wants a real mailbox on
+> quelldrop.com, having its zone at GoDaddy beside the company's other domains
+> makes that easier, not harder — and it keeps the records well away from
+> meibum.com's own zone, which is the risk this section has always been about.
+
+The banner will keep appearing. It can be ignored every time.
+
 ### Where to buy it
 
 **On the company's existing GoDaddy / Name.com account.** Confirmed 2026-08-20
