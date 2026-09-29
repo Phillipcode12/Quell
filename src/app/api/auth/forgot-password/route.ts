@@ -5,6 +5,7 @@ import { prisma } from '@/lib/db'
 import { sendPasswordResetEmail } from '@/lib/email'
 import { clientIp, rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { appUrl } from '@/lib/site'
+import { resetDecision } from '@/lib/reset-guard'
 import {
   TURNSTILE_FAILED_MESSAGE,
   turnstileEnabled,
@@ -17,6 +18,7 @@ const schema = z.object({
 })
 
 const TOKEN_TTL_MS = 60 * 60_000 // 1 hour
+
 
 export async function POST(request: Request) {
   const ip = clientIp(request)
@@ -50,9 +52,59 @@ export async function POST(request: Request) {
   }
 
   const { email } = parsed.data
+
+  /**
+   * A second limit, keyed on the address rather than the caller.
+   *
+   * The IP limit above stops one host hammering the endpoint. It does nothing
+   * about the same *victim* being mailed repeatedly from many hosts, which is
+   * exactly what a rotating botnet does — and the mail lands in one inbox
+   * however many machines sent it. Keyed on the address so the person being
+   * mailed is the thing being protected.
+   *
+   * Counted before the account lookup, so it costs a bot nothing to learn
+   * from: the response is identical either way.
+   */
+  const byEmail = await rateLimit(`forgot:email:${email}`, {
+    limit: 3,
+    windowMs: 60 * 60_000,
+  })
+
   const user = await prisma.user.findUnique({ where: { email } })
 
-  if (user) {
+  /**
+   * Whether this request is allowed to put mail in someone's inbox.
+   *
+   * Two reasons it might not be, and **neither changes the response** — the
+   * body below is identical in every case, so this cannot be used to discover
+   * which addresses have accounts or which are being throttled.
+   *
+   * **The account is brand new.** The bot's whole play is: register with a
+   * stranger's address, then immediately ask for a reset, so the site mails
+   * the stranger. On 2026-09-30 the gap between the two was under a minute
+   * (§32). Nobody genuinely forgets a password they chose seconds ago, so a
+   * reset for an account this young is far more likely to be that chain than
+   * a real person.
+   *
+   * **The address has already been mailed three times this hour.**
+   *
+   * A determined bot can wait out the age check, and that is understood — it
+   * is not a wall, it is a cost. The wall is that registration is closed
+   * (§32), and this exists so that reopening it later is safe by default
+   * rather than by someone remembering.
+   */
+  const decision = resetDecision({
+    accountCreatedAt: user?.createdAt ?? null,
+    withinEmailLimit: byEmail.ok,
+  })
+
+  if (!decision.send && decision.reason !== 'no-account') {
+    // Invisible to the caller, but it is the signal that the chain is being
+    // attempted again -- and last time nobody noticed for three days.
+    console.warn('[forgot-password] suppressed', { email, reason: decision.reason })
+  }
+
+  if (user && decision.send) {
     // Invalidate any outstanding tokens so only the newest link works.
     await prisma.passwordResetToken.updateMany({
       where: { userId: user.id, usedAt: null },
