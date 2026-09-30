@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useCart } from '@/components/CartProvider'
 import { readCampaign } from '@/lib/campaign-client'
+import { suggestEmail } from '@/lib/email-address'
 import { formatUsd } from '@/lib/money'
 import {
   FREE_SHIPPING_LABEL,
@@ -78,6 +79,8 @@ export function CartView({
   const [loading, setLoading] = useState(false)
   const [address, setAddress] = useState(EMPTY_ADDRESS)
   const [email, setEmail] = useState('')
+  // Recomputed per keystroke; it is a handful of string comparisons.
+  const suggestion = suggestEmail(email)
 
   function field(name: keyof typeof EMPTY_ADDRESS) {
     return {
@@ -263,6 +266,29 @@ export function CartView({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
+                {/**
+                 * The "did you mean?" half of the typo defence.
+                 *
+                 * The server refuses domains with no mail server, which is a
+                 * fact. This catches the ones that *do* accept mail —
+                 * `hotnail.com` and `outlok.com` are registered and have MX
+                 * records — where refusing would be a guess. So it offers a
+                 * correction and lets the customer decide, which never blocks
+                 * a real address.
+                 */}
+                {suggestion && (
+                  <p className="mt-1.5 text-xs text-brand-light">
+                    Did you mean{' '}
+                    <button
+                      type="button"
+                      onClick={() => setEmail(suggestion)}
+                      className="font-semibold underline underline-offset-2"
+                    >
+                      {suggestion}
+                    </button>
+                    ?
+                  </p>
+                )}
                 <p className="mt-1.5 text-xs text-muted">
                   Your receipt and tracking go here. No account needed.
                 </p>

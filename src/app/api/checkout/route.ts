@@ -9,6 +9,7 @@ import {
 } from '@/lib/authorizenet'
 import { generateUniqueOrderNumber } from '@/lib/order-number'
 import { campaignFromInput } from '@/lib/campaign'
+import { UNDELIVERABLE_MESSAGE, domainAcceptsMail } from '@/lib/email-mx'
 import { clientIp, rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { appUrl } from '@/lib/site'
 import { BRAND } from '@/lib/product-content'
@@ -179,6 +180,25 @@ export async function POST(request: Request) {
       { error: 'Enter an email address so we can send your receipt.' },
       { status: 400 },
     )
+  }
+
+  /**
+   * Refuse an address whose domain has no mail server.
+   *
+   * The first real order (§35) was placed with `gmal.com` — a perfect address
+   * by every syntactic test, and undeliverable. The customer paid and received
+   * no confirmation, with no way to work out why.
+   *
+   * Only checked for guests: a signed-in buyer's address came from an account
+   * they have already used, so re-testing it risks blocking a returning
+   * customer over a DNS hiccup for no benefit.
+   *
+   * `domainAcceptsMail` fails **open** on anything short of a definitive "this
+   * domain does not exist" — losing a sale to a slow resolver would be a worse
+   * outcome than an undeliverable receipt.
+   */
+  if (!user && !(await domainAcceptsMail(email))) {
+    return NextResponse.json({ error: UNDELIVERABLE_MESSAGE }, { status: 400 })
   }
 
   // Prices always come from the database, never from the client payload.
