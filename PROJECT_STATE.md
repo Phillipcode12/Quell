@@ -14,12 +14,15 @@ means a missing table would hit every page, not one route.
 
 ### Open, in the order they matter
 
-1. **Write to Chris Whitmire** (§33). The first real person to reach checkout,
-   on 2026-09-20. He was not charged, and the automated recovery email will
-   **not** reach him — his cart is past the seven-day bound, deliberately, so
-   the system does not collide with a personal note. One short message from
-   Phillip. He may finish the order; more valuably he may say *why he stopped*,
-   and that answer is worth more than the $59.98.
+1. **Watch for a reply from Chris Whitmire** (§33). The first real person to
+   reach checkout, on 2026-09-20; not charged. The recovery email was sent by
+   hand on 2026-09-30 from `/admin/abandoned`, since his cart was past the
+   seven-day bound. Replies go to `Phillip.moore@meibum.com`.
+
+   **If nothing comes back in a few days, a short personal note is still worth
+   sending** — not another nudge to buy, but a plain question about what
+   stopped him. He is the only person who has ever reached the payment page and
+   left, and the answer is worth more than the order.
 2. **Leave registration closed** (§32), and decide deliberately rather than by
    drift. The bot returned on 2026-09-27 and got past Turnstile by buying
    solved tokens. Across fourteen accounts ever created, two were real. Reopen
@@ -498,6 +501,30 @@ abandoned one.
 > **Secret** and cannot be read back — which is the point of storing it that
 > way. The manual run is a button on
 > **Settings → Cron Jobs** in the Vercel dashboard.
+
+### Sending one by hand — `/admin/abandoned`, "Send now"
+
+The cron gives up after seven days, which is right for a machine: past that an
+automatic "your cart is waiting" reads as surveillance. **A person deciding to
+write to one customer is a different act**, and that bound should not prevent
+it. So each row carries a manual send.
+
+It refuses a paid or cancelled order — checked server-side, not trusted to the
+caller, because "your cart is waiting" to someone already charged is the worst
+message this system could produce. It does *not* refuse an already-emailed
+cart: a second is a deliberate human choice, so the button confirms and reads
+"Send again" rather than hiding. It still marks before sending, so the
+automatic run can never add a third.
+
+**Claude cannot send these.** `RESEND_API_KEY` is a Vercel Secret, so nothing
+outside the deployed app can send mail — which is also the right way round: the
+person whose shop it is decides who gets written to.
+
+**Used on 2026-09-30 for Chris Whitmire** (§33), ten days after his cart and
+therefore invisible to the automatic run. His resume link was confirmed still
+resolving first, so the email did not send a real customer to an empty shop.
+Replies land at `Phillip.moore@meibum.com` — quelldrop.com has no MX record —
+and **if he answers saying why he stopped, that is worth more than the $59.98.**
 
 **Chris will not be emailed automatically** — his cart is past the seven-day
 bound. That is correct, and it leaves the personal note to Phillip.
