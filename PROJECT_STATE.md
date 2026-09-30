@@ -29,6 +29,25 @@ means a missing table would hit every page, not one route.
    Aurora's cost. It also buys hourly crons, which is what makes the
    abandoned-cart email sharp rather than up to a day late (§33).
 
+   **Free hosts that permit commercial payments were evaluated on 2026-09-30
+   and declined for Quell** — so this is a decision, not an unexamined bill.
+   Cloudflare Workers and Netlify both allow commercial use on their free
+   tiers, and Cloudflare's crons (5 triggers, any schedule, free) are better
+   than what Pro gives us. What ruled them out was **migration risk on a money
+   path that had just worked on a real customer for the first time**: the
+   hosted-payment POST, the return handler that flips orders to `paid`, Neon,
+   both crons, Resend, Sentry, Turnstile and DNS all move at once, and each is
+   a place a silent break costs a sale rather than raising an error. Cloudflare
+   adds two of its own: a **10 ms CPU ceiling per request** on the free tier,
+   which is tight for SSR, and **OpenNext does not guarantee Windows support**
+   (it wants WSL), which puts a new toolchain on the machine that deploys the
+   shop.
+
+   Nothing here is Vercel-specific — it is a standard Next 16 app, which is
+   exactly why those hosts can run it. **Revisit if hosting ever becomes a cost
+   that matters, not while it is a rounding error against one order.** The free
+   tiers remain the intended starting point for the *other* sites.
+
 3. **Confirm the descriptor reads `QUELL DROP`** on transaction 121847268368.
    This item has waited since the start for a real card, and there is finally
    one to look at.
