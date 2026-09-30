@@ -559,7 +559,7 @@ export async function sendSelfCheckResultEmail(
  * something — so this is deliberately a single, plain follow-up about that
  * specific order and nothing else.
  *
- * Three things it does not do, each on purpose:
+ * Four things it does not do, each on purpose:
  *
  *  - **No discount.** There is no discount system (§30), and inventing one
  *    here would train buyers to abandon carts on purpose.
@@ -568,6 +568,16 @@ export async function sendSelfCheckResultEmail(
  *  - **No claim about the product.** This is marketing for an FDA-regulated
  *    OTC drug, so it says nothing the Drug Facts panel does not support. It
  *    talks about the order, not about what the drops do.
+ *  - **Nothing about the reader's eyes.** A draft closed with "we're here to
+ *    help with your dry eyes", which asserts the recipient *has* the condition
+ *    — they may be buying for a spouse, or preventatively — and casts Aurora
+ *    as helping with it, which drifts toward a treatment claim. It is also the
+ *    construction flagged for Meta advertising (§15): possession attaches a
+ *    condition to the viewer. "We're glad to help" keeps the warmth and stays
+ *    about the order.
+ *
+ * Written in the company's voice, not one person's, at Phillip's direction on
+ * 2026-09-30 — "let us know", never "tell me".
  *
  * It offers a way out, because a second unrequested email would be marketing
  * and this is the only one there will be.
@@ -591,17 +601,17 @@ export async function sendAbandonedCartEmail(order: {
     `
       <p style="margin:0 0 16px;line-height:1.6;">${greeting}</p>
       <p style="margin:0 0 16px;line-height:1.6;">
-        You picked out ${BRAND.trademark} and didn’t finish checking out.
-        Nothing was charged — and we’ve kept your cart, so you can pick up
+        You were shopping for ${BRAND.trademark} and didn’t complete checkout.
+        Nothing was charged, and your cart has been saved so you can pick up
         where you left off.
       </p>
       <p style="margin:0 0 20px;line-height:1.6;">
-        If you changed your mind, no problem at all. And if something went wrong
-        on our end, just reply to this email and tell me — I’d genuinely like to
-        know.
+        If you’ve changed your mind, that’s no trouble at all. If something went
+        wrong on our end, reply to this email and let us know — we’re glad to
+        help.
       </p>
       <p style="margin:0 0 22px;">
-        <a href="${resumeUrl}" style="background:#00a7b5;color:#000000;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:bold;display:inline-block;">Go to your cart (${total})</a>
+        <a href="${resumeUrl}" style="background:#00a7b5;color:#000000;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:bold;display:inline-block;">Return to your cart (${total})</a>
       </p>
       <p style="margin:0;line-height:1.6;color:#5a6b83;font-size:13px;">
         Order ${order.orderNumber}. This is the only email we’ll send about it.
@@ -612,11 +622,11 @@ export async function sendAbandonedCartEmail(order: {
   const text = [
     greeting,
     '',
-    `You picked out ${BRAND.trademark} and didn't finish checking out. Nothing was charged — and we've kept your cart, so you can pick up where you left off.`,
+    `You were shopping for ${BRAND.trademark} and didn't complete checkout. Nothing was charged, and your cart has been saved so you can pick up where you left off.`,
     '',
-    "If you changed your mind, no problem at all. And if something went wrong on our end, just reply to this email and tell me — I'd genuinely like to know.",
+    "If you've changed your mind, that's no trouble at all. If something went wrong on our end, reply to this email and let us know — we're glad to help.",
     '',
-    `Go to your cart (${total}): ${resumeUrl}`,
+    `Return to your cart (${total}): ${resumeUrl}`,
     '',
     `Order ${order.orderNumber}. This is the only email we'll send about it.`,
   ].join('\n')
