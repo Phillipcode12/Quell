@@ -63,6 +63,7 @@ const EMPTY_ADDRESS = {
   city: '',
   state: '',
   postalCode: '',
+  phone: '',
 }
 
 export function CartView({
@@ -352,6 +353,19 @@ export function CartView({
               autoComplete="postal-code"
               {...field('postalCode')}
             />
+            {/* Labelled as nothing more than optional. An earlier draft read
+                "only if there's a problem with your order", which plants the
+                idea of a problem at the exact moment someone is deciding to
+                pay. */}
+            <div className="col-span-2">
+              <Field
+                label="Phone (optional)"
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel"
+                {...field('phone')}
+              />
+            </div>
           </div>
 
           <p className="mt-3 text-xs text-muted">

@@ -179,6 +179,20 @@ export default async function AdminOrdersPage() {
                       >
                         {order.email}
                       </a>
+                      {/* The second contact route, which is the whole reason
+                          the field exists: when a receipt bounces, this is how
+                          you reach someone who has already paid. */}
+                      {order.phone && (
+                        <>
+                          <br />
+                          <a
+                            href={`tel:${order.phone.replace(/[^\d+]/g, '')}`}
+                            className="text-brand-light hover:underline"
+                          >
+                            {order.phone}
+                          </a>
+                        </>
+                      )}
                     </p>
 
                     <p className="mt-4 text-sm font-semibold text-white">

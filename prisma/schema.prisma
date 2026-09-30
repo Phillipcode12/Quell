@@ -143,6 +143,17 @@ model Order {
   /// tell what it has already done.
   reorderEmailSentAt DateTime?
 
+  /// Optional contact number, asked for at checkout.
+  ///
+  /// Optional on purpose: a required phone field is one of the most abandoned
+  /// inputs in checkout, and trading real orders for a fallback contact route
+  /// is a bad exchange. It earns its place anyway because carriers sometimes
+  /// need a number for a delivery exception.
+  ///
+  /// Stored, never marketed to. Texting it would need separate consent under
+  /// US TCPA rules, and nobody has given that.
+  phone String?
+
   /// Set when an admin marks the order shipped. Distinct from `updatedAt`,
   /// which any edit moves — this is specifically when the parcel went out, and
   /// it is what a "where is my order" enquiry is answered from.

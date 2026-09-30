@@ -41,6 +41,16 @@ const addressSchema = z.object({
     .trim()
     .regex(/^\d{5}(-\d{4})?$/, 'Enter a valid ZIP code.'),
   country: z.enum(SHIPPABLE_COUNTRIES).default('US'),
+  /**
+   * Optional, and validated as loosely as possible.
+   *
+   * The only job here is to stop something absurd reaching the database. Phone
+   * formats vary enormously — extensions, country codes, punctuation people
+   * type out of habit — and every rule added is a chance to reject a real
+   * number at the last step of checkout, which costs an order to protect a
+   * field nobody is required to fill in.
+   */
+  phone: z.string().trim().max(30).optional().default(''),
 })
 
 /** Units of any one product a single order may contain. */
@@ -286,6 +296,8 @@ export async function POST(request: Request) {
       shippingState: shipTo.state,
       shippingPostalCode: shipTo.postalCode,
       shippingCountry: shipTo.country,
+      // Empty string means "not given"; null keeps that out of the column.
+      phone: shipTo.phone?.trim() || null,
       items: {
         create: resolved.map(({ product, quantity }) => ({
           productId: product.id,
