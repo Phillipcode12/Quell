@@ -582,25 +582,29 @@ export async function sendAbandonedCartEmail(order: {
   const firstName = (order.shippingName ?? '').trim().split(/\s+/)[0] || null
   const greeting = firstName ? `Hi ${firstName},` : 'Hi,'
   const total = `$${(order.totalCents / 100).toFixed(2)}`
+  // Restores the order into the cart, which is what makes "waiting for you"
+  // true on any device rather than only the one they shopped on.
+  const resumeUrl = `${base}/cart/resume?o=${encodeURIComponent(order.orderNumber)}`
 
   const html = layout(
-    'Your order didn’t finish',
+    'Your cart is waiting for you',
     `
       <p style="margin:0 0 16px;line-height:1.6;">${greeting}</p>
       <p style="margin:0 0 16px;line-height:1.6;">
-        You started an order with us (${order.orderNumber}, ${total}) and the
-        payment didn’t go through. Nothing was charged.
+        You picked out ${BRAND.trademark} and didn’t finish checking out.
+        Nothing was charged — and we’ve kept your cart, so you can pick up
+        where you left off.
       </p>
       <p style="margin:0 0 20px;line-height:1.6;">
-        If that was a mistake, you can pick it up here. If you changed your
-        mind, no problem at all — and if something went wrong on our end, just
-        reply to this email and tell me. I’d genuinely like to know.
+        If you changed your mind, no problem at all. And if something went wrong
+        on our end, just reply to this email and tell me — I’d genuinely like to
+        know.
       </p>
       <p style="margin:0 0 22px;">
-        <a href="${base}/#buy" style="background:#00a7b5;color:#000000;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:bold;display:inline-block;">Finish your order</a>
+        <a href="${resumeUrl}" style="background:#00a7b5;color:#000000;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:bold;display:inline-block;">Go to your cart (${total})</a>
       </p>
       <p style="margin:0;line-height:1.6;color:#5a6b83;font-size:13px;">
-        This is the only email we’ll send about this order.
+        Order ${order.orderNumber}. This is the only email we’ll send about it.
       </p>
     `,
   )
@@ -608,18 +612,18 @@ export async function sendAbandonedCartEmail(order: {
   const text = [
     greeting,
     '',
-    `You started an order with us (${order.orderNumber}, ${total}) and the payment didn't go through. Nothing was charged.`,
+    `You picked out ${BRAND.trademark} and didn't finish checking out. Nothing was charged — and we've kept your cart, so you can pick up where you left off.`,
     '',
-    "If that was a mistake, you can pick it up here. If you changed your mind, no problem at all — and if something went wrong on our end, just reply to this email and tell me. I'd genuinely like to know.",
+    "If you changed your mind, no problem at all. And if something went wrong on our end, just reply to this email and tell me — I'd genuinely like to know.",
     '',
-    `Finish your order: ${base}/#buy`,
+    `Go to your cart (${total}): ${resumeUrl}`,
     '',
-    "This is the only email we'll send about this order.",
+    `Order ${order.orderNumber}. This is the only email we'll send about it.`,
   ].join('\n')
 
   return deliver({
     to: order.email,
-    subject: `Your ${BRAND.name} order didn’t finish`,
+    subject: `Your ${BRAND.name} cart is waiting for you`,
     html,
     text,
   })

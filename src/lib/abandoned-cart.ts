@@ -22,9 +22,24 @@
 /**
  * How long to wait before treating a pending order as abandoned.
  *
- * Two hours. Someone can legitimately be mid-payment — finding a card, being
- * interrupted — and mailing "you left something behind" to a person still on
- * the payment page is both wrong and irritating.
+ * **Two hours.** Briefly 24 on 2026-09-30, then back the same day: intent
+ * decays fast, and the industry norm for a first touch is one to three hours.
+ * Two is also long enough that nobody still on the payment page, hunting for
+ * a card, is told they abandoned anything.
+ *
+ * ### The threshold is not the delay
+ *
+ * Worth understanding before anyone tunes this number. The cron runs **once a
+ * day**, because that is the Hobby limit, so this value sets when an order
+ * becomes *eligible*, not when the mail arrives:
+ *
+ *   abandoned 08:00 → eligible 10:00 → sent at that day's 15:00 run   ≈ 7h
+ *   abandoned 16:00 → eligible 18:00 → missed it, goes tomorrow       ≈ 23h
+ *
+ * So the real delivery window is roughly **2 to 26 hours**, averaging half a
+ * day. Lowering this further changes nothing on its own — the daily cron is
+ * the binding constraint. **An hourly cron needs Pro**, and with one this
+ * constant would mean what it says.
  */
 export const ABANDON_AFTER_MS = 2 * 60 * 60_000
 

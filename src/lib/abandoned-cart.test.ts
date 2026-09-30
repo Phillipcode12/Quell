@@ -13,6 +13,8 @@ const pending = (over: Partial<Parameters<typeof shouldEmailAbandoned>[0]> = {})
   status: 'pending',
   paymentTransactionId: null,
   abandonedEmailSentAt: null,
+  // Comfortably past the threshold, so the default fixture is an
+  // ordinary eligible cart and each test changes only the thing it is about.
   createdAt: ago(6 * 60 * 60_000),
   now: NOW,
   ...over,
@@ -99,7 +101,7 @@ describe('isAbandoned, used by the admin list', () => {
 })
 
 describe('the windows themselves', () => {
-  it('waits hours and gives up after days', () => {
+  it('waits hours and gives up after a week', () => {
     expect(ABANDON_AFTER_MS).toBe(2 * 60 * 60_000)
     expect(ABANDON_WINDOW_MS).toBe(7 * 24 * 60 * 60_000)
     expect(ABANDON_AFTER_MS).toBeLessThan(ABANDON_WINDOW_MS)
