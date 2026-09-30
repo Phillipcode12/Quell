@@ -136,6 +136,13 @@ model Order {
   /// tell what it has already done.
   abandonedEmailSentAt DateTime?
 
+  /// When the reorder reminder was sent, so it is sent once.
+  ///
+  /// Same idempotency reasoning as abandonedEmailSentAt: cron delivery is best
+  /// effort and can repeat a scheduled run, so the query has to be able to
+  /// tell what it has already done.
+  reorderEmailSentAt DateTime?
+
   /// Set when an admin marks the order shipped. Distinct from `updatedAt`,
   /// which any edit moves — this is specifically when the parcel went out, and
   /// it is what a "where is my order" enquiry is answered from.

@@ -638,3 +638,90 @@ export async function sendAbandonedCartEmail(order: {
     text,
   })
 }
+
+/**
+ * The reorder reminder.
+ *
+ * Sent once, to a customer whose bottles are estimated to have run out.
+ *
+ * ### It asks, it does not announce
+ *
+ * The timing is an estimate — people dose below the label, share a bottle, or
+ * stop altogether. "You're running low" would be confidently wrong about
+ * someone's life often enough to teach them to ignore the next one, so the
+ * copy asks *if* they are.
+ *
+ * ### What it deliberately omits
+ *
+ *  - **No claim about the product.** Marketing for an FDA-regulated OTC drug.
+ *    It talks about the bottle running out, never about what the drops do, and
+ *    nothing here touches the withheld redness claim.
+ *  - **Nothing about the reader's eyes or their condition.** Same reasoning as
+ *    the abandoned-cart email: asserting that someone has dry eye attaches a
+ *    condition to them and edges toward a treatment claim.
+ *  - **No discount.** There is no discount system, and one here would teach
+ *    customers to wait for the reminder rather than reorder when they need to.
+ *
+ * It invites a reply, which is the genuinely valuable part: "I stopped because
+ * it stung" is worth far more than the reorder.
+ */
+export async function sendReorderReminderEmail(order: {
+  email: string
+  orderNumber: string
+  shippingName: string | null
+  createdAt: Date
+  /** Bottles on the order, so the wording matches what they actually bought. */
+  quantity: number
+}) {
+  const base = appUrl()
+  const firstName = (order.shippingName ?? '').trim().split(/\s+/)[0] || null
+  const greeting = firstName ? `Hi ${firstName},` : 'Hi,'
+  const ordered = order.createdAt.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  })
+  // Someone who bought two being told about "that bottle" is a small wrongness
+  // that costs nothing to avoid and quietly undermines the rest of the note.
+  const bottles = order.quantity > 1 ? 'those bottles' : 'that bottle'
+
+  const html = layout(
+    'Running low?',
+    `
+      <p style="margin:0 0 16px;line-height:1.6;">${greeting}</p>
+      <p style="margin:0 0 16px;line-height:1.6;">
+        You ordered ${BRAND.trademark} on ${ordered}. If you're getting near the
+        end of ${bottles}, you can reorder in a couple of clicks.
+      </p>
+      <p style="margin:0 0 22px;">
+        <a href="${base}/#buy" style="background:#00a7b5;color:#000000;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:bold;display:inline-block;">Reorder ${BRAND.name}</a>
+      </p>
+      <p style="margin:0 0 20px;line-height:1.6;">
+        If you've stopped using it, that's no trouble at all — and if something
+        wasn't right, reply to this email and let us know. We're glad to help.
+      </p>
+      <p style="margin:0;line-height:1.6;color:#5a6b83;font-size:13px;">
+        Order ${order.orderNumber}. This is the only reminder we'll send.
+      </p>
+    `,
+  )
+
+  const text = [
+    greeting,
+    '',
+    `You ordered ${BRAND.trademark} on ${ordered}. If you're getting near the end of ${bottles}, you can reorder in a couple of clicks.`,
+    '',
+    `Reorder ${BRAND.name}: ${base}/#buy`,
+    '',
+    "If you've stopped using it, that's no trouble at all — and if something wasn't right, reply to this email and let us know. We're glad to help.",
+    '',
+    `Order ${order.orderNumber}. This is the only reminder we'll send.`,
+  ].join('\n')
+
+  return deliver({
+    to: order.email,
+    subject: `Running low on ${BRAND.name}?`,
+    html,
+    text,
+  })
+}
