@@ -14,27 +14,52 @@ means a missing table would hit every page, not one route.
 
 ### Open, in the order they matter
 
-1. **Watch for a reply from Chris Whitmire** (§33). The first real person to
-   reach checkout, on 2026-09-20; not charged. The recovery email was sent by
+1. **Ship Q-QRABWBQ9 — the first real order** (§35). Chase Becker,
+   Bettendorf IA, one bottle, $39.99, paid and captured. Ryan packs it; mark it
+   shipped in `/admin/orders` with carrier and tracking, which is what sends
+   the customer his shipping notice.
+
+   His email was corrected to `chasebecker27@gmail.com` on 2026-09-30 after the
+   original bounced, so the notice will now reach him.
+
+2. **Upgrade Vercel to Pro** (§ Hobby). **The trigger agreed on 2026-09-03 was
+   "the first real order", and it has happened.** The shop is now taking money
+   on a plan whose terms prohibit commercial use, and the enforcement is a
+   paused deployment — which now costs real sales rather than nothing. $20/month,
+   Aurora's cost. It also buys hourly crons, which is what makes the
+   abandoned-cart email sharp rather than up to a day late (§33).
+
+3. **Confirm the descriptor reads `QUELL DROP`** on transaction 121847268368.
+   This item has waited since the start for a real card, and there is finally
+   one to look at.
+
+4. **Ask Zen Payments about funding** (§35). Aurora has no Zen portal — only
+   Authorize.net — so this is an email to their support: what is the delay from
+   settlement to deposit, is there a new-account reserve, and which bank
+   account is on file. Their details are in the onboarding thread with the DBA
+   Account Change Form.
+
+5. **Watch for a reply from Chris Whitmire** (§33). The other real person to
+   reach checkout, on 2026-09-20; never charged. The recovery email was sent by
    hand on 2026-09-30 from `/admin/abandoned`, since his cart was past the
    seven-day bound. Replies go to `Phillip.moore@meibum.com`.
 
    **If nothing comes back in a few days, a short personal note is still worth
    sending** — not another nudge to buy, but a plain question about what
-   stopped him. He is the only person who has ever reached the payment page and
-   left, and the answer is worth more than the order.
-2. **Leave registration closed** (§32), and decide deliberately rather than by
+   stopped him. He reached the payment page and left, and that answer is worth
+   more than the order.
+6. **Leave registration closed** (§32), and decide deliberately rather than by
    drift. The bot returned on 2026-09-27 and got past Turnstile by buying
    solved tokens. Across fourteen accounts ever created, two were real. Reopen
    when subscriptions make accounts necessary — not before.
-3. **Bing Webmaster Tools** (§24) — the last SEO item, and it needs Phillip
+7. **Bing Webmaster Tools** (§24) — the last SEO item, and it needs Phillip
    rather than code. bing.com/webmasters → My Sites → **Import** → sign in with
    the Google account that owns Search Console → tick quelldrop.com. It carries
    the verification and sitemaps across, so nothing on the site changes.
    **Sign in with the personal Google account, not `Phillip.moore@meibum.com`**
    — the property is verified under the personal one (§18), and the work
    address will simply show no sites, which looks like the import failed.
-4. **Vercel is on the free Hobby plan, which forbids commercial use.**
+8. **Vercel is on the free Hobby plan, which forbids commercial use.**
    Decision on 2026-09-03: **leave it, and upgrade on the first real order.**
    Vercel's own wording is "Hobby teams are for non-commercial personal use
    only", and their examples of commercial use open with "processing payments
@@ -82,10 +107,10 @@ means a missing table would hit every page, not one route.
    Phillip's card and a claim afterwards: it is the company's cost, and it
    keeps the account cleanly theirs when the personal-account question (§7)
    comes back around.
-5. **Confirm `QUELL DROP` on a real statement.** The descriptor is set (§9) but
+9. **Confirm `QUELL DROP` on a real statement.** The descriptor is set (§9) but
    has never been seen on one, because the test charge that would have shown it
    was refunded. The next real order is the first chance.
-6. **Fulfilment: Ryan does it.** Settled by Phillip on 2026-09-15, closing the
+10. **Fulfilment: Ryan does it.** Settled by Phillip on 2026-09-15, closing the
    longest-standing open question here.
 
    The software side is already built and needs nothing: the admin alert fires
@@ -319,6 +344,136 @@ Working tree clean, `main` in sync, nothing left running.
 > they wait for a refund that never arrives and their next move is a chargeback
 > — and on a high-risk account the chargeback ratio is what gets processing
 > withdrawn (§21).
+
+---
+
+## 35. The first real sale — 2026-09-30
+
+```
+Q-QRABWBQ9      paid
+Chase Becker    Bettendorf, IA
+1 bottle $29.99 + $10.00 shipping = $39.99
+Authorize.net transaction 121847268368
+placed 20:38 Central, paid by 20:40
+```
+
+**The whole chain ran correctly on a real customer for the first time**: hosted
+payment page, webhook, transaction id written, status flipped to `paid`, stock
+250 → 249. None of that had been exercised outside a test.
+
+### It did not show in Authorize.net's dashboard, and that was fine
+
+Worth recording because it will happen again. The dashboard reports **settled**
+money; a transaction sits *unsettled* until the day's batch. It was visible
+under **Manage Transactions** immediately, reading **"captured charge"**, which
+is what matters — `authCaptureTransaction` means authorised *and* captured, so
+the money is committed and only the clock is outstanding.
+
+> **Funding is not Authorize.net's.** Authorize.net is the gateway and never
+> holds the money; the deposit comes from the merchant account, which **Zen
+> Payments** arranged. Aurora has **no Zen portal** — only Authorize.net
+> access — so funding questions (delay from settlement, any new-account
+> reserve, which bank account is on file) go to Zen support directly. Their
+> details are in the onboarding thread with the DBA Account Change Form.
+
+### The thing that nearly went wrong
+
+The order was placed with **`chasebecker27@gmal.com`** — `gmal`, not `gmail`.
+Syntactically perfect, so every validator accepted it, and the confirmation
+bounced. **A customer had paid $39.99 and held no record of it**, with no way
+to work out why.
+
+That address is not only the receipt. `Order.email` is what guest order lookup
+matches on, where the shipping notice goes, and where the reorder reminder
+would land in five weeks. One typo broke four things quietly.
+
+Corrected on 2026-09-30 from `/admin/orders` and the confirmation resent.
+
+---
+
+## 36. Catching a mistyped email — shipped 2026-09-30
+
+Three parts, because one was not enough.
+
+### 1. A mail-server check at checkout, which refuses
+
+A domain with no MX record cannot receive email. That is a fact about the
+internet rather than a guess about the typist, which is what makes it safe to
+refuse an order over.
+
+**It fails OPEN, unlike every other guard here.** The others protect the shop
+from an attacker; this protects a customer from a typo, and refusing a paying
+customer because a resolver was slow is worse than an undeliverable receipt.
+Only a definitive "this domain publishes no MX" refuses.
+
+> **This shipped broken three times, each for a different reason, and each only
+> visible against the real thing.** Worth reading before touching it:
+>
+> 1. **An A-record fallback** honoured RFC 5321's implicit MX. Parked typo
+>    domains publish A records pointing at advertising pages — `gmial.com` and
+>    `yaho.com` both do — so the fallback allowed exactly what this exists to
+>    catch.
+> 2. **`ENODATA` was unhandled.** `resolveMx` throws it when a domain exists
+>    with no MX, which is precisely a squatted typo domain. The catch only knew
+>    ENOTFOUND, so everything fell through to "allow".
+> 3. **`node:dns` does nothing on Vercel.** It worked perfectly on a developer
+>    machine. Serverless sandboxes frequently cannot make direct UDP queries to
+>    a resolver; the lookup fails as a transport error and fail-open allows
+>    everything. **Two deploys passed their tests and blocked nothing.**
+>
+> It now uses **DNS-over-HTTPS**, an ordinary HTTPS request that works anywhere
+> the app can already reach Authorize.net and Resend.
+
+**Two resolvers, because they disagree.** For `gmial.com`, Cloudflare returns
+SERVFAIL — ambiguous, so allowed — while Google returns NOERROR with zero MX
+records, which is definitive. Asking only one let a whole class of typo through
+as "unknown".
+
+**No real customer is blocked**, and that property is tested rather than
+asserted: 45 genuinely odd but real domains — corporate addresses from actual
+signups here, older ISPs, international providers, privacy mailers, eye-care
+practices — none blocked. Fifteen are kept as a regression guard.
+
+### 2. A "did you mean?" suggestion, which asks
+
+`hotnail.com` and `outlok.com` are registered and **do** publish MX, so the
+check above cannot refuse them — that is a fact, not a judgement. The client
+offers a correction instead and lets the customer decide, which never blocks a
+real address.
+
+It uses **Damerau** distance, not plain Levenshtein: a transposition like
+`gmial` for `gmail` is the most common typo there is and scores as *two*
+substitutions under plain edit distance, so the main case would have sailed
+through a threshold of one.
+
+> `NEVER_CORRECT` exists because **`mail.com` is one inserted character from
+> `gmail.com` and is a real provider with millions of mailboxes.** Suggesting a
+> fix to someone who typed their own address correctly is worse than saying
+> nothing.
+
+### 3. A correction in the admin, for when it happens anyway
+
+`/admin/orders` → **"Fix email & resend confirmation"**. It **changes the
+address on the order** rather than sending a one-off copy, because everything
+downstream reads `Order.email`. Runs the same mail-server check, shows the same
+suggestion, and updates the record *before* sending — a failed send then leaves
+a correct order that can be retried, rather than an address already proven
+dead.
+
+### And an optional phone number
+
+A second route to someone who has already paid. **Optional, deliberately**: a
+required phone field is among the most abandoned inputs in checkout, and
+trading real orders for a rarely-used fallback is a bad exchange. Seven
+required fields before, seven after.
+
+Labelled **"Phone (optional)"** and nothing more. A draft read *"only if
+there's a problem with your order"*; Phillip cut it, rightly — it plants the
+idea of a problem at the moment someone is deciding to pay.
+
+Validated as loosely as possible and stored verbatim, extensions included.
+**Never marketed to** — texting it needs separate consent under US TCPA rules
+and nobody has given that.
 
 ---
 
