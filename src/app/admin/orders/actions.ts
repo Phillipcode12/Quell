@@ -6,6 +6,9 @@ import { getAdminUser } from '@/lib/admin'
 import { isCarrierKey } from '@/lib/carriers'
 import { restoreStock } from '@/lib/inventory'
 import { sendShippingNotice } from '@/lib/orders'
+import { sendOrderConfirmationEmail } from '@/lib/email'
+import { emailLooksWrong } from '@/lib/email-address'
+import { UNDELIVERABLE_MESSAGE, domainAcceptsMail } from '@/lib/email-mx'
 
 /**
  * Server actions are a public HTTP surface, so each one re-checks admin access.
@@ -115,4 +118,64 @@ export async function updateStock(productId: string, stockQuantity: number) {
   revalidatePath('/admin/orders')
   revalidatePath('/')
   return { ok: true }
+}
+
+/**
+ * Corrects the email on an order and resends the confirmation.
+ *
+ * ### Why it corrects rather than just resending
+ *
+ * The first real order was placed with `chasebecker27@gmal.com` — `gmal`, not
+ * `gmail` (§35). The confirmation bounced, so the customer had paid $39.99 and
+ * held no record of it.
+ *
+ * Sending a one-off copy to the right address would have fixed the receipt and
+ * left three other things broken, because `Order.email` is what the rest of
+ * the shop reads:
+ *
+ *  - **Guest order lookup** matches on order number *and* email, so he could
+ *    not have looked his own order up.
+ *  - **The shipping notice** goes to `Order.email` when it is marked shipped.
+ *  - **The reorder reminder** (§34) would go to the dead address in five weeks.
+ *
+ * So the address is corrected on the record and the confirmation is resent to
+ * it. One action, and everything downstream follows.
+ *
+ * ### It checks the new address before trusting it
+ *
+ * The same mail-server check that now guards checkout, because an admin typing
+ * a correction by hand can mistype exactly as the customer did — and the whole
+ * point is to stop guessing whether mail arrived.
+ */
+export async function correctEmailAndResend(orderId: string, rawEmail: string) {
+  await assertAdmin()
+
+  const email = rawEmail.trim().toLowerCase()
+
+  const structural = emailLooksWrong(email)
+  if (structural) throw new Error(structural)
+
+  if (!(await domainAcceptsMail(email))) {
+    throw new Error(UNDELIVERABLE_MESSAGE)
+  }
+
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
+    include: { items: { include: { product: true } } },
+  })
+  if (!order) throw new Error('That order no longer exists.')
+
+  // Updated first: if the send fails, the record is still correct and the
+  // resend can simply be tried again. The reverse would leave the shop
+  // holding an address it has already proven cannot receive mail.
+  const updated = await prisma.order.update({
+    where: { id: orderId },
+    data: { email },
+    include: { items: { include: { product: true } } },
+  })
+
+  await sendOrderConfirmationEmail(updated)
+
+  revalidatePath('/admin/orders')
+  return { ok: true as const, email }
 }

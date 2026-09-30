@@ -7,6 +7,7 @@ import { formatUsd } from '@/lib/money'
 import { isEmailConfigured } from '@/lib/email'
 import { stockState } from '@/lib/inventory'
 import { OrderActions, StockEditor } from '@/components/admin/OrderActions'
+import { CorrectEmailButton } from '@/components/admin/CorrectEmailButton'
 import { AdminTabs } from '@/components/admin/AdminTabs'
 
 export const metadata: Metadata = { title: 'Orders' }
@@ -252,6 +253,7 @@ export default async function AdminOrdersPage() {
                 </div>
 
                 <OrderActions orderId={order.id} status={order.status} />
+                <CorrectEmailButton orderId={order.id} currentEmail={order.email} />
               </li>
             ))}
           </ul>
