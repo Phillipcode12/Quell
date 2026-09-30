@@ -3,6 +3,10 @@ import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/db'
 import { getAdminUser } from '@/lib/admin'
 import { AdminTabs } from '@/components/admin/AdminTabs'
+import {
+  AdminHeader,
+  AdminPage,
+} from '@/components/admin/AdminLayout'
 import { SendRecoveryButton } from '@/components/admin/SendRecoveryButton'
 import { formatUsd } from '@/lib/money'
 import { ABANDON_WINDOW_MS, shouldEmailAbandoned } from '@/lib/abandoned-cart'
@@ -44,10 +48,8 @@ export default async function AdminAbandonedPage() {
   const queued = orders.filter((o) => shouldEmailAbandoned({ ...o, now }).email).length
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-10">
-      <h1 className="text-2xl font-semibold tracking-tight text-white">
-        Abandoned carts
-      </h1>
+    <AdminPage>
+      <AdminHeader title="Abandoned carts" />
       <AdminTabs current="abandoned" />
 
       <div className="mt-8 grid gap-4 sm:grid-cols-4">
@@ -152,6 +154,6 @@ export default async function AdminAbandonedPage() {
           </tbody>
         </table>
       </div>
-    </div>
+    </AdminPage>
   )
 }

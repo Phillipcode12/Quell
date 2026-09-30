@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/db'
 import { getAdminUser, adminEmails } from '@/lib/admin'
@@ -9,8 +8,24 @@ import { stockState } from '@/lib/inventory'
 import { OrderActions, StockEditor } from '@/components/admin/OrderActions'
 import { CorrectEmailButton } from '@/components/admin/CorrectEmailButton'
 import { AdminTabs } from '@/components/admin/AdminTabs'
+import {
+  AdminHeader,
+  AdminPage,
+  AdminStats,
+  AdminToolbar,
+  formatAdminDate,
+} from '@/components/admin/AdminLayout'
 
 export const metadata: Metadata = { title: 'Orders' }
+
+/**
+ * Orders, as cards rather than as a table.
+ *
+ * The only tab that is not a table, and deliberately: this is the view a box
+ * gets packed from, so the shipping address and the line items have to be
+ * readable at a glance rather than squeezed into cells. The CSV at
+ * `/admin/orders/export` is the spreadsheet-shaped version, one row per order.
+ */
 
 const STATUS_STYLES: Record<string, string> = {
   pending: 'border-amber-500/40 bg-amber-500/10 text-amber-200',
@@ -44,19 +59,8 @@ export default async function AdminOrdersPage() {
   const awaitingFulfilment = orders.filter((o) => o.status === 'paid').length
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Orders</h1>
-          <p className="mt-2 text-muted">Signed in as {admin.email}</p>
-        </div>
-        <Link
-          href="/"
-          className="rounded-md border border-line px-3 py-1.5 text-sm text-muted transition hover:border-brand hover:text-white"
-        >
-          Back to site
-        </Link>
-      </div>
+    <AdminPage>
+      <AdminHeader title="Orders" subtitle={`Signed in as ${admin.email}`} />
 
       <AdminTabs current="orders" />
 
@@ -69,26 +73,13 @@ export default async function AdminOrdersPage() {
         </p>
       )}
 
-      <dl className="mt-8 grid gap-4 sm:grid-cols-3">
-        <div className="rounded-2xl border border-line bg-surface p-5">
-          <dt className="text-sm text-muted">Awaiting fulfilment</dt>
-          <dd className="mt-1 text-3xl font-semibold text-white">
-            {awaitingFulfilment}
-          </dd>
-        </div>
-        <div className="rounded-2xl border border-line bg-surface p-5">
-          <dt className="text-sm text-muted">Paid orders</dt>
-          <dd className="mt-1 text-3xl font-semibold text-white">
-            {paidOrders.length}
-          </dd>
-        </div>
-        <div className="rounded-2xl border border-line bg-surface p-5">
-          <dt className="text-sm text-muted">Revenue</dt>
-          <dd className="mt-1 text-3xl font-semibold text-white">
-            {formatUsd(revenueCents)}
-          </dd>
-        </div>
-      </dl>
+      <AdminStats
+        stats={[
+          { label: 'Awaiting fulfilment', value: awaitingFulfilment },
+          { label: 'Paid orders', value: paidOrders.length },
+          { label: 'Revenue', value: formatUsd(revenueCents) },
+        ]}
+      />
 
       <section className="mt-10">
         <h2 className="text-lg font-semibold">Inventory</h2>
@@ -127,6 +118,11 @@ export default async function AdminOrdersPage() {
       <section className="mt-12">
         <h2 className="text-lg font-semibold">All orders</h2>
 
+        <AdminToolbar
+          description="Kept as cards rather than a table because this is what a box gets packed from — the address and the items need to be readable. The CSV is one row per order, for a spreadsheet."
+          exportHref="/admin/orders/export"
+        />
+
         {orders.length === 0 ? (
           <p className="mt-4 rounded-2xl border border-line bg-surface p-10 text-center text-muted">
             No orders yet.
@@ -155,7 +151,7 @@ export default async function AdminOrdersPage() {
                     </span>
                   )}
                   <span className="ml-auto text-sm text-muted">
-                    {order.createdAt.toLocaleString()}
+                    {formatAdminDate(order.createdAt)}
                   </span>
                 </div>
 
@@ -280,6 +276,6 @@ export default async function AdminOrdersPage() {
           ? ' It is currently unset, so nobody has access.'
           : ` Currently ${adminEmails().length} address(es).`}
       </p>
-    </div>
+    </AdminPage>
   )
 }

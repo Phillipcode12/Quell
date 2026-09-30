@@ -1,8 +1,12 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getAdminUser } from '@/lib/admin'
 import { AdminTabs } from '@/components/admin/AdminTabs'
+import {
+  AdminHeader,
+  AdminPage,
+  AdminToolbar,
+} from '@/components/admin/AdminLayout'
 import {
   dailySales,
   dailyUnits,
@@ -376,21 +380,22 @@ export default async function AdminAnalyticsPage() {
   const nothingYet = month === 0 && months.length === 0
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Traffic</h1>
-          <p className="mt-2 text-muted">Signed in as {admin.email}</p>
-        </div>
-        <Link
-          href="/"
-          className="rounded-md border border-line px-3 py-1.5 text-sm text-muted transition hover:border-brand hover:text-white"
-        >
-          Back to site
-        </Link>
-      </div>
+    <AdminPage>
+      <AdminHeader title="Traffic" subtitle={`Signed in as ${admin.email}`} />
 
       <AdminTabs current="analytics" />
+
+      <AdminToolbar
+        description="Visits, orders and revenue. Two CSVs because they answer different questions: the traffic file is month by month all time, the campaigns file is the last 30 days by advert."
+        exportHref="/admin/analytics/export"
+      >
+        <a
+          href="/admin/analytics/export/campaigns"
+          className="rounded-lg border border-line px-4 py-2.5 text-sm font-medium text-white transition hover:border-brand hover:bg-brand/10"
+        >
+          Campaigns CSV
+        </a>
+      </AdminToolbar>
 
       <div className="mt-8 flex items-center gap-3 rounded-xl border border-line bg-surface-2 p-5">
         <span
@@ -549,6 +554,6 @@ export default async function AdminAnalyticsPage() {
           a separate thing and live in Google Search Console, not here.
         </p>
       </div>
-    </div>
+    </AdminPage>
   )
 }

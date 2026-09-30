@@ -554,6 +554,105 @@ it, which is correct behaviour and worth knowing before editing the file.
 
 ---
 
+## 38. The Emails tab, and one shape for every admin tab — shipped 2026-09-30
+
+### The Emails tab
+
+`/admin/emails`. **One row per person, every address the shop holds.** The
+addresses live in three tables for three good reasons — `Order` (anyone who
+reached checkout, guests included), `User` (accounts), `Subscriber` (the
+self-check) — and the same person can be in all three with a different subset
+of their details in each. This merges them and fills in the name and phone
+where they exist.
+
+Merging happens in `lib/contacts.ts`, not in SQL, and reads **every** row rather
+than a page of each. That is not laziness: the account row that supplies
+someone's name may be on page four while their order is on page one, so a
+paginated merge is not merely slower, it is wrong. Only the display is capped,
+at 500. The cost is a slower admin page at some size far beyond this shop, and
+the failure mode is slowness rather than a wrong list.
+
+> **The `Use` column is the reason it is safe to have this tab at all.**
+>
+> ```
+> Opted in       asked to hear from us, via the self-check
+> Customer only  gave an address to get a receipt
+> Do not email   an account or an abandoned cart, and nothing more
+> ```
+>
+> A single undifferentiated list of addresses is how somebody sends a marketing
+> email to a person who never asked for one. `opted-in` beats `customer` when
+> someone is both, because asking is the stronger permission. The column is in
+> the CSV as well as on screen, for the same reason the self-check safety flag
+> is: dropping it would make the export a worse record than the database, and
+> getting it back would take a second decision nobody can see being made.
+>
+> **There is deliberately no "email everyone" button.**
+
+**Phone numbers are never a marketing channel** and the page says so. Texting
+needs separate express consent under US TCPA rules and nobody has given it
+(§36).
+
+Two merge rules worth knowing before editing `lib/contacts.ts`:
+
+- **Addresses are grouped by lowercase and nothing else.** No stripping of dots
+  or `+tags`, even though some providers treat those as one mailbox. Listing one
+  person twice is untidy; merging two people silently attributes one person's
+  orders and phone number to another. A test holds this open.
+- **An account name outranks a shipping name**, however much newer the order is.
+  The account name is what someone called themselves; a shipping name may be
+  whoever the parcel is addressed to.
+
+**Verified against production data**, not only against its own tests: 13 orders
++ 2 accounts + 2 subscribers → **7 people, 0 duplicates**, and the one genuine
+cross-table merge resolved to `account+self-check`.
+
+### Every tab now has the same shape, and a CSV
+
+The tabs had drifted — two page widths, two different headers, one tab
+rendering cards where the rest rendered tables, and a Download CSV on only
+three of six. Fine to read one at a time, annoying to use as the set it
+actually is.
+
+`components/admin/AdminLayout.tsx` now holds the shared furniture:
+`AdminPage`, `AdminHeader`, `AdminStats`, `AdminToolbar`, `DataTable`,
+`TruncationNote`, `Chip`, `formatAdminDate`. **`AdminToolbar` requires
+`exportHref`** — not optional by accident; that is what stops the next tab
+shipping without a CSV.
+
+```
+Orders      cards (deliberate)  + CSV   NEW
+Customers   DataTable           + CSV   NEW
+Abandoned   table               + CSV
+Self-check  table               + CSV
+Emails      DataTable           + CSV   NEW
+Traffic     tables              + 2 CSVs NEW  (monthly series, campaigns)
+```
+
+**Orders stays cards on purpose.** It is the view a box gets packed from, so the
+address and line items have to be readable at a glance rather than squeezed into
+cells. Its CSV is the spreadsheet-shaped version, one row per order with the
+address flattened and the items in a single cell.
+
+Two things a spreadsheet needs, done everywhere:
+
+- **Money and percentages export as plain decimals**, never `$39.99` or `2.1%`
+  — a spreadsheet can sum `39.99` and cannot sum the other.
+- **`formatAdminDate` replaced `toLocaleString()`** on the Orders tab. That
+  formatted on the server in whatever timezone the serverless region happened to
+  be, so the same row could read differently between requests. A fixed
+  `YYYY-MM-DD HH:MM` is also what a spreadsheet parses as a date.
+
+`lib/customers.ts` was extracted from the Customers page so the page and its CSV
+build the list from one copy of "what counts as a customer" rather than two that
+can drift.
+
+> The traffic CSV carries a note that **source columns before 2026-09-30 are not
+> meaningful** (§37). Its `search` and `link` columns are zero for that period
+> because nothing was measured, not because nobody arrived that way.
+
+---
+
 ## 34. The reorder reminder — shipped 2026-09-30
 
 Daily cron at **16:00 UTC**, an hour after the abandoned-cart job so the two

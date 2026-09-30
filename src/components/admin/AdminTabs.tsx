@@ -15,6 +15,9 @@ const TABS = [
   { key: 'abandoned', label: 'Abandoned', href: '/admin/abandoned' },
   // Distinct from Customers on purpose: these people gave an email, not money.
   { key: 'subscribers', label: 'Self-check', href: '/admin/subscribers' },
+  // Cuts across all of the above: one row per address, however we got it. Sits
+  // after them because it is the summary of those tabs, not another source.
+  { key: 'emails', label: 'Emails', href: '/admin/emails' },
   { key: 'analytics', label: 'Traffic', href: '/admin/analytics' },
 ] as const
 

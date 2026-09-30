@@ -3,6 +3,10 @@ import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/db'
 import { getAdminUser } from '@/lib/admin'
 import { AdminTabs } from '@/components/admin/AdminTabs'
+import {
+  AdminHeader,
+  AdminPage,
+} from '@/components/admin/AdminLayout'
 import { BANDS, MAX_SCORE } from '@/lib/self-check'
 
 export const metadata: Metadata = { title: 'Self-check subscribers' }
@@ -51,10 +55,8 @@ export default async function AdminSubscribersPage() {
     BANDS.find((b) => b.id === id)?.title ?? '—'
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-10">
-      <h1 className="text-2xl font-semibold tracking-tight text-white">
-        Self-check
-      </h1>
+    <AdminPage>
+      <AdminHeader title="Self-check" />
       <AdminTabs current="subscribers" />
 
       <div className="mt-8 grid gap-4 sm:grid-cols-4">
@@ -162,6 +164,6 @@ export default async function AdminSubscribersPage() {
           contains all of them.
         </p>
       )}
-    </div>
+    </AdminPage>
   )
 }
