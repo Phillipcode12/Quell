@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/db'
 import { getAdminUser } from '@/lib/admin'
 import { AdminTabs } from '@/components/admin/AdminTabs'
+import { SendRecoveryButton } from '@/components/admin/SendRecoveryButton'
 import { formatUsd } from '@/lib/money'
 import { ABANDON_WINDOW_MS, shouldEmailAbandoned } from '@/lib/abandoned-cart'
 
@@ -123,19 +124,26 @@ export default async function AdminAbandonedPage() {
                       {age(o.createdAt, now)}
                     </td>
                     <td className="px-4 py-3 text-muted">
-                      {o.abandonedEmailSentAt ? (
-                        <span className="text-brand-light">
-                          sent {age(o.abandonedEmailSentAt, now)}
-                        </span>
-                      ) : verdict.email ? (
-                        'due next run'
-                      ) : tooOld ? (
-                        /* Predates the window, or the feature. Saying so beats
-                           a blank, which reads as a bug. */
-                        <span title="older than seven days">not sent — too old</span>
-                      ) : (
-                        'waiting (under 2h)'
-                      )}
+                      <span className="flex flex-wrap items-center gap-2">
+                        {o.abandonedEmailSentAt ? (
+                          <span className="text-brand-light">
+                            sent {age(o.abandonedEmailSentAt, now)}
+                          </span>
+                        ) : verdict.email ? (
+                          <span>due next run</span>
+                        ) : tooOld ? (
+                          /* Predates the window, or the feature. Saying so
+                             beats a blank, which reads as a bug — and it is
+                             the case the manual button exists for. */
+                          <span title="older than seven days">too old for the automatic run</span>
+                        ) : (
+                          <span>waiting (under 2h)</span>
+                        )}
+                        <SendRecoveryButton
+                          orderId={o.id}
+                          alreadySent={Boolean(o.abandonedEmailSentAt)}
+                        />
+                      </span>
                     </td>
                   </tr>
                 )
