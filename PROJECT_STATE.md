@@ -457,11 +457,47 @@ asks what still needs doing on every run.
 `CRON_SECRET` is a Vercel **Secret**. The endpoint **fails closed** when it is
 absent, rather than leaving a public route that sends mail to customers.
 
-### Verified end to end against a real database
+### "Your cart is waiting for you" — and the link that makes it true
 
-Eligible cart emailed · cart over seven days skipped · already-emailed not
-resent · repeat runs report `candidates: 0` · unauthenticated and
-wrongly-authenticated requests both 401 on production.
+The subject line is Phillip's wording and it is better than the original
+("your order didn't finish"), **except that it was not true**. The cart lives
+in `localStorage`, so it survives only on the device it was built on: someone
+reading the email on a phone after checking out on a laptop would arrive at an
+empty shop and a promise nobody kept.
+
+So rather than soften the sentence, **`/cart/resume?o=<orderNumber>`** restores
+the order into the cart, and the email's button points there. It resolves only
+**pending, unpaid** orders, so a completed order cannot be replayed into a
+cart, and a guessed order number reveals the quantity of the one product this
+shop sells — no email, name or address is read or rendered.
+
+> **The navigation in `ResumeCart` deliberately waits, and this is the part to
+> leave alone.** The obvious version — apply the lines and call
+> `router.replace` in the same effect — fails in a way that *looks like
+> success*: the visitor lands on `/cart` and it is **empty**. `clear()` and
+> `add()` only queue state updates, and a child's effect runs before the
+> provider's own, so the navigation happens before the cart exists. It is now
+> two effects, and the second waits until the cart genuinely holds what the
+> order held. **No unit test would have caught this** — clicking the link in an
+> emptied browser did.
+
+### Verified end to end, including a real send
+
+Locally: eligible cart emailed · cart over seven days skipped · already-emailed
+not resent · repeat runs report `candidates: 0` · paid, unknown and malformed
+order numbers all 404 on the resume route · unauthenticated and
+wrongly-authenticated cron requests both 401 on production.
+
+**And in production on 2026-09-30**, with a seeded cart addressed to Phillip: he
+triggered the cron by hand from Vercel's Cron Jobs page, the email arrived
+through Resend, and the link restored the cart. The test order was deleted
+afterwards; production went back to 12 orders with Chris's as the only
+abandoned one.
+
+> **Triggering it by hand needs Phillip, not Claude.** `CRON_SECRET` is a Vercel
+> **Secret** and cannot be read back — which is the point of storing it that
+> way. The manual run is a button on
+> **Settings → Cron Jobs** in the Vercel dashboard.
 
 **Chris will not be emailed automatically** — his cart is past the seven-day
 bound. That is correct, and it leaves the personal note to Phillip.
