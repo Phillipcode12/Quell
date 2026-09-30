@@ -70,9 +70,26 @@ export async function domainAcceptsMail(email: string): Promise<boolean> {
     accepts = Array.isArray(result) && result.length > 0
   } catch (error) {
     const code = (error as NodeJS.ErrnoException)?.code
-    // ENOTFOUND / NXDOMAIN: the domain does not exist. Definitive.
-    // Anything else — SERVFAIL, timeouts, rate limits — is unknown, so allow.
-    accepts = !(code === 'ENOTFOUND' || code === 'NXDOMAIN')
+    /**
+     * Three codes are a definitive "no mail here". Everything else —
+     * SERVFAIL, timeouts, rate limits — is unknown, so the order goes through.
+     *
+     * **`ENODATA` is the one that matters, and omitting it broke this
+     * entirely.** It means the domain exists but publishes no MX record, which
+     * is precisely what a squatted typo domain looks like. Measured, after the
+     * first version silently allowed all of them:
+     *
+     *   gmal.com   ENODATA      gmial.com  ENODATA      yaho.com  ENODATA
+     *   gmail.com  5 records    hotnail.com  1 record
+     *
+     * ENOTFOUND is for a domain that does not resolve at all — rarer for a
+     * typo, since most near-miss domains are registered by squatters.
+     */
+    accepts = !(
+      code === 'ENODATA' ||
+      code === 'ENOTFOUND' ||
+      code === 'NXDOMAIN'
+    )
   }
 
   if (cache.size >= MAX_CACHED) cache.clear()
