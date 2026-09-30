@@ -47,6 +47,39 @@ describe('domains that can', () => {
     }
   }, 20_000)
 
+  it('accepts unusual but real domains, which is the property that matters', async () => {
+    /**
+     * **A false positive here loses a paying customer.** That is a worse
+     * outcome than any typo getting through, so this list is deliberately
+     * long and deliberately odd: corporate domains seen in real signups on
+     * this site, older ISPs, international providers, privacy mailers, and
+     * eye-care practices — the audience this shop actually has.
+     *
+     * Checked 2026-09-30 across 45 such domains with zero blocked. This is the
+     * subset kept as a regression guard.
+     */
+    const real = [
+      'a@house-of-communication.com',
+      'a@dss.virginia.gov',
+      'a@hellweg.de',
+      'a@rutgers.edu',
+      'a@mandelynvicandsons.onmicrosoft.com',
+      'a@sbcglobal.net',
+      'a@mtaonline.net',
+      'a@earthlink.net',
+      'a@gmx.de',
+      't-online@t-online.de',
+      'a@fastmail.com',
+      'a@proton.me',
+      'a@pm.me',
+      'a@zoho.com',
+      'a@visionsource.com',
+    ]
+    for (const address of real) {
+      expect(await domainAcceptsMail(address), address).toBe(true)
+    }
+  }, 30_000)
+
   it('accepts a typo-squatter that does run a mail server', async () => {
     /**
      * hotnail.com is registered and publishes MX, so this check cannot refuse
