@@ -51,7 +51,24 @@ function report(id: string, campaign: CampaignTags) {
       // writes them on create only — the same rule that protects `source` —
       // so this costs nothing and means the tags still land if the very first
       // report is the one that got dropped.
-      body: JSON.stringify({ visitId: id, ...campaign }),
+      //
+      // `referrer` has to travel in the body, and this is the whole reason
+      // the source numbers were wrong for the first month. The server used
+      // to read the `Referer` header of *this* request, which the browser
+      // sets to the page the fetch was made from — always our own site. It
+      // was recording us, `referrerHost` correctly stripped it as internal,
+      // and every visitor on record came out "direct".
+      // `document.referrer` is the only place the arriving referrer
+      // survives, and only the client can read it.
+      //
+      // Sent on every report for the same reason as the tags: it does not
+      // change on client-side navigation, and the server ignores it after
+      // create.
+      body: JSON.stringify({
+        visitId: id,
+        referrer: document.referrer,
+        ...campaign,
+      }),
       keepalive: true,
     }).catch(() => {})
   } catch {

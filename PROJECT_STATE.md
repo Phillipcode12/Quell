@@ -496,6 +496,64 @@ and nobody has given that.
 
 ---
 
+## 37. The traffic report was measuring us, not them — fixed 2026-09-30
+
+Found while trying to answer a plain question: where did the first real
+customer come from?
+
+```
+466 of 468 visits ever recorded:  "direct"
+search arrivals, in a month indexed:  0
+the only two referrers ever seen:  quell-six.vercel.app  (our own preview domain)
+```
+
+**`/api/track` was reading the wrong referrer.** It took
+`request.headers.get('referer')`, which is the browser's referrer for *the
+tracking fetch itself* — the page the fetch was made from, which is always our
+own site. `referrerHost` then did exactly its job and stripped it as internal,
+`classifySource(null)` returned `direct`, and every visitor on record became a
+direct arrival.
+
+> **The two exceptions are what gave it away.** Both name
+> `quell-six.vercel.app` — the Vercel preview domain. A non-null referrer only
+> ever appeared when the page's own host happened to differ from
+> `NEXT_PUBLIC_APP_URL`. The column was recording *us*, never them.
+
+**The arriving referrer only exists in `document.referrer`, and only the client
+can read it**, so it now travels in the request body. The server caps it at
+2048 characters and classifies from that; the header is no longer consulted.
+
+### Why the old rows are left alone
+
+They are not relabelled and not deleted. "Direct" was never measured for any of
+them, and back-filling from anything else available would be inventing data
+rather than recovering it. **Traffic sources before 2026-09-30 mean nothing, and
+the honest handling is to know that rather than to paper over it.**
+
+### What it cost, concretely
+
+The question about the first order is unanswerable. Order `Q-QRABWBQ9` carries
+no campaign tags, which is trustworthy — the UTM path works, and a
+`facebook`-tagged visit in the table proves it end to end — **so no tagged
+advert brought him**. Beyond that there is nothing, because the one column that
+would have said so was recording our own domain. A visit ran 20:36:44 →
+20:40:11 Central spanning the order at 20:38:25, so roughly three and a half
+minutes from arrival to paid, but its `direct` label is meaningless.
+
+Google Search Console is the only independent record of a search arrival that
+day, and it is Phillip's to read (§18: **personal Google account**).
+
+### The test
+
+`src/app/api/track/route.test.ts`, 11 cases. Every request in it sends a
+`Referer` header pointing at our own site, because that is what a browser
+really sends — so each assertion about the body referrer is also an assertion
+that the header is ignored. **Verified by mutation**: restoring the old header
+read fails three of them. A UA is required in each request or `isBot` rejects
+it, which is correct behaviour and worth knowing before editing the file.
+
+---
+
 ## 34. The reorder reminder — shipped 2026-09-30
 
 Daily cron at **16:00 UTC**, an hour after the abandoned-cart job so the two
