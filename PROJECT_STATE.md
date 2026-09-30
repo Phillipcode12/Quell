@@ -119,7 +119,12 @@ the third is worth building.
    beside `source`, and the revenue-per-day chart already in `/admin` becomes
    revenue per campaign. **Attribution cannot be reconstructed afterwards**, so
    this has to ship before the spend. Half a day.
-2. **Reorder nudge.** A 10 mL bottle at one drop three times daily in each eye
+2. ~~**Reorder nudge.**~~ **Done 2026-09-30 — see §34.** Timed to quantity
+   rather than a flat 35 days, which was the one thing the original note got
+   wrong: a two-bottle customer is only half way through at 35 days.
+
+   *(Original note kept below.)* A 10 mL bottle at one drop three times daily
+   in each eye
    runs out in roughly five to seven weeks, and nothing prompts a second
    purchase. An email at ~35 days needs only the order date, which is already
    stored, and Resend, which is already wired. About a day. **Do this before
@@ -138,9 +143,11 @@ the third is worth building.
    > panel does not support, and no redness (§9). A reorder reminder is safe
    > ground because it says nothing about what the product does.
 
-**So the reorder nudge (2) is the next thing to build**, and most of its
-plumbing now exists — `Subscriber` already holds an email and a timestamp, and
-Resend is wired for two templates. Agreed 2026-09-16 to start it next session.
+**All three are now built.** The next thing on the table is **subscriptions**
+(`lib/subscription.ts`), and the reorder reminder is what produces the evidence
+for whether they are worth the Authorize.net ARB work: if people reorder when
+asked, recurring billing is worth building; if they do not, it is not — which
+is a far cheaper way to find out than building ARB first.
 
 ### Where else the self-check mechanism could go
 
@@ -312,6 +319,69 @@ Working tree clean, `main` in sync, nothing left running.
 > they wait for a refund that never arrives and their next move is a chargeback
 > — and on a high-risk account the chargeback ratio is what gets processing
 > withdrawn (§21).
+
+---
+
+## 34. The reorder reminder — shipped 2026-09-30
+
+Daily cron at **16:00 UTC**, an hour after the abandoned-cart job so the two
+never contend. `/api/cron/reorder`, same `CRON_SECRET`, same fail-closed guard.
+
+Quell is a consumable and nothing prompted a second purchase, so the first
+order was the entire relationship. A customer who reorders four times is worth
+roughly **$120 rather than $30** — and this is also the evidence that decides
+whether subscriptions (`lib/subscription.ts`) are worth building at all.
+
+### The timing scales with quantity, and that is the whole design
+
+`DRUG_FACTS.directions` is one drop three times a day **in each eye** — six
+drops daily. A 10 mL bottle is roughly 200 drops, so about **35 days per
+bottle**, matching the "five to seven weeks" already recorded here.
+
+**Someone who bought two bottles is only half way through at 35 days.** Telling
+them they are running low then is the same class of error as telling someone
+their cart is waiting when it is not: confidently wrong about their life, and
+the fastest way to teach a customer to ignore the next email. So the estimate
+multiplies by quantity — 1 bottle → 35 days, 2 → 70, 3 → 105.
+
+| | |
+| --- | --- |
+| **Skips anyone who already reordered** | Matched on **email, not account** — most buyers are guests with no user row, so matching by account would miss nearly everyone who came back. Reminding someone to reorder what they just reordered is the complaint this kind of email earns. |
+| **45-day grace window** | Past that the moment has gone. It also **bounds the first run**: without it, shipping this would have mailed every customer who ever ordered. |
+| **Only `paid` or `shipped`** | A pending order may never have completed; a cancelled one is not a customer. Neither has a bottle to run out. |
+| **Once, ever** | `reorderEmailSentAt`, marked before sending, same idempotency shape as the abandoned-cart job. |
+
+### The copy asks, it does not announce
+
+The timing is an estimate — people dose below the label, share a bottle, or
+stop. So it reads *"If you're getting near the end of those bottles…"* rather
+than asserting that they are.
+
+It **pluralises on quantity**, so a two-bottle customer is never told about
+"that bottle". Small, and exactly the kind of wrongness that makes a reader
+trust the rest of the message less.
+
+Three deliberate omissions, matching the abandoned-cart email:
+
+- **No product claim.** Marketing for an FDA-regulated OTC drug. It talks about
+  the bottle running out, never about what the drops do.
+- **Nothing about the reader's eyes.** Asserting someone has dry eye attaches a
+  condition to them and edges toward a treatment claim (§15).
+- **No discount.** There is no discount system, and one here would teach
+  customers to wait for the reminder rather than reorder when they need to.
+
+It invites a reply, which is the genuinely valuable part: *"I stopped because
+it stung"* is worth more than the reorder.
+
+### Verified against a real database
+
+Seven seeded cases, all as designed: one bottle due · **two bottles too soon at
+40 days** · **two bottles due at 75** · stale skipped · already-reordered
+skipped · too-new skipped · never-fulfilled skipped. A second run sent nothing.
+
+> **The first production run reaches nobody**, checked on the day: there are
+> **zero fulfilled orders**. Everything in that table is cancelled or pending.
+> The grace window would have mattered later regardless.
 
 ---
 
