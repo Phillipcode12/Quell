@@ -14,14 +14,24 @@ means a missing table would hit every page, not one route.
 
 ### Open, in the order they matter
 
-1. **Bing Webmaster Tools** (§24) — the last SEO item, and it needs Phillip
+1. **Write to Chris Whitmire** (§33). The first real person to reach checkout,
+   on 2026-09-20. He was not charged, and the automated recovery email will
+   **not** reach him — his cart is past the seven-day bound, deliberately, so
+   the system does not collide with a personal note. One short message from
+   Phillip. He may finish the order; more valuably he may say *why he stopped*,
+   and that answer is worth more than the $59.98.
+2. **Leave registration closed** (§32), and decide deliberately rather than by
+   drift. The bot returned on 2026-09-27 and got past Turnstile by buying
+   solved tokens. Across fourteen accounts ever created, two were real. Reopen
+   when subscriptions make accounts necessary — not before.
+3. **Bing Webmaster Tools** (§24) — the last SEO item, and it needs Phillip
    rather than code. bing.com/webmasters → My Sites → **Import** → sign in with
    the Google account that owns Search Console → tick quelldrop.com. It carries
    the verification and sitemaps across, so nothing on the site changes.
    **Sign in with the personal Google account, not `Phillip.moore@meibum.com`**
    — the property is verified under the personal one (§18), and the work
    address will simply show no sites, which looks like the import failed.
-2. **Vercel is on the free Hobby plan, which forbids commercial use.**
+4. **Vercel is on the free Hobby plan, which forbids commercial use.**
    Decision on 2026-09-03: **leave it, and upgrade on the first real order.**
    Vercel's own wording is "Hobby teams are for non-commercial personal use
    only", and their examples of commercial use open with "processing payments
@@ -69,10 +79,10 @@ means a missing table would hit every page, not one route.
    Phillip's card and a claim afterwards: it is the company's cost, and it
    keeps the account cleanly theirs when the personal-account question (§7)
    comes back around.
-3. **Confirm `QUELL DROP` on a real statement.** The descriptor is set (§9) but
+5. **Confirm `QUELL DROP` on a real statement.** The descriptor is set (§9) but
    has never been seen on one, because the test charge that would have shown it
    was refunded. The next real order is the first chance.
-4. **Fulfilment: Ryan does it.** Settled by Phillip on 2026-09-15, closing the
+6. **Fulfilment: Ryan does it.** Settled by Phillip on 2026-09-15, closing the
    longest-standing open question here.
 
    The software side is already built and needs nothing: the admin alert fires
@@ -299,6 +309,162 @@ Working tree clean, `main` in sync, nothing left running.
 > they wait for a refund that never arrives and their next move is a chargeback
 > — and on a high-risk account the chargeback ratio is what gets processing
 > withdrawn (§21).
+
+---
+
+## 32. The bot came back, and Turnstile did not stop it — 2026-09-30
+
+Twelve accounts between 27 and 30 September, **eleven days after Turnstile went
+live**. Same signature as §26: random single-token names, Gmail dot-variants,
+harvested corporate addresses — including `house-of-communication.com` again.
+Same actor.
+
+**Four ran the chain**, so quelldrop.com mailed four strangers. The gap between
+registering and requesting the reset was **under a minute**.
+
+### Turnstile is working. It is being paid around.
+
+Verified on production while investigating: a tokenless POST to
+`/api/auth/register` still returns 403. The guard is intact. The bot is
+obtaining *valid* tokens, which in practice means a commercial solving service
+— they exist and cost fractions of a cent per solve.
+
+It is not worthless. **12 accounts in 3 days against 120 in 11** is roughly a
+three-quarters reduction. Treat it as a cost imposed on the attacker, never as
+a wall.
+
+### What was done
+
+- **`ALLOW_REGISTRATION=0` again**, and the twelve deleted (backed up first).
+  This is the actual containment and it costs nothing: across **fourteen
+  accounts ever created, two were real** — Phillip and Ryan. No customer has
+  ever used one. Guest checkout is the purchase path.
+- **`lib/reset-guard.ts`** refuses to email a reset for an account younger than
+  an hour, and a **per-address limit of 3/hour** sits on top of the existing
+  per-IP one. The IP limit protects the server; a rotating botnet is many hosts
+  and *one victim*, so the inbox needs its own limit.
+- Suppressed attempts now `console.warn`.
+
+> **Neither refusal changes the response.** The endpoint answers identically in
+> every case, so none of this can be used to discover which addresses have
+> accounts or which are being throttled.
+
+### What this does not claim
+
+**It is not a wall.** A bot that waits an hour defeats the age check; one that
+rotates victims defeats the per-address limit. Any feature that lets a stranger
+type your address and cause you to receive mail is abusable — that is the shape
+of the feature, not a defect in the implementation.
+
+The guard exists so that **reopening registration later is safe by default**
+rather than safe because somebody remembered to think about it.
+
+### The real lesson is detection, not prevention
+
+This ran for three days and was found **by accident**, while looking up which
+email Phillip's admin account used. Nobody was watching. That is the same
+failure as §30's silent catch: the information existed and nothing surfaced it.
+
+**Recommendation on the table: leave registration closed.** It has never once
+been used by a real customer. Reopen when subscriptions make accounts genuinely
+necessary — not before.
+
+---
+
+## 33. The first real customer, and the abandoned-cart recovery — 2026-09-30
+
+### What happened
+
+On **2026-09-20 at 20:52 Central**, someone who was not Phillip reached
+checkout:
+
+```
+Chris Whitmire · c.whitmire43@gmail.com
+536 Waco Ln, Carpentersville, IL 60110
+2 × $29.99 = $59.98, free shipping
+guest checkout, no campaign tags, 2 visits in the surrounding two hours
+status pending · no transaction id · updatedAt identical to createdAt
+```
+
+**No payment was taken** — confirmed by Phillip against Authorize.net, which
+shows only the $1 test and its refund. He abandoned at the hosted payment page
+or the card declined before a transaction existed. Nothing is owed.
+
+Three things worth keeping from it:
+
+- **Organic demand exists.** No campaign, barely any traffic around it, and
+  someone still typed a full shipping address. That is a person far past
+  browsing.
+- **The free-shipping nudge works on strangers.** He took two bottles, which is
+  exactly the `$59.00` threshold. First evidence that mechanic does its job.
+- **It sat unseen for nine days.** It was in `/admin/orders` the whole time with
+  an amber *pending* badge. Nobody looked.
+
+> **A likely structural cause, unproven.** Checkout does a form POST that
+> navigates **off quelldrop.com** to Authorize.net's hosted page. Losing the
+> domain at the moment a card is requested is one of the best-documented places
+> to lose a sale. Authorize.net supports the same Accept Hosted form in an
+> **iframe or lightbox**, keeping the customer on the site, with card data
+> still never touching the server so the PCI position is unchanged. Worth doing
+> before any ad spend.
+
+### What was built
+
+**`/admin/abandoned`** — a tab beside Customers listing every pending unpaid
+order with email, name, value, campaign, age and whether the recovery email
+went. Four stat tiles including **value left behind**. CSV export, same
+escaping as the subscriber export (formula injection matters: these rows carry
+a shipping name someone typed into a public form).
+
+**A recovery email**, once per order, via Vercel cron.
+
+### The rules, and why they are as conservative as they are
+
+`lib/abandoned-cart.ts` is the single definition, used by both the admin list
+and the cron — otherwise the page shows one thing and the mail does another.
+
+| | |
+| --- | --- |
+| **Wait 2 hours** | Someone can be mid-payment, hunting for a card. Mailing "you left something behind" to a person still on the payment page is wrong and irritating. |
+| **Give up after 7 days** | Past that it reads as surveillance and recovers nothing. **This bound is load-bearing**: without it the first run would have mailed every pending order ever created, including Chris's ten-day-old one. |
+| **Once per order, ever** | `abandonedEmailSentAt`. These people did not sign up for anything. |
+| **Never if paid** | Checked on both `status` and `paymentTransactionId`. "Your order didn't finish" to someone who has been charged is the worst message this system could send. |
+
+**The email offers no discount** (there is no discount system, and inventing one
+trains people to abandon carts), **no urgency** (the cart does not expire, so
+saying it does would be untrue), and **no claim about the product** — it talks
+about the order and invites a reply if something broke.
+
+### Cron mechanics
+
+`vercel.json` → `/api/cron/abandoned-cart`, **daily at 15:00 UTC**.
+
+Hobby allows one cron per day and fires it anywhere inside the hour, so a cart
+abandoned at 14:00 waits nearly a day. **Hourly is where recovery actually
+lives** — a two-hour-old cart converts far better than a twenty-hour-old one —
+which is one more thing the Pro decision buys.
+
+Written as **reconciliation, not a queue**, because Vercel's own documentation
+says a scheduled run can be missed *or invoked twice* and is never retried. It
+asks what still needs doing on every run.
+
+> **Each order is marked before the send, not after.** If the mark came second,
+> a crash between the two would leave the order eligible again and the customer
+> would get the same mail tomorrow. Marking first makes the failure mode a
+> missed email rather than a duplicate — and for mail nobody asked for, silence
+> is the better way to be wrong.
+
+`CRON_SECRET` is a Vercel **Secret**. The endpoint **fails closed** when it is
+absent, rather than leaving a public route that sends mail to customers.
+
+### Verified end to end against a real database
+
+Eligible cart emailed · cart over seven days skipped · already-emailed not
+resent · repeat runs report `candidates: 0` · unauthenticated and
+wrongly-authenticated requests both 401 on production.
+
+**Chris will not be emailed automatically** — his cart is past the seven-day
+bound. That is correct, and it leaves the personal note to Phillip.
 
 ---
 
