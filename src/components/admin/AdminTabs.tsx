@@ -10,6 +10,9 @@ import Link from 'next/link'
 const TABS = [
   { key: 'orders', label: 'Orders', href: '/admin/orders' },
   { key: 'customers', label: 'Customers', href: '/admin/customers' },
+  // People who got as far as an address and no further. Closer to a customer
+  // than anyone on the Self-check tab, which is why it sits next to Customers.
+  { key: 'abandoned', label: 'Abandoned', href: '/admin/abandoned' },
   // Distinct from Customers on purpose: these people gave an email, not money.
   { key: 'subscribers', label: 'Self-check', href: '/admin/subscribers' },
   { key: 'analytics', label: 'Traffic', href: '/admin/analytics' },

@@ -550,3 +550,77 @@ export async function sendSelfCheckResultEmail(
     text,
   })
 }
+
+/**
+ * The abandoned-cart email.
+ *
+ * Sent once, to someone who filled in their address and never completed
+ * payment. **They did not sign up for anything** — they gave an address to buy
+ * something — so this is deliberately a single, plain follow-up about that
+ * specific order and nothing else.
+ *
+ * Three things it does not do, each on purpose:
+ *
+ *  - **No discount.** There is no discount system (§30), and inventing one
+ *    here would train buyers to abandon carts on purpose.
+ *  - **No urgency.** No countdown, no "your cart expires". The cart does not
+ *    expire, and saying so would be untrue.
+ *  - **No claim about the product.** This is marketing for an FDA-regulated
+ *    OTC drug, so it says nothing the Drug Facts panel does not support. It
+ *    talks about the order, not about what the drops do.
+ *
+ * It offers a way out, because a second unrequested email would be marketing
+ * and this is the only one there will be.
+ */
+export async function sendAbandonedCartEmail(order: {
+  email: string
+  orderNumber: string
+  shippingName: string | null
+  totalCents: number
+}) {
+  const base = appUrl()
+  const firstName = (order.shippingName ?? '').trim().split(/\s+/)[0] || null
+  const greeting = firstName ? `Hi ${firstName},` : 'Hi,'
+  const total = `$${(order.totalCents / 100).toFixed(2)}`
+
+  const html = layout(
+    'Your order didn’t finish',
+    `
+      <p style="margin:0 0 16px;line-height:1.6;">${greeting}</p>
+      <p style="margin:0 0 16px;line-height:1.6;">
+        You started an order with us (${order.orderNumber}, ${total}) and the
+        payment didn’t go through. Nothing was charged.
+      </p>
+      <p style="margin:0 0 20px;line-height:1.6;">
+        If that was a mistake, you can pick it up here. If you changed your
+        mind, no problem at all — and if something went wrong on our end, just
+        reply to this email and tell me. I’d genuinely like to know.
+      </p>
+      <p style="margin:0 0 22px;">
+        <a href="${base}/#buy" style="background:#00a7b5;color:#000000;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:bold;display:inline-block;">Finish your order</a>
+      </p>
+      <p style="margin:0;line-height:1.6;color:#5a6b83;font-size:13px;">
+        This is the only email we’ll send about this order.
+      </p>
+    `,
+  )
+
+  const text = [
+    greeting,
+    '',
+    `You started an order with us (${order.orderNumber}, ${total}) and the payment didn't go through. Nothing was charged.`,
+    '',
+    "If that was a mistake, you can pick it up here. If you changed your mind, no problem at all — and if something went wrong on our end, just reply to this email and tell me. I'd genuinely like to know.",
+    '',
+    `Finish your order: ${base}/#buy`,
+    '',
+    "This is the only email we'll send about this order.",
+  ].join('\n')
+
+  return deliver({
+    to: order.email,
+    subject: `Your ${BRAND.name} order didn’t finish`,
+    html,
+    text,
+  })
+}

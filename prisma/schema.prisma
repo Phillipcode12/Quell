@@ -128,6 +128,14 @@ model Order {
   /// a replayed webhook cannot pay the same order twice.
   paymentTransactionId String? @unique
 
+  /// When the abandoned-cart email was sent, so it is sent once.
+  ///
+  /// The flag lives on the order rather than in a separate log because that is
+  /// what makes the cron idempotent: Vercel's cron delivery is best effort and
+  /// can invoke the same scheduled run twice, so the query has to be able to
+  /// tell what it has already done.
+  abandonedEmailSentAt DateTime?
+
   /// Set when an admin marks the order shipped. Distinct from `updatedAt`,
   /// which any edit moves — this is specifically when the parcel went out, and
   /// it is what a "where is my order" enquiry is answered from.
