@@ -52,21 +52,22 @@ export async function domainAcceptsMail(email: string): Promise<boolean> {
       return true
     }
 
-    if (Array.isArray(result) && result.length > 0) {
-      accepts = true
-    } else {
-      /**
-       * No MX. Before refusing, check for an A record: RFC 5321 says a host
-       * with an address record but no MX is still a valid mail destination,
-       * and a few small domains genuinely rely on that.
-       */
-      try {
-        const a = await Promise.race([dns.resolve4(domain), timeout])
-        accepts = Array.isArray(a) && a.length > 0
-      } catch {
-        accepts = false
-      }
-    }
+    /**
+     * MX is required. No fallback to an A record, deliberately.
+     *
+     * RFC 5321 does allow implicit MX — a host with only an address record is
+     * technically a valid mail destination — and an earlier version of this
+     * honoured that. **It defeated the entire feature.** Measured 2026-09-30:
+     *
+     *   gmial.com  no MX, HAS A (51.79.68.169)   ← parked, would have passed
+     *   yaho.com   no MX, HAS A (13.248.158.7)   ← parked, would have passed
+     *
+     * Squatted typo domains overwhelmingly publish an A record pointing at an
+     * advertising page, while domains that genuinely receive mail publish MX.
+     * Honouring the RFC here protects a near-extinct configuration at the cost
+     * of letting through exactly the addresses this exists to catch.
+     */
+    accepts = Array.isArray(result) && result.length > 0
   } catch (error) {
     const code = (error as NodeJS.ErrnoException)?.code
     // ENOTFOUND / NXDOMAIN: the domain does not exist. Definitive.
