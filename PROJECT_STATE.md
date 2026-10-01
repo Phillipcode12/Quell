@@ -651,6 +651,58 @@ can drift.
 > meaningful** (§37). Its `search` and `link` columns are zero for that period
 > because nothing was measured, not because nobody arrived that way.
 
+### Deleting an address — added 2026-10-01
+
+The tab shipped read-only and immediately turned up junk: `rgwrgt@gmail.com`
+with the name `fgbbgf dfbbf`, and `moorerevenue@oitlook.com` — a typo'd test of
+Phillip's own. So rows can now be deleted, with one hard rule.
+
+> **An address that has ever paid cannot be deleted here.** Paid and shipped
+> `Order` rows are financial records: they reconcile against Authorize.net, a
+> tax return is built from them, and they are the evidence if a charge is
+> disputed. Nothing on a screen whose job is removing junk should be able to
+> take one, however many clicks it asks for first.
+
+It is **all-or-nothing**, not partial. Removing someone's account and subscriber
+rows while keeping their paid orders would leave a customer who still exists but
+can no longer be found by the thing that identifies them.
+
+That is not an erasure policy. A genuine request to erase a customer's details
+has to decide what happens to the order history, and it should not share a
+button with deleting `rgwrgt@...`.
+
+**What deletion does remove:** the account, the self-check signup, and `pending`
+or `cancelled` orders. No money moved on those, so there is nothing to
+reconcile. Two schema facts it leans on, both worth re-checking before changing
+it:
+
+- **`Order.userId` is `onDelete: SetNull`** — deleting an account never touches
+  its orders. A paid order survives and simply stops being linked to a login.
+- **`OrderItem.orderId` is `onDelete: Cascade`** — deleting a pending order
+  takes its line items rather than orphaning them.
+
+The rule lives in `lib/contact-delete.ts` as a pure function so it is testable
+without a database, and **the refusal is decided server-side from a fresh
+read**. The table hiding the button for paying customers is a courtesy to
+whoever is clicking, not the guard — a stale page or a hand-made request hits
+the same check.
+
+**Verified against production as a dry run**, which is the only way to know the
+guard works on the real rows:
+
+```
+chasebecker27@gmail.com    ui=Paid     REFUSED    (the one real customer)
+rgwrgt@gmail.com           ui=button   DELETABLE  1 unpaid order
+moorerevenue@oitlook.com   ui=button   DELETABLE  1 unpaid order
+c.whitmire43@gmail.com     ui=button   DELETABLE  1 unpaid order
+```
+
+> **That last row is the thing to be careful about.** Chris Whitmire is the real
+> abandoned cart from 2026-09-20 (§33), and he is deletable because nothing was
+> ever charged — which is correct, and also means **the button cannot tell a
+> junk row from a live lead.** Read the row before confirming.
+
+
 ---
 
 ## 34. The reorder reminder — shipped 2026-09-30

@@ -10,6 +10,7 @@ import {
   type Contact,
 } from '@/lib/contacts'
 import { AdminTabs } from '@/components/admin/AdminTabs'
+import { DeleteContactButton } from '@/components/admin/DeleteContactButton'
 import {
   AdminHeader,
   AdminPage,
@@ -128,6 +129,23 @@ const columns: Column<Contact>[] = [
       </span>
     ),
   },
+  {
+    header: '',
+    align: 'right',
+    cell: (c) => (
+      <DeleteContactButton
+        email={c.email}
+        // Hiding it for paying customers is a courtesy to whoever is clicking;
+        // the server refuses regardless. See app/admin/emails/actions.ts.
+        canDelete={c.orders === 0}
+        summary={
+          c.sources.length
+            ? c.sources.map((s) => SOURCE_LABELS[s].toLowerCase()).join(' + ')
+            : 'this address'
+        }
+      />
+    ),
+  },
 ]
 
 export default async function AdminEmailsPage() {
@@ -175,7 +193,7 @@ export default async function AdminEmailsPage() {
       />
 
       <AdminToolbar
-        description="Every address from orders, accounts and the self-check, one row per person. Name and phone are filled in where we have them. Check the Use column before emailing anyone: only Opted in asked to hear from us."
+        description="Every address from orders, accounts and the self-check, one row per person. Name and phone are filled in where we have them. Check the Use column before emailing anyone: only Opted in asked to hear from us. Junk and test rows can be deleted; an address that has paid cannot, because an order is a financial record."
         exportHref="/admin/emails/export"
       />
 
