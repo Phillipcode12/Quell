@@ -115,7 +115,16 @@ export function Header({
             </Link>
           )}
 
-          {user ? (
+          {/* No "Sign in" for a visitor who is not signed in, deliberately.
+              Accounts are not a customer feature here: checkout is guest-only
+              and order status lives at /orders behind an order number and
+              email. Offering a sign-in to people who cannot create an account
+              is a door to a locked room.
+
+              /login still works by URL, which is how admins get in. The
+              signed-in controls below stay for them and for the two real
+              account holders. */}
+          {user && (
             <>
               <Link
                 href="/account"
@@ -125,16 +134,6 @@ export function Header({
               </Link>
               <SignOutButton className="hidden rounded-md border border-line px-3 py-1.5 text-muted transition hover:border-brand hover:text-white sm:block" />
             </>
-          ) : (
-            /* Hidden on phones because it sits in the second row instead —
-               grouped with Reviews and Drug Facts, where it belongs, and
-               where it does not cost the first row any width. */
-            <Link
-              href="/login"
-              className="hidden whitespace-nowrap text-muted hover:text-white sm:inline"
-            >
-              Sign in
-            </Link>
           )}
 
           {!onCart && (
@@ -180,12 +179,16 @@ export function Header({
 
           {/* The account link rides here too, which is what keeps the first
               row inside 360px — a width common enough on Android that
-              overflowing it is not an option. */}
+              overflowing it is not an option.
+
+              For a guest this is "Order status", not "Sign in": they cannot
+              create an account, and /orders answers the question they actually
+              have with an order number and their email. */}
           <Link
-            href={user ? '/account' : '/login'}
+            href={user ? '/account' : '/orders'}
             className="whitespace-nowrap hover:text-white"
           >
-            {user ? 'Orders' : 'Sign in'}
+            {user ? 'Orders' : 'Order status'}
           </Link>
         </nav>
       </div>

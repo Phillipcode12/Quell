@@ -4,6 +4,7 @@ import { prisma } from '@/lib/db'
 import { getCurrentUser, hashPassword } from '@/lib/auth'
 import { createSession } from '@/lib/session'
 import { clientIp, rateLimit, tooManyRequests } from '@/lib/rate-limit'
+import { REGISTRATION_CLOSED_MESSAGE, registrationOpen } from '@/lib/registration'
 
 /**
  * Creates an account straight after checkout and attaches the order that was
@@ -49,7 +50,20 @@ const NO_MATCH = {
 }
 
 export async function POST(request: Request) {
-  // This creates accounts, so it carries the same per-IP cap as registration.
+  /**
+   * This creates accounts, so it answers to the same switch as /api/auth/register.
+   *
+   * It did not until 2026-10-01, which meant **registration was closed and
+   * accounts could still be created here.** Not a security hole -- it needs a
+   * real order number and the matching email -- but a flag that does not mean
+   * what it says is worse than no flag, and "accounts are off" has to be true
+   * everywhere to be worth relying on.
+   */
+  if (!registrationOpen()) {
+    return NextResponse.json({ error: REGISTRATION_CLOSED_MESSAGE }, { status: 403 })
+  }
+
+  // The same per-IP cap as registration.
   // It is also the second place an order number can be guessed at, and the
   // limit is what makes an 8-character reference impractical to brute force.
   const limited = await rateLimit(`claim-order:${clientIp(request)}`, {

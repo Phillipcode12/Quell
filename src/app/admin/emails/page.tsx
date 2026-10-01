@@ -107,21 +107,24 @@ const columns: Column<Contact>[] = [
       <Chip tone={CONSENT_TONE[c.consent]}>{CONSENT_LABELS[c.consent]}</Chip>
     ),
   },
-  { header: 'Orders', align: 'right', cell: (c) => c.orders || '—' },
   {
-    header: 'Spent',
+    // Orders and spend share a cell so the table fits without sideways
+    // scrolling. Both are still separate columns in the CSV, where width is
+    // free and a spreadsheet needs them apart to sum.
+    header: 'Orders',
     align: 'right',
-    cell: (c) => (c.spentCents ? formatUsd(c.spentCents) : '—'),
+    cell: (c) =>
+      c.orders === 0 ? (
+        <span className="text-muted">—</span>
+      ) : (
+        <>
+          {c.orders} · {formatUsd(c.spentCents)}
+        </>
+      ),
   },
   {
-    header: 'First seen',
-    cell: (c) => (
-      <span className="tabular-nums text-muted">
-        {formatAdminDate(c.firstSeen)}
-      </span>
-    ),
-  },
-  {
+    // `firstSeen` is dropped from the table for the same reason, and kept in
+    // the CSV. Day to day the useful question is when someone was last here.
     header: 'Last seen',
     cell: (c) => (
       <span className="tabular-nums text-muted">
@@ -202,7 +205,11 @@ export default async function AdminEmailsPage() {
         rows={shown}
         rowKey={(c) => c.email}
         empty="No addresses yet."
-        minWidth="72rem"
+        // Sized to fit inside the page rather than force sideways scrolling on
+        // a desktop. It is still a minimum, not a fixed width: on a phone the
+        // wrapper scrolls, which is better than eight columns squashed to
+        // unreadable.
+        minWidth="48rem"
       />
 
       <TruncationNote shown={shown.length} total={contacts.length} />

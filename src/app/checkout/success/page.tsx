@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { ClearCartOnMount } from '@/components/ClearCartOnMount'
 import { QuellLogo } from '@/components/Logo'
 import { PostPurchaseSignup } from '@/components/PostPurchaseSignup'
+import { registrationOpen } from '@/lib/registration'
 import { getCurrentUser } from '@/lib/auth'
 
 export const metadata: Metadata = {
@@ -61,11 +62,14 @@ export default async function CheckoutSuccessPage({
         </p>
 
         <p className="mt-3 text-sm leading-relaxed text-muted">
-          Keep your order number — it&apos;s how you track this order, with or
-          without an account.
+          Keep your order number — it&apos;s how you track this order.
         </p>
 
-        {order && (
+        {/* Only offered when registration is actually open. With accounts off
+            this would invite someone to sign up and then be refused by
+            /api/auth/claim-order, which is a worse experience than never
+            having been asked. */}
+        {order && registrationOpen() && (
           <PostPurchaseSignup orderNumber={order} signedIn={Boolean(user)} />
         )}
 

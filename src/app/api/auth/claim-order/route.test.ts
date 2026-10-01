@@ -50,6 +50,11 @@ const post = (body: unknown, ip = `10.0.0.${++ipCounter}`) =>
 
 beforeEach(() => {
   vi.clearAllMocks()
+  // These tests are about what the route does with a claim, so registration is
+  // open for all of them. The switch itself is tested at the bottom of the
+  // file -- it is off in production, and was not honoured here at all until
+  // 2026-10-01.
+  vi.stubEnv('ALLOW_REGISTRATION', '1')
   getCurrentUser.mockResolvedValue(null)
   hashPassword.mockResolvedValue('$2b$10$hashed')
   prisma.order.findFirst.mockResolvedValue(ORDER)
@@ -278,5 +283,38 @@ describe('rate limiting', () => {
     for (let i = 0; i < 6; i += 1) await post(VALID, ip)
 
     expect((await post(VALID, '198.51.100.89')).status).toBe(404)
+  })
+})
+
+/**
+ * The switch that is actually set in production.
+ *
+ * This route creates accounts, and until 2026-10-01 it did not consult
+ * ALLOW_REGISTRATION at all -- so registration was "closed" while accounts
+ * could still be made here. It needed a real order number and matching email,
+ * so it was never a way in for the signup bot, but a flag that does not mean
+ * what it says is worse than no flag.
+ */
+describe('when registration is closed', () => {
+  beforeEach(() => {
+    vi.stubEnv('ALLOW_REGISTRATION', undefined as unknown as string)
+  })
+
+  it('refuses to create an account', async () => {
+    const res = await post(VALID, '203.0.113.200')
+    expect(res.status).toBe(403)
+    expect(prisma.user.create).not.toHaveBeenCalled()
+    expect(prisma.order.updateMany).not.toHaveBeenCalled()
+  })
+
+  it('does not sign anybody in', async () => {
+    await post(VALID, '203.0.113.201')
+    expect(createSession).not.toHaveBeenCalled()
+  })
+
+  it('fails closed on an unrecognised flag value', async () => {
+    // registrationOpen() only accepts an explicit opt-in; anything else is off.
+    vi.stubEnv('ALLOW_REGISTRATION', 'maybe')
+    expect((await post(VALID, '203.0.113.202')).status).toBe(403)
   })
 })

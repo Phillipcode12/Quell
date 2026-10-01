@@ -58,6 +58,15 @@ export default function PrivacyPage() {
               A cookie used to keep you signed in. Your cart is stored in your
               own browser and is never sent to us.
             </li>
+            <li>
+              If you check out as a guest, your name, address, email and phone
+              number are saved in your own browser so you don&apos;t have to
+              type them again next time. They stay on your device, we never
+              receive a copy, and you can remove them at any time with
+              &ldquo;Not you? Clear details&rdquo; on the cart page or by
+              clearing your browser&apos;s site data. Card details are never
+              saved anywhere on this site.
+            </li>
           </ul>
           <p>
             We do not use advertising trackers or third-party cookies on this

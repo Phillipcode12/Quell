@@ -1,9 +1,14 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useCart } from '@/components/CartProvider'
 import { readCampaign } from '@/lib/campaign-client'
+import {
+  clearSavedCheckout,
+  readSavedCheckout,
+  saveCheckout,
+} from '@/lib/checkout-memory'
 import { suggestEmail } from '@/lib/email-address'
 import { formatUsd } from '@/lib/money'
 import {
@@ -82,6 +87,50 @@ export function CartView({
   const [email, setEmail] = useState('')
   // Recomputed per keystroke; it is a handful of string comparisons.
   const suggestion = suggestEmail(email)
+  // Whether this form was filled in from the last visit, which is the only
+  // reason to offer a way to clear it.
+  const [restored, setRestored] = useState(false)
+
+  /**
+   * Fill the form from whatever this browser remembers.
+   *
+   * In an effect rather than in `useState`, because `localStorage` does not
+   * exist on the server: seeding state from it directly would make the first
+   * client render disagree with the server's HTML and React would throw out
+   * the tree. The cost is that the fields arrive a frame after the page, which
+   * nobody notices.
+   *
+   * Runs once. Re-running it would fight someone who is clearing a field.
+   *
+   * react-hooks/set-state-in-effect flags this and it is the same false
+   * positive as in CartProvider, for the same reason and with the same fix.
+   */
+  useEffect(() => {
+    if (isSignedIn) return
+    const saved = readSavedCheckout()
+    if (!saved) return
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- see above
+    setEmail(saved.email)
+    setAddress({
+      firstName: saved.firstName,
+      lastName: saved.lastName,
+      line1: saved.line1,
+      line2: saved.line2,
+      city: saved.city,
+      state: saved.state,
+      postalCode: saved.postalCode,
+      phone: saved.phone,
+    })
+    setRestored(true)
+  }, [isSignedIn])
+
+  function forget() {
+    clearSavedCheckout()
+    setEmail('')
+    setAddress(EMPTY_ADDRESS)
+    setRestored(false)
+  }
 
   function field(name: keyof typeof EMPTY_ADDRESS) {
     return {
@@ -134,6 +183,15 @@ export function CartView({
         setError(data.error ?? 'Checkout failed.')
         return
       }
+      /**
+       * Remember the details for next time, in this browser only.
+       *
+       * After the server accepted the order and before leaving for the payment
+       * page. Not after payment succeeds — there is no coming back here to run
+       * that, and someone whose card is declined is precisely the person who
+       * should not have to retype an address.
+       */
+      if (!isSignedIn) saveCheckout({ ...address, email })
       redirectToHostedPayment(data.formUrl, data.token)
     } catch {
       setError('Could not reach the server. Is the dev server running?')
@@ -245,16 +303,27 @@ export function CartView({
         <form onSubmit={checkout} className="mt-6">
           {!isSignedIn && (
             <>
+              {/* No "Have an account? Sign in" here any more. Checkout is
+                  guest-only by design, and inviting someone to sign in at the
+                  exact moment they are about to pay adds a step that can only
+                  lose the sale. */}
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
                   Contact
                 </h2>
-                <Link
-                  href="/login?next=/cart"
-                  className="text-sm text-brand-light hover:underline"
-                >
-                  Have an account? Sign in
-                </Link>
+                {/* Only shown when the form was actually prefilled. A shared or
+                    family computer will otherwise offer one person's details to
+                    the next, and the only acceptable answer to that is a
+                    visible way out. */}
+                {restored && (
+                  <button
+                    type="button"
+                    onClick={forget}
+                    className="text-sm text-brand-light hover:underline"
+                  >
+                    Not you? Clear details
+                  </button>
+                )}
               </div>
 
               <div className="mt-3">

@@ -705,6 +705,82 @@ c.whitmire43@gmail.com     ui=button   DELETABLE  1 unpaid order
 
 ---
 
+## 39. Accounts off, and the browser remembers a guest — 2026-10-01
+
+### Accounts are no longer offered to customers
+
+Registration was already closed by `ALLOW_REGISTRATION` (§32), but the doors
+were still painted on the walls. Three are now gone:
+
+- **The header "Sign in"** — both the desktop link and the phone second-row
+  one. A guest now sees **"Order status"** pointing at `/orders`, which answers
+  the question they actually have, with an order number and their email.
+- **"Have an account? Sign in" in the cart.** Inviting someone to sign in at
+  the moment they are about to pay adds a step that can only lose the sale.
+- **The post-purchase signup** on `/checkout/success`, now shown only when
+  registration is open.
+
+**`/login` still works by URL.** That is how Phillip gets in, and the
+signed-in controls are untouched for him and for the two real account holders.
+Offering a sign-in to people who cannot create an account is a door to a locked
+room.
+
+> **A flag that did not mean what it said.** `/api/auth/claim-order` creates
+> accounts and **never consulted `registrationOpen()`**, so registration was
+> "closed" while accounts could still be made after checkout. Never a way in
+> for the signup bot — it needs a real order number and the matching email —
+> but "accounts are off" has to be true everywhere to be worth relying on. Now
+> gated, failing closed, with three tests.
+
+Reversing all of this is still one environment variable plus a redeploy, which
+is what subscriptions will need when they land.
+
+### A returning guest finds the form already filled in
+
+`lib/checkout-memory.ts`. Name, address, email and phone are saved in
+**`localStorage`** at checkout and restored next visit.
+
+**It had to be their browser, not our database.** Without a login there is
+nothing to key server-side storage to but the device, which would mean keeping
+someone's name, address and phone against a browser id — a profile of a person
+who never asked for an account and cannot sign in to delete it. The whole point
+of guest checkout is that we hold no standing record of anybody. In
+`localStorage` the data never leaves the machine that typed it and reaches us
+only when they submit the form again, exactly as if they had retyped it.
+
+**No card details, ever** — those are typed on the payment provider's page and
+this code never sees them.
+
+Three decisions worth keeping:
+
+- **Saved at submit, not after payment succeeds.** There is no coming back to
+  the cart to run that, and someone whose card was declined is precisely who
+  should not have to retype an address.
+- **"Not you? Clear details"**, shown only when the form was actually
+  prefilled. A shared or family computer will otherwise offer one person's
+  details to the next, and the only acceptable answer is a visible way out.
+- **A stored value is untrusted input.** It is a string a person can edit, so
+  reads validate field by field, cap lengths, and return null on anything odd.
+  `localStorage` also *throws* rather than returning null in some locked-down
+  modes, so every access is wrapped — the worst outcome is an empty form.
+
+The privacy policy now says all of this, including how to clear it.
+
+### The Emails table fits without scrolling
+
+Ten columns needed sideways scrolling to reach Delete. Now eight: orders and
+spend share a cell and `firstSeen` is gone from the screen. **Both are still
+separate columns in the CSV**, where width is free and a spreadsheet needs them
+apart to sum.
+
+**Measured rather than assumed**, by rendering the real page against a seeded
+local database: `scrollWidth === clientWidth` at both 1024px (959/959) and
+1440px (1102/1102), with Delete visible on the last row without scrolling. The
+48rem minimum stays, so a phone scrolls the wrapper rather than squashing eight
+columns to unreadable.
+
+---
+
 ## 34. The reorder reminder — shipped 2026-09-30
 
 Daily cron at **16:00 UTC**, an hour after the abandoned-cart job so the two
