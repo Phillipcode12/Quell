@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  FREE_SHIPPING_BOTTLES,
   FREE_SHIPPING_THRESHOLD_CENTS,
   STANDARD_SHIPPING_CENTS,
   remainingForFreeShipping,
@@ -46,6 +47,21 @@ describe('shippingCentsFor', () => {
      */
     expect(shippingCentsFor(ONE_BOTTLE * 2)).toBe(STANDARD_SHIPPING_CENTS)
     expect(shippingCentsFor(ONE_BOTTLE * 3)).toBe(0)
+  })
+
+  it('matches the bottle count the copy promises', () => {
+    /**
+     * FREE_SHIPPING_BOTTLES is written down, not computed -- the price lives
+     * in the database. This is what stops the site promising "free shipping on
+     * 3 bottles or more" while checkout charges for three.
+     *
+     * If this fails, the price changed. Fix the constant and the copy follows;
+     * do not relax the test.
+     */
+    expect(shippingCentsFor(ONE_BOTTLE * FREE_SHIPPING_BOTTLES)).toBe(0)
+    expect(shippingCentsFor(ONE_BOTTLE * (FREE_SHIPPING_BOTTLES - 1))).toBe(
+      STANDARD_SHIPPING_CENTS,
+    )
   })
 
   it('keeps the delivered price per bottle falling as quantity rises', () => {

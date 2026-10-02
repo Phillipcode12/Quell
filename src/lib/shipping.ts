@@ -32,6 +32,21 @@
 export const FREE_SHIPPING_THRESHOLD_CENTS = 8_900 // $89.00
 
 /**
+ * The same rule said in bottles, for customer-facing copy.
+ *
+ * "Free shipping on 3 bottles or more" beats "free shipping over $89.00",
+ * which makes someone divide before they know what to do about it — and the
+ * whole point of the threshold is to pull people up to three.
+ *
+ * **Written down rather than computed, and that is the risk.** The bottle price
+ * lives in the database, so nothing here can derive this number at build time.
+ * `shipping.test.ts` asserts it against the seeded price: if the price ever
+ * changes so that three bottles no longer qualify, the test fails rather than
+ * the site quietly promising something checkout will not honour.
+ */
+export const FREE_SHIPPING_BOTTLES = 3
+
+/**
  * Flat rate charged below the threshold.
  *
  * NOTE: this rate is an assumption, not a quoted carrier price — the free

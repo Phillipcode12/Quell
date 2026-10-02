@@ -1,6 +1,7 @@
 import { FAQS } from '@/lib/product-content'
 import { formatUsd } from '@/lib/money'
 import {
+  FREE_SHIPPING_BOTTLES,
   FREE_SHIPPING_THRESHOLD_CENTS,
   STANDARD_SHIPPING_CENTS,
 } from '@/lib/shipping'
@@ -9,7 +10,9 @@ import {
 // with what checkout actually charges.
 const shippingFaq = {
   q: 'How much is shipping?',
-  a: `Orders of ${formatUsd(FREE_SHIPPING_THRESHOLD_CENTS)} or more ship free. Below that, shipping is a flat ${formatUsd(STANDARD_SHIPPING_CENTS)}. You will enter your shipping address at checkout.`,
+  // The FAQ keeps the dollar figure as well as the bottle count: it is the
+  // place someone goes for the precise rule, and the cart applies a subtotal.
+  a: `${FREE_SHIPPING_BOTTLES} bottles or more ship free (orders of ${formatUsd(FREE_SHIPPING_THRESHOLD_CENTS)} and up). Below that, shipping is a flat ${formatUsd(STANDARD_SHIPPING_CENTS)}. You will enter your shipping address at checkout.`,
 }
 
 const allFaqs = [...FAQS, shippingFaq]

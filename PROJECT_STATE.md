@@ -1176,10 +1176,26 @@ cart maths, the structured data, the FAQ, the footer, the hero and the buy
 panel's own nudge — which now reads **"Make it 3 and shipping is free"** without
 a copy change, because it derives the quantity from the threshold.
 
-**The marketing copy now reads "Free shipping over $89.00"** in the hero, footer
-and buy section. Accurate, but it makes the customer divide to discover that
-means three. Phrasing it as bottles would be clearer and is a separate decision
-about brand voice, so it was left alone.
+**The copy says it in bottles, not dollars** — "Free shipping on 3 bottles or
+more" across the hero, footer, buy section and FAQ. "Over $89.00" was accurate
+but made the customer divide before they knew what to do about it, and pulling
+people to three is the whole point.
+
+> **`FREE_SHIPPING_BOTTLES` is written down, not computed**, because the bottle
+> price lives in the database and this is a build-time string. `shipping.test.ts`
+> asserts it against the seeded price: **if the price ever changes so that three
+> bottles no longer clear $89, the test fails** rather than the site promising
+> something checkout will not honour. Fix the constant, do not relax the test.
+
+The FAQ keeps both — "3 bottles or more ship free (orders of $89.00 and up)" —
+since it is where someone goes for the precise rule, and the cart applies a
+subtotal rather than a bottle count.
+
+> **A JSX whitespace bug nearly shipped here.** The footer read **"3bottles or
+> more"**: JSX trims the whitespace at a line break following an expression, so
+> `{FREE_SHIPPING_BOTTLES}` at the end of a line swallowed the space. Caught by
+> reading the rendered text off a running page, not by types, lint or tests —
+> none of which can see it. It needs an explicit `{' '}`.
 
 ### Verified on a running page at every quantity
 

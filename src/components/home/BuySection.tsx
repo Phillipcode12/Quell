@@ -4,7 +4,7 @@ import { QuellMark } from '@/components/Logo'
 import { Droplet, Leaf, Medical, NoDrop, Truck } from '@/components/icons'
 import { formatUsd } from '@/lib/money'
 import { BRAND, DRUG_FACTS, RELIEVES } from '@/lib/product-content'
-import { FREE_SHIPPING_THRESHOLD_CENTS } from '@/lib/shipping'
+import { FREE_SHIPPING_BOTTLES } from '@/lib/shipping'
 import { stockState, type StockState } from '@/lib/inventory'
 
 function StockBadge({
@@ -118,8 +118,7 @@ export function BuySection({ product }: { product: BuyProduct | null }) {
 
           <p className="mt-6 flex items-center gap-2.5 text-sm text-brand-light">
             <Truck className="h-5 w-5 shrink-0" />
-            Free shipping on orders over{' '}
-            {formatUsd(FREE_SHIPPING_THRESHOLD_CENTS)}
+            Free shipping on {FREE_SHIPPING_BOTTLES} bottles or more
           </p>
 
           <BuyPanel

@@ -2,10 +2,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { HeroBuy } from '@/components/home/HeroBuy'
 import { ArrowRight, Clipboard, Truck } from '@/components/icons'
-import { formatUsd } from '@/lib/money'
 import { BRAND, FRONT_PANEL_CLAIMS, RELIEVES } from '@/lib/product-content'
 import { HERO_INVITE } from '@/lib/self-check'
-import { FREE_SHIPPING_THRESHOLD_CENTS } from '@/lib/shipping'
+import { FREE_SHIPPING_BOTTLES } from '@/lib/shipping'
 
 // Fades the photo's white studio background out to the page black instead of
 // sitting on the page as a bright rectangle. The product stays fully opaque in
@@ -100,7 +99,7 @@ export function Hero({ product }: { product: HeroProduct }) {
             ))}
             <li className="flex items-center gap-2 text-brand-light">
               <Truck className="h-4 w-4" />
-              Free shipping over {formatUsd(FREE_SHIPPING_THRESHOLD_CENTS)}
+              Free shipping on {FREE_SHIPPING_BOTTLES} bottles or more
             </li>
           </ul>
 

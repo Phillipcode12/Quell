@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import { QuellLogoInline } from '@/components/Logo'
 import { BRAND, COMPANY } from '@/lib/product-content'
-import { formatUsd } from '@/lib/money'
-import { FREE_SHIPPING_THRESHOLD_CENTS, SHIPPING_LABEL } from '@/lib/shipping'
+import { FREE_SHIPPING_BOTTLES, SHIPPING_LABEL } from '@/lib/shipping'
 
 const columns = [
   {
@@ -57,8 +56,11 @@ export function Footer() {
               {/* SHIPPING_LABEL already ends in "shipping", so it is lowercased
                   into the sentence rather than having the word repeated after
                   it — this read "Free Standard shipping shipping over $59.00". */}
-              Free {SHIPPING_LABEL.toLowerCase()} over{' '}
-              {formatUsd(FREE_SHIPPING_THRESHOLD_CENTS)}
+              {/* The explicit {' '} matters: JSX trims the whitespace at a line
+                  break that follows an expression, so breaking the line after
+                  {FREE_SHIPPING_BOTTLES} rendered "3bottles or more". */}
+              Free {SHIPPING_LABEL.toLowerCase()} on {FREE_SHIPPING_BOTTLES}{' '}
+              bottles or more
             </p>
           </div>
 
