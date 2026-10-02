@@ -74,8 +74,19 @@ export function Turnstile({
   const [failed, setFailed] = useState(false)
   // Stable across re-renders so the effect below never re-runs on a new
   // closure and mounts a second widget on top of the first.
+  //
+  // Written in an effect rather than during render: a render React throws
+  // away -- a concurrent transition, or an `<Activity>` subtree prerendered
+  // and never committed -- would otherwise leave that render's `onToken` in
+  // the ref, and the widget would hand its token to a closure that is not on
+  // screen. Today every caller passes a `useState` setter, whose identity
+  // never changes, so the write is harmless; the first caller to pass an
+  // inline arrow is the one it would bite, and that is exactly the case this
+  // ref exists to serve.
   const onTokenRef = useRef(onToken)
-  onTokenRef.current = onToken
+  useEffect(() => {
+    onTokenRef.current = onToken
+  })
 
   const id = useId()
 

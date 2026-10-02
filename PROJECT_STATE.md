@@ -781,6 +781,60 @@ columns to unreadable.
 
 ---
 
+## 40. Short links for social bios — shipped 2026-10-01
+
+**`quelldrop.com/tiktok`** → the homepage, tagged for the Campaigns report
+(§29). Built on 2026-10-01; **Phillip is holding off on putting it in the bio**,
+so nothing is live on TikTok's side yet.
+
+The long form works identically and needs no code:
+
+```
+https://quelldrop.com/?utm_source=tiktok&utm_medium=social&utm_campaign=bio
+```
+
+The short path exists because a TikTok bio **shows the link text**, and a wall
+of query string there reads as spam to the one stranger deciding whether the
+shop looks legitimate.
+
+### Why the tag is doing real work here
+
+**TikTok opens links in its own in-app browser, which usually sends no
+referrer.** Measured 2026-10-01 against production: a visit from a tagged link
+recorded `referrerHost: null` and `source: direct`. So even with the referrer
+bug fixed (§37), **every TikTok visitor would otherwise be indistinguishable
+from someone typing the address in.** The tags are the only thing that survives
+that trip.
+
+### Decisions worth not undoing
+
+- **307, never 308.** A permanent redirect is cached by browsers more or less
+  forever, and the tags on the far side are marketing copy that will be edited.
+  Anyone who had visited once would keep being sent to the old destination with
+  no way to clear it but their own browser settings. `no-store` for the same
+  reason one layer up.
+- **Incoming `utm_*` parameters override the defaults.** So
+  `/tiktok?utm_content=january-video` keeps the source and campaign and labels
+  the placement — one bio link, told apart per video, with no code change.
+- **Everything that is not `utm_*` is dropped.** A `next=` or `ref=` parameter
+  is discarded rather than forwarded, so the link cannot bounce arbitrary query
+  data through our domain.
+- **A redirect on our own domain, not a shortener.** One less account to keep,
+  nothing to expire or start charging, and no stranger's hostname in front of
+  the shop.
+
+### Adding another channel
+
+Add it to `CHANNELS` in `lib/channel-links.ts` and copy `src/app/tiktok/route.ts`
+to `src/app/<channel>/route.ts`. **Not** a catch-all `src/app/[channel]/route.ts`
+— at the root that would shadow every real page on the site.
+
+> **If route handlers 404 in local dev while pages still load**, the `.next`
+> directory is stale from a production `next build`. `rm -rf .next` and restart.
+> Cost twenty minutes on 2026-10-01 looking for a routing bug that was not there.
+
+---
+
 ## 34. The reorder reminder — shipped 2026-09-30
 
 Daily cron at **16:00 UTC**, an hour after the abandoned-cart job so the two
