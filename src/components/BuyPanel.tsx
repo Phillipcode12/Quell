@@ -91,24 +91,34 @@ export function BuyPanel({
   const qualifyingQuantity = Math.ceil(FREE_SHIPPING_THRESHOLD_CENTS / priceCents)
 
   /**
-   * What this quantity actually costs, and what that works out to per bottle.
+   * What this quantity costs, and what it saves against buying the same number
+   * of bottles one at a time.
    *
-   * **Compared against one bottle delivered, never against the $29.99 sticker.**
-   * That is the whole subtlety here: at two bottles the delivered price is
-   * $34.99 each, which is *higher* than the shelf price, so showing it beside
-   * $29.99 would read as a markup. Against $39.99 — what one bottle actually
-   * costs to get to your door — it reads as the saving it is.
+   * **The reference is one bottle delivered — $39.99 — never the $29.99
+   * sticker.** That is the subtlety worth keeping: at two bottles the delivered
+   * price is $34.99 each, which is *higher* than the shelf price, so anything
+   * compared against $29.99 reads as a markup. Against what one bottle actually
+   * costs to get to your door, it is a saving.
    *
-   * It states a price rather than a saving, which is the lesson from the note
-   * above: "$34.99 a bottle instead of $39.99" is true whatever the buyer
-   * intended, where "saves $5" assumes they wanted two in the first place.
+   * It read "$34.99 a bottle instead of $39.99" until Phillip asked for the
+   * saving itself on 2026-10-02. Both are true; the amount is simply the more
+   * legible one, and it climbs where the per-bottle figure flattens:
+   *
+   * ```
+   * 2 bottles  $69.98 vs $79.98 singly   saving $10
+   * 3 bottles  $89.97 vs $119.97 singly  saving $30
+   * ```
+   *
+   * > **It is a comparison against this shop's own prices, both of which are on
+   * > screen** — pick 1 in the dropdown and $39.99 is right there. That is what
+   * > makes it a substantiated claim rather than a vague "save big", which
+   * > matters on a site selling a regulated OTC drug.
    */
   const subtotalCents = priceCents * quantity
   const shippingCents = shippingCentsFor(subtotalCents)
   const deliveredCents = subtotalCents + shippingCents
-  const perBottleCents = Math.round(deliveredCents / quantity)
   const singleDeliveredCents = priceCents + shippingCentsFor(priceCents)
-  const cheaperPerBottle = perBottleCents < singleDeliveredCents
+  const savingCents = singleDeliveredCents * quantity - deliveredCents
   const canQualify =
     shortfall > 0 &&
     qualifyingQuantity > quantity &&
@@ -167,11 +177,13 @@ export function BuyPanel({
           {formatUsd(deliveredCents)}
         </span>{' '}
         delivered
-        {cheaperPerBottle && (
+        {savingCents > 0 && (
           <>
             {' '}
-            — {formatUsd(perBottleCents)} a bottle instead of{' '}
-            {formatUsd(singleDeliveredCents)}
+            —{' '}
+            <span className="font-semibold text-brand-light">
+              saving {formatUsd(savingCents)}
+            </span>
           </>
         )}
         {shippingCents === 0 && <> · shipping free</>}

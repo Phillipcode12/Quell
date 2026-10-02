@@ -1154,20 +1154,35 @@ pre-set choice; the difference is that anyone can.
 > is arithmetic on numbers live on the site, and it carried the argument on its
 > own.
 
-### The per-bottle line, and the trap in it
+### The saving line, and the trap in it
 
-The panel shows **`$69.98 delivered — $34.99 a bottle instead of $39.99`**.
+It reads **"$69.98 delivered — saving $10.00"**, with the amount picked out in
+brand colour. Changed from "$34.99 a bottle instead of $39.99" on 2026-10-02 at
+Phillip's request. Both are true; the amount is the more legible one, and it
+climbs where the per-bottle figure flattens:
 
-> **The comparison is against one bottle delivered, never against the $29.99
-> sticker.** At two bottles the delivered price is $34.99 each, which is
-> *higher* than the shelf price — put beside $29.99 it reads as a markup.
-> Against $39.99, what one bottle actually costs to get to your door, it reads
-> as the saving it is. This is easy to get backwards and would quietly argue
-> against the sale.
+```
+1 bottle    $39.99 delivered                              (no saving shown)
+2 bottles   $69.98 delivered — saving $10.00
+3 bottles   $89.97 delivered — saving $30.00 · shipping free
+4 bottles   $119.96 delivered — saving $40.00 · shipping free
+```
 
-It states a **price, not a saving**, which is the standing lesson in this panel:
-"$34.99 a bottle instead of $39.99" is true whatever the buyer intended, where
-"saves $5" assumes they wanted two all along.
+**$30 pulls much harder toward three than "$29.99 a bottle" ever did.**
+
+> **The reference is one bottle delivered — $39.99 — never the $29.99 sticker.**
+> At two bottles the delivered price is $34.99 each, *higher* than the shelf
+> price, so anything compared against $29.99 reads as a markup. The saving is
+> against buying the same number of bottles one at a time, and **both prices are
+> on screen**: pick 1 in the dropdown and $39.99 is right there. That is what
+> makes it a substantiated claim rather than a vague "save big", which matters
+> on a site selling a regulated OTC drug.
+
+The earlier note in this panel argued against stating a saving at all —
+"saves $6.95" was rejected because free shipping is not a saving unless two
+bottles were already wanted. That reasoning held for an offer attached to a
+quantity the buyer had not chosen; here the figure recomputes from whatever
+quantity *is* selected, and vanishes at one.
 
 ### What moved on its own
 
