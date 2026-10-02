@@ -21,32 +21,22 @@ means a missing table would hit every page, not one route.
 
    **His order has no phone number** — it predates the field, which became
    required on 2026-10-02 (§43). Every order from here on carries one.
-2. **Upgrade Vercel to Pro** (§ Hobby). **The trigger agreed on 2026-09-03 was
-   "the first real order", and it has happened.** The shop is now taking money
-   on a plan whose terms prohibit commercial use, and the enforcement is a
-   paused deployment — which now costs real sales rather than nothing. $20/month,
-   Aurora's cost. It also buys hourly crons, which is what makes the
-   abandoned-cart email sharp rather than up to a day late (§33).
+2. **DECIDED 2026-10-02 — Quell stays on Vercel Hobby. Do not raise the Pro
+   upgrade again.** Phillip ruled it out and asked not to hear about it
+   further. The reason is trust rather than price: **Vercel charged him for
+   password protection set up on the DECB site and never refunded it.** He
+   does not want the refund chased either, for now.
 
-   **Free hosts that permit commercial payments were evaluated on 2026-09-30
-   and declined for Quell** — so this is a decision, not an unexamined bill.
-   Cloudflare Workers and Netlify both allow commercial use on their free
-   tiers, and Cloudflare's crons (5 triggers, any schedule, free) are better
-   than what Pro gives us. What ruled them out was **migration risk on a money
-   path that had just worked on a real customer for the first time**: the
-   hosted-payment POST, the return handler that flips orders to `paid`, Neon,
-   both crons, Resend, Sentry, Turnstile and DNS all move at once, and each is
-   a place a silent break costs a sale rather than raising an error. Cloudflare
-   adds two of its own: a **10 ms CPU ceiling per request** on the free tier,
-   which is tight for SSR, and **OpenNext does not guarantee Windows support**
-   (it wants WSL), which puts a new toolchain on the machine that deploys the
-   shop.
+   **The underlying risk is real and accepted, not solved** (§ Hobby below).
+   Hobby forbids commercial use and the shop takes card payments; the
+   enforcement is a paused deployment. That is now a known accepted risk, not
+   an open action. **If the deployment is ever actually paused, tell him
+   immediately** — the site being down is new information, and is not the
+   same thing as re-opening this decision.
 
-   Nothing here is Vercel-specific — it is a standard Next 16 app, which is
-   exactly why those hosts can run it. **Revisit if hosting ever becomes a cost
-   that matters, not while it is a rounding error against one order.** The free
-   tiers remain the intended starting point for the *other* sites.
-
+   Consequences worth remembering: Hobby cannot have team members, so Ryan
+   and Dr. Rynerson cannot be added to Vercel; and crons stay daily, so the
+   abandoned-cart email can be up to a day late (§33).
 3. **Confirm the descriptor reads `QUELL DROP`** on transaction 121847268368.
    This item has waited since the start for a real card, and there is finally
    one to look at.
@@ -78,7 +68,12 @@ means a missing table would hit every page, not one route.
    — the property is verified under the personal one (§18), and the work
    address will simply show no sites, which looks like the import failed.
 8. **Vercel is on the free Hobby plan, which forbids commercial use.**
-   Decision on 2026-09-03: **leave it, and upgrade on the first real order.**
+   **Superseded by the decision in item 2 — the shop stays on Hobby and the
+   upgrade is not to be raised again.** The 2026-09-03 reasoning below is
+   kept because the facts about the plan are still accurate and useful; the
+   recommendation in it is not.
+
+   Original decision on 2026-09-03: **leave it, and upgrade on the first real order.**
    Vercel's own wording is "Hobby teams are for non-commercial personal use
    only", and their examples of commercial use open with "processing payments
    from site visitors" — which is exactly what this site does. Enforcement is a
