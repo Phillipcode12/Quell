@@ -7,6 +7,7 @@ import { isEmailConfigured } from '@/lib/email'
 import { stockState } from '@/lib/inventory'
 import { OrderActions, StockEditor } from '@/components/admin/OrderActions'
 import { CorrectEmailButton } from '@/components/admin/CorrectEmailButton'
+import { ShippingNoticeStatus } from '@/components/admin/ShippingNoticeStatus'
 import { AdminTabs } from '@/components/admin/AdminTabs'
 import {
   AdminHeader,
@@ -17,6 +18,7 @@ import {
 } from '@/components/admin/AdminLayout'
 
 export const metadata: Metadata = { title: 'Orders' }
+
 
 /**
  * Orders, as cards rather than as a table.
@@ -263,6 +265,13 @@ export default async function AdminOrdersPage() {
                 </div>
 
                 <OrderActions orderId={order.id} status={order.status} />
+                <ShippingNoticeStatus
+                  orderId={order.id}
+                  shippedAt={order.shippedAt?.toISOString() ?? null}
+                  shippingEmailSentAt={
+                    order.shippingEmailSentAt?.toISOString() ?? null
+                  }
+                />
                 <CorrectEmailButton orderId={order.id} currentEmail={order.email} />
               </li>
             ))}

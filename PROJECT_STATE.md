@@ -994,6 +994,80 @@ input with the hint rendered, and eight required fields where there were seven.
 
 ---
 
+## 44. The tracking email now records itself — shipped 2026-10-02
+
+Phillip asked "did the tracking email go out?" after shipping `Q-QRABWBQ9`, and
+nothing in the app could answer. `/admin/orders` now says, on every shipped
+order:
+
+```
+Tracking emailed 2026-10-02 20:46          (green)
+Tracking email was not sent. … Send it now (red, with a button)
+```
+
+### The gap it closes
+
+`sendShippingNotice` catches its own errors and wrote only to the console. So a
+refused email left an order reading **shipped**, an admin page showing no
+error, and **nothing anywhere recording that the customer was never told**.
+Answering the question meant opening the Resend dashboard — which is exactly
+what happened, and it only happened because somebody thought to ask.
+
+`Order.shippingEmailSentAt` is stamped **after** a successful send, never
+before: the other order would show a green "emailed" on an order whose customer
+is still waiting. A failure of that write alone marks a sent email unsent,
+costing at most a duplicate notice — the right direction to be wrong in.
+
+Failures now also reach **Sentry**, where previously they reached a console
+nobody reads.
+
+> **The errors are still swallowed, deliberately.** A failed email must not
+> undo marking an order shipped: the parcel has physically gone, and the order
+> status is the thing that has to stay true. What changed is that failing is no
+> longer invisible.
+
+> **"Sent" means the provider accepted the message.** A bounce happens after
+> that and only the provider sees it, so this does not replace Resend when an
+> address looks wrong — it answers "did we try, and did it leave".
+
+### Resending
+
+`resendShippingNotice`, behind the **Send it now** button, and **allowed even
+when the notice did send**. The obvious guard — refuse if already sent — would
+block the case most likely to need it: an address corrected after a bounce
+(§36). A duplicate tracking email is a small annoyance; being unable to resend
+one is a customer who never gets their number.
+
+### A third state that was deleted rather than fixed
+
+A draft showed "shipped before send tracking existed" for orders predating the
+column, gated on a hardcoded cutoff date. **The constant was wrong the first
+time** — set a couple of hours into the future, so a freshly shipped test order
+read as "too old to know", which is precisely the silent-wrong-answer this
+feature exists to remove.
+
+A date constant that must be guessed correctly is the wrong shape. `Q-QRABWBQ9`
+was the only order in that state, its notice was confirmed by hand in Resend,
+so **it was backfilled in production** (`shippingEmailSentAt = shippedAt`) and
+the branch deleted. The ambiguous case now has no members and needs no code.
+
+### Migration
+
+`20261002000000_shipping_email_sent`, additive and nullable. **Applied by hand
+to `quell_dev` and to production via `DATABASE_URL_UNPOOLED` before the code
+referencing it deployed**, per the standing rule — this project does not run
+migrations on deploy. Column presence was confirmed through the pooled
+connection afterwards.
+
+### Verified end to end, against a running server
+
+Marking a dev order shipped stamped the column and rendered the green line;
+nulling the column reproduced the red warning and the button; clicking **Send
+it now** sent, stamped, and cleared the warning — confirmed in the database,
+not only on screen.
+
+---
+
 ## 34. The reorder reminder — shipped 2026-09-30
 
 Daily cron at **16:00 UTC**, an hour after the abandoned-cart job so the two

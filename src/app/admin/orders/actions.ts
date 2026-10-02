@@ -179,3 +179,44 @@ export async function correctEmailAndResend(orderId: string, rawEmail: string) {
   revalidatePath('/admin/orders')
   return { ok: true as const, email }
 }
+
+/**
+ * Sends the shipping notice again for an order that already shipped.
+ *
+ * Exists for the case the Orders tab now surfaces: `shippedAt` set and
+ * `shippingEmailSentAt` null, meaning the parcel went and the customer was
+ * never told. Without this the warning would be information with nothing to do
+ * about it.
+ *
+ * **Deliberately allowed even when the notice did send.** The obvious guard —
+ * refuse if `shippingEmailSentAt` is set — would block the case most likely to
+ * need it: an address corrected after the first notice bounced. Sending a
+ * duplicate tracking email is a small annoyance; being unable to resend one is
+ * a customer who never gets their tracking number.
+ */
+export async function resendShippingNotice(orderId: string) {
+  await assertAdmin()
+
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
+    select: { status: true, shippedAt: true },
+  })
+
+  if (!order) throw new Error('Order not found.')
+  if (order.status !== 'shipped' || !order.shippedAt) {
+    // There is no tracking number to send before an order ships, so this would
+    // email someone a notice about a parcel that has not gone.
+    throw new Error('That order has not shipped yet.')
+  }
+
+  const sent = await sendShippingNotice(orderId)
+  revalidatePath('/admin/orders')
+
+  if (!sent) {
+    throw new Error(
+      'The email provider refused it. Check the address on the order, then try again.',
+    )
+  }
+
+  return { ok: true }
+}
