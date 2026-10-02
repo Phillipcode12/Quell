@@ -343,6 +343,51 @@ Working tree clean, `main` in sync, nothing left running.
   comes from the merchant account, not the gateway. Phillip checked the hosted
   payment page and it shows **"Quell"**, so Aurora Pharmaceuticals appears
   nowhere in the buying flow. Closed; do not re-open it from Zen's email.
+4. **Ask buyers for a rating, and collect it in the admin.** Phillip's call on
+   2026-10-02, noted for a later session — **not started.**
+
+   A separate email to someone who has bought, asking them to rate the product.
+   The rating comes back to the site and lands in `/admin` for review.
+
+   **Why it is worth building:** `lib/structured-data.ts` deliberately emits no
+   `aggregateRating` and no `review` until genuine ones exist (its own note
+   says so). Star ratings in search results move click-through more than almost
+   anything else available to this shop, and **this feature is the switch that
+   turns them on.** It is also the SEO work with the least regulatory exposure
+   — a customer's own words are not a claim by Aurora.
+
+   **Build notes worth having before starting:**
+
+   - **Follow the established email pattern.** A `reviewEmailSentAt` column on
+     `Order`, a daily cron, marked before sending so a crash costs a missed
+     email rather than a duplicate — exactly as §33, §34 and §44 do. The
+     migration goes on by hand before the code deploys.
+   - **Timing: after it has been used, before the reorder nudge.** A bottle is
+     reckoned at 35 days (`DAYS_PER_BOTTLE`) and the reorder email fires on
+     that schedule. Around **14 days from shipping** gives someone time to form
+     an opinion without two emails arriving together. Key off `shippedAt`, not
+     the order date — the clock starts when the parcel does.
+   - **Only real purchasers.** A tokenised link tied to the order, the same
+     shape as guest order lookup (order number plus the email on the order).
+     An open form is a spam magnet and poisons the thing it exists to collect.
+   - **Moderation, with a line that matters.** Reviews should not publish
+     themselves; the admin approves. **Filtering spam and abuse is fine;
+     publishing only the positive ones is not** — under FTC rules, presenting a
+     curated subset as representative is deceptive. If a one-star review is
+     genuine it stays, and the honest answer to it is a reply, not a delete.
+   - **Never incentivised.** No discount for leaving one. A material connection
+     has to be disclosed, it taints the review, and fabricated or paid review
+     markup gets a site penalised rather than ranked. Just ask.
+   - **Do not emit an aggregate off one review.** A 5.0 from a single customer
+     is technically true and reads as a lie. Hold `aggregateRating` until there
+     are enough to mean something.
+   - `/reviews` already exists as a page and is currently linked only from the
+     footer (§47) — it is the obvious home for these.
+
+   **Start with Chase.** `Q-QRABWBQ9` shipped 2026-10-02, so he is the only
+   person who could answer one today, and a hand-written email asking him
+   is worth more right now than the machinery.
+
 - **The privacy policy** keeps its own wording. The word "analytics" came out
   of the no-tracking sentence and nothing on the page is false. One optional
   sentence about the collected-automatically list is still unwritten (§23).
