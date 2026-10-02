@@ -479,7 +479,11 @@ suggestion, and updates the record *before* sending — a failed send then leave
 a correct order that can be retried, rather than an address already proven
 dead.
 
-### And an optional phone number
+### And a phone number — optional at first, required from 2026-10-02
+
+> **Superseded.** This shipped optional on 2026-09-30 and was made **required**
+> two days later. The original reasoning is kept below because it was sound and
+> may apply again; what overrode it is recorded in §43.
 
 A second route to someone who has already paid. **Optional, deliberately**: a
 required phone field is among the most abandoned inputs in checkout, and
@@ -492,7 +496,8 @@ idea of a problem at the moment someone is deciding to pay.
 
 Validated as loosely as possible and stored verbatim, extensions included.
 **Never marketed to** — texting it needs separate consent under US TCPA rules
-and nobody has given that.
+and nobody has given that. **That last part did not change when the field
+became required.**
 
 ---
 
@@ -928,6 +933,64 @@ links, not three.
 the original layout was built around, with no page-level horizontal overflow at
 either. The wide-screen nav is untouched: Why Quell, How to use, Reviews, Drug
 Facts, FAQ.
+
+---
+
+## 43. The phone number became required — 2026-10-02
+
+Optional for two days (§36), required now. **The carriers ask for a phone
+number**, so an order without one costs real work every time a parcel is
+booked — which Phillip hit on the first shipment, `Q-QRABWBQ9`, whose `phone`
+is `null` because it was placed before the field existed.
+
+The original objection still stands and was simply outweighed: a required phone
+field is among the most abandoned inputs in checkout. **Eight required fields
+now, seven before.** If conversion ever looks wrong, this is a change to
+consider undoing — but the cost it removes is paid on every single order, where
+the cost it adds is paid by the fraction of visitors who object to typing a
+number.
+
+### The rule is the loosest one that is still useful
+
+`lib/phone.ts`, and it is only: **after discarding everything that is not a
+digit, are there between 10 and 15 left?**
+
+- **10** — a US number without the country code, the floor for a shop that
+  ships only within the United States.
+- **15** — E.164's maximum, so no real number anywhere is above it.
+
+This now stands between a paying customer and a completed order, so **the
+expensive failure is rejecting a real number, not accepting a bad one.** It
+accepts `(615) 555-0142`, `615.555.0142`, `+1 615 555 0142` and
+`6155550142 x204` alike, and catches what it is actually for: blank, `n/a`, and
+a number three digits short. It does **not** check that the number is real or
+reachable, and should not start to — that needs a lookup service, and getting
+it wrong silently costs an order.
+
+### Wording
+
+Labelled **"Phone"** with the hint *"For delivery updates — the carrier asks
+for a number."* The reason is given, and it is about the delivery rather than a
+problem. The earlier draft of this field read *"only if there's a problem with
+your order"*, which Phillip cut for planting the idea of a problem at the
+moment someone is deciding to pay (§36); the same trap is still open here and
+the wording avoids it deliberately.
+
+The refusal message says what is wanted — *"Enter a phone number with at least
+10 digits"* — rather than that something is invalid, because at the last step
+of checkout a vague error leaves someone guessing at a field they did not want
+to fill in.
+
+**Still never marketed to.** Required at checkout is not consent to be texted;
+that needs separate express consent under US TCPA rules and nobody has given
+it.
+
+### Verified against the running app, not only its tests
+
+`POST /api/checkout` on a live server: empty, `n/a` and `555-0142` each refused
+with the right message and no order created; a valid number passed validation
+and reached the gateway. The cart form reports `required: true` on the phone
+input with the hint rendered, and eight required fields where there were seven.
 
 ---
 

@@ -422,18 +422,28 @@ export function CartView({
               autoComplete="postal-code"
               {...field('postalCode')}
             />
-            {/* Labelled as nothing more than optional. An earlier draft read
-                "only if there's a problem with your order", which plants the
-                idea of a problem at the exact moment someone is deciding to
-                pay. */}
+            {/* Required from 2026-10-02, because the shipping carriers ask for
+                a number.
+
+                The reason is given, and it is the delivery rather than a
+                problem: an earlier draft of this field read "only if there's a
+                problem with your order", which plants the idea of a problem at
+                the exact moment someone is deciding to pay. "For delivery
+                updates" is the same length and answers the same question
+                without the suggestion. */}
             <div className="col-span-2">
               <Field
-                label="Phone (optional)"
+                label="Phone"
                 type="tel"
+                required
                 inputMode="tel"
                 autoComplete="tel"
+                placeholder="(615) 555-0142"
                 {...field('phone')}
               />
+              <p className="mt-1.5 text-xs text-muted">
+                For delivery updates — the carrier asks for a number.
+              </p>
             </div>
           </div>
 

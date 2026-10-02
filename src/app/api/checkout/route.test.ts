@@ -50,12 +50,17 @@ const SHIP_TO = {
   city: 'Nashville',
   state: 'TN',
   postalCode: '37205',
+  // Required from 2026-10-02 — the carriers ask for a number. See lib/phone.
+  phone: '615-555-0142',
   country: 'US' as const,
 }
 
 // The real in-process rate limiter runs, so each test needs its own IP.
 let ip = 0
-const post = (items: { productId: string; quantity: number }[]) =>
+const post = (
+  items: { productId: string; quantity: number }[],
+  shipTo: Record<string, unknown> = SHIP_TO,
+) =>
   POST(
     new Request('https://quelldrop.com/api/checkout', {
       method: 'POST',
@@ -63,7 +68,7 @@ const post = (items: { productId: string; quantity: number }[]) =>
         'content-type': 'application/json',
         'x-forwarded-for': `10.1.0.${++ip}`,
       },
-      body: JSON.stringify({ items, shipTo: SHIP_TO, email: 'ada@example.com' }),
+      body: JSON.stringify({ items, shipTo, email: 'ada@example.com' }),
     }),
   )
 
@@ -178,5 +183,64 @@ describe('the declared ticket ceiling holds', () => {
     expect(res.status).toBe(200)
     expect(prisma.order.create.mock.calls[0][0].data.totalCents).toBe(29_990)
     expect(29_990).toBeLessThanOrEqual(30_000)
+  })
+})
+
+/**
+ * The phone number, required from 2026-10-02 because the carriers ask for one.
+ *
+ * The expensive failure here is the opposite of the usual: this stands between
+ * a paying customer and a completed order, so rejecting a real number costs a
+ * sale. Most of these assert that odd-but-real formats get through.
+ */
+describe('the phone number', () => {
+  const withPhone = (phone: unknown) => ({ ...SHIP_TO, phone })
+  const items = [{ productId: 'prod_1', quantity: 1 }]
+
+  it('is refused when missing', async () => {
+    const shipTo = { ...SHIP_TO }
+    delete (shipTo as Record<string, unknown>).phone
+    const res = await post(items, shipTo)
+    expect(res.status).toBe(400)
+    expect(prisma.order.create).not.toHaveBeenCalled()
+  })
+
+  it('is refused when blank', async () => {
+    expect((await post(items, withPhone('   '))).status).toBe(400)
+    expect(prisma.order.create).not.toHaveBeenCalled()
+  })
+
+  it('is refused when it is not a number at all', async () => {
+    expect((await post(items, withPhone('n/a'))).status).toBe(400)
+  })
+
+  it('is refused when it is short of a dialable number', async () => {
+    expect((await post(items, withPhone('555-0142'))).status).toBe(400)
+  })
+
+  it('says what is wanted rather than that something is invalid', async () => {
+    const res = await post(items, withPhone(''))
+    const body = await res.json()
+    expect(body.error).toMatch(/10 digits/)
+  })
+
+  it.each([
+    '6155550142',
+    '(615) 555-0142',
+    '615.555.0142',
+    '+1 615 555 0142',
+    '615-555-0142 ext. 204',
+  ])('accepts %s', async (phone) => {
+    const res = await post(items, withPhone(phone))
+    expect(res.status).toBe(200)
+  })
+
+  it('stores the number exactly as the customer typed it', async () => {
+    // Including the extension: the person booking the parcel can read it, and
+    // reformatting would only lose what was meant.
+    await post(items, withPhone('+1 (615) 555-0142 ext. 204'))
+    expect(prisma.order.create.mock.calls[0][0].data.phone).toBe(
+      '+1 (615) 555-0142 ext. 204',
+    )
   })
 })

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
+import { PHONE_MESSAGE, isUsablePhone } from '@/lib/phone'
 import { prisma } from '@/lib/db'
 import { getCurrentUser } from '@/lib/auth'
 import {
@@ -42,15 +43,25 @@ const addressSchema = z.object({
     .regex(/^\d{5}(-\d{4})?$/, 'Enter a valid ZIP code.'),
   country: z.enum(SHIPPABLE_COUNTRIES).default('US'),
   /**
-   * Optional, and validated as loosely as possible.
+   * Required from 2026-10-02, and validated as loosely as anything can be
+   * while still being required.
    *
-   * The only job here is to stop something absurd reaching the database. Phone
-   * formats vary enormously — extensions, country codes, punctuation people
-   * type out of habit — and every rule added is a chance to reject a real
-   * number at the last step of checkout, which costs an order to protect a
-   * field nobody is required to fill in.
+   * It was optional for two days. A required phone field is among the most
+   * abandoned inputs in checkout, which is true and was outweighed: **the
+   * shipping carriers ask for a number**, so an order without one costs real
+   * work every time a parcel is booked.
+   *
+   * The rule is in `lib/phone` and is only "ten to fifteen digits once the
+   * punctuation is thrown away". Phone formats vary enormously — extensions,
+   * country codes, habits of typing — and this now stands between a customer
+   * and a completed order, so every rule added is a chance to reject a real
+   * number at the last step of checkout.
    */
-  phone: z.string().trim().max(30).optional().default(''),
+  phone: z
+    .string()
+    .trim()
+    .max(30)
+    .refine(isUsablePhone, PHONE_MESSAGE),
 })
 
 /** Units of any one product a single order may contain. */
@@ -297,7 +308,10 @@ export async function POST(request: Request) {
       shippingPostalCode: shipTo.postalCode,
       shippingCountry: shipTo.country,
       // Empty string means "not given"; null keeps that out of the column.
-      phone: shipTo.phone?.trim() || null,
+      // Required now, so this is always a real value. Stored verbatim,
+      // extensions included: the person booking the parcel can read it, and
+      // reformatting it here would only lose what the customer meant.
+      phone: shipTo.phone.trim(),
       items: {
         create: resolved.map(({ product, quantity }) => ({
           productId: product.id,
