@@ -47,6 +47,20 @@ export const FREE_SHIPPING_THRESHOLD_CENTS = 8_900 // $89.00
 export const FREE_SHIPPING_BOTTLES = 3
 
 /**
+ * How many bottles an "Add to cart" means when nobody has chosen a number.
+ *
+ * Two, from 2026-10-02. **Not a minimum** — the buy panel's dropdown still
+ * offers one and the ladder still prices it at $39.99. A default is a
+ * pre-made decision anyone can undo; a minimum takes the decision away.
+ *
+ * Shared rather than written in each component, because it was not: the buy
+ * panel defaulted to two while the hero's button still added one, so which
+ * quantity you got depended on which of two identically labelled "Add to cart"
+ * buttons you happened to reach. **Any new add-to-cart path uses this.**
+ */
+export const DEFAULT_BOTTLES = 2
+
+/**
  * Flat rate charged below the threshold.
  *
  * NOTE: this rate is an assumption, not a quoted carrier price — the free

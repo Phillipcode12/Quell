@@ -8,6 +8,7 @@ import { CartEmu } from '@/components/CartEmu'
 import { formatUsd } from '@/lib/money'
 import { APPEARANCE_NOTE, RETURNS_SUMMARY } from '@/lib/product-content'
 import {
+  DEFAULT_BOTTLES,
   FREE_SHIPPING_THRESHOLD_CENTS,
   remainingForFreeShipping,
   shippingCentsFor,
@@ -44,7 +45,7 @@ export function BuyPanel({
    * in the dropdown.
    */
   const [quantity, setQuantity] = useState(() =>
-    Math.min(2, Math.max(1, Math.min(10, maxQuantity))),
+    Math.min(DEFAULT_BOTTLES, Math.max(1, Math.min(10, maxQuantity))),
   )
   const [justAdded, setJustAdded] = useState(false)
   // Incremented on every add, so the emu restarts even on a repeat click.

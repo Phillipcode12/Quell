@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { useCart } from '@/components/CartProvider'
+import { DEFAULT_BOTTLES } from '@/lib/shipping'
 import { ArrowRight } from '@/components/icons'
 import { CartEmu } from '@/components/CartEmu'
 import { formatUsd } from '@/lib/money'
@@ -51,7 +52,10 @@ export function HeroBuy({
   )
 
   function addToCart() {
-    add(productId, 1)
+    // The same default as the buy panel, from one constant -- these two
+    // buttons are both labelled "Add to cart" and disagreeing about how
+    // many that means is a bug the customer sees, not a detail.
+    add(productId, DEFAULT_BOTTLES)
     setEmuTrigger((n) => n + 1)
     setJustAdded(true)
     if (confirmTimer.current) clearTimeout(confirmTimer.current)

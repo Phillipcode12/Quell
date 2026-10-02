@@ -12,6 +12,7 @@ import {
 import { suggestEmail } from '@/lib/email-address'
 import { formatUsd } from '@/lib/money'
 import {
+  FREE_SHIPPING_BOTTLES,
   FREE_SHIPPING_LABEL,
   SHIPPING_LABEL,
   remainingForFreeShipping,
@@ -155,6 +156,9 @@ export function CartView({
   )
   const shipping = shippingCentsFor(subtotal)
   const remaining = remainingForFreeShipping(subtotal)
+  // One product, so bottles in the cart is the sum of the line quantities.
+  const bottlesInCart = rows.reduce((n, r) => n + r.quantity, 0)
+  const bottlesNeeded = FREE_SHIPPING_BOTTLES - bottlesInCart
   const total = subtotal + shipping
 
   async function checkout(event: React.FormEvent) {
@@ -257,10 +261,31 @@ export function CartView({
         ))}
       </ul>
 
+      {/**
+       * Said in bottles, to match the rest of the site.
+       *
+       * `remaining` stays the authority on *whether* to show this at all,
+       * because it is the dollar subtotal the cart actually charges on. The
+       * bottle count is only how it is phrased, and it falls back to dollars
+       * if the two ever disagree — which they would the day a second product
+       * at a different price exists.
+       */}
       {remaining > 0 && (
         <p className="rounded-xl border border-brand/40 bg-brand/10 p-4 text-sm text-brand-light">
-          Add <strong className="font-semibold">{formatUsd(remaining)}</strong>{' '}
-          more to qualify for free shipping.
+          {bottlesNeeded > 0 ? (
+            <>
+              Add{' '}
+              <strong className="font-semibold">
+                {bottlesNeeded} more {bottlesNeeded === 1 ? 'bottle' : 'bottles'}
+              </strong>{' '}
+              for free shipping.
+            </>
+          ) : (
+            <>
+              Add <strong className="font-semibold">{formatUsd(remaining)}</strong>{' '}
+              more to qualify for free shipping.
+            </>
+          )}
         </p>
       )}
 

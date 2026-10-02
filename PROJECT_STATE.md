@@ -1197,6 +1197,36 @@ subtotal rather than a bottle count.
 > reading the rendered text off a running page, not by types, lint or tests —
 > none of which can see it. It needs an explicit `{' '}`.
 
+
+### Two "Add to cart" buttons disagreed — fixed same day
+
+Phillip found it within minutes: the hero's **Add to cart** still added one
+bottle while the buy panel defaulted to two. **Two identically labelled buttons
+on the same page, giving different quantities depending on which one you
+reached** — and the hero's is the one above the fold, so it was the one most
+people would press.
+
+`DEFAULT_BOTTLES` in `lib/shipping.ts` is now the single source and both read
+it. **Any new add-to-cart path uses it.**
+
+The cart's nudge said *"Add $29.02 more to qualify for free shipping"* while the
+rest of the site had switched to bottles. It now reads **"Add 1 more bottle for
+free shipping"**, pluralising correctly, and disappears at three.
+
+> `remaining` — the dollar shortfall — still decides *whether* the nudge shows,
+> because that is the subtotal checkout actually charges on. The bottle count is
+> only the phrasing, and it falls back to dollars if the two ever disagree,
+> which they would the day a second product at a different price exists.
+
+Verified by walking the path Phillip walked: hero button → cart holds 2; cart
+at 1 says "Add 2 more bottles", at 2 says "Add 1 more bottle", at 3 the nudge is
+gone and shipping reads Free at $89.97.
+
+> **Neither of these was caught by types, lint or 491 tests.** Both were
+> wrong-but-valid code. The buy panel was verified in isolation and the two
+> other surfaces that touch the same decision were not — the lesson is to walk
+> the whole path a customer walks, not the component that changed.
+
 ### Verified on a running page at every quantity
 
 ```
