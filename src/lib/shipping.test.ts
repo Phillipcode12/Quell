@@ -34,11 +34,30 @@ describe('shippingCentsFor', () => {
     expect(shippingCentsFor(FREE_SHIPPING_THRESHOLD_CENTS + 1)).toBe(0)
   })
 
-  it('gives a two-bottle order free shipping', () => {
-    // Load-bearing for the ad strategy: two bottles is $59.98, which clears
-    // $59 and roughly doubles contribution per order. If the threshold ever
-    // rises above $59.98 that plan silently stops working.
-    expect(shippingCentsFor(ONE_BOTTLE * 2)).toBe(0)
+  it('charges a two-bottle order and ships three free', () => {
+    /**
+     * The pricing ladder, pinned. Changed 2026-10-02: the threshold was $59,
+     * which two bottles cleared — so the third bottle earned the customer
+     * nothing and there was no reason to buy three.
+     *
+     * These are the numbers on the buy panel. If they move, the panel copy and
+     * the agreement with Dr. Rynerson move with them, so this should fail and
+     * be re-read rather than quietly updated.
+     */
+    expect(shippingCentsFor(ONE_BOTTLE * 2)).toBe(STANDARD_SHIPPING_CENTS)
+    expect(shippingCentsFor(ONE_BOTTLE * 3)).toBe(0)
+  })
+
+  it('keeps the delivered price per bottle falling as quantity rises', () => {
+    // What the panel promises: $39.99, then $34.99, then $29.99 a bottle.
+    const delivered = (n: number) =>
+      (ONE_BOTTLE * n + shippingCentsFor(ONE_BOTTLE * n)) / n
+
+    expect(delivered(1)).toBe(3999)
+    expect(delivered(2)).toBe(3499)
+    expect(delivered(3)).toBe(2999)
+    expect(delivered(2)).toBeLessThan(delivered(1))
+    expect(delivered(3)).toBeLessThan(delivered(2))
   })
 
   it('produces the total a single-bottle order is charged', () => {

@@ -10,6 +10,7 @@ import { APPEARANCE_NOTE, RETURNS_SUMMARY } from '@/lib/product-content'
 import {
   FREE_SHIPPING_THRESHOLD_CENTS,
   remainingForFreeShipping,
+  shippingCentsFor,
 } from '@/lib/shipping'
 
 /**
@@ -31,7 +32,20 @@ export function BuyPanel({
   soldOut?: boolean
 }) {
   const { add, count } = useCart()
-  const [quantity, setQuantity] = useState(1)
+  /**
+   * Two by default, from 2026-10-02.
+   *
+   * Not a minimum — the dropdown still offers one, and the panel still sells it
+   * at $39.99. Most people do not change a pre-set choice, which is the whole
+   * difference between offering two and requiring it: a minimum takes the
+   * decision away, a default just pre-makes it and lets anyone undo it.
+   *
+   * Clamped, because stock of one would otherwise seed a quantity that is not
+   * in the dropdown.
+   */
+  const [quantity, setQuantity] = useState(() =>
+    Math.min(2, Math.max(1, Math.min(10, maxQuantity))),
+  )
   const [justAdded, setJustAdded] = useState(false)
   // Incremented on every add, so the emu restarts even on a repeat click.
   const [emuTrigger, setEmuTrigger] = useState(0)
@@ -73,6 +87,26 @@ export function BuyPanel({
    */
   const shortfall = remainingForFreeShipping(priceCents * quantity)
   const qualifyingQuantity = Math.ceil(FREE_SHIPPING_THRESHOLD_CENTS / priceCents)
+
+  /**
+   * What this quantity actually costs, and what that works out to per bottle.
+   *
+   * **Compared against one bottle delivered, never against the $29.99 sticker.**
+   * That is the whole subtlety here: at two bottles the delivered price is
+   * $34.99 each, which is *higher* than the shelf price, so showing it beside
+   * $29.99 would read as a markup. Against $39.99 — what one bottle actually
+   * costs to get to your door — it reads as the saving it is.
+   *
+   * It states a price rather than a saving, which is the lesson from the note
+   * above: "$34.99 a bottle instead of $39.99" is true whatever the buyer
+   * intended, where "saves $5" assumes they wanted two in the first place.
+   */
+  const subtotalCents = priceCents * quantity
+  const shippingCents = shippingCentsFor(subtotalCents)
+  const deliveredCents = subtotalCents + shippingCents
+  const perBottleCents = Math.round(deliveredCents / quantity)
+  const singleDeliveredCents = priceCents + shippingCentsFor(priceCents)
+  const cheaperPerBottle = perBottleCents < singleDeliveredCents
   const canQualify =
     shortfall > 0 &&
     qualifyingQuantity > quantity &&
@@ -122,6 +156,21 @@ export function BuyPanel({
           {justAdded ? 'Added to cart ✓' : 'Add to cart'}
         </button>
       </div>
+
+      <p className="mt-3.5 text-sm text-muted">
+        <span className="font-semibold text-white">
+          {formatUsd(deliveredCents)}
+        </span>{' '}
+        delivered
+        {cheaperPerBottle && (
+          <>
+            {' '}
+            — {formatUsd(perBottleCents)} a bottle instead of{' '}
+            {formatUsd(singleDeliveredCents)}
+          </>
+        )}
+        {shippingCents === 0 && <> · shipping free</>}
+      </p>
 
       {canQualify && (
         <button

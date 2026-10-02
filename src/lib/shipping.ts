@@ -4,7 +4,32 @@
  */
 
 /** Orders at or above this subtotal ship free. */
-export const FREE_SHIPPING_THRESHOLD_CENTS = 5_900 // $59.00
+/**
+ * Free shipping starts here.
+ *
+ * **$89.00 from 2026-10-02, up from $59.00.** At $29.99 a bottle the old
+ * threshold was cleared by two, which meant the third bottle cost full price
+ * and earned the customer nothing — there was no reason to buy three, and
+ * Aurora absorbed the postage on what is likely the most common order size.
+ *
+ * At $89.00 the ladder climbs the whole way:
+ *
+ * ```
+ * 1 bottle   $29.99 + $10  =  $39.99      $39.99 a bottle
+ * 2 bottles  $59.98 + $10  =  $69.98      $34.99 a bottle
+ * 3 bottles  $89.97 + free =  $89.97      $29.99 a bottle
+ * ```
+ *
+ * Agreed with Dr. Rynerson on 2026-10-02 alongside defaulting the buy panel to
+ * two. **A minimum order of two was considered and rejected**: it would have
+ * taken the entry price from $39.99 to $69.98 for someone who has never heard
+ * of the brand, at the exact moment cold TikTok traffic started arriving.
+ *
+ * The number stays a subtotal in cents rather than a bottle count because the
+ * cart has to apply it to whatever is in it. The buy panel derives "three" from
+ * it, so moving this moves the copy too.
+ */
+export const FREE_SHIPPING_THRESHOLD_CENTS = 8_900 // $89.00
 
 /**
  * Flat rate charged below the threshold.

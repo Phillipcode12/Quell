@@ -1117,6 +1117,85 @@ screen.
 
 ---
 
+## 46. The pricing ladder — shipped 2026-10-02
+
+Agreed with Dr. Rynerson. Free shipping moved from **$59 to $89**, and the buy
+panel now starts at **two bottles**.
+
+```
+1 bottle    $29.99 + $10   =  $39.99     $39.99 a bottle
+2 bottles   $59.98 + $10   =  $69.98     $34.99 a bottle
+3 bottles   $89.97 + free  =  $89.97     $29.99 a bottle
+```
+
+### What was wrong with $59
+
+Two bottles is $59.98, which cleared the old threshold — so **the third bottle
+cost full price and earned the customer nothing.** The ladder flattened exactly
+where it should have kept climbing, and Aurora absorbed the postage on what is
+likely the most common order size.
+
+### A minimum of two was considered and rejected
+
+Dr. Rynerson's original suggestion was a two-bottle minimum. It would have taken
+the entry price from **$39.99 to $69.98 — up 75%** — for someone who has never
+heard of the brand, at the exact moment cold TikTok traffic started arriving.
+
+The only evidence the shop had pointed the same way, though it is far too small
+to lean on: of two real checkouts ever, **the one that completed was a single
+bottle at $39.99 and the one that was abandoned was two bottles at $59.98.**
+
+A default does the same job without the wall. Most people do not change a
+pre-set choice; the difference is that anyone can.
+
+> **The margin arithmetic was deliberately kept out of the email to
+> Dr. Rynerson.** It rests on a contribution figure recorded as approximate and
+> on an assumption about what Ryan actually pays for postage. The price ladder
+> is arithmetic on numbers live on the site, and it carried the argument on its
+> own.
+
+### The per-bottle line, and the trap in it
+
+The panel shows **`$69.98 delivered — $34.99 a bottle instead of $39.99`**.
+
+> **The comparison is against one bottle delivered, never against the $29.99
+> sticker.** At two bottles the delivered price is $34.99 each, which is
+> *higher* than the shelf price — put beside $29.99 it reads as a markup.
+> Against $39.99, what one bottle actually costs to get to your door, it reads
+> as the saving it is. This is easy to get backwards and would quietly argue
+> against the sale.
+
+It states a **price, not a saving**, which is the standing lesson in this panel:
+"$34.99 a bottle instead of $39.99" is true whatever the buyer intended, where
+"saves $5" assumes they wanted two all along.
+
+### What moved on its own
+
+`FREE_SHIPPING_THRESHOLD_CENTS` is the single source. Changing it updated the
+cart maths, the structured data, the FAQ, the footer, the hero and the buy
+panel's own nudge — which now reads **"Make it 3 and shipping is free"** without
+a copy change, because it derives the quantity from the threshold.
+
+**The marketing copy now reads "Free shipping over $89.00"** in the hero, footer
+and buy section. Accurate, but it makes the customer divide to discover that
+means three. Phrasing it as bottles would be clearer and is a separate decision
+about brand voice, so it was left alone.
+
+### Verified on a running page at every quantity
+
+```
+1 → $39.99 delivered                                     + "Make it 3"
+2 → $69.98 delivered — $34.99 a bottle instead of $39.99  + "Make it 3"
+3 → $89.97 delivered — $29.99 a bottle · shipping free
+4 → $119.96 delivered — $29.99 a bottle · shipping free
+```
+
+The dropdown defaults to 2, clamped so stock of one cannot seed a quantity that
+is not in the list. `shipping.test.ts` pins the ladder: two bottles are charged,
+three ship free, and the delivered price per bottle falls at every step.
+
+---
+
 ## 34. The reorder reminder — shipped 2026-09-30
 
 Daily cron at **16:00 UTC**, an hour after the abandoned-cart job so the two
