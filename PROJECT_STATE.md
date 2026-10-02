@@ -1227,6 +1227,27 @@ gone and shipping reads Free at $89.97.
 > other surfaces that touch the same decision were not — the lesson is to walk
 > the whole path a customer walks, not the component that changed.
 
+
+### The button says the quantity — 2026-10-02
+
+Both "Add to cart" buttons now read **"Add 2 bottles"**, from
+`addToCartLabel()` in `lib/cart-copy.ts`. The buy panel's follows its dropdown,
+so it reads "Add 1 bottle" or "Add 3 bottles" as the selection changes; the
+hero's is tied to `DEFAULT_BOTTLES`, which a test asserts.
+
+A button reading plain "Add to cart" beside a quantity box is easy to press
+without registering what is in the box, and **somebody finding at checkout that
+they bought two bottles is a refund and a lost customer.**
+
+> **"to cart" was in the label and came out after measuring.** At 360px the buy
+> panel's button shares a row with the quantity dropdown and had about **100px**
+> to work with — "Add 2 bottles to cart" wrapped to **four lines**. The fix was
+> both halves: the shorter label, and `basis-full sm:flex-1` so the button takes
+> its own line on a phone rather than competing with the dropdown. It is one
+> line at 360px and still inline beside the dropdown on desktop.
+>
+> The header's cart icon already says where things go.
+
 ### Verified on a running page at every quantity
 
 ```

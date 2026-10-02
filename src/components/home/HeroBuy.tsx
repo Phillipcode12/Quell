@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { useCart } from '@/components/CartProvider'
 import { DEFAULT_BOTTLES } from '@/lib/shipping'
+import { addToCartLabel, addedToCartLabel } from '@/lib/cart-copy'
 import { ArrowRight } from '@/components/icons'
 import { CartEmu } from '@/components/CartEmu'
 import { formatUsd } from '@/lib/money'
@@ -90,7 +91,9 @@ export function HeroBuy({
           onClick={addToCart}
           className="inline-flex items-center gap-2 rounded-lg bg-brand px-6 py-3.5 font-semibold text-black transition hover:bg-brand-light"
         >
-          {justAdded ? 'Added to cart ✓' : 'Add to cart'}
+          {justAdded
+            ? addedToCartLabel(DEFAULT_BOTTLES)
+            : addToCartLabel(DEFAULT_BOTTLES)}
           {!justAdded && <ArrowRight className="h-4 w-4" />}
         </button>
         <Link

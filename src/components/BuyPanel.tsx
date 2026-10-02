@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { useCart } from '@/components/CartProvider'
+import { addToCartLabel, addedToCartLabel } from '@/lib/cart-copy'
 import { ArrowRight, Droplet, ShieldCheck, Truck } from '@/components/icons'
 import { CartEmu } from '@/components/CartEmu'
 import { formatUsd } from '@/lib/money'
@@ -152,9 +153,12 @@ export function BuyPanel({
 
         <button
           onClick={addToCart}
-          className="flex-1 rounded-lg bg-brand px-6 py-3.5 font-semibold text-black transition hover:bg-brand-light"
+          // basis-full below sm: at 360px this shares a row with the quantity
+          // dropdown and is left with ~100px, which wrapped the label onto four
+          // lines. On a phone it gets its own line instead.
+          className="basis-full rounded-lg bg-brand px-6 py-3.5 font-semibold text-black transition hover:bg-brand-light sm:flex-1 sm:basis-auto"
         >
-          {justAdded ? 'Added to cart ✓' : 'Add to cart'}
+          {justAdded ? addedToCartLabel(quantity) : addToCartLabel(quantity)}
         </button>
       </div>
 
