@@ -8,6 +8,7 @@ import {
   TOPICS,
 } from './SiteHelper'
 import { DRUG_FACTS, EMU_OIL, RELIEVES_WITHHELD } from '@/lib/product-content'
+import { SELF_CHECK_NUDGE } from '@/lib/self-check'
 
 /**
  * These guard content on an FDA-regulated drug site, not component behaviour.
@@ -131,17 +132,19 @@ describe('the topic list itself', () => {
 })
 
 describe('the unprompted nudge', () => {
-  it('reuses the carton sentence verbatim rather than rewording it', () => {
-    // This is the only line on the site that speaks without being asked, so
-    // it is the most likely place for a claim to drift a word at a time. It
-    // must stay a quotation of EMU_OIL.after, which is what the carton panel
-    // and the about page already say.
-    expect(NUDGE).toContain(EMU_OIL.after)
+  it('is the self-check copy, not a second reworded version of it', () => {
+    // The only line on the site that speaks without being asked, so the most
+    // likely place for wording to drift. It is sourced from lib/self-check
+    // rather than typed here.
+    expect(NUDGE).toBe(SELF_CHECK_NUDGE)
   })
 
-  it('makes no claim of its own beyond that sentence', () => {
-    const rest = NUDGE.replace(EMU_OIL.after, '').trim()
-    expect(rest).toBe('Did you know? .')
+  it('offers the self-check rather than making a product claim', () => {
+    // Changed 2026-10-02: it used to quote the carton sentence. It must not
+    // go back to carrying a therapeutic claim in a bubble that appears
+    // unbidden over whatever the reader was looking at.
+    expect(NUDGE.toLowerCase()).toContain('self-check')
+    expect(NUDGE).not.toContain(EMU_OIL.after)
   })
 
   it('says nothing about the reader', () => {

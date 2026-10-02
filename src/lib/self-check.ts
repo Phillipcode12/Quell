@@ -339,3 +339,22 @@ export const HERO_INVITE = {
   body: 'Eight questions, about ninety seconds. You’ll get a symptom score and find out whether your answers fit the pattern of a tear film that evaporates too quickly.',
   cta: 'Take the self-check',
 } as const
+
+/**
+ * The line the site helper's emu offers unprompted.
+ *
+ * Lives here with the rest of the self-check copy rather than in the widget,
+ * for the reason the widget's own note gives: a second, slightly reworded copy
+ * of a thing is how wording drifts.
+ *
+ * **It says nothing about the reader.** The helper's standing rule — naming the
+ * condition is fine, telling someone they have it is not — applies to the one
+ * line on the site that speaks without being asked. "Dry eye self-check" names
+ * what is on offer; it does not suggest the person needs it. `SiteHelper.test`
+ * asserts the absence of "your" word-for-word.
+ *
+ * The time cost is stated for the same reason it is stated in `HERO_INVITE`:
+ * a specific number beats "quick", which everyone claims and nobody can check.
+ */
+export const SELF_CHECK_NUDGE =
+  'Take the dry eye self-check — eight questions, about ninety seconds.'

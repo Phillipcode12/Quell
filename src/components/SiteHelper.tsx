@@ -4,7 +4,14 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { EmuFace } from '@/components/EmuFace'
-import { COMPANY, EMU_OIL } from '@/lib/product-content'
+import { COMPANY } from '@/lib/product-content'
+import { SELF_CHECK_NUDGE } from '@/lib/self-check'
+import { formatUsd } from '@/lib/money'
+import {
+  FREE_SHIPPING_BOTTLES,
+  FREE_SHIPPING_THRESHOLD_CENTS,
+  STANDARD_SHIPPING_CENTS,
+} from '@/lib/shipping'
 
 /**
  * A small scripted helper that points people at the right page.
@@ -75,8 +82,15 @@ export const TOPICS: Topic[] = [
   {
     id: 'shipping',
     question: 'How much is shipping?',
-    answer:
-      'Free on orders over $59.00, otherwise a flat $10.00. We ship within the United States only.',
+    // Built from the shipping constants, never typed out. This answer said
+    // "over $59.00" for hours after the threshold moved to $89, because it was
+    // a hardcoded string the change could not reach -- the helper was telling
+    // customers a shipping rule the cart would not honour.
+    answer: `${FREE_SHIPPING_BOTTLES} bottles or more ship free (orders of ${formatUsd(
+      FREE_SHIPPING_THRESHOLD_CENTS,
+    )} and up). Below that, shipping is a flat ${formatUsd(
+      STANDARD_SHIPPING_CENTS,
+    )}. We ship within the United States only.`,
     href: '/cart',
     linkLabel: 'Go to cart',
   },
@@ -109,14 +123,23 @@ export const TOPICS: Topic[] = [
  * The unprompted line the emu offers to someone who has been reading for a
  * while, and the only thing on this widget that speaks before it is spoken to.
  *
- * **The claim is not written here.** It is `EMU_OIL.after`, the sentence
- * already printed on the carton panel and already on the about page, reused
- * verbatim so there is exactly one copy of it on the site. A second, slightly
- * reworded copy is how a claim drifts: this widget must not be the place where
- * the wording quietly becomes something the label does not say. The test in
- * SiteHelper.test.ts asserts the two still match.
+ * **It invites the self-check, as of 2026-10-02.** It used to quote
+ * `EMU_OIL.after` — the sentence printed on the carton — which was safe but
+ * spent the site's one unprompted line repeating a claim already on the page
+ * the reader was looking at. Phillip's call, and the better use of it: someone
+ * ten seconds into reading is exactly who the self-check is for, and it is the
+ * one thing on the site that asks for an email.
+ *
+ * **It is still not written here.** The wording lives in `lib/self-check` with
+ * the rest of that feature's copy, for the same reason it used to live in
+ * `product-content`: a second, slightly reworded copy is how wording drifts.
+ *
+ * The rule it is held to has not changed — **naming the condition is fine,
+ * telling someone they have it is not.** "Dry eye self-check" says what is on
+ * offer without suggesting the reader needs it, and `SiteHelper.test.ts`
+ * asserts the absence of "your" word-for-word.
  */
-export const NUDGE = `Did you know? ${EMU_OIL.after}.`
+export const NUDGE = SELF_CHECK_NUDGE
 
 /**
  * How long someone must be on the site before the emu speaks.
@@ -478,15 +501,16 @@ export function SiteHelper() {
           aria-live="polite"
           className="helper-nudge relative w-[calc(100vw-6rem)] max-w-[15rem]"
         >
-          <button
-            onClick={() => {
-              setOpen(true)
-              dismissNudge()
-            }}
+          {/* A link now, not a button that opens the panel. The line offers the
+              self-check, so the obvious press should go and take it — opening a
+              list of FAQs instead would be a small bait and switch. */}
+          <Link
+            href="/self-check"
+            onClick={dismissNudge}
             className="block w-full rounded-2xl rounded-br-md border border-line bg-surface px-3.5 py-2.5 pr-8 text-left text-[13px] leading-relaxed text-white shadow-2xl transition hover:border-brand hover:bg-surface-2"
           >
             {NUDGE}
-          </button>
+          </Link>
           {/* The tail, tucked under the bubble's bottom-right corner and
               pointing down at the bird. Two borders only, so the rotated
               square continues the bubble outline instead of reading as a

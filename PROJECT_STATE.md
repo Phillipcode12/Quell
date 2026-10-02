@@ -1278,6 +1278,77 @@ three ship free, and the delivered price per bottle falls at every step.
 
 ---
 
+## 47. Sweeping up after the price change — 2026-10-02
+
+Phillip asked whether anything else needed changing. Three things did, and two
+of them were telling customers something untrue.
+
+### The hero showed $29.99 beside a button that spent $69.98
+
+The headline price is **per bottle**; the button adds two. Nothing said so.
+
+It now carries the same line as the buy panel —
+**`2 bottles · $69.98 delivered — saving $10.00`** — under the buttons. The big
+number stays the per-bottle price: it is the honest anchor and the one worth
+comparing against a shelf.
+
+### The help widget was quoting the old shipping rule
+
+`SiteHelper`'s shipping answer was a **hardcoded string**: *"Free on orders over
+$59.00, otherwise a flat $10.00."* The threshold change could not reach it, so
+the emu spent several hours telling people a rule the cart would not honour.
+
+It is now built from the shipping constants, like the FAQ. **Nothing that
+quotes a price to a customer should be a literal.**
+
+### `lib/pricing.ts` — one copy of the arithmetic
+
+`priceFor(unitPriceCents, quantity)` returns the subtotal, shipping, delivered
+total, the single-bottle reference and the saving. The hero and the buy panel
+both use it.
+
+> Written because this reasoning **drifted twice in one day**: the hero's button
+> still added one bottle while the panel defaulted to two, and the cart's nudge
+> still spoke in dollars after the rest of the site had moved to bottles. Both
+> were valid code that types, lint and the whole suite passed. Anything quoting
+> a price derives it from here.
+
+---
+
+## 48. The emu now offers the self-check — 2026-10-02
+
+The one line on the site that speaks without being asked used to quote
+`EMU_OIL.after`, the carton sentence. **It now reads:**
+
+```
+Take the dry eye self-check — eight questions, about ninety seconds.
+```
+
+Phillip's call, and the better use of it: someone ten seconds into reading is
+exactly who the self-check is for, and the self-check is the only thing on the
+site that asks for an email. Repeating a claim already printed on the page the
+reader is looking at was safe but wasted.
+
+**The bubble is a link now, not a button that opened the FAQ panel.** A line
+offering the self-check whose obvious press opens a list of shipping questions
+is a small bait and switch.
+
+> **The guardrail did not change: naming the condition is fine, telling someone
+> they have it is not.** "Dry eye self-check" says what is on offer without
+> suggesting the reader needs it, and the existing test asserting the absence of
+> "your" **passed untouched** — which is the point of having written it.
+>
+> The two tests that pinned the line to the carton claim were replaced with
+> their inverse: it must contain "self-check" and must **not** contain
+> `EMU_OIL.after`, so it cannot drift back into carrying a therapeutic claim in
+> a bubble that appears unbidden over whatever someone was reading.
+
+The copy lives in `lib/self-check` with the rest of that feature's wording, not
+in the widget. `/self-check` was already in `HIDDEN_ON`, so it does not
+advertise itself to someone already answering it.
+
+---
+
 ## 34. The reorder reminder — shipped 2026-09-30
 
 Daily cron at **16:00 UTC**, an hour after the abandoned-cart job so the two

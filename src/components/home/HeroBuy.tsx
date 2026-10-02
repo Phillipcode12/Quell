@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useCart } from '@/components/CartProvider'
 import { DEFAULT_BOTTLES } from '@/lib/shipping'
 import { addToCartLabel, addedToCartLabel } from '@/lib/cart-copy'
+import { priceFor } from '@/lib/pricing'
 import { ArrowRight } from '@/components/icons'
 import { CartEmu } from '@/components/CartEmu'
 import { formatUsd } from '@/lib/money'
@@ -63,6 +64,9 @@ export function HeroBuy({
     confirmTimer.current = setTimeout(() => setJustAdded(false), 2000)
   }
 
+  // The price the hero button actually spends, shared with the buy panel.
+  const defaultPricing = priceFor(priceCents, DEFAULT_BOTTLES)
+
   if (soldOut) {
     return (
       <div className="mt-8">
@@ -103,6 +107,35 @@ export function HeroBuy({
           Why it works
         </Link>
       </div>
+
+      {/**
+       * What the button above actually charges.
+       *
+       * The headline price is **per bottle** and the button adds two, so
+       * without this the page showed $29.99 beside a control that spends
+       * $69.98. The big number stays the per-bottle price — it is the honest
+       * anchor and the one worth comparing to a shelf — and this says what
+       * pressing the button comes to.
+       *
+       * Same figures as the buy panel, from `priceFor`, so the two cannot
+       * disagree.
+       */}
+      <p className="mt-3 text-sm text-muted">
+        {DEFAULT_BOTTLES} bottles ·{' '}
+        <span className="font-semibold text-white">
+          {formatUsd(defaultPricing.deliveredCents)}
+        </span>{' '}
+        delivered
+        {defaultPricing.savingCents > 0 && (
+          <>
+            {' '}
+            —{' '}
+            <span className="font-semibold text-brand-light">
+              saving {formatUsd(defaultPricing.savingCents)}
+            </span>
+          </>
+        )}
+      </p>
 
       {/* Driven by the cart rather than by the click, so it stays put once
           something is in there — unlike the button's transient tick.

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { useCart } from '@/components/CartProvider'
 import { addToCartLabel, addedToCartLabel } from '@/lib/cart-copy'
+import { priceFor } from '@/lib/pricing'
 import { ArrowRight, Droplet, ShieldCheck, Truck } from '@/components/icons'
 import { CartEmu } from '@/components/CartEmu'
 import { formatUsd } from '@/lib/money'
@@ -12,7 +13,6 @@ import {
   DEFAULT_BOTTLES,
   FREE_SHIPPING_THRESHOLD_CENTS,
   remainingForFreeShipping,
-  shippingCentsFor,
 } from '@/lib/shipping'
 
 /**
@@ -114,11 +114,10 @@ export function BuyPanel({
    * > makes it a substantiated claim rather than a vague "save big", which
    * > matters on a site selling a regulated OTC drug.
    */
-  const subtotalCents = priceCents * quantity
-  const shippingCents = shippingCentsFor(subtotalCents)
-  const deliveredCents = subtotalCents + shippingCents
-  const singleDeliveredCents = priceCents + shippingCentsFor(priceCents)
-  const savingCents = singleDeliveredCents * quantity - deliveredCents
+  const { shippingCents, deliveredCents, savingCents } = priceFor(
+    priceCents,
+    quantity,
+  )
   const canQualify =
     shortfall > 0 &&
     qualifyingQuantity > quantity &&
