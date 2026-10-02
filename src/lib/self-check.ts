@@ -353,8 +353,9 @@ export const HERO_INVITE = {
  * what is on offer; it does not suggest the person needs it. `SiteHelper.test`
  * asserts the absence of "your" word-for-word.
  *
- * The time cost is stated for the same reason it is stated in `HERO_INVITE`:
- * a specific number beats "quick", which everyone claims and nobody can check.
+ * **The ninety seconds came out on 2026-10-02** at Phillip's request. The
+ * question count carries the same reassurance — it says this is short and it
+ * is checkable — without two numbers competing in one short line.
  */
 export const SELF_CHECK_NUDGE =
-  'Take the dry eye self-check — eight questions, about ninety seconds.'
+  'Take the dry eye self-check — eight questions.'

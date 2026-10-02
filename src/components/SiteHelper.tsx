@@ -80,6 +80,24 @@ export const TOPICS: Topic[] = [
     linkLabel: 'Read the Drug Facts',
   },
   {
+    /**
+     * Added 2026-10-02. The emu's unprompted line offers the self-check, and
+     * that line goes away on its own — so without this, someone who saw it and
+     * missed it had no way back to the thing they had just been offered.
+     *
+     * **"It is not a diagnosis" is not hedging, it is the point.** A symptom
+     * questionnaire on a page selling a drug has to say what it is not, and the
+     * helper is the one place on the site that answers questions in its own
+     * words rather than the label's.
+     */
+    id: 'self-check',
+    question: 'What is the dry eye self-check?',
+    answer:
+      'Eight questions about dry eye symptoms. It gives a symptom score and says whether the answers fit the pattern of a tear film that evaporates too quickly. It is not a diagnosis, and it is no substitute for an eye exam.',
+    href: '/self-check',
+    linkLabel: 'Take the self-check',
+  },
+  {
     id: 'shipping',
     question: 'How much is shipping?',
     // Built from the shipping constants, never typed out. This answer said
@@ -154,16 +172,25 @@ export const NUDGE_DELAY_MS = 10_000
 /**
  * How long the nudge stays up before taking itself away.
  *
- * It has one sentence to offer and it has already been ignored once by
- * anyone still scrolling; a bubble that sits in the corner until it is
- * clicked is nagging rather than helping. Going quietly also shrinks the
- * window in which it can sit over something the visitor wants to tap, which
- * is the failure this widget has already caused twice (see HIDDEN_ON).
+ * **Raised from 8 seconds to 20 on 2026-10-02, because Phillip tried to click
+ * it and it vanished while he was moving the pointer towards it.**
  *
- * The countdown pauses while the pointer or keyboard focus is on it — see the
- * effect below.
+ * Eight seconds was tuned for an aside — a "did you know" that cost nothing to
+ * miss. This line is now a call to action, and a call to action that disappears
+ * mid-reach is worse than one that was never shown: it advertises something and
+ * then takes it away.
+ *
+ * The countdown pauses while the pointer or keyboard focus is on it (see the
+ * effect below) — but that pause can only engage once the pointer has arrived,
+ * which is exactly the part eight seconds did not allow for.
+ *
+ * It still goes on its own. A bubble that sits in the corner until clicked is
+ * nagging, and it narrows the window in which it can cover something the
+ * visitor wants to tap, which is the failure this widget has caused twice (see
+ * HIDDEN_ON). Twenty seconds is the compromise: long enough to notice, read and
+ * reach; short enough that ignoring it costs nothing.
  */
-export const NUDGE_VISIBLE_MS = 8_000
+export const NUDGE_VISIBLE_MS = 20_000
 
 /**
  * Pages the helper stays off: every page whose whole job is completing a form.

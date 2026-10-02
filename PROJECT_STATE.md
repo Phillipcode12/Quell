@@ -1347,6 +1347,51 @@ The copy lives in `lib/self-check` with the rest of that feature's wording, not
 in the widget. `/self-check` was already in `HIDDEN_ON`, so it does not
 advertise itself to someone already answering it.
 
+
+### It vanished before it could be clicked — fixed 2026-10-02
+
+Phillip tried it and the bubble went while he was moving the pointer towards it.
+Two separate causes, both real.
+
+**`NUDGE_VISIBLE_MS` 8s → 20s.** Eight seconds was tuned for an *aside* that
+cost nothing to miss. A call to action that disappears mid-reach is worse than
+one never shown: it advertises something and then takes it away. The pause on
+hover cannot rescue that, because **it only engages once the pointer has
+arrived** — which is precisely the part eight seconds did not allow for.
+
+> The test asserting `NUDGE_VISIBLE_MS < NUDGE_DELAY_MS` was replaced. Its
+> reasoning — "a nudge that lingers longer than it waited has stopped being a
+> nudge" — was sound for an aside and is the wrong rule for a button. It now
+> asserts the real requirement: **at least 15s to notice, read and reach**, and
+> **at most 30s** so it still goes on its own.
+
+**The self-check was not in the panel.** Opening the emu offered shipping,
+returns, tracking — and nothing about the thing it had just advertised. Someone
+who saw the bubble and missed it had no way back. There is now a
+`What is the dry eye self-check?` topic.
+
+> Its answer ends **"It is not a diagnosis, and it is no substitute for an eye
+> exam."** That is not hedging. A symptom questionnaire on a page selling a drug
+> has to say what it is not, and the helper is the one place on the site that
+> answers in its own words rather than the label's.
+>
+> The rule that topics must not link to pages the helper hides on now has a
+> second named exception beside `/cart`. Both are the same shape: the answer
+> sends someone to a page whose whole job is a task, and the helper getting out
+> of the way is the point. It was not weakened — `/self-check` was named.
+
+**The time claim came out of the line**, at Phillip's request:
+`Take the dry eye self-check — eight questions.` The question count carries the
+same reassurance and is checkable, without two numbers competing in one short
+line.
+
+> **The hover-pause itself is still unverified in a browser.** The listener is
+> correct by reading, and nothing covers it in tests — the comment claiming it
+> "can be triggered in a test" refers to a test that does not exist. Holding a
+> hover past a 20-second timer exceeds what the page-scripting tool allows in
+> one call. The 20 seconds is what fixes the reported problem; the pause is a
+> nicety on top, and **it should not be assumed to work.**
+
 ---
 
 ## 34. The reorder reminder — shipped 2026-09-30

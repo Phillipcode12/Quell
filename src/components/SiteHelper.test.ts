@@ -114,6 +114,7 @@ describe('the topic list itself', () => {
       '/privacy',
       '/about',
       '/about#contact',
+      '/self-check',
     ]
     for (const t of TOPICS) {
       if (!t.href) continue
@@ -185,10 +186,15 @@ describe('where the helper is allowed to appear', () => {
 
   it('does not hide itself from the pages its own answers point at', () => {
     // Every topic link has to lead somewhere the helper can still be reached
-    // from, or the answer is a dead end. /cart is the exception above: the
-    // shipping answer sends people there deliberately, to check out.
+    // from, or the answer is a dead end.
+    //
+    // Two deliberate exceptions, both the same shape: the answer sends
+    // someone to a page whose whole job is a task, and the helper getting out
+    // of the way there is the point rather than a dead end. /cart is for
+    // checking out; /self-check is for answering the questions, where a
+    // mascot over the form is the last thing wanted.
     for (const t of TOPICS) {
-      if (!t.href || t.href === '/cart') continue
+      if (!t.href || ['/cart', '/self-check'].includes(t.href)) continue
       const path = t.href.split('#')[0] || '/'
       expect(HIDDEN_ON).not.toContain(path)
     }
@@ -220,10 +226,21 @@ describe('how long the nudge stays up', () => {
     ).toBeGreaterThanOrEqual(needed)
   })
 
-  it('is shown for less time than it waits before speaking', () => {
-    // Not a hard requirement, but a nudge that lingers longer than it waited
-    // has stopped being a nudge. If these ever cross, it was probably not
-    // intended.
-    expect(NUDGE_VISIBLE_MS).toBeLessThan(NUDGE_DELAY_MS)
+  it('stays up long enough to be clicked, and still goes away', () => {
+    /**
+     * It used to assert NUDGE_VISIBLE_MS < NUDGE_DELAY_MS, on the reasoning
+     * that a nudge lingering longer than it waited has stopped being a nudge.
+     * That held while the line was an aside.
+     *
+     * **It is a call to action now, and at 8 seconds Phillip could not click
+     * it — it vanished while he moved the pointer towards it.** The pause on
+     * hover cannot help with that: it only engages once the pointer arrives.
+     * So the rule is now the real requirement, which is reach time, not
+     * tidiness.
+     */
+    expect(NUDGE_VISIBLE_MS).toBeGreaterThanOrEqual(15_000)
+    // Still finite: a bubble that waits to be clicked is nagging, and it can
+    // sit over something the visitor wants to tap.
+    expect(NUDGE_VISIBLE_MS).toBeLessThanOrEqual(30_000)
   })
 })
