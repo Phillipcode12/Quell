@@ -11,6 +11,10 @@ const columns = [
       { label: 'Buy Quell', href: '/#buy' },
       { label: 'Why Quell works', href: '/#science' },
       { label: 'How to use', href: '/#how-to-use' },
+      // The only link to /reviews anywhere outside the header's wide-screen
+      // nav. Added 2026-10-01 when Reviews came off the mobile bar, which
+      // would otherwise have left the page unreachable on a phone.
+      { label: 'Reviews', href: '/reviews' },
       { label: 'Drug Facts', href: '/drug-facts' },
     ],
   },

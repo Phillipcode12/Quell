@@ -17,17 +17,29 @@ type HeaderUser = { id: string; email: string; name: string } | null
  * button — cram in five and they either overflow or shrink to the point of
  * being unreadable, which is worse than not showing them.
  *
- * These two earn it for different reasons. **Reviews** is reachable from
- * nowhere else on the site by design, so hiding it on mobile hides the page
- * outright. **Drug Facts** is the label panel for an over-the-counter drug,
- * and someone reaching for it on a phone is usually reaching for it in a
- * hurry.
+ * **These two changed on 2026-10-01, from Reviews and Drug Facts.** Phillip
+ * looked at the phone layout after sending TikTok traffic to it and asked for
+ * the selling pages instead, which is the right call for an audience arriving
+ * cold from a video: someone who has just met the product needs "what is this"
+ * and "how do I use it" before anything else, and the two that were here
+ * assumed a visitor already part-way to buying.
+ *
+ * What the ones that left have instead:
+ *
+ * - **Drug Facts** is in the footer and, more importantly, right beside the
+ *   buy button in `BuySection` — the placement that actually matters for an
+ *   over-the-counter drug.
+ * - **Order status** is "Track your order" in the footer.
+ * - **Reviews** had nothing. It was linked from this bar and nowhere else, so
+ *   dropping it here would have made the page unreachable on a phone; it was
+ *   added to the footer in the same change. **Check that before moving it
+ *   again.**
  */
 const navLinks = [
-  { label: 'Why Quell', href: '/#science' },
-  { label: 'How to use', href: '/#how-to-use' },
-  { label: 'Reviews', href: '/reviews', mobile: true },
-  { label: 'Drug Facts', href: '/drug-facts', mobile: true },
+  { label: 'Why Quell', href: '/#science', mobile: true },
+  { label: 'How to use', href: '/#how-to-use', mobile: true },
+  { label: 'Reviews', href: '/reviews' },
+  { label: 'Drug Facts', href: '/drug-facts' },
   { label: 'FAQ', href: '/#faq' },
 ]
 
@@ -177,19 +189,18 @@ export function Header({
               </Link>
             ))}
 
-          {/* The account link rides here too, which is what keeps the first
-              row inside 360px — a width common enough on Android that
-              overflowing it is not an option.
-
-              For a guest this is "Order status", not "Sign in": they cannot
-              create an account, and /orders answers the question they actually
-              have with an order number and their email. */}
-          <Link
-            href={user ? '/account' : '/orders'}
-            className="whitespace-nowrap hover:text-white"
-          >
-            {user ? 'Orders' : 'Order status'}
-          </Link>
+          {/* Signed in only, which on this site means Phillip and the two real
+              account holders. A guest sees just the two selling links above:
+              "Track your order" is in the footer, and a third link here would
+              crowd the row this change exists to simplify. */}
+          {user && (
+            <Link
+              href="/account"
+              className="whitespace-nowrap hover:text-white"
+            >
+              Orders
+            </Link>
+          )}
         </nav>
       </div>
     </header>

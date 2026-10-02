@@ -889,6 +889,48 @@ to ignore.
 
 ---
 
+## 42. The mobile header, after TikTok — changed 2026-10-01
+
+The TikTok link went live and Phillip looked at the phone layout with fresh
+eyes. The mobile bar now reads:
+
+```
+row 1   [Quell logo]              [cart]  [Buy]
+row 2   Why Quell   How to use
+```
+
+Previously row 2 was **Reviews · Drug Facts · Order status**.
+
+**The reasoning, which is about the audience and not the pixels.** Those three
+assumed a visitor already part-way to buying — someone checking the label, or
+chasing a parcel. Traffic arriving cold from a video has neither question. It
+has "what is this" and "how do I use it", and those are now the two links on
+the screen.
+
+### Where the three that left went
+
+- **Drug Facts** — the footer, and more importantly right beside the buy button
+  in `BuySection`. That is the placement that matters for an over-the-counter
+  drug, and it did not change.
+- **Order status** — "Track your order" in the footer.
+- **Reviews** — **nothing, which was the one real problem.** It was linked from
+  the header and nowhere else on the site, so taking it off the mobile bar
+  would have made the page unreachable on a phone outright. It was added to the
+  footer in the same change. **Check this before moving it again.**
+
+The signed-in "Orders" link stays in row 2 but only for a signed-in user, which
+on this site means Phillip and the two real account holders. A guest sees two
+links, not three.
+
+### Measured
+
+`headerScrollWidth === clientWidth` at **375px and at 360px**, the Android width
+the original layout was built around, with no page-level horizontal overflow at
+either. The wide-screen nav is untouched: Why Quell, How to use, Reviews, Drug
+Facts, FAQ.
+
+---
+
 ## 34. The reorder reminder — shipped 2026-09-30
 
 Daily cron at **16:00 UTC**, an hour after the abandoned-cart job so the two
