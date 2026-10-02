@@ -14,14 +14,13 @@ means a missing table would hit every page, not one route.
 
 ### Open, in the order they matter
 
-1. **Ship Q-QRABWBQ9 — the first real order** (§35). Chase Becker,
-   Bettendorf IA, one bottle, $39.99, paid and captured. Ryan packs it; mark it
-   shipped in `/admin/orders` with carrier and tracking, which is what sends
-   the customer his shipping notice.
+1. **DONE 2026-10-02 — Q-QRABWBQ9 shipped.** FedEx `878092741764`. The
+   tracking email was confirmed sent in Resend by hand, and the order now
+   records it itself (§44). Nothing further is needed on this order unless
+   Chase gets in touch.
 
-   His email was corrected to `chasebecker27@gmail.com` on 2026-09-30 after the
-   original bounced, so the notice will now reach him.
-
+   **His order has no phone number** — it predates the field, which became
+   required on 2026-10-02 (§43). Every order from here on carries one.
 2. **Upgrade Vercel to Pro** (§ Hobby). **The trigger agreed on 2026-09-03 was
    "the first real order", and it has happened.** The shop is now taking money
    on a plan whose terms prohibit commercial use, and the enforcement is a
