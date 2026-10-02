@@ -835,6 +835,60 @@ to `src/app/<channel>/route.ts`. **Not** a catch-all `src/app/[channel]/route.ts
 
 ---
 
+## 41. A NUL byte that had been sitting in the source — found 2026-10-01
+
+Two fixes landed inside commit `dbea467`, whose message is about the TikTok
+link and does not mention them. They came from a background task and were
+swept in by a `git add -A`. **Both were reviewed and verified after the fact,
+not before** — recorded here because the commit message will not tell anyone.
+
+### `src/lib/campaign.ts` — the regex contained real control characters
+
+```
+old bytes:  2f 5b 00 2d 1f 7f 5d 2f 67     /[<NUL>-<0x1f><0x7f>]/g
+now:        the \x00-\x1f\x7f escape sequences, as the source always appeared to say
+```
+
+The file held a **literal NUL byte and literal control characters** rather than
+escape sequences. Three symptoms that had all been explained away separately:
+
+- **Git treated a TypeScript file as binary.** `git diff` on it printed "Binary
+  files differ" — so any change to this file had been unreviewable.
+- The `eslint-disable no-control-regex` directive existed because a literal
+  control character in a character class genuinely trips that rule.
+- Once the escapes were restored, that directive became an "unused directive"
+  warning, which is what led back to the cause.
+
+Behaviour is identical — a literal NUL in a character class matches what
+`\x00` matches — so nothing was broken and nothing needed re-testing. The file
+is simply text again.
+
+> **This is the shell-mangling hazard, with teeth.** Writing source through
+> `bash -c` with escape sequences in it has corrupted files in this project
+> repeatedly. Usually it breaks something loudly. **Here it produced a file
+> that compiled, passed its tests, and behaved correctly for weeks while
+> quietly being unreviewable.** Use Write/Edit for file contents, or a quoted
+> heredoc; never `node -e` with escapes in the payload.
+
+### `src/components/Turnstile.tsx` — ref written during render
+
+`onTokenRef.current = onToken` ran during render and now runs in an effect. A
+render React discards — a concurrent transition, or a prerendered subtree never
+committed — would otherwise leave that render's callback in the ref.
+
+Harmless today, because every caller passes a `useState` setter whose identity
+never changes. **The first caller to pass an inline arrow is the one it would
+bite**, which is precisely the case the ref exists to serve.
+
+Turnstile cannot be exercised from an automated browser (§28), so this was
+verified by review plus the full suite rather than by driving the widget.
+
+**`npx eslint src` is now completely clean**, for the first time in a while.
+Worth keeping that way: it was two long-lived warnings that made a third easy
+to ignore.
+
+---
+
 ## 34. The reorder reminder — shipped 2026-09-30
 
 Daily cron at **16:00 UTC**, an hour after the abandoned-cart job so the two
