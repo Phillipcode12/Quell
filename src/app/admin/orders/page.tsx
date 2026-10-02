@@ -7,7 +7,7 @@ import { isEmailConfigured } from '@/lib/email'
 import { stockState } from '@/lib/inventory'
 import { OrderActions, StockEditor } from '@/components/admin/OrderActions'
 import { CorrectEmailButton } from '@/components/admin/CorrectEmailButton'
-import { ShippingNoticeStatus } from '@/components/admin/ShippingNoticeStatus'
+import { OrderEmailStatus } from '@/components/admin/OrderEmailStatus'
 import { AdminTabs } from '@/components/admin/AdminTabs'
 import {
   AdminHeader,
@@ -265,12 +265,17 @@ export default async function AdminOrdersPage() {
                 </div>
 
                 <OrderActions orderId={order.id} status={order.status} />
-                <ShippingNoticeStatus
+                <OrderEmailStatus
                   orderId={order.id}
-                  shippedAt={order.shippedAt?.toISOString() ?? null}
-                  shippingEmailSentAt={
-                    order.shippingEmailSentAt?.toISOString() ?? null
-                  }
+                  kind="confirmation"
+                  sentAt={order.confirmationEmailSentAt?.toISOString() ?? null}
+                  applicable={['paid', 'shipped'].includes(order.status)}
+                />
+                <OrderEmailStatus
+                  orderId={order.id}
+                  kind="shipping"
+                  sentAt={order.shippingEmailSentAt?.toISOString() ?? null}
+                  applicable={Boolean(order.shippedAt)}
                 />
                 <CorrectEmailButton orderId={order.id} currentEmail={order.email} />
               </li>

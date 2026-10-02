@@ -5,7 +5,11 @@ import { prisma } from '@/lib/db'
 import { getAdminUser } from '@/lib/admin'
 import { isCarrierKey } from '@/lib/carriers'
 import { restoreStock } from '@/lib/inventory'
-import { sendShippingNotice } from '@/lib/orders'
+import {
+  markConfirmationSent,
+  sendOrderConfirmation,
+  sendShippingNotice,
+} from '@/lib/orders'
 import { sendOrderConfirmationEmail } from '@/lib/email'
 import { emailLooksWrong } from '@/lib/email-address'
 import { UNDELIVERABLE_MESSAGE, domainAcceptsMail } from '@/lib/email-mx'
@@ -175,9 +179,51 @@ export async function correctEmailAndResend(orderId: string, rawEmail: string) {
   })
 
   await sendOrderConfirmationEmail(updated)
+  // Both paths that send this email have to record it, or the Orders tab
+  // accuses a customer who did get their receipt. See lib/orders.
+  await markConfirmationSent(orderId)
 
   revalidatePath('/admin/orders')
   return { ok: true as const, email }
+}
+
+/**
+ * Sends the order confirmation again, to the address already on the order.
+ *
+ * The sibling of `correctEmailAndResend`, for when the address is right and the
+ * send simply failed — which is what the Orders tab now surfaces as a paid
+ * order with no `confirmationEmailSentAt`. Correcting the address has its own
+ * button; this one changes nothing.
+ *
+ * Allowed even when the receipt did send, for the same reason as the shipping
+ * notice: a duplicate receipt is a small annoyance, and refusing to resend one
+ * leaves a customer with no record of a payment they made.
+ */
+export async function resendOrderConfirmation(orderId: string) {
+  await assertAdmin()
+
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
+    select: { status: true },
+  })
+
+  if (!order) throw new Error('Order not found.')
+  if (!['paid', 'shipped'].includes(order.status)) {
+    // An unpaid order has no receipt to send; emailing one would tell someone
+    // their payment went through when it did not.
+    throw new Error('That order has not been paid for.')
+  }
+
+  const sent = await sendOrderConfirmation(orderId)
+  revalidatePath('/admin/orders')
+
+  if (!sent) {
+    throw new Error(
+      'The email provider refused it. Check the address on the order, then try again.',
+    )
+  }
+
+  return { ok: true }
 }
 
 /**

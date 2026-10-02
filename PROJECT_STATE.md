@@ -1067,6 +1067,61 @@ not only on screen.
 
 ---
 
+## 45. The receipt records itself too — shipped 2026-10-02
+
+The same fix as §44, applied to the email that actually failed in production.
+`/admin/orders` now shows both, on every order they apply to:
+
+```
+Receipt emailed 2026-10-02 20:46      Tracking emailed 2026-10-02 20:46
+Receipt was not sent. … Send it now   Tracking email was not sent. … Send it now
+```
+
+**This is the one that bit.** `Q-QRABWBQ9` was placed with `gmal.com`, the
+receipt bounced, and a customer who had paid $39.99 held no record of it for
+days — discovered by chance rather than by the shop noticing (§36). The send is
+fire-and-forget from the payment webhook and catches its own errors, so nothing
+anywhere recorded that it had failed.
+
+`Order.confirmationEmailSentAt` is stamped after a successful send. **Both
+paths that send this email stamp it** — the webhook, and the admin correcting a
+bounced address (`correctEmailAndResend`) — via `markConfirmationSent`, which
+exists as its own function precisely so the second path cannot be forgotten and
+leave the tab accusing a customer who did get their receipt.
+
+Failures reach **Sentry** now rather than a console nobody reads. The errors are
+still swallowed, deliberately: **a mail failure must never make the payment
+webhook fail**, because Authorize.net would retry the payment.
+
+### One component, not two
+
+`ShippingNoticeStatus` became `OrderEmailStatus`, taking a `kind`. Two
+near-identical components would drift, and the fulfilment notification has the
+same shape again if it is ever wanted.
+
+`resendOrderConfirmation` is the sibling of `correctEmailAndResend`: for when
+the address is right and the send simply failed. Correcting an address keeps
+its own button. Both resends are **allowed even when the email did send** — a
+duplicate receipt is a small annoyance, and refusing to resend leaves a customer
+with no record of a payment they made.
+
+### Migration and backfill
+
+`20261002220000_confirmation_email_sent`, additive and nullable, **applied by
+hand to `quell_dev` and to production via `DATABASE_URL_UNPOOLED` before the
+code deployed**, per the standing rule. `Q-QRABWBQ9` was backfilled: its receipt
+was resent by hand on 2026-09-30 after the typo was corrected and its arrival
+confirmed, so recording the known truth avoids flagging a customer who has their
+receipt.
+
+### Verified against a running server
+
+Both states rendered from real rows; clicking **Send it now** on the unsent one
+sent, stamped, and cleared the warning — confirmed in the database, not only on
+screen.
+
+---
+
 ## 34. The reorder reminder — shipped 2026-09-30
 
 Daily cron at **16:00 UTC**, an hour after the abandoned-cart job so the two

@@ -159,6 +159,19 @@ model Order {
   /// it is what a "where is my order" enquiry is answered from.
   shippedAt DateTime?
 
+  /// When the order confirmation was handed to the email provider, or null if
+  /// it never was.
+  ///
+  /// Same reasoning as `shippingEmailSentAt` below, and the same gap: the send
+  /// is fire-and-forget from the payment webhook and catches its own errors,
+  /// so a refused receipt left a paid order with nothing recording that the
+  /// customer never got one. **This is the email that actually failed in
+  /// production** — `Q-QRABWBQ9` was placed with a mistyped domain and the
+  /// receipt bounced unnoticed (§36).
+  ///
+  /// **A paid order with this null means the receipt did not go.**
+  confirmationEmailSentAt DateTime?
+
   /// When the shipping notice was handed to the email provider, or null if it
   /// never was.
   ///

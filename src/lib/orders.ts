@@ -25,17 +25,45 @@ export async function getOrderForEmail(orderId: string) {
  * Mail failures are logged, never thrown: a webhook must not retry (and risk
  * double-processing a payment) because an email bounced.
  */
-export async function sendOrderConfirmation(orderId: string) {
+export async function sendOrderConfirmation(orderId: string): Promise<boolean> {
   try {
     const order = await getOrderForEmail(orderId)
     if (!order) {
       console.error(`[email] order ${orderId} not found for confirmation`)
-      return
+      Sentry.captureMessage(
+        `Order confirmation: order ${orderId} not found`,
+        'error',
+      )
+      return false
     }
     await sendOrderConfirmationEmail(order)
+    await markConfirmationSent(orderId)
+    return true
   } catch (err) {
     console.error('[email] order confirmation failed:', err)
+    // Was console-only. This is the send that actually failed in production:
+    // Q-QRABWBQ9's receipt bounced off a mistyped domain and nobody knew for
+    // nine days (§36).
+    Sentry.captureException(err, { tags: { email: 'order-confirmation' } })
+    return false
   }
+}
+
+/**
+ * Records that the receipt was accepted by the email provider.
+ *
+ * Its own function because two paths send this email: the payment webhook, and
+ * the admin correcting a bounced address (`correctEmailAndResend`). Both have
+ * to stamp it or the Orders tab accuses a customer who did get their receipt.
+ *
+ * Stamped **after** the send, never before — the other order would show a
+ * green "receipt sent" on an order whose customer has nothing.
+ */
+export async function markConfirmationSent(orderId: string) {
+  await prisma.order.update({
+    where: { id: orderId },
+    data: { confirmationEmailSentAt: new Date() },
+  })
 }
 
 /**
