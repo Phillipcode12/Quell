@@ -147,11 +147,19 @@ describe('once every guard passes', () => {
     servingHost = 'quelldrop.com'
   })
 
-  it('allows crawling and points at the sitemap on the real domain', async () => {
+  it('allows crawling and points at both sitemaps on the real domain', async () => {
     const result = await robots()
 
     expect(result.rules).toMatchObject({ userAgent: '*', allow: '/' })
-    expect(result.sitemap).toBe('https://quelldrop.com/sitemap.xml')
+    /**
+     * Two files since 2026-10-04. The city pages are declared separately so
+     * Search Console reports their indexing on its own, apart from the real
+     * pages -- which is the only way to tell which half moved the numbers.
+     */
+    expect(result.sitemap).toEqual([
+      'https://quelldrop.com/sitemap.xml',
+      'https://quelldrop.com/sitemap-locations.xml',
+    ])
   })
 
   it('still keeps transactional and per-user paths out', async () => {

@@ -94,8 +94,16 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
       // and have no business in search results.
       disallow: ['/api/', '/account', '/cart', '/checkout/', '/admin'],
     },
-    // Always the canonical host, never the host being served: a sitemap on the
-    // fallback domain must still point people at the real one.
-    sitemap: `${base}/sitemap.xml`,
+    /**
+     * Always the canonical host, never the host being served: a sitemap on the
+     * fallback domain must still point people at the real one.
+     *
+     * Two files, deliberately. The city pages live in their own so Search
+     * Console reports their indexing separately from the real pages — see
+     * `sitemap-locations.xml/route.ts`. It is listed here whether or not those
+     * pages are switched on; with `LOCATION_PAGES=off` it is simply empty,
+     * which is a cleaner signal than URLs starting to 404.
+     */
+    sitemap: [`${base}/sitemap.xml`, `${base}/sitemap-locations.xml`],
   }
 }

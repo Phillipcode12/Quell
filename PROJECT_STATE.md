@@ -1439,6 +1439,115 @@ line.
 
 ---
 
+## 49. City pages — built 2026-10-04, over my objection
+
+`/eye-drops/nashville-tn` and 99 others. **Phillip's decision, taken after I
+advised against it.** Recorded plainly so whoever reads this next knows it was
+a choice rather than an oversight — and so the reasoning on both sides survives
+if the numbers go either way.
+
+### The objection, for the record
+
+Google's spam policies name two things these resemble:
+
+- **Doorway pages.** Google's own documentation gives "multiple pages targeting
+  specific regions or cities that funnel users to one page" as the example.
+- **Scaled content abuse**, added March 2024: many pages generated primarily to
+  rank, **"no matter how it's created"** — templating is explicitly not an
+  exemption.
+
+**Enforcement is usually site-wide**, so what is at risk is quelldrop.com
+appearing in search at all, not just these URLs.
+
+Also worth knowing, because it was part of the original brief: **Ahrefs URL
+Rating comes from backlinks.** Publishing a page cannot raise its UR; only links
+to it can. A thousand new pages are a thousand pages at UR 0.
+
+### Phillip's reasoning, which is not unreasonable
+
+Two impressions and zero clicks in three days. Nothing else is bringing
+traffic, and a risk taken deliberately beats waiting for organic authority that
+may never arrive.
+
+### What was built to make it survivable
+
+1. **`LOCATION_PAGES=off` withdraws every page** — routes, sitemap and
+   internal links, in one environment variable plus a redeploy. If Search
+   Console shows a manual action or impressions collapse, that is the entire
+   recovery. **Tested**, including that an unrecognised value leaves them on
+   rather than silently vetoing the decision.
+2. **Ramped, not dumped.** `PUBLISHED_LOCATION_COUNT = 100` of 1,923.
+   Adding 1,923 pages to a site with 7 indexed ones on a single day is the
+   pattern the spam systems look for, and it leaves no before to compare
+   against. **Raise it deliberately, with a look at Search Console between
+   steps.**
+3. **Their own sitemap**, `/sitemap-locations.xml`. Search Console reports
+   coverage per submitted sitemap, so these can be read apart from the seven
+   real pages. Mixed into the main sitemap the only available reading would be
+   "the numbers moved" with no way to say which half moved them. **Submit it as
+   a second sitemap** — robots.txt lists it, but submission is what turns on
+   the per-sitemap report.
+
+### The data
+
+`scripts/build-locations.mjs`, from **US Census Bureau public domain** files —
+place names and states from `national_place2020.txt`, population from
+`sub-est2024.csv` purely to decide which places are worth a page. Population is
+**not** published: it is a selection key, not content.
+
+> **The name cleaning is the part that would have embarrassed us.** Census
+> names are legal entity names:
+>
+> ```
+> Nashville-Davidson metropolitan government (balance) -> Nashville
+> Butte-Silver Bow (balance)                           -> Butte
+> Lexington-Fayette urban county                       -> Lexington
+> Agawam Town city                                     -> Agawam
+> El Paso de Robles (Paso Robles) city                 -> Paso Robles
+> Urban Honolulu CDP                                   -> Honolulu
+> Winston-Salem city                                   -> Winston-Salem
+> ```
+>
+> **The hyphen rule only fires for consolidated city-county governments.**
+> Applied generally it would have published a thousand pages about "Winston,
+> North Carolina". Sixteen cases are pinned in `locations.test.ts`; the suffix
+> check there is case-SENSITIVE, because "Atlantic City", "Boise City" and
+> "Elk Grove Village" are real names and an `/i` rejects all of them.
+
+1,923 places at population 20,000+, no slug collisions, every state code valid.
+
+### The regulatory posture
+
+**Every sentence on the page is already approved and already on the site.** The
+description is `FRONT_PANEL_CLAIMS`, the uses are `DRUG_FACTS.uses` verbatim,
+the shipping rule comes from the constants the cart charges from. The only
+thing that varies per page is the name of a real place.
+
+> **It is a thin page on purpose.** The moment someone fills it out with "the
+> best eye drops in Tulsa" or an invented local stockist, it stops being a
+> shipping-destination page and becomes a claim nobody at Aurora approved. On a
+> site selling an FDA-regulated drug, **thin and true beats full and
+> invented.**
+
+If these ever need to be genuinely better rather than merely more numerous, the
+honest version is a stockist directory of practices that actually carry it —
+which needs a fact nobody has yet: whether any do.
+
+### Two things found while building
+
+**No price on these pages.** The first draft read it from the database, which
+meant a Prisma query per render across every page. It also meant a price
+repeated in 1,923 places, each one able to go stale. The buy panel is the
+single source and the CTA sends people there.
+
+**They render per request, like every other page here.** `next build`
+prerenders none of them — but it prerenders none of `/about`, `/drug-facts`,
+`/privacy` or `/reviews` either, because the root layout reads the session
+cookie for the header. **Pre-existing, not introduced by this**, and worth
+knowing before anyone tries to make these static in isolation.
+
+---
+
 ## 34. The reorder reminder — shipped 2026-09-30
 
 Daily cron at **16:00 UTC**, an hour after the abandoned-cart job so the two
