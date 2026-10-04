@@ -119,3 +119,25 @@ export function locationLabel(location: Location): string {
 export function locationShortLabel(location: Location): string {
   return `${location.city}, ${location.stateCode}`
 }
+
+/**
+ * Published cities grouped by state, states alphabetical, cities largest first
+ * within each.
+ *
+ * For the index at `/eye-drops`. Grouping rather than one flat list of a
+ * hundred links because a flat list is unreadable and, more to the point,
+ * tells a crawler nothing about how the set is organised.
+ */
+export function locationsByState(): { state: string; cities: Location[] }[] {
+  const byState = new Map<string, Location[]>()
+
+  for (const location of publishedLocations()) {
+    const existing = byState.get(location.state)
+    if (existing) existing.push(location)
+    else byState.set(location.state, [location])
+  }
+
+  return [...byState.entries()]
+    .map(([state, cities]) => ({ state, cities }))
+    .sort((a, b) => a.state.localeCompare(b.state))
+}

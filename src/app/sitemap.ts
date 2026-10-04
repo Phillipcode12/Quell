@@ -34,6 +34,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // back. Worth indexing in its own right: "dry eye quiz" and "do I have dry
     // eye" are searches people actually make, and this answers them.
     { url: `${base}/self-check`, priority: 0.7 },
+    // The index for the city pages. In this sitemap rather than
+    // sitemap-locations.xml because it is a page of the site in its own
+    // right -- the split exists to measure the generated set, not this.
+    { url: `${base}/eye-drops`, priority: 0.5 },
     { url: `${base}/privacy`, priority: 0.3 },
     { url: `${base}/terms`, priority: 0.3 },
   ]

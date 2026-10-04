@@ -1516,6 +1516,31 @@ place names and states from `national_place2020.txt`, population from
 
 1,923 places at population 20,000+, no slug collisions, every state code valid.
 
+
+### An index, added the same day
+
+`/eye-drops` lists every published city grouped by state, and the footer links
+to it. **The city pages shipped without one**, reachable from the sitemap and
+from each other and nowhere else. Phillip asked where he could browse them and
+the honest answer was that he could not.
+
+That was an omission rather than a missing nicety:
+
+- **Orphan pages crawl badly.** Internal links are how a crawler finds pages and
+  how importance moves between them. A hundred pages linked only from a sitemap
+  get visited rarely.
+- **It is the difference between a section and a shadow set.** Part of what
+  makes doorway pages identifiable is having no place in the site's structure.
+  Pages a visitor can reach from the footer are at least structurally honest.
+- **It makes the set reviewable.** A hundred generated pages nobody can see all
+  of is a hundred chances for a bad one to sit there unnoticed.
+
+The index says plainly that there is **no separate stock or pricing by city and
+nothing to walk into** — which is both true and the thing a reader would
+otherwise wonder. It 404s when `LOCATION_PAGES=off` rather than rendering an
+empty list, and it lives in the main sitemap rather than the locations one,
+because it is a page of the site in its own right.
+
 ### The regulatory posture
 
 **Every sentence on the page is already approved and already on the site.** The

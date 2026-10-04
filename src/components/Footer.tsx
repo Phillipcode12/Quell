@@ -26,6 +26,11 @@ const columns = [
       // Guests have no account page, so tracking has to be reachable from
       // every page, not just the confirmation email.
       { label: 'Track your order', href: '/orders' },
+      // The only link into the city pages from anywhere a person browses.
+      // Without it they are reachable from the sitemap and each other and
+      // nothing else, which crawls badly and makes them look like a shadow
+      // set rather than part of the site (section 49).
+      { label: 'Eye drops by city', href: '/eye-drops' },
     ],
   },
   {
