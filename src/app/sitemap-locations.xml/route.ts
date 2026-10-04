@@ -1,5 +1,10 @@
 import { appUrl } from '@/lib/site'
-import { locationPath, publishedLocations } from '@/lib/locations'
+import {
+  locationPath,
+  publishedLocations,
+  publishedStates,
+  statePath,
+} from '@/lib/locations'
 
 /**
  * The city pages get their own sitemap, separate from `/sitemap.xml`.
@@ -25,12 +30,25 @@ export async function GET() {
   const base = appUrl()
   const locations = publishedLocations()
 
-  const urls = locations
+  /**
+   * State pages above the cities they lead to. They are the level a crawler
+   * should reach first, and the level with something of its own to say.
+   */
+  const stateUrls = publishedStates()
+    .map(
+      (s) =>
+        `  <url><loc>${base}${statePath(s.slug)}</loc><priority>0.5</priority></url>`,
+    )
+    .join('\n')
+
+  const cityUrls = locations
     .map(
       (location) =>
         `  <url><loc>${base}${locationPath(location)}</loc><priority>0.4</priority></url>`,
     )
     .join('\n')
+
+  const urls = [stateUrls, cityUrls].filter(Boolean).join('\n')
 
   /**
    * No `lastmod`, matching `sitemap.ts`. These pages change when the template

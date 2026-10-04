@@ -1541,6 +1541,39 @@ otherwise wonder. It 404s when `LOCATION_PAGES=off` rather than rendering an
 empty list, and it lives in the main sitemap rather than the locations one,
 because it is a page of the site in its own right.
 
+
+### Raised to 1,000 — 2026-10-04, and what it forced
+
+Phillip's call, hours after the first hundred went live and before Google had
+crawled any of them. **The trade was stated and accepted: there is no baseline
+to compare against, so the ramp has stopped being a safety net and
+`LOCATION_PAGES=off` is the only one left.**
+
+**Scaling it broke the index, which is how the structure got better.** At a
+hundred cities one flat page was fine. At a thousand it was **463 KB carrying a
+thousand internal links** — the weight was survivable, the link count was not. A
+page that links to everything splits its authority a thousand ways and
+recommends nothing.
+
+So the set is now three levels:
+
+```
+/eye-drops                      51 state links        77 KB  (15.6 KB gzipped)
+/eye-drops/state/texas          90 city links
+/eye-drops/nashville-tn         6 siblings + up to Tennessee
+```
+
+Each city page links **up** to its state as well as sideways to siblings, so a
+crawler arriving anywhere has a path in both directions. State pages carry
+priority 0.5 in the sitemap against the cities' 0.4: they are the level that
+should be reached first and the level with something of its own to say.
+
+Build: 1,084 pages in 7 seconds, 12 second compile. Sitemap: 1,051 URLs.
+
+> **If this is raised again, check the index first.** The flat-list problem
+> reappeared the moment the count changed, and it was only visible by measuring
+> the rendered page rather than by anything types or tests could catch.
+
 ### The regulatory posture
 
 **Every sentence on the page is already approved and already on the site.** The

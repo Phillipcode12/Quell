@@ -11,6 +11,8 @@ import {
   locationShortLabel,
   publishedLocations,
   sameStateLocations,
+  stateSlug,
+  statePath,
 } from '@/lib/locations'
 import { appUrl } from '@/lib/site'
 
@@ -198,7 +200,13 @@ export default async function LocationPage({ params }: Params) {
       {nearby.length > 0 && (
         <section className="mt-12 border-t border-line pt-8">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
-            Elsewhere in {location.state}
+            Elsewhere in{' '}
+            <Link
+              href={statePath(stateSlug(location.state))}
+              className="text-brand-light hover:underline"
+            >
+              {location.state}
+            </Link>
           </h2>
           <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
             {nearby.map((other) => (

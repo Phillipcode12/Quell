@@ -71,8 +71,13 @@ export function locationPagesEnabled(): boolean {
  * numbers move.
  *
  * Raise it deliberately, with a look at Search Console in between.
+ *
+ * **Raised 100 -> 1,000 on 2026-10-04, hours after the first hundred went
+ * live and before Google had crawled any of them.** Phillip's call, with the
+ * trade stated: there is now no baseline to compare against, so the ramp has
+ * stopped being a safety net and  is the only one left.
  */
-export const PUBLISHED_LOCATION_COUNT = 100
+export const PUBLISHED_LOCATION_COUNT = 1_000
 
 /** The places that actually get a page, largest first. */
 export function publishedLocations(): Location[] {
@@ -140,4 +145,45 @@ export function locationsByState(): { state: string; cities: Location[] }[] {
   return [...byState.entries()]
     .map(([state, cities]) => ({ state, cities }))
     .sort((a, b) => a.state.localeCompare(b.state))
+}
+
+/** "New York" -> "new-york". The segment used by the state index pages. */
+export function stateSlug(state: string): string {
+  return state
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+}
+
+/**
+ * Every state that has at least one published city, alphabetical.
+ *
+ * The index at `/eye-drops` lists these rather than all thousand cities. At a
+ * hundred cities one flat page was fine; at a thousand it was 463 KB and, worse,
+ * **a thousand internal links sharing one page's authority between them.** A
+ * hub that links to everything ends up recommending nothing.
+ */
+export function publishedStates(): {
+  state: string
+  slug: string
+  cities: Location[]
+}[] {
+  return locationsByState().map((group) => ({
+    state: group.state,
+    slug: stateSlug(group.state),
+    cities: group.cities,
+  }))
+}
+
+export function findState(slug: string): {
+  state: string
+  slug: string
+  cities: Location[]
+} | null {
+  return publishedStates().find((s) => s.slug === slug) ?? null
+}
+
+/** `/eye-drops/state/texas` */
+export function statePath(slug: string): string {
+  return `/eye-drops/state/${slug}`
 }

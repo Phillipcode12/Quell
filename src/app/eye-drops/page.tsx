@@ -4,9 +4,9 @@ import { notFound } from 'next/navigation'
 import { BRAND } from '@/lib/product-content'
 import {
   locationPagesEnabled,
-  locationPath,
-  locationsByState,
   publishedLocations,
+  publishedStates,
+  statePath,
 } from '@/lib/locations'
 import { appUrl } from '@/lib/site'
 
@@ -43,7 +43,7 @@ export default function EyeDropsIndexPage() {
   // withdrawn, which is a worse answer than not existing.
   if (!locationPagesEnabled()) notFound()
 
-  const groups = locationsByState()
+  const groups = publishedStates()
   const total = publishedLocations().length
 
   return (
@@ -67,27 +67,31 @@ export default function EyeDropsIndexPage() {
         .
       </p>
 
-      <div className="mt-12 space-y-9">
+      {/**
+       * States, not cities.
+       *
+       * This listed every city until the published set went from 100 to 1,000,
+       * at which point the page was **463 KB and carried a thousand internal
+       * links**. The weight was survivable; the link count was not — a page
+       * that links to everything splits its authority a thousand ways and
+       * recommends nothing. Now it is ~51 links down to state pages, each of
+       * which carries twenty or so.
+       */}
+      <ul className="mt-12 grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
         {groups.map((group) => (
-          <section key={group.state}>
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
+          <li key={group.slug}>
+            <Link
+              href={statePath(group.slug)}
+              className="text-brand-light hover:underline"
+            >
               {group.state}
-            </h2>
-            <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm">
-              {group.cities.map((city) => (
-                <li key={city.slug}>
-                  <Link
-                    href={locationPath(city)}
-                    className="text-brand-light hover:underline"
-                  >
-                    {city.city}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
+            </Link>{' '}
+            <span className="text-sm text-muted">
+              ({group.cities.length})
+            </span>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   )
 }
