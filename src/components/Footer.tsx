@@ -30,7 +30,7 @@ const columns = [
       // Without it they are reachable from the sitemap and each other and
       // nothing else, which crawls badly and makes them look like a shadow
       // set rather than part of the site (section 49).
-      { label: 'Eye drops by city', href: '/eye-drops' },
+      { label: 'Where we ship', href: '/eye-drops' },
     ],
   },
   {

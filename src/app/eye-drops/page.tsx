@@ -33,7 +33,15 @@ import { appUrl } from '@/lib/site'
  */
 
 export const metadata: Metadata = {
-  title: 'Eye Drops by City',
+  /**
+   * The title and the heading differ on purpose.
+   *
+   * The title is what appears in a search result, so it carries the phrase
+   * people type. The heading is what someone sees after clicking a footer
+   * link that said "Where we ship" -- and a page whose heading does not
+   * match the link that reached it reads as the wrong page.
+   */
+  title: 'Where We Ship — Eye Drops by City',
   description: `Where ${BRAND.trademark} ${BRAND.productType.toLowerCase()} ship in the United States, by city and state.`,
   alternates: { canonical: `${appUrl()}/eye-drops` },
 }
@@ -49,7 +57,7 @@ export default function EyeDropsIndexPage() {
   return (
     <div className="mx-auto max-w-4xl px-6 py-14">
       <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-        Eye drops by city
+        Where we ship
       </h1>
 
       <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">

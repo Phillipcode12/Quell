@@ -55,7 +55,7 @@ export default async function StatePage({ params }: Params) {
         </Link>
         <span className="mx-2">/</span>
         <Link href="/eye-drops" className="hover:text-white">
-          Eye drops by city
+          Where we ship
         </Link>
         <span className="mx-2">/</span>
         <span className="text-white">{found.state}</span>
