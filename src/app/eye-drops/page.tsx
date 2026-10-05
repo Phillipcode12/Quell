@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation'
 import { BRAND } from '@/lib/product-content'
 import {
   locationPagesEnabled,
-  publishedLocations,
   publishedStates,
   statePath,
 } from '@/lib/locations'
@@ -52,7 +51,6 @@ export default function EyeDropsIndexPage() {
   if (!locationPagesEnabled()) notFound()
 
   const groups = publishedStates()
-  const total = publishedLocations().length
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-14">
@@ -60,19 +58,21 @@ export default function EyeDropsIndexPage() {
         Where we ship
       </h1>
 
+      {/* No page count. It read "These 1000 pages answer the question…", which
+          is a strange thing to say to a customer and announces the set as
+          generated rather than describing what it is for. The two honest
+          qualifications stay: no local stock, nothing to walk into. */}
       <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">
         {BRAND.trademark} {BRAND.productType.toLowerCase()} ship anywhere in the
-        United States. These {total} pages answer the question for the places
-        people ask about most — there is no separate stock or pricing by city,
-        and nothing here is a shop you can walk into.
+        United States. There is no separate stock or pricing by city, and
+        nothing here is a shop you can walk into — ordering is the same wherever
+        you are.
       </p>
 
-      <p className="mt-4 text-sm text-muted">
-        Ordering is the same wherever you are:{' '}
+      <p className="mt-4 text-sm">
         <Link href="/#buy" className="text-brand-light hover:underline">
-          see prices and buy
+          See prices and buy
         </Link>
-        .
       </p>
 
       {/**
