@@ -1604,6 +1604,53 @@ prerenders none of them — but it prerenders none of `/about`, `/drug-facts`,
 cookie for the header. **Pre-existing, not introduced by this**, and worth
 knowing before anyone tries to make these static in isolation.
 
+### Raised to 1,100 — 2026-10-04
+
+Another hundred, same day, same reasoning. The dataset holds 1,923 places at
+the 20,000 population floor, so the data is not the ceiling.
+
+1,184 pages in 7 seconds. Sitemap **1,151 URLs** — 1,100 cities and 51 states.
+The index stayed at 51 state links, checked per the rule above.
+
+### Submitted to Search Console — 2026-10-04, and how to read it
+
+Phillip submitted `sitemap-locations.xml` on **2026-10-04**. The per-sitemap
+report is the entire reason the sitemap is split, so it has to be read
+filtered:
+
+> Search Console → Indexing → **Pages** → the dropdown that defaults to
+> **"All known pages"** → **sitemap-locations.xml**
+
+Unfiltered, the 1,100 city pages and the seven real pages are a single number
+and neither can be read.
+
+Then **"Why pages aren't indexed"**:
+
+| Row | Reading |
+| --- | --- |
+| **Discovered – currently not indexed** | Known, not yet crawled. A queue, not a verdict. Most of the 1,151 will sit here at first. |
+| **Crawled – currently not indexed** | Looked at and passed over. Some of this is ordinary for new pages with no authority. |
+| **Duplicate without user-selected canonical** | **The sharper signal.** Google treating the pages as versions of each other *is* the "a template with the city swapped in" judgement, in its own words. |
+
+**The thresholds, written down so the decision is not re-argued from memory:**
+
+- **Crawled – currently not indexed holding the large majority of 1,151 by
+  2026-11-01** (four weeks after submission), **or**
+- **anything at all appearing in the duplicate row**
+
+Either one means Google has formed a view, and the answer is
+**`LOCATION_PAGES=off` plus a redeploy** — not an attempt to improve 1,100
+pages. There is nothing true left to add to them that would not be a claim
+nobody at Aurora has approved.
+
+**Nothing should be read into the numbers before 2026-10-25.** The
+sitemap-filtered report takes days to populate at all, and crawling 1,151 new
+URLs on a site with no authority takes weeks.
+
+> **Do not use Request indexing on these.** The quota is roughly ten URLs a
+> day, so it cannot move a set this size — and hand-pushing a thousand
+> templated pages is itself a pattern that reads as manipulation.
+
 ---
 
 ## 34. The reorder reminder — shipped 2026-09-30
