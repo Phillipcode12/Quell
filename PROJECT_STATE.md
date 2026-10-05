@@ -37,15 +37,19 @@ means a missing table would hit every page, not one route.
    Consequences worth remembering: Hobby cannot have team members, so Ryan
    and Dr. Rynerson cannot be added to Vercel; and crons stay daily, so the
    abandoned-cart email can be up to a day late (§33).
-3. **Confirm the descriptor reads `QUELL DROP`** on transaction 121847268368.
-   This item has waited since the start for a real card, and there is finally
-   one to look at.
+3. ~~**Confirm the descriptor reads `QUELL DROP`**~~ and
+   ~~**4. Ask Zen Payments about funding**~~ — **both closed 2026-10-05.**
+   Phillip: *"we already figured out the Zen payments. No need to ask about
+   that."*
 
-4. **Ask Zen Payments about funding** (§35). Aurora has no Zen portal — only
-   Authorize.net — so this is an email to their support: what is the delay from
-   settlement to deposit, is there a new-account reserve, and which bank
-   account is on file. Their details are in the onboarding thread with the DBA
-   Account Change Form.
+   > **The answers themselves were not captured here**, because they were
+   > settled outside this session. If the funding delay or a new-account
+   > reserve ever matters — reconciling a deposit, or explaining a gap between
+   > a charge and the bank — it has to be asked again rather than read off
+   > this file. Noting that deliberately: an item marked closed with no answer
+   > recorded is the kind of thing that later gets mistaken for an answer.
+
+   **Stop raising either one.**
 
 5. **Watch for a reply from Chris Whitmire** (§33). The other real person to
    reach checkout, on 2026-09-20; never charged. The recovery email was sent by
@@ -1650,6 +1654,41 @@ URLs on a site with no authority takes weeks.
 > **Do not use Request indexing on these.** The quota is roughly ten URLs a
 > day, so it cannot move a set this size — and hand-pushing a thousand
 > templated pages is itself a pattern that reads as manipulation.
+
+### Raised to 1,400 — 2026-10-05, one day after submission
+
+Phillip's call, the morning after the sitemap went in and **before Search
+Console has reported anything at all.** Same trade as the two previous raises,
+stated and accepted again. The thresholds in the subsection above do not move:
+they are still read against whatever is published when the dates arrive.
+
+**Nothing was loosened to find the extra 300.** The population floor stays at
+20,000 and the dataset still holds 1,923, so these are places that were already
+generated and already name-checked — this is publishing further down a vetted
+list, not scraping a longer one.
+
+The new range was scanned for Census name defects before publishing. Clean, and
+the only two that *look* like defects are the real names:
+
+```
+Elk Grove Village, IL     <- a real city name, not "Elk Grove" + "Village"
+North Attleborough, MA    <- likewise
+```
+
+| | 1,100 | 1,400 |
+| --- | --- | --- |
+| Pages built | 1,184 | **1,484** |
+| Sitemap URLs | 1,151 | **1,451** |
+| States | 51 | 51 (no new ones) |
+| Largest state page | California ~195 links | **California 250 links** |
+
+> **California is the number to watch if this is raised again.** One state page
+> at 250 outbound links is the same failure the flat index hit at 1,000 — it
+> was survivable there only after the split, and a state page has no further
+> level to split into without inventing counties or metro areas. At 1,923 it
+> would be roughly 340. **Measure the rendered page, not the link count**: that
+> is how the 463 KB index was caught, and types and tests saw nothing wrong
+> with it.
 
 ---
 
