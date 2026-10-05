@@ -75,9 +75,15 @@ export function locationPagesEnabled(): boolean {
  * **Raised 100 -> 1,000 on 2026-10-04, hours after the first hundred went
  * live and before Google had crawled any of them.** Phillip's call, with the
  * trade stated: there is now no baseline to compare against, so the ramp has
- * stopped being a safety net and  is the only one left.
+ * stopped being a safety net and `LOCATION_PAGES=off` is the only one left.
+ *
+ * **Then 1,100 the same day, and 1,400 on 2026-10-05** -- the day after the
+ * sitemap was submitted and before Google had reported on any of it. Same
+ * trade, accepted again. The dataset holds 1,923 places at the 20,000
+ * population floor, so this publishes places that were already generated and
+ * already name-checked rather than lowering the bar to find more.
  */
-export const PUBLISHED_LOCATION_COUNT = 1_100
+export const PUBLISHED_LOCATION_COUNT = 1_400
 
 /** The places that actually get a page, largest first. */
 export function publishedLocations(): Location[] {
