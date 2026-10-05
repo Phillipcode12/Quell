@@ -77,7 +77,7 @@ export function locationPagesEnabled(): boolean {
  * trade stated: there is now no baseline to compare against, so the ramp has
  * stopped being a safety net and  is the only one left.
  */
-export const PUBLISHED_LOCATION_COUNT = 1_000
+export const PUBLISHED_LOCATION_COUNT = 1_100
 
 /** The places that actually get a page, largest first. */
 export function publishedLocations(): Location[] {
