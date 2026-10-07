@@ -11,12 +11,12 @@ import {
 } from '@/lib/checkout-memory'
 import { suggestEmail } from '@/lib/email-address'
 import { formatUsd } from '@/lib/money'
+import { priceForLines } from '@/lib/pricing'
 import {
   FREE_SHIPPING_BOTTLES,
   FREE_SHIPPING_LABEL,
   SHIPPING_LABEL,
   remainingForFreeShipping,
-  shippingCentsFor,
 } from '@/lib/shipping'
 
 type Product = {
@@ -148,18 +148,34 @@ export function CartView({
     })
     .filter((r): r is NonNullable<typeof r> => r !== null)
 
-  // Mirrors the server calculation in /api/checkout. The server still decides
-  // what is actually charged; this is only so the cart shows the same numbers.
-  const subtotal = rows.reduce(
-    (sum, r) => sum + r.product.priceCents * r.quantity,
-    0,
+  /**
+   * Mirrors the server calculation in /api/checkout. The server still decides
+   * what is actually charged; this is only so the cart shows the same numbers.
+   *
+   * **Through `priceForLines` rather than added up here.** This block used to
+   * compute its own subtotal and shipping, which is why the cart was the one
+   * screen in the funnel that never showed the saving: the figure was not in
+   * scope to show. The hero and the buy panel both quote it, and then the
+   * customer reached the page where they actually decide to pay and it was
+   * gone.
+   */
+  const {
+    subtotalCents: subtotal,
+    shippingCents: shipping,
+    deliveredCents: total,
+    singlesDeliveredCents: singly,
+    savingCents: saving,
+  } = priceForLines(
+    rows.map((r) => ({
+      unitPriceCents: r.product.priceCents,
+      quantity: r.quantity,
+    })),
   )
-  const shipping = shippingCentsFor(subtotal)
+
   const remaining = remainingForFreeShipping(subtotal)
   // One product, so bottles in the cart is the sum of the line quantities.
   const bottlesInCart = rows.reduce((n, r) => n + r.quantity, 0)
   const bottlesNeeded = FREE_SHIPPING_BOTTLES - bottlesInCart
-  const total = subtotal + shipping
 
   async function checkout(event: React.FormEvent) {
     event.preventDefault()
@@ -312,6 +328,34 @@ export function CartView({
           <span className="font-medium">Total</span>
           <span className="font-semibold text-white">{formatUsd(total)}</span>
         </div>
+
+        {/**
+         * The saving, at the moment of purchase.
+         *
+         * **Below the total and outside the `dl`, deliberately.** As a row
+         * inside Subtotal / Shipping / Total it would read as money coming off
+         * the bill — the eye follows that column as arithmetic, and the sum
+         * would not work. Nothing is deducted here: the customer pays
+         * `total`, and this is a comparison with a different way of buying
+         * the same bottles.
+         *
+         * So the reference is named rather than implied. The buy panel can get
+         * away with a bare "saving $10.00" because its quantity dropdown is
+         * right there — pick 1 and the $39.99 it is measured against appears.
+         * The cart has no such control, so an unexplained figure here would be
+         * the vague "save big" that the whole pricing approach avoids.
+         */}
+        {saving > 0 && (
+          <p className="mt-3 text-sm text-brand-light">
+            <span className="font-semibold">
+              Saving {formatUsd(saving)}
+            </span>{' '}
+            <span className="text-muted">
+              versus {formatUsd(singly)} buying {bottlesInCart} bottles one at a
+              time
+            </span>
+          </p>
+        )}
 
         <p className="mt-4 text-sm leading-relaxed text-muted">
           Quell is an over-the-counter lubricating eye drop — no prescription
