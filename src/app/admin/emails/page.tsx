@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/db'
-import { getAdminUser } from '@/lib/admin'
+import { getAdminUser, isAdminEmail } from '@/lib/admin'
 import { formatUsd } from '@/lib/money'
 import {
   CONSENT_LABELS,
@@ -61,7 +61,15 @@ const CONSENT_TONE = {
   none: 'neutral',
 } as const
 
-const columns: Column<Contact>[] = [
+/**
+ * Built per render rather than at module scope, because the Delete column has to
+ * know who is an admin and that comes from `ADMIN_EMAILS` at request time.
+ *
+ * Ryan's account was deleted from this table (see `lib/contact-delete`), and an
+ * admin who has never ordered looks exactly like junk here. The server refuses
+ * now; this is so nobody reaches for the button in the first place.
+ */
+const columnsFor = (isAdmin: (email: string) => boolean): Column<Contact>[] => [
   {
     header: 'Email',
     cell: (c) => (
@@ -138,9 +146,10 @@ const columns: Column<Contact>[] = [
     cell: (c) => (
       <DeleteContactButton
         email={c.email}
-        // Hiding it for paying customers is a courtesy to whoever is clicking;
-        // the server refuses regardless. See app/admin/emails/actions.ts.
-        canDelete={c.orders === 0}
+        // Hiding it is a courtesy to whoever is clicking; the server refuses
+        // regardless, from its own fresh read. See app/admin/emails/actions.ts.
+        canDelete={c.orders === 0 && !isAdmin(c.email)}
+        blockedBecause={isAdmin(c.email) ? 'admin' : 'paid'}
         summary={
           c.sources.length
             ? c.sources.map((s) => SOURCE_LABELS[s].toLowerCase()).join(' + ')
@@ -201,7 +210,7 @@ export default async function AdminEmailsPage() {
       />
 
       <DataTable
-        columns={columns}
+        columns={columnsFor(isAdminEmail)}
         rows={shown}
         rowKey={(c) => c.email}
         empty="No addresses yet."

@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
-import { getAdminUser } from '@/lib/admin'
+import { getAdminUser, isAdminEmail } from '@/lib/admin'
 import { planContactDeletion } from '@/lib/contact-delete'
 
 /**
@@ -51,6 +51,10 @@ export async function deleteContact(rawEmail: string) {
     orders,
     hasAccount: Boolean(user),
     hasSubscriber: Boolean(subscriber),
+    // Read from ADMIN_EMAILS on the server, like every other check here. Ryan's
+    // account went this way on or after 2026-10-01 -- he had never ordered, so
+    // the paid-order rule had nothing to protect. See lib/contact-delete.
+    isAdmin: isAdminEmail(email),
   })
 
   if (!plan.allowed) throw new Error(plan.reason)

@@ -18,10 +18,17 @@ import { deleteContact } from '@/app/admin/emails/actions'
 export function DeleteContactButton({
   email,
   canDelete,
+  blockedBecause,
   summary,
 }: {
   email: string
   canDelete: boolean
+  /**
+   * Why the button is absent, when it is. Shown in its place so a missing
+   * button is never just a missing button -- "Admin" and "Paid" are different
+   * facts and lead to different next steps.
+   */
+  blockedBecause?: 'paid' | 'admin'
   /** What this row is made of, e.g. "account + abandoned cart". */
   summary: string
 }) {
@@ -30,6 +37,17 @@ export function DeleteContactButton({
   const [error, setError] = useState<string | null>(null)
 
   if (!canDelete) {
+    if (blockedBecause === 'admin') {
+      return (
+        <span
+          className="text-xs text-muted"
+          title="This address is in ADMIN_EMAILS. Deleting it would remove their way into the admin area — take them out of ADMIN_EMAILS instead."
+        >
+          Admin
+        </span>
+      )
+    }
+
     return (
       <span
         className="text-xs text-muted"

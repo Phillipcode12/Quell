@@ -23,6 +23,22 @@
  * details is a deliberate, rarer job that needs to decide what happens to the
  * order history, and it should not share a button with deleting `rgwrgt@...`.
  *
+ * ### An admin's own account is never deleted to tidy a mailing list either
+ *
+ * **Added 2026-10-06, after it happened.** Ryan registered, was an admin by
+ * virtue of his address being in `ADMIN_EMAILS`, and his account then
+ * disappeared. The September bot purge explicitly kept it (section 32), this
+ * button shipped on 2026-10-01, and by 2026-10-06 production held one user row.
+ * Nothing records which click did it, because there is no audit log — but Ryan
+ * had never ordered, so from the Emails tab his account looked exactly like junk
+ * and cost one confirmation to remove.
+ *
+ * **The paid-order rule could not have caught it.** It protects money, and an
+ * admin who has never bought anything has none. So the second rule protects
+ * access: an address in `ADMIN_EMAILS` cannot be deleted here. Removing
+ * someone's admin account is a thing to do on purpose, by taking them out of the
+ * allowlist — not a side effect of clearing `fgbbgf dfbbf` off a list.
+ *
  * ### What it is safe to delete
  *
  * Everything that is not money: an account, a self-check signup, and `pending`
@@ -54,6 +70,9 @@ export type DeletePlan =
       summary: string
     }
 
+export const ADMIN_REFUSAL =
+  'This address is an admin (it is in ADMIN_EMAILS), so it cannot be deleted here — that would remove their way in. Take it out of ADMIN_EMAILS first if they should no longer have access.'
+
 export const PAID_REFUSAL =
   'This address has a paid order, so it cannot be deleted here — an order is a financial record. Cancel or refund the order first if it was a mistake.'
 
@@ -64,7 +83,20 @@ export function planContactDeletion(input: {
   orders: { id: string; status: string }[]
   hasAccount: boolean
   hasSubscriber: boolean
+  /** Whether this address is in ADMIN_EMAILS. Checked by the caller. */
+  isAdmin: boolean
 }): DeletePlan {
+  /**
+   * Access first, money second.
+   *
+   * Order matters only for which message is shown, and this one is the more
+   * actionable of the two: an admin with a paid order should be told the thing
+   * that is unusual about them, not the thing they share with every customer.
+   */
+  if (input.isAdmin) {
+    return { allowed: false, reason: ADMIN_REFUSAL }
+  }
+
   if (input.orders.some((o) => PAID.has(o.status))) {
     return { allowed: false, reason: PAID_REFUSAL }
   }
