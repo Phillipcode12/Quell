@@ -124,11 +124,13 @@ means a missing table would hit every page, not one route.
    Phillip's card and a claim afterwards: it is the company's cost, and it
    keeps the account cleanly theirs when the personal-account question (§7)
    comes back around.
-9. **Confirm `QUELL DROP` on a real statement.** The descriptor is set (§9) but
-   has never been seen on one, because the test charge that would have shown it
-   was refunded. The next real order is the first chance.
+9. ~~**Confirm `QUELL DROP` on a real statement.**~~ **Closed 2026-10-05**
+   with items 3 and 4 — same subject, same instruction to stop raising it. The
+   descriptor is set (§9); whether it has been seen on a statement is not
+   recorded here and would have to be asked again.
+
 10. **Fulfilment: Ryan does it.** Settled by Phillip on 2026-09-15, closing the
-   longest-standing open question here.
+    longest-standing open question here.
 
    The software side is already built and needs nothing: the admin alert fires
    when payment clears (`sendNewOrderNotificationEmail`, to `FULFILMENT_EMAILS`
@@ -145,8 +147,36 @@ means a missing table would hit every page, not one route.
 
    *(Ryan does know the shop is live: his "I didn't realize that you were so
    close to go-live" on 2026-09-03 was his reply to Phillip telling him. An
-   earlier version of this file read that as him being unaware. He also created
-   an account that day and is an admin.)*
+   earlier version of this file read that as him being unaware.)*
+
+   > **"He also created an account that day and is an admin" was here until
+   > 2026-10-06, and the second half of it is no longer true.** A direct read of
+   > the production user table that day found **exactly one row** — Phillip's,
+   > created 2026-10-02. Whether Ryan once had an account cannot be settled from
+   > here; the cleanup after the 122 bot signups is the obvious candidate, and
+   > Phillip's own row being younger than the shop points the same way.
+   >
+   > Being in `ADMIN_EMAILS` and having an account are different things, and
+   > this file asserted the second from the first. **That is the exact drift
+   > `/admin/staff` was built to show** (§50): nothing in the app put the
+   > allowlist and the user table side by side, so a wrong line here could sit
+   > unchallenged for a month.
+
+11. **Give Ryan a way in** (§50). The only step left on the admin login, and it
+    needs Phillip because **Hobby has no team members, so Ryan cannot be added
+    to Vercel** (item 2) and cannot edit this himself.
+
+    **Check `/admin/staff` first.** It lists `ADMIN_EMAILS` as the running
+    deployment sees it. If Ryan is already there as *No account yet*, step 1 is
+    done and only step 2 is left.
+
+    1. If he is not listed: Vercel → the Quell project → Settings →
+       Environment Variables → `ADMIN_EMAILS` → append `,ryan@...` to the
+       existing value → Save. **Then redeploy**, because environment variables
+       are bound at build time and the running deployment will not see the
+       change: `npx vercel redeploy --target production`.
+    2. On `/admin/staff`, click **Send setup link** on his row. Ryan chooses
+       his own password from the emailed link; nobody else sees or sets it.
 
 ### Agreed next build, in order (2026-09-15)
 
@@ -1689,6 +1719,142 @@ North Attleborough, MA    <- likewise
 > would be roughly 340. **Measure the rendered page, not the link count**: that
 > is how the 463 KB index was caught, and types and tests saw nothing wrong
 > with it.
+
+---
+
+## 50. The cart's saving, and a way in for Ryan — 2026-10-06
+
+Two asks in one message, and the second turned out to be a different problem
+from the one described.
+
+### The cart never showed the saving
+
+Phillip: *"I realize the quell cart does not say how much money is being saved.
+It's still using the old method... that's the time of purchase."* He was right,
+and about the right screen.
+
+**The cause was arithmetic, not copy.** `CartView` added up its own subtotal and
+called `shippingCentsFor`, so the saving was never a value in scope to display.
+The hero and the buy panel both quote it from `priceFor`; the cart was the one
+step in the funnel where it disappeared, and that step is the one where someone
+decides whether to pay.
+
+So the cart now derives everything from a new `priceForLines`:
+
+```
+Subtotal                                  $59.98
+Shipping (Standard shipping)              $10.00
+Total                                     $69.98
+Saving $10.00 versus $79.98 buying 2 bottles one at a time
+```
+
+> **A cart cannot be priced by calling `priceFor` per row and adding up.**
+> Shipping is charged on the basket subtotal, so two rows of one bottle each
+> would be charged postage twice and the cart would disagree with what checkout
+> takes. `priceFor` is now `priceForLines` with a single line, so there is one
+> implementation rather than two that happen to agree today.
+
+**The line sits below the total and outside the `<dl>`, deliberately.** As a row
+inside Subtotal / Shipping / Total it would read as money coming off the bill --
+the eye follows that column as arithmetic, and the sum would not work. Nothing
+is deducted: the customer pays the total, and this is a comparison with a
+different way of buying the same bottles.
+
+**It names its reference, where the buy panel does not have to.** The panel can
+say a bare "saving $10.00" because its quantity dropdown is right there -- pick 1
+and the $39.99 it is measured against appears on screen. The cart has no such
+control, so an unexplained figure would be the vague "save big" that this whole
+pricing approach exists to avoid.
+
+Verified rendering at each rung: one bottle shows nothing at all, two shows
+$10.00 against $79.98, three shows $30.00 against $119.97 with shipping free.
+
+### The admin login -- the ask was a door, the problem was a missing key
+
+Phillip: *"please add a admin login part to the website so that Ryan and I can
+still log in, even though we removed the login for customers."*
+
+**Signing in had never stopped working.** `/login` is public and always has been;
+`registration.ts` says so in as many words, because closing it would have locked
+the admin area out along with the bot. What came out in section 39 was the
+header's *link*, deliberately -- a sign-in offered to people who cannot create an
+account is a door to a locked room.
+
+**But a read of the production user table found exactly one row: Phillip's,
+created 2026-10-02.** Ryan had no account, public registration is closed, so he
+could not have made one, and nothing anywhere said so. A nicer login page would
+have changed nothing for him.
+
+#### `/admin` -- one address worth remembering
+
+| Visitor | Response | Why |
+| --- | --- | --- |
+| An admin | the admin home | Links every section, including Staff. |
+| Signed in, not an admin | **404** | Matches every other admin route. A 403 confirms the area exists to someone who has already proven they are not in it. |
+| Signed out | **307 to `/login?next=/admin`** | `AuthForm` already honours `next` and already refuses anything that is not a same-site relative path. |
+
+> **The redirect is a deliberate, small disclosure.** A stranger can learn
+> `/admin` exists. That is worth it because `/login` is already public and
+> already the only credential endpoint -- this adds a signpost, not a surface --
+> and the sub-pages still 404, so knowing the path gets nobody in. The header's
+> Admin link now points here too, since it is also the only way in on a phone,
+> where that link is hidden.
+
+#### `/admin/staff` -- the two halves, side by side
+
+Admin access needs the address in `ADMIN_EMAILS` **and** a `User` row with a
+password. Each looked fine alone, which is precisely how the gap survived -- and
+how this very file came to assert that Ryan "is an admin" and had an account
+(open item 10). The page shows both, per address, with what is outstanding.
+
+**It is not a user manager, and that is the design.** No creating accounts for
+arbitrary addresses, no editing, no granting admin. Its one action emails someone
+*already on the allowlist* a link to choose their own password.
+
+> **An admin button that created an account for anything typed into a box would
+> hand back the free-mailer capability that closing registration removed** --
+> just behind a login. `lib/staff-access.ts` refuses any address not already in
+> `ADMIN_EMAILS`, so the allowlist is the authorization and the invite only sets
+> up a credential. Since adding someone to `ADMIN_EMAILS` is the step that
+> actually grants access, nothing is added to the job; it is only ordered.
+
+#### Four decisions inside it worth not re-litigating
+
+1. **It does not call `/api/auth/forgot-password`.** That endpoint refuses to
+   mail an account created minutes ago, because register-then-reset is exactly
+   the chain the bot used (`lib/reset-guard.ts`). A fresh invite is that shape,
+   and the check is right -- which is why this is a separate path. **The trust
+   here is an authenticated admin plus the config allowlist, not the request**,
+   so the age check has nothing to decide and is not consulted.
+
+2. **No migration.** `User.passwordHash` is not nullable, so an invited row
+   holds a bcrypt hash of 32 random bytes that are then discarded: a real hash,
+   so `verifyPasswordOrDecoy` behaves and times exactly as it does for any other
+   account, and it can never match anything. **No password is chosen for anyone
+   and none is ever transmitted.** A nullable column would have been tidier and
+   would have meant hand-applying DDL to production before the code deployed --
+   not worth it for a flag.
+
+3. **"Can sign in" is derived, and says so.** Nothing records that a password was
+   ever chosen, so the status comes from whether a setup link is still live and
+   unused. It reads optimistically in one case -- an invite that expired unused
+   -- and the page says a fresh link can be sent at any time.
+
+4. **Whether the mail sent is reported, not swallowed.** Sections 44 and 45 were
+   the same mistake, and here it would leave someone waiting forever for a link
+   that never left.
+
+#### What is not verified
+
+**The invite has never been executed.** Local dev points at the production
+database, so signing in would need Phillip's real password and clicking the
+button would create a real row and mail a real person. Routing, build, types,
+lint and 544 tests pass; the first real run will be Ryan's.
+
+A setup link lasts **72 hours** rather than the hour a reset gets: a reset is
+asked for by someone sitting at the form, an invite arrives unannounced at
+someone who may be packing orders, and a link that expired before it was read
+turns a one-step job into a conversation.
 
 ---
 
