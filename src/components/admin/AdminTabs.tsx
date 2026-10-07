@@ -19,6 +19,9 @@ const TABS = [
   // after them because it is the summary of those tabs, not another source.
   { key: 'emails', label: 'Emails', href: '/admin/emails' },
   { key: 'analytics', label: 'Traffic', href: '/admin/analytics' },
+  // Last because it is about the people running the shop rather than the
+  // people buying from it, and it is the only tab nobody needs day to day.
+  { key: 'staff', label: 'Staff', href: '/admin/staff' },
 ] as const
 
 export type AdminTab = (typeof TABS)[number]['key']

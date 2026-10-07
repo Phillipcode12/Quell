@@ -118,9 +118,14 @@ export function Header({
 
           {/* Account controls are hidden on phones so the header stays on one
               line; they live on the account page and in the footer instead. */}
+          {/* Points at /admin rather than /admin/orders since 2026-10-06: that
+              page is now the admin home, and it is the one address worth
+              remembering — it is also where a signed-out admin is sent back to
+              after signing in, and the only way in on a phone, where this link
+              is hidden. */}
           {isAdmin && (
             <Link
-              href="/admin/orders"
+              href="/admin"
               className="hidden font-medium text-brand-light hover:text-white sm:inline"
             >
               Admin
@@ -133,9 +138,9 @@ export function Header({
               email. Offering a sign-in to people who cannot create an account
               is a door to a locked room.
 
-              /login still works by URL, which is how admins get in. The
-              signed-in controls below stay for them and for the two real
-              account holders. */}
+              /login still works by URL, and /admin redirects there and back,
+              which is how admins get in. The signed-in controls below stay for
+              them and for the two real account holders. */}
           {user && (
             <>
               <Link

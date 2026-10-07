@@ -443,6 +443,72 @@ export async function sendPasswordResetEmail(to: string, resetUrl: string) {
 }
 
 /**
+ * The staff invitation.
+ *
+ * **Separate from `sendPasswordResetEmail` because the words have to be
+ * true.** A reset email says someone asked to reset *their* password and that
+ * they can ignore it if they did not — neither of which fits a person who has
+ * no account yet and is being handed one. Reusing it would have been three
+ * lines cheaper and would have told the recipient something false about where
+ * the mail came from.
+ *
+ * The link is the ordinary `/reset-password` page, because setting a first
+ * password and replacing a forgotten one are the same operation. Only the
+ * expiry differs: an invite is sent to someone who may not be at their desk,
+ * so it lasts days rather than the hour a reset gets.
+ *
+ * `invitedBy` is named in the body on purpose. An unexpected email offering
+ * account access to a company system is indistinguishable from phishing unless
+ * it says who sent it.
+ */
+export async function sendStaffInviteEmail({
+  to,
+  setupUrl,
+  invitedBy,
+  expiresInHours,
+}: {
+  to: string
+  setupUrl: string
+  invitedBy: string
+  expiresInHours: number
+}) {
+  const html = layout(
+    `Set up your ${BRAND.name} admin access`,
+    `
+      <p style="margin:0 0 16px;line-height:1.6;">
+        ${invitedBy} has given this email address access to the
+        ${BRAND.name} admin area. Choose a password to finish setting it up —
+        this link works once and expires in ${expiresInHours} hours.
+      </p>
+      <p style="margin:0 0 20px;">
+        <a href="${setupUrl}" style="background:#00a7b5;color:#000000;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:bold;display:inline-block;">Choose a password</a>
+      </p>
+      <p style="margin:0;line-height:1.6;color:#5a6b83;">
+        If you weren't expecting this, ignore this email — nothing is set up
+        until a password is chosen. You can also reply to this message and ask.
+      </p>
+    `,
+  )
+
+  const text = [
+    `Set up your ${BRAND.name} admin access`,
+    '',
+    `${invitedBy} has given this email address access to the ${BRAND.name} admin area.`,
+    `Choose a password to finish. This link works once and expires in ${expiresInHours} hours:`,
+    setupUrl,
+    '',
+    "If you weren't expecting this, ignore this email — nothing is set up until a password is chosen.",
+  ].join('\n')
+
+  return deliver({
+    to,
+    subject: `Set up your ${BRAND.name} admin access`,
+    html,
+    text,
+  })
+}
+
+/**
  * The dry eye self-check result.
  *
  * **Deliberately the same words as the result screen.** Someone who has just
