@@ -7,8 +7,6 @@ import { SiteHelper } from '@/components/SiteHelper'
 import { VisitTracker } from '@/components/VisitTracker'
 import { JsonLd } from '@/components/JsonLd'
 import { organizationSchema, websiteSchema } from '@/lib/structured-data'
-import { getCurrentUser } from '@/lib/auth'
-import { isAdminEmail } from '@/lib/admin'
 import { BRAND } from '@/lib/product-content'
 import { appUrl } from '@/lib/site'
 
@@ -73,15 +71,28 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function RootLayout({ children }: LayoutProps<'/'>) {
-  const user = await getCurrentUser()
-  const isAdmin = isAdminEmail(user?.email)
-
+/**
+ * Deliberately not `async` and deliberately reading nothing per-request.
+ *
+ * **This function is why the whole site is cacheable or not.** It used to
+ * `await getCurrentUser()` so it could hand `user` and `isAdmin` to
+ * `Header`. A cookie read here opts *every route in the app* into dynamic
+ * rendering, and Next.js serves dynamic responses with
+ * `private, no-cache, no-store` — so every city page was a cold server render
+ * on every crawl, and none of them could be cached at the edge.
+ *
+ * `Header` now fetches its own session from `/api/auth/session`. Pages that
+ * genuinely depend on the viewer — `/cart`, `/account`, `/orders`, every
+ * `/admin` route — still read it server-side and are still dynamic, which is
+ * correct. **If anything is ever added here that reads cookies, headers or the
+ * request, the entire site silently stops being cacheable again.**
+ */
+export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en" className="h-full antialiased">
       <body className="flex min-h-full flex-col bg-background">
         <CartProvider>
-          <Header user={user} isAdmin={isAdmin} />
+          <Header />
           <main className="flex-1">{children}</main>
           <Footer />
           <SiteHelper />

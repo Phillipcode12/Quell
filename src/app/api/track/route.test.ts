@@ -125,6 +125,73 @@ describe('POST /api/track', () => {
     expect(created()).toMatchObject({ source: 'direct', referrerHost: null })
   })
 
+  describe('the landing path', () => {
+    it('records which page the visit arrived on', async () => {
+      // The whole point: knowing a visit came from Google is not the question.
+      // Which of 1,451 generated pages earned it, is.
+      await post({
+        referrer: 'https://www.google.com/search?q=eye+drops+nashville',
+        path: '/eye-drops/nashville-tn',
+      })
+      expect(created()).toMatchObject({
+        source: 'search',
+        landingPath: '/eye-drops/nashville-tn',
+      })
+    })
+
+    it('drops the query string, like the referrer URL', async () => {
+      // A path is our own sitemap. A query string is open-ended and can carry
+      // whatever a visitor typed or an advert appended.
+      await post({ path: '/self-check?symptom=embarrassing+thing' })
+      expect(created().landingPath).toBe('/self-check')
+      expect(JSON.stringify(created())).not.toContain('embarrassing')
+    })
+
+    it('drops a fragment too', async () => {
+      await post({ path: '/#buy' })
+      expect(created().landingPath).toBe('/')
+    })
+
+    it('refuses a protocol-relative path pointing somewhere else', async () => {
+      // "//evil.example" starts with a slash and is a URL to another host.
+      await post({ path: '//evil.example/landing' })
+      expect(created().landingPath).toBeNull()
+    })
+
+    it('refuses an absolute URL', async () => {
+      await post({ path: 'https://evil.example/landing' })
+      expect(created().landingPath).toBeNull()
+    })
+
+    it('refuses an absurd path without dropping the visit', async () => {
+      const res = await post({ path: '/' + 'a'.repeat(600) })
+      expect(res.status).toBe(204)
+      expect(created().landingPath).toBeNull()
+      // The visit still counts -- no shape of this field may cost one.
+      expect(created().source).toBe('direct')
+    })
+
+    it('does not let a non-string path cost the visit', async () => {
+      const res = await post({ path: 42 })
+      expect(res.status).toBe(204)
+      expect(prisma.visit.upsert).toHaveBeenCalled()
+      expect(created().landingPath).toBeNull()
+    })
+
+    it('does not let a missing path cost the visit', async () => {
+      // Older clients cached in a browser will not send it.
+      const res = await post({})
+      expect(res.status).toBe(204)
+      expect(created().landingPath).toBeNull()
+    })
+
+    it('never writes the path on update, so a later page cannot relabel it', async () => {
+      await post({ path: '/eye-drops/nashville-tn' })
+      const update = prisma.visit.upsert.mock.calls[0][0].update
+      expect(update).not.toHaveProperty('landingPath')
+    })
+  })
+
   it('records campaign tags alongside the referrer', async () => {
     await post({
       referrer: 'https://l.facebook.com/',

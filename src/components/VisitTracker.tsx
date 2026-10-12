@@ -8,10 +8,14 @@ import type { CampaignTags } from '@/lib/campaign'
 /**
  * Tells /api/track that a visit is happening, and that it is still happening.
  *
- * It reports no page path. That is the point: the shop counts visits, not what
- * anyone read. This component watches the pathname only so it can re-report on
- * navigation, which keeps a long visit alive without waiting for the next
- * heartbeat.
+ * It reports the path, and **only the path** — no query string, ever. The shop
+ * still counts visits rather than following what anyone reads: the server
+ * stores this on create only, so what lands in the database is the page a visit
+ * *arrived* on and not a trail through the site.
+ *
+ * That one field is the difference between knowing a visit came from Google and
+ * knowing which of 1,451 generated pages earned it, which is the only question
+ * worth asking of them.
  *
  * Two rules shaped the rest:
  *
@@ -42,7 +46,7 @@ function visitId(): string | null {
   }
 }
 
-function report(id: string, campaign: CampaignTags) {
+function report(id: string, campaign: CampaignTags, path: string) {
   try {
     void fetch('/api/track', {
       method: 'POST',
@@ -64,9 +68,13 @@ function report(id: string, campaign: CampaignTags) {
       // Sent on every report for the same reason as the tags: it does not
       // change on client-side navigation, and the server ignores it after
       // create.
+      // `path` travels with every report and the server keeps the first, the
+      // same create-only rule as `source` and the campaign tags -- so a visit
+      // is filed under where it arrived, not wherever it wandered to.
       body: JSON.stringify({
         visitId: id,
         referrer: document.referrer,
+        path,
         ...campaign,
       }),
       keepalive: true,
@@ -99,12 +107,12 @@ export function VisitTracker() {
 
     if (reported.current !== pathname) {
       reported.current = pathname
-      report(id, campaign)
+      report(id, campaign, pathname)
     }
 
     const beat = setInterval(() => {
       // A background tab is not someone looking at the site.
-      if (document.visibilityState === 'visible') report(id, campaign)
+      if (document.visibilityState === 'visible') report(id, campaign, pathname)
     }, HEARTBEAT_MS)
 
     return () => clearInterval(beat)

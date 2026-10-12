@@ -270,6 +270,19 @@ model Visit {
   utmCampaign String?
   utmContent  String?
 
+  /// The path they arrived on, e.g. "/eye-drops/nashville-tn". Set once with
+  /// `source`, for the same reason: after the first page this would be
+  /// wherever they clicked to next, not where search sent them.
+  ///
+  /// Added 2026-10-12. Without it the admin could see that a visit came from
+  /// Google but not which page earned it — which is the only question worth
+  /// asking of 1,451 generated city pages.
+  ///
+  /// **The query string is deliberately dropped**, exactly as the full referrer
+  /// URL is. A path is our own sitemap; a query string is open-ended and can
+  /// carry anything, including things a visitor typed.
+  landingPath String?
+
   startedAt  DateTime @default(now())
   /// Bumped on every page load and keep-alive. This is what "here now" means.
   lastSeenAt DateTime @default(now())

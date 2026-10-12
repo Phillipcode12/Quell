@@ -13,9 +13,9 @@ import { appUrl } from '@/lib/site'
  * signed in. Four things keep that from being a liability:
  *
  *  1. **It stores almost nothing.** A random per-tab id, how they arrived, a
- *     referring host and two timestamps. No page path, no IP, no user agent,
- *     no cookie, no link to any customer or order. There is nothing here worth
- *     stealing and nothing that identifies a person.
+ *     referring host, the path arrived on, and two timestamps. No IP, no user
+ *     agent, no cookie, no link to any customer or order. There is nothing
+ *     here worth stealing and nothing that identifies a person.
  *  2. **It is rate limited per IP**, so it cannot be used to inflate the
  *     numbers or to fill the table.
  *  3. **Input is refused, not repaired.** An id that is not the expected shape
@@ -46,6 +46,16 @@ const schema = z.object({
    * this value may cost a visit.
    */
   referrer: z.unknown().optional(),
+
+  /**
+   * The path the visit arrived on.
+   *
+   * `unknown` for the same reason as `referrer` and the campaign tags: no
+   * shape of this value may cost a visit. It is normalised below rather than
+   * validated here, so a path this route does not like becomes null instead of
+   * dropping the whole visit.
+   */
+  path: z.unknown().optional(),
 
   /**
    * Campaign tags, accepted as `unknown` on purpose.
@@ -104,6 +114,27 @@ export async function POST(request: Request) {
 
   const host = referrerHost(referrer, selfHost)
 
+  /**
+   * The landing path, kept deliberately boring.
+   *
+   * Must start with a single `/` so it is one of our own paths rather than a
+   * protocol-relative URL pointing somewhere else, and it is cut at the first
+   * `?` or `#`. **A query string is dropped for exactly the reason the full
+   * referrer URL is:** a path is our own sitemap, a query string is open-ended
+   * and can carry whatever a visitor typed or an advert appended.
+   *
+   * 512 characters is far past the longest route here (`/eye-drops/<slug>`),
+   * and anything longer is not a path worth keeping.
+   */
+  const rawPath = parsed.data.path
+  const landingPath =
+    typeof rawPath === 'string' &&
+    rawPath.startsWith('/') &&
+    !rawPath.startsWith('//') &&
+    rawPath.length <= 512
+      ? rawPath.split(/[?#]/)[0]
+      : null
+
   try {
     /**
      * One row per visit, however many pages it becomes.
@@ -120,6 +151,10 @@ export async function POST(request: Request) {
         id: parsed.data.visitId,
         source: classifySource(host),
         referrerHost: host,
+        // Create-only, like `source`: on the second page this would be
+        // wherever they clicked next, and "where they landed" would quietly
+        // become "the last page they opened".
+        landingPath,
         // Same create-only rule, for a different reason: the tags are only in
         // the URL on the landing page, so a later report carries whatever the
         // client remembered, and rewriting from it would be pointless churn.

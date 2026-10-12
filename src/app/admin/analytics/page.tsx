@@ -19,6 +19,7 @@ import {
   monthlyVisits,
   salesSince,
   campaignBreakdown,
+  topLandingPages,
   sourceBreakdown,
   topReferrers,
   visitsSince,
@@ -26,6 +27,7 @@ import {
   SOURCE_LABELS,
   SOURCE_NOTES,
   type CampaignRow,
+  type LandingCount,
   type MonthRow,
 } from '@/lib/analytics'
 import { formatUsd } from '@/lib/money'
@@ -326,6 +328,91 @@ function MonthlyHistory({ data }: { data: MonthRow[] }) {
   )
 }
 
+/**
+ * Which pages visits arrive on, and how many of those arrivals were searches.
+ *
+ * **The search column is the one that answers the question.** 1,451 city pages
+ * exist on the bet that search engines will send people to them; a visit that
+ * reached one by clicking around the site is not evidence either way. So the
+ * table says both, and the note says plainly that an empty search column is the
+ * expected reading for now rather than a broken report.
+ */
+function LandingTable({ rows }: { rows: LandingCount[] }) {
+  const searchTotal = rows.reduce((n, r) => n + r.fromSearch, 0)
+
+  return (
+    <div className="mt-8 overflow-x-auto rounded-xl border border-line">
+      <div className="border-b border-line px-4 py-3">
+        <h2 className="text-sm font-medium text-muted">
+          Pages visits arrived on, last 30 days
+        </h2>
+      </div>
+
+      <table className="w-full text-left text-sm">
+        <thead className="text-xs uppercase tracking-wide text-muted">
+          <tr className="border-b border-line">
+            <th className="px-4 py-2.5 font-medium">Landing page</th>
+            <th className="px-4 py-2.5 text-right font-medium">Visits</th>
+            <th className="px-4 py-2.5 text-right font-medium">From search</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.length === 0 ? (
+            <tr>
+              <td colSpan={3} className="px-4 py-6 text-muted">
+                No landing pages recorded yet. This has only been collected
+                since 2026-10-12, so earlier visits do not appear.
+              </td>
+            </tr>
+          ) : (
+            rows.map((row) => (
+              <tr key={row.path} className="border-b border-line last:border-0">
+                <td className="px-4 py-3">
+                  <code className="text-brand-light">{row.path}</code>
+                </td>
+                <td className="px-4 py-3 text-right tabular-nums">
+                  {row.visits}
+                </td>
+                <td
+                  className={
+                    row.fromSearch > 0
+                      ? 'px-4 py-3 text-right tabular-nums text-brand-light'
+                      : 'px-4 py-3 text-right tabular-nums text-muted'
+                  }
+                >
+                  {row.fromSearch}
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+
+      <div className="border-t border-line px-4 py-3 text-xs leading-relaxed text-muted">
+        {searchTotal === 0 ? (
+          <>
+            <strong className="font-medium text-white">
+              Nothing from search yet.
+            </strong>{' '}
+            That is the honest state rather than a broken report — no search
+            engine has sent a visitor to this site. An{' '}
+            <code className="text-brand-light">/eye-drops/…</code> row with a
+            number in the search column is the first real evidence the city
+            pages do anything.
+          </>
+        ) : (
+          <>
+            A number in the search column against an{' '}
+            <code className="text-brand-light">/eye-drops/…</code> row is a
+            generated city page earning a visit — the thing those pages were
+            built for.
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
+
 export default async function AdminAnalyticsPage() {
   const admin = await getAdminUser()
 
@@ -353,6 +440,7 @@ export default async function AdminAnalyticsPage() {
     dailyUnitsSold,
     monthUnits,
     campaigns,
+    landings,
   ] = await Promise.all([
     liveVisitors(now),
     visitsSince(startOfUtcDay(now)),
@@ -370,6 +458,7 @@ export default async function AdminAnalyticsPage() {
     dailyUnits(14, now),
     monthlyUnits(),
     campaignBreakdown(monthAgo),
+    topLandingPages(monthAgo),
   ])
 
   const months = joinMonthly(monthVisits, monthSales, monthUnits)
@@ -522,6 +611,8 @@ export default async function AdminAnalyticsPage() {
               </tbody>
             </table>
           </div>
+
+          <LandingTable rows={landings} />
 
           <CampaignTable rows={campaigns} />
 

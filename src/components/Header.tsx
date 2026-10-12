@@ -2,12 +2,13 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { useCart } from '@/components/CartProvider'
 import { ShoppingCart } from '@/components/icons'
 import { QuellLogoInline } from '@/components/Logo'
 import { SignOutButton } from '@/components/SignOutButton'
 
-type HeaderUser = { id: string; email: string; name: string } | null
+type HeaderUser = { email: string; name: string } | null
 
 /**
  * `mobile: true` keeps a link in the bar on a phone.
@@ -43,13 +44,65 @@ const navLinks = [
   { label: 'FAQ', href: '/#faq' },
 ]
 
-export function Header({
-  user,
-  isAdmin = false,
-}: {
-  user: HeaderUser
-  isAdmin?: boolean
-}) {
+/**
+ * The signed-in viewer, fetched here rather than passed down from the layout.
+ *
+ * **This is what makes the rest of the site cacheable.** The root layout used
+ * to `await getCurrentUser()` to supply these as props, and a cookie read in
+ * the root layout makes *every* route dynamic — which Next.js then serves with
+ * `no-store`, so all 1,451 city pages were a cold render on every crawl and
+ * nothing could sit at the edge. See `app/api/auth/session/route.ts`.
+ *
+ * ### Why the one extra request is a good trade
+ *
+ * Every visitor now makes a small `/api/auth/session` call. That is strictly
+ * cheaper than what it replaces: before, the *page itself* was an uncacheable
+ * server render for everyone including crawlers. Now the page comes from the
+ * CDN and only this few-hundred-byte call reaches the server.
+ *
+ * ### Nothing moves for anonymous visitors
+ *
+ * They see no account controls either way — accounts are not a customer
+ * feature here — so the fetch resolving to `null` changes nothing on screen.
+ * The only visible difference is for an admin, where the Admin link appears a
+ * moment after the page. That is the right place to put the latency: one
+ * person, on a link that is not time-critical.
+ *
+ * A failed fetch is treated as signed out. The consequence is a missing Admin
+ * link, and `/admin` works by URL regardless.
+ */
+function useViewer() {
+  const [viewer, setViewer] = useState<{
+    user: HeaderUser
+    isAdmin: boolean
+  }>({ user: null, isAdmin: false })
+
+  useEffect(() => {
+    let cancelled = false
+
+    fetch('/api/auth/session')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (cancelled || !data) return
+        setViewer({
+          user: data.user ?? null,
+          isAdmin: Boolean(data.isAdmin),
+        })
+      })
+      .catch(() => {
+        // Signed out is the safe reading of "we could not tell".
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  return viewer
+}
+
+export function Header() {
+  const { user, isAdmin } = useViewer()
   const { count } = useCart()
   const pathname = usePathname()
 

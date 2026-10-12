@@ -202,6 +202,72 @@ export async function topReferrers(since: Date, take = 10): Promise<ReferrerCoun
     .map((row) => ({ host: row.referrerHost, visits: row._count.referrerHost }))
 }
 
+export type LandingCount = {
+  path: string
+  visits: number
+  fromSearch: number
+}
+
+/**
+ * Which pages visits arrived on, busiest first.
+ *
+ * **This is the report the city pages are judged by.** Before `landingPath`
+ * existed (2026-10-12) the admin could show that a visit came from Google but
+ * not which of 1,451 generated pages earned it -- so the one number that would
+ * say whether the programmatic SEO works at all was the one number missing.
+ *
+ * `fromSearch` is carried separately because it is the only column that
+ * matters for that question. A city page someone reached by clicking around the
+ * site proves nothing; a city page a search engine sent them to is the whole
+ * thesis.
+ *
+ * Rows with no path are visits recorded before the column existed. They are
+ * **excluded rather than bucketed as "/"**, because calling them the home page
+ * would invent a fact about 18 historical visits.
+ */
+export async function topLandingPages(
+  since: Date,
+  take = 15,
+): Promise<LandingCount[]> {
+  const rows = await prisma.visit.groupBy({
+    by: ['landingPath'],
+    where: { startedAt: { gte: since }, landingPath: { not: null } },
+    _count: { landingPath: true },
+    orderBy: { _count: { landingPath: 'desc' } },
+    take,
+  })
+
+  const paths = rows
+    .map((row) => row.landingPath)
+    .filter((p): p is string => p !== null)
+
+  // One extra grouped read rather than a row-by-row count: the search half of
+  // each path, fetched for just the paths being shown.
+  const searchRows = paths.length
+    ? await prisma.visit.groupBy({
+        by: ['landingPath'],
+        where: {
+          startedAt: { gte: since },
+          landingPath: { in: paths },
+          source: 'search',
+        },
+        _count: { landingPath: true },
+      })
+    : []
+
+  const searchByPath = new Map(
+    searchRows.map((r) => [r.landingPath, r._count.landingPath] as const),
+  )
+
+  return rows
+    .filter((row): row is typeof row & { landingPath: string } => row.landingPath !== null)
+    .map((row) => ({
+      path: row.landingPath,
+      visits: row._count.landingPath,
+      fromSearch: searchByPath.get(row.landingPath) ?? 0,
+    }))
+}
+
 export type DayCount = { day: string; visits: number }
 
 /**

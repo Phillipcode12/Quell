@@ -1,7 +1,13 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { BRAND, DRUG_FACTS, FRONT_PANEL_CLAIMS } from '@/lib/product-content'
+import {
+  BRAND,
+  DRUG_FACTS,
+  FRONT_PANEL_CLAIMS,
+  RELIEVES,
+  relievesProse,
+} from '@/lib/product-content'
 import { formatUsd } from '@/lib/money'
 import { FREE_SHIPPING_BOTTLES, STANDARD_SHIPPING_CENTS } from '@/lib/shipping'
 import {
@@ -163,7 +169,43 @@ export default async function LocationPage({ params }: Params) {
           retyped — exactly as the Drug Facts page does. */}
       <section className="mt-10">
         <h2 className="text-lg font-semibold text-white">What it is for</h2>
-        <p className="mt-3 leading-relaxed text-muted">{DRUG_FACTS.uses}</p>
+
+        {/**
+         * The approved Relieves list, added 2026-10-12.
+         *
+         * Phillip asked to be found for "relief for dryness, irritation,
+         * redness, or itching". Three of those four are on this list and the
+         * fourth is not, and must not be.
+         *
+         * **Redness is withheld** (`RELIEVES_WITHHELD`): `DRUG_FACTS.uses`
+         * below does not cover it, redness appears in this product's labelling
+         * only under *stop use and ask a doctor if*, and relieving redness is a
+         * vasoconstrictor claim with no vasoconstrictor in the formula —
+         * glycerol and polysorbate 80 are lubricants, light mineral oil is an
+         * emollient. Nothing in the bottle acts on redness.
+         *
+         * So this renders `RELIEVES` rather than a hand-written list. The day
+         * redness is cleared, moving it back into that one array puts it on all
+         * 1,400 of these pages and nothing here needs editing. Equally, if
+         * something else is ever withdrawn it disappears from here too, which a
+         * list typed out on this page would not do.
+         */}
+        <p className="mt-3 leading-relaxed text-muted">
+          Relieves {relievesProse()}.
+        </p>
+
+        <ul className="mt-4 flex flex-wrap gap-2">
+          {RELIEVES.map((item) => (
+            <li
+              key={item}
+              className="rounded-full border border-line bg-surface px-3 py-1 text-sm text-muted"
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
+
+        <p className="mt-4 leading-relaxed text-muted">{DRUG_FACTS.uses}</p>
         <p className="mt-3 text-sm text-muted">
           Read the full{' '}
           <Link href="/drug-facts" className="text-brand-light hover:underline">
