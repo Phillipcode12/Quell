@@ -9,6 +9,8 @@ import {
   statePath,
 } from '@/lib/locations'
 import { appUrl } from '@/lib/site'
+import { JsonLd } from '@/components/JsonLd'
+import { breadcrumbSchema } from '@/lib/structured-data'
 
 /**
  * The cities in one state.
@@ -60,6 +62,15 @@ export default async function StatePage({ params }: Params) {
         <span className="mx-2">/</span>
         <span className="text-white">{found.state}</span>
       </nav>
+
+      {/* Mirrors the trail above, step for step. */}
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: BRAND.name, path: '/' },
+          { name: 'Where we ship', path: '/eye-drops' },
+          { name: found.state },
+        ])}
+      />
 
       <h1 className="mt-6 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
         Eye drops in {found.state}

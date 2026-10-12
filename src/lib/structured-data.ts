@@ -47,6 +47,41 @@ export function serializeJsonLd(data: JsonLd): string {
   return JSON.stringify(data).replace(/</g, '\\u003c')
 }
 
+/**
+ * The trail from the home page to the page being viewed.
+ *
+ * **Added 2026-10-12 for the city and state pages**, which had a breadcrumb on
+ * screen and nothing in the markup saying what it meant. With this, a search
+ * result can show `quelldrop.com › Where we ship › Tennessee › Nashville`
+ * instead of a bare URL — more of the result is readable, and it tells a
+ * crawler that these pages are a structured section of the site rather than a
+ * flat heap of 1,451 URLs, which is the distinction section 49 is watching.
+ *
+ * **It must mirror the links actually on the page.** Google treats a breadcrumb
+ * trail that does not match the visible navigation as misleading markup, and it
+ * would also be the kind of invented structure this project avoids. Each caller
+ * passes the same steps it renders.
+ *
+ * Positions are 1-based and the last item is the current page, which carries no
+ * `item` URL — schema.org treats a self-link as redundant and Google ignores
+ * it.
+ */
+export function breadcrumbSchema(
+  trail: { name: string; path?: string }[],
+): JsonLd {
+  const base = appUrl()
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: trail.map((step, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: step.name,
+      ...(step.path ? { item: `${base}${step.path}` } : {}),
+    })),
+  }
+}
+
 /** The seller. Stable across every page. */
 export function organizationSchema(): JsonLd {
   const base = appUrl()

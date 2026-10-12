@@ -21,6 +21,8 @@ import {
   statePath,
 } from '@/lib/locations'
 import { appUrl } from '@/lib/site'
+import { JsonLd } from '@/components/JsonLd'
+import { breadcrumbSchema } from '@/lib/structured-data'
 
 /**
  * One page per US city: "what eye drops can I get in Nashville, Tennessee?"
@@ -96,13 +98,49 @@ export default async function LocationPage({ params }: Params) {
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-14">
-      <nav className="text-sm text-muted">
+      {/**
+        * The full trail, from 2026-10-12.
+        *
+        * It read `Quell / Eye drops in Nashville, Tennessee` — two levels, with
+        * the state reachable only from a link at the very bottom of the page.
+        * Two things were wrong with that: a visitor who arrived here from a
+        * search had no way up except home, and the `BreadcrumbList` below has
+        * to mirror what is on screen, so a two-level trail is all the markup
+        * could honestly claim.
+        *
+        * Four levels on one line is fine down to 360px because it wraps.
+        */}
+      <nav className="flex flex-wrap items-center gap-x-2 text-sm text-muted">
         <Link href="/" className="hover:text-white">
           {BRAND.name}
         </Link>
-        <span className="mx-2">/</span>
-        <span className="text-white">Eye drops in {full}</span>
+        <span>/</span>
+        <Link href="/eye-drops" className="hover:text-white">
+          Where we ship
+        </Link>
+        <span>/</span>
+        <Link
+          href={statePath(stateSlug(location.state))}
+          className="hover:text-white"
+        >
+          {location.state}
+        </Link>
+        <span>/</span>
+        <span className="text-white">{location.city}</span>
       </nav>
+
+      {/* Mirrors the trail above, step for step. */}
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: BRAND.name, path: '/' },
+          { name: 'Where we ship', path: '/eye-drops' },
+          {
+            name: location.state,
+            path: statePath(stateSlug(location.state)),
+          },
+          { name: location.city },
+        ])}
+      />
 
       <h1 className="mt-6 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
         Eye drops in {full}
