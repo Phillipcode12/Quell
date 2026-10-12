@@ -1858,6 +1858,144 @@ turns a one-step job into a conversation.
 
 ---
 
+## 51. Measuring the SEO, and making the site cacheable — 2026-10-12
+
+Phillip asked how to tell whether any of the SEO is working. The measurement
+came first, and it found two things worth fixing.
+
+### What was measured, eight days after the sitemap went in
+
+| | |
+| --- | --- |
+| Visits ever recorded | **18** |
+| Visits since 2026-10-04 | **2**, both direct |
+| Visits from search, ever | **0** |
+| Pages in Bing / DuckDuckGo | **1** — the home page |
+| Pages in Google | **not checkable** — it served a bot check, and working around a CAPTCHA is not something to do |
+
+**Crawling, by contrast, is heavy.** 55 state-page fetches in one 2.3-minute
+window of production logs, walked in sitemap order, by something that executes
+JavaScript — it fired `/api/track` as it went.
+
+> **Crawled is not indexed.** That distinction is the whole story of this
+> section: Google is spending real effort on the site and has chosen to keep
+> almost none of it.
+
+Ruled out as causes, by direct check rather than assumption: the city pages
+return 200, carry the right `<title>` and canonical, and have **no** `noindex`
+or `X-Robots-Tag`. They are indexable. And the tracker is not broken — 18 rows
+exist and are correctly classified. Today's `/api/track` calls wrote nothing
+because `isBot` drops bot traffic *before* the write, which is correct and is
+itself the evidence that the crawler renders JavaScript.
+
+### Finding 1: every page on the site was uncacheable
+
+`Cache-Control: private, no-cache, no-store` on all 1,451 city pages, with
+`X-Vercel-Cache: MISS`.
+
+**The cause was one line in the root layout.** It awaited `getCurrentUser()` to
+pass `user` and `isAdmin` into `Header`. A cookie read in the root layout opts
+*every route in the application* into dynamic rendering, and Next.js serves
+dynamic responses with `no-store` — so each of 1,451 pages was a cold server
+render on every crawl, and none could be cached at the edge. The price of an
+"Admin" link that one person sees.
+
+`Header` was already a client component taking those as props, so the fix was
+contained: it fetches `/api/auth/session` itself, and the layout reads nothing.
+
+```
+before   ƒ  everything
+after    ●  1,400 city pages + 51 state pages prerendered (SSG)
+         ○  /about /drug-facts /privacy /terms /reviews /eye-drops
+         ƒ  /cart /account /orders /login /self-check /admin/* /api/*
+```
+
+> **`app/layout.tsx` is now load-bearing in a way that is easy to undo by
+> accident.** Anything added there that reads cookies, headers or the request
+> silently makes the entire site uncacheable again. The file says so.
+
+**The home page is pinned `force-dynamic`, deliberately.** It reads the bottle
+price and the stock status, and prerendering it would freeze both — a page
+advertising one price while `/api/checkout` charges another, and a sold-out
+bottle still on sale. ISR was considered and rejected: bounding the staleness is
+not removing it, and this is the page where the money is taken. One uncacheable
+page out of 1,452 is a trivial crawl cost for that guarantee.
+
+The extra `/api/auth/session` call every visitor now makes is strictly cheaper
+than what it replaces, because the *page* used to be the uncacheable thing.
+
+### Finding 2: nothing recorded which page a visit arrived on
+
+The admin could say a visit came from Google but not which of 1,451 generated
+pages earned it — the single number that would answer Phillip's question.
+
+`Visit.landingPath`, added by migration **applied to production before this code
+deployed**, per the DDL ordering this project requires.
+
+- **Query string and fragment are dropped**, for exactly the reason the full
+  referrer URL is: a path is our own sitemap, a query string is open-ended and
+  can carry whatever a visitor typed.
+- Protocol-relative (`//evil.example`) and absolute URLs are refused.
+- **Create-only**, like `source`, so a visit is filed under where it *arrived*
+  rather than wherever it wandered to next.
+- No shape of the field can cost a visit. Nine tests, including a 600-character
+  path and a number.
+
+The Traffic tab gets **Pages visits arrived on**, with a separate *From search*
+column — a city page someone reached by clicking around the site proves nothing;
+one a search engine sent them to is the entire thesis. **While that column is
+empty the table says so in words**, so an honest zero is not read as a broken
+report.
+
+### The Relieves list on the city pages
+
+Phillip asked to be found for *"relief for dryness, irritation, redness, or
+itching"*. Three of those are approved and now appear on all 1,400 city pages.
+
+> **Redness does not, and must not.** `RELIEVES_WITHHELD` holds it because
+> `DRUG_FACTS.uses` does not cover redness, the label mentions it only under
+> *stop use and ask a doctor if*, and relieving redness is a **vasoconstrictor
+> claim with no vasoconstrictor in the formula** — glycerol and polysorbate 80
+> are lubricants, light mineral oil is an emollient. Nothing in the bottle acts
+> on redness.
+
+Rendered from the `RELIEVES` array rather than typed out, so the day redness is
+cleared it appears on all 1,400 pages by moving one entry — and anything
+withdrawn later disappears from here too, which a hand-written list would not do.
+
+"Patented MD Formula" was already an approved front-panel claim and was already
+on these pages, so "MD-developed formula" needed nothing new; the carton's exact
+wording is used rather than a paraphrase.
+
+### What was deliberately not done
+
+**Nothing was added to the structured data.** It already carries Organization,
+WebSite, Product with an Offer, shipping details, a return policy, and FAQPage.
+It is in better shape than the rest of the SEO and did not need touching.
+
+**No new pages.** The thin-content exposure is already the open risk of §49;
+answering "we are not being found" with more generated pages would compound the
+exact thing being watched for.
+
+### The honest limit of all of this
+
+On-page work is now in good shape, and **none of it is the binding constraint.**
+Google is crawling the site hard and indexing one page of it. What moves that is
+**authority — real links from real sites** — which no amount of code can
+manufacture, and which §49 recorded at the outset: publishing a page cannot
+raise its Ahrefs UR, only links to it can.
+
+The thresholds in §49 are unchanged: nothing to read before **2026-10-25**, the
+decision on **2026-11-01**. Eight days is genuinely too early for Google, and
+today's zero should not be mistaken for the answer. Bing holding only the home
+page after eight days is a mild early negative rather than a verdict, and it is
+mild only because **Bing Webmaster Tools is still not set up** (open item 7) —
+which remains the highest-value five minutes available, because it is the only
+one of these instruments that reports indexing directly instead of leaving it to
+be inferred.
+
+---
+
 ## 34. The reorder reminder — shipped 2026-09-30
 
 Daily cron at **16:00 UTC**, an hour after the abandoned-cart job so the two
