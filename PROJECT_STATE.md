@@ -1994,6 +1994,51 @@ which remains the highest-value five minutes available, because it is the only
 one of these instruments that reports indexing directly instead of leaving it to
 be inferred.
 
+### A second pass, 2026-10-13 — what needed nothing, and two gaps
+
+Phillip asked what else could be done. Three things were checked and are
+**fine**, recorded so nobody spends time "fixing" them:
+
+| Checked | Finding |
+| --- | --- |
+| Page weight | The home page transfers **238 KB total**, one 63 KB optimised image. The 20 MB of source PNGs in `public/images` never reach a browser — `next/image` resizes and re-encodes them. |
+| Duplicate content | `www` → apex and trailing slash → canonical both **308**. |
+| Meta descriptions | Present on every page. A few run slightly long and get truncated in a result, which is display only. |
+
+**Two real gaps, both fixed.**
+
+**1. No breadcrumb markup.** The city and state pages had a breadcrumb on screen
+and nothing in the markup saying what it meant. `breadcrumbSchema()` now emits
+`BreadcrumbList`, so a result can show `quelldrop.com › Where we ship ›
+Tennessee › Nashville` rather than a bare URL — and it tells a crawler these are
+a structured section of the site rather than a flat heap of 1,451 URLs, which is
+exactly the distinction §49 is watching for.
+
+> **The city page's visible trail was extended from two levels to four** as part
+> of this, and the order matters: the markup has to mirror what is on screen.
+> Google treats a trail that does not match the visible navigation as misleading
+> markup, and inventing structure is not something this project does. It also
+> fixed a real dead end — someone arriving from a search had no way up except
+> home, with the state linked only at the very foot of the page.
+
+**2. `/self-check` was pinned `force-dynamic` on a false premise.** The comment
+said it was dynamic "because the Turnstile site key is read at request time".
+**`NEXT_PUBLIC_` variables are not read at request time** — Next.js inlines them
+at build, which is the whole reason they are safe to ship to a browser. The pin
+bought nothing and cost the page any chance of being cached; it is now static and
+verified serving `X-Vercel-Cache: HIT`.
+
+That is worth more than it looks. Someone typing *"dry eye test"* or *"dry eye
+quiz"* has symptoms and no brand in mind, which is **better search intent than
+most of what the city pages chase**. Changing the site key still needs a
+redeploy, which was already true. `/login` and `/register` stay dynamic for a
+real reason: they read the session.
+
+**Still nothing added to the structured data beyond breadcrumbs, and no new
+pages.** The on-page work is now genuinely in good shape, and §51's closing point
+stands unchanged: it is not the binding constraint. Google is crawling hard and
+keeping one page, and what moves that is authority — real links from real sites.
+
 ---
 
 ## 34. The reorder reminder — shipped 2026-09-30
