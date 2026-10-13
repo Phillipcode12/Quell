@@ -178,6 +178,69 @@ means a missing table would hit every page, not one route.
     2. On `/admin/staff`, click **Send setup link** on his row. Ryan chooses
        his own password from the emailed link; nobody else sees or sets it.
 
+12. **Backlinks from the sites already in the family** (§51). **Deferred by
+    Phillip on 2026-10-13 — "save that task for later" — and he asked to be
+    reminded the next time this comes up.** Nothing has been done yet.
+
+    He asked whether eyecare directories could supply backlinks. **Mostly they
+    cannot**, and that is the finding worth keeping: what exists is
+    *practitioner* directories (VA optometry, Unum's provider locator, BBB's
+    optometrist category) which list clinicians seeing patients, not a product
+    company. The one real trade list found was Ophthalmology Management's
+    manufacturers directory, from **2009**, with no submission route. The
+    industry bodies — The Vision Council, AOA — are paid membership, which is
+    Phillip's call and never to be triggered on his behalf.
+
+    **The actual opportunity was measured on 2026-10-13. All four sites are
+    live and not one of them links to quelldrop.com:**
+
+    ```
+    blephex.com                     200    0 mentions
+    meibum.com                      200    0 mentions
+    centersfordryeye.com            200    0 mentions
+    dryeyecenterofbrentwood.com     200    0 mentions
+    ```
+
+    Quell's own footer links **out** to meibum.com and gets nothing back.
+
+    > These are established dry-eye sites linking to a dry-eye product from the
+    > same company: relevant, editorially justified, free, and under Phillip's
+    > control or Ryan's. **One link from blephex.com is worth more than fifty
+    > directory listings**, because links from unrelated directories are largely
+    > discounted and these are not.
+
+    Also worth having: a link from **Dr. Rynerson's practice** (he developed the
+    formula and wrote *Dry Eyes — The Cause, The Cure*, so it is about as natural
+    a link as exists), and a check on whether the **AAO 2026 exhibitor listing**
+    for booth 1054 persists online and which domain it points at. A free
+    **Google Business Profile** is worth doing for local visibility rather than
+    link value.
+
+    **What was offered and not yet built**, any of which can be picked up:
+
+    1. A listing pack — name, address, phone, categories, description — built
+       only from the verified `COMPANY` constants and approved claims, **with no
+       redness claim** (§51), so a submission is copy-paste.
+    2. Link copy and HTML for blephex.com, meibum.com and centersfordryeye.com,
+       for Ryan or Tradebuilder to drop in.
+    3. The link added directly to the DECB site, whose code is in-house at
+       `C:/dev/dryeyecenterofbrentwood`. **Needs a decision first:** DECB is a
+       clinic, so a clinic page recommending a product the same people sell
+       should disclose the relationship rather than read as a neutral
+       recommendation.
+    4. An email to Dr. Rynerson asking for the link.
+
+    > **What must not be done, and it matters more here than usual.** No bulk
+    > directory submissions and no paid link packages. Those are link schemes
+    > under Google's policies, and §49 already carries doorway-page and
+    > scaled-content exposure across 1,400 pages. **A link-scheme signal on top
+    > of that is the combination most likely to draw site-wide action** — which
+    > would take the whole store out of search, not just the city pages.
+
+    I cannot create the accounts or submit the forms: that is sign-ups and form
+    submissions carrying his business details. The work is to prepare them so
+    each one is a paste.
+
 ### Agreed next build, in order (2026-09-15)
 
 Phillip's call after a review of what the site is missing. Deliberately ordered:
