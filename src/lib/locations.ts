@@ -94,8 +94,13 @@ export function locationPagesEnabled(): boolean {
  * collisions, and California's state page goes from 250 outbound links to
  * **258** — still far from the flat-index problem, and still the number to
  * watch, because a state page has no further level to split into.
- */
-export const PUBLISHED_LOCATION_COUNT = 1_500
+ *
+ * **1,600 on 2026-10-13**, in the same message that asked for extra paragraphs
+ * on each page. Indexing had not moved — still one page of 1,551 — and that was
+ * said again before building. No new states, no slug collisions, and the name
+ * scanner came back clean once it was fixed to use word boundaries after the
+ * "Burbank" false positive. California's state page: 258 -> 275 links. */
+export const PUBLISHED_LOCATION_COUNT = 1_600
 
 /** The places that actually get a page, largest first. */
 export function publishedLocations(): Location[] {

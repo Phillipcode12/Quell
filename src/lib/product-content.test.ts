@@ -1,10 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import {
+  CITY_PAGE_FAQ_QUESTIONS,
   DRUG_FACTS,
+  FAQS,
   RELIEVES,
   RELIEVES_WITHHELD,
   TESTIMONIALS,
   TESTIMONIALS_NOTE,
+  cityPageFaqs,
   relievesProse,
 } from './product-content'
 
@@ -189,6 +192,57 @@ describe('what a testimonial is allowed to say', () => {
     for (const t of TESTIMONIALS) {
       expect(t.name.trim().length, 'a quote with no name').toBeGreaterThan(0)
       expect(t.quote.trim().length, `${t.name} has an empty quote`).toBeGreaterThan(0)
+    }
+  })
+})
+
+describe('cityPageFaqs', () => {
+  it('finds every question it names', () => {
+    // The failure this guards: FAQS gets reworded, the find() returns nothing,
+    // and 1,600 pages quietly lose a section with nobody looking at them.
+    const faqs = cityPageFaqs()
+    expect(faqs).toHaveLength(CITY_PAGE_FAQ_QUESTIONS.length)
+    for (const faq of faqs) {
+      expect(faq.q.length).toBeGreaterThan(0)
+      expect(faq.a.length).toBeGreaterThan(0)
+    }
+  })
+
+  it('quotes the reviewed answers verbatim, never a paraphrase', () => {
+    // The point of selecting FAQs by name is that 1,600 pages show the copy
+    // Dr. Rynerson reviewed. A reworded answer here would be an unreviewed
+    // claim on every one of them.
+    //
+    // (The "missing question" case needs no test: CITY_PAGE_FAQ_QUESTIONS is
+    // typed from FAQS, so TypeScript rejects a name that does not exist before
+    // it can ever throw at runtime. The throw stays as a guard against FAQS
+    // being reworded without the constant following.)
+    for (const faq of cityPageFaqs()) {
+      const source = FAQS.find((f) => f.q === faq.q)
+      expect(source).toBeDefined()
+      expect(faq.a).toBe(source?.a)
+    }
+  })
+
+  it('leaves the clinical questions off the city pages', () => {
+    // "Who should not use it" and "when to stop and call a doctor" belong next
+    // to the full Drug Facts panel, not abbreviated onto a shipping page.
+    const shown = CITY_PAGE_FAQ_QUESTIONS.join(' ').toLowerCase()
+    expect(shown).not.toContain('should not use')
+    expect(shown).not.toContain('call a doctor')
+  })
+
+  it('never puts a withheld claim on a city page', () => {
+    // The city pages render RELIEVES and these answers. Neither may mention
+    // redness while it is withheld -- see RELIEVES_WITHHELD.
+    const text = [
+      ...RELIEVES,
+      ...cityPageFaqs().flatMap((f) => [f.q, f.a]),
+    ]
+      .join(' ')
+      .toLowerCase()
+    for (const withheld of RELIEVES_WITHHELD) {
+      expect(text).not.toContain(withheld.toLowerCase())
     }
   })
 })

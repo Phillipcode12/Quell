@@ -269,6 +269,42 @@ export const FAQS = [
  * `product-content.test.ts` enforces the first two mechanically. The third
  * needs a human, which is why nothing here ships without Michael.
  */
+/**
+ * The three FAQs shown on every city page.
+ *
+ * **Named here rather than sliced by index**, so reordering `FAQS` cannot
+ * silently change what 1,600 pages say, and so the choice is reviewable in one
+ * place instead of buried in a template.
+ *
+ * Why these three: *prescription* is the question someone arriving from a
+ * search for "eye drops in Tulsa" most likely has, *preservative-free* is the
+ * front-panel claim they are most likely to want explained, and *storage* is
+ * the one that prevents a return. The ones left out are the clinical ones —
+ * who should not use it, when to stop and call a doctor — because those belong
+ * next to the full Drug Facts panel, not abbreviated on a shipping page.
+ *
+ * `cityPageFaqs()` throws if a question is missing rather than quietly
+ * rendering fewer, because the failure mode otherwise is 1,600 pages losing a
+ * section and nobody noticing.
+ */
+export const CITY_PAGE_FAQ_QUESTIONS = [
+  'Do I need a prescription for Quell?',
+  'What makes it preservative-free?',
+  'How should I store it?',
+] as const
+
+export function cityPageFaqs(): { q: string; a: string }[] {
+  return CITY_PAGE_FAQ_QUESTIONS.map((question) => {
+    const found = FAQS.find((faq) => faq.q === question)
+    if (!found) {
+      throw new Error(
+        `cityPageFaqs: no FAQ matches "${question}". FAQS was reworded — update CITY_PAGE_FAQ_QUESTIONS.`,
+      )
+    }
+    return { q: found.q, a: found.a }
+  })
+}
+
 export const TESTIMONIALS = [
   {
     name: 'Ming',

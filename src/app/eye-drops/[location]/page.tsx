@@ -2,10 +2,12 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import {
+  APPEARANCE_NOTE,
   BRAND,
   DRUG_FACTS,
   FRONT_PANEL_CLAIMS,
   RELIEVES,
+  cityPageFaqs,
   relievesProse,
 } from '@/lib/product-content'
 import { formatUsd } from '@/lib/money'
@@ -95,6 +97,9 @@ export default async function LocationPage({ params }: Params) {
 
   const nearby = sameStateLocations(location)
   const full = locationLabel(location)
+  const faqs = cityPageFaqs()
+  // Every other published city in this state, not just the six shown below.
+  const otherCities = sameStateLocations(location, Number.MAX_SAFE_INTEGER).length
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-14">
@@ -253,15 +258,98 @@ export default async function LocationPage({ params }: Params) {
         </p>
       </section>
 
+      {/**
+        * The substance, added 2026-10-13 when Phillip asked for "a few extra
+        * paragraphs".
+        *
+        * **Every word is approved copy already on the site**, pulled from the
+        * same constants the home page and Drug Facts page render: the label
+        * directions, the ingredient panel, the appearance note Phillip wrote,
+        * and three of the reviewed FAQs. Nothing here was written for these
+        * pages, because anything written for these pages would be a claim
+        * nobody at Aurora has read.
+        *
+        * ### The trade this makes, stated plainly
+        *
+        * It cuts both ways, and that was said before building it. A page
+        * carrying the label, the ingredients and real answers has
+        * **independent value to someone who lands on it**, which is the actual
+        * test for a doorway page. It is also byte-for-byte identical across
+        * 1,600 pages, which feeds the *"Duplicate without user-selected
+        * canonical"* signal that section 51 names as the sharper warning.
+        *
+        * The judgement: while these pages are not being indexed at all,
+        * substance is the more defensible direction — and the per-page facts
+        * below (the county, how many other cities in the state have a page)
+        * keep them from being literally the same document.
+        *
+        * **No FAQPage schema here**, deliberately, even though the home page
+        * has one. The same FAQ markup repeated across 1,600 URLs is a spam
+        * signal rather than sixteen hundred chances at a rich result.
+        */}
+      <section className="mt-10">
+        <h2 className="text-lg font-semibold text-white">How to use it</h2>
+        <p className="mt-3 leading-relaxed text-muted">
+          {DRUG_FACTS.directions}. {APPEARANCE_NOTE}
+        </p>
+      </section>
+
+      <section className="mt-10">
+        <h2 className="text-lg font-semibold text-white">What is in it</h2>
+        <ul className="mt-3 space-y-2">
+          {DRUG_FACTS.activeIngredients.map((ingredient) => (
+            <li key={ingredient.name} className="text-muted">
+              <span className="text-white">{ingredient.name}</span> —{' '}
+              {ingredient.purpose.toLowerCase()}
+            </li>
+          ))}
+        </ul>
+        {/* The inactives are named, not listed in full: the complete panel is
+            on the Drug Facts page, and repeating all eleven would be the
+            longest identical block on 1,600 pages for no reader benefit. */}
+        <p className="mt-3 text-sm leading-relaxed text-muted">
+          The inactive ingredients include emu oil, manuka honey and Dead Sea
+          salt. The{' '}
+          <Link href="/drug-facts" className="text-brand-light hover:underline">
+            full panel
+          </Link>{' '}
+          lists every one of them.
+        </p>
+      </section>
+
       <section className="mt-10">
         <h2 className="text-lg font-semibold text-white">
-          Getting it to {location.city}
+          Ordering from {location.city}
         </h2>
         <p className="mt-3 leading-relaxed text-muted">
-          Orders ship within the United States, including {full}
-          {location.county ? ` and the rest of ${location.county}` : ''}. There
-          is no pharmacy counter and no prescription — it is ordered here and
-          posted to you.
+          {BRAND.trademark} is posted from Brentwood, Tennessee to{' '}
+          {location.city}
+          {location.county ? ' and the rest of ' + location.county : ''}, and{' '}
+          {otherCities === 0
+            ? location.city + ' is the only city in ' + location.state + ' with a page here'
+            : otherCities + (otherCities === 1 ? ' other city in ' : ' other cities in ') + location.state + (otherCities === 1 ? ' has a page like this one' : ' have a page like this one')}
+          . There is no pharmacy counter and no prescription — it is ordered
+          here and posted to you. There is no local stock and no pricing that
+          changes by city either: the bottle, the price and the shipping are the
+          same wherever it goes.
+        </p>
+      </section>
+
+      <section className="mt-10">
+        <h2 className="text-lg font-semibold text-white">Common questions</h2>
+        <dl className="mt-4 space-y-5">
+          {faqs.map((faq) => (
+            <div key={faq.q}>
+              <dt className="font-medium text-white">{faq.q}</dt>
+              <dd className="mt-1.5 leading-relaxed text-muted">{faq.a}</dd>
+            </div>
+          ))}
+        </dl>
+        <p className="mt-4 text-sm text-muted">
+          <Link href="/#faq" className="text-brand-light hover:underline">
+            The rest of the questions
+          </Link>{' '}
+          are on the main page.
         </p>
       </section>
 
