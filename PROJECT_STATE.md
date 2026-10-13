@@ -1783,6 +1783,40 @@ North Attleborough, MA    <- likewise
 > is how the 463 KB index was caught, and types and tests saw nothing wrong
 > with it.
 
+### Raised to 1,500 — 2026-10-13, with the measurement in hand
+
+The first raise made against real data rather than ahead of it, and **the data
+was not encouraging**:
+
+| Nine days after submission | |
+| --- | --- |
+| Pages Google had indexed | **1** of 1,451 |
+| Pages Bing / DuckDuckGo held | **1** — the home page |
+| Visits from search, ever | **0** |
+
+That was put to Phillip before anything was built, in one line rather than as a
+re-argument: another hundred is being added to a set the index has so far
+declined. **His call stands, and it is a reasonable one** — the thresholds and
+the kill switch are unchanged, and nothing about 1,500 is worse than 1,400
+except the size of what `LOCATION_PAGES=off` withdraws if 2026-11-01 goes the
+other way.
+
+Checked before raising, per the rule above: the 100 new places were already in
+the vetted dataset, the population floor stays at 20,000, the dataset still
+holds 1,923, **no new states and no slug collisions**. 1,584 pages built, 1,551
+sitemap URLs.
+
+California's state page: **250 → 258 outbound links.** Still far from the
+flat-index problem, still the number to watch.
+
+> **A note on method, because it will happen again.** The name scanner flagged
+> **"Burbank"** as a suspicious Census name. It is not — the pattern looks for
+> `urban` and matched the substring inside B-*urban*-k. Burbank, Illinois is a
+> real city. **That is the second time the check has been wrong rather than the
+> data**, after the case-insensitive suffix test that rejected "Atlantic City".
+> When this scanner fires, confirm the place is actually malformed before
+> touching the generator.
+
 ---
 
 ## 50. The cart's saving, and a way in for Ryan — 2026-10-06
