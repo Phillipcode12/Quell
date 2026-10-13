@@ -82,8 +82,20 @@ export function locationPagesEnabled(): boolean {
  * trade, accepted again. The dataset holds 1,923 places at the 20,000
  * population floor, so this publishes places that were already generated and
  * already name-checked rather than lowering the bar to find more.
+ *
+ * **1,500 on 2026-10-13**, Phillip's call again. By then the measurement had
+ * arrived and it was not encouraging: nine days after the sitemap went in,
+ * **Google had indexed one page of 1,451 and sent zero visitors**, and Bing
+ * held only the home page. That was stated before building this, and the
+ * decision stands — the trade has not changed, only the size of what
+ * `LOCATION_PAGES=off` would withdraw if 2026-11-01 goes the other way.
+ *
+ * Checked before raising, per the rule below: no new states, no slug
+ * collisions, and California's state page goes from 250 outbound links to
+ * **258** — still far from the flat-index problem, and still the number to
+ * watch, because a state page has no further level to split into.
  */
-export const PUBLISHED_LOCATION_COUNT = 1_400
+export const PUBLISHED_LOCATION_COUNT = 1_500
 
 /** The places that actually get a page, largest first. */
 export function publishedLocations(): Location[] {
