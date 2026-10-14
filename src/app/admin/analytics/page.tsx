@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import * as Sentry from '@sentry/nextjs'
 import { getAdminUser } from '@/lib/admin'
 import { AdminTabs } from '@/components/admin/AdminTabs'
 import {
@@ -413,6 +414,91 @@ function LandingTable({ rows }: { rows: LandingCount[] }) {
   )
 }
 
+/**
+ * Runs the page's queries a few at a time, and reports failure instead of
+ * dying.
+ *
+ * ### Why this is not one big `Promise.all`
+ *
+ * It was, with seventeen queries in it, and on 2026-10-14 the tab started
+ * answering *"Something went wrong. Try again later."* in production while
+ * every other admin page was fine.
+ *
+ * **What was ruled out, so nobody re-checks it:** every one of the seventeen
+ * functions was run against the production database and all returned correct
+ * results in **1.2 seconds** in parallel — so it is not a bad query, not bad
+ * data and not a function timeout. The page renders **200** locally in `next
+ * dev` *and* in a local production build against that same database. It is not
+ * reproducible outside Vercel.
+ *
+ * What is left is the runtime: seventeen simultaneous connections from a
+ * serverless invocation, where every other admin page opens one or two. That
+ * is the one thing this page does differently and the one thing local testing
+ * cannot reproduce. So the fix is to stop doing it — `CONCURRENCY` at 4 keeps
+ * the page near two seconds while never asking for more than four connections
+ * at once.
+ *
+ * ### The part that matters more than the fix
+ *
+ * **Whatever happens next, the page now says what went wrong.** The failure
+ * cost a long diagnosis precisely because an admin saw a generic apology, the
+ * Hobby plan retains no runtime logs to read, and the error never reached
+ * anywhere either of us could see it. A page that reports its own failure is
+ * worth more than a guess at the cause: if concurrency was not it, the next
+ * load names the real reason instead of hiding it again.
+ */
+const CONCURRENCY = 4
+
+/**
+ * Typed over the tuple, not over a single element type, so every destructured
+ * name below keeps the type its own query returns. A `Promise<unknown[]>`
+ * here would have handed seventeen `unknown`s to the render and moved the
+ * whole class of mistake from the compiler to production.
+ */
+async function inBatches<T extends readonly (() => Promise<unknown>)[]>(
+  tasks: T,
+): Promise<{ -readonly [K in keyof T]: Awaited<ReturnType<T[K]>> }> {
+  const results: unknown[] = []
+  for (let i = 0; i < tasks.length; i += CONCURRENCY) {
+    const batch = tasks.slice(i, i + CONCURRENCY) as readonly (() => Promise<unknown>)[]
+    results.push(...(await Promise.all(batch.map((task) => task()))))
+  }
+  return results as { -readonly [K in keyof T]: Awaited<ReturnType<T[K]>> }
+}
+
+/**
+ * Shown when the queries fail, instead of letting the whole tab die.
+ *
+ * **This is the durable half of the 2026-10-14 fix.** The page threw in
+ * production, an admin saw "Something went wrong. Try again later.", the Hobby
+ * plan retains no runtime logs to read, and the error reached nowhere either of
+ * us could see. Diagnosing it meant running all seventeen queries by hand
+ * against production, timing them, and rebuilding the page locally -- only to
+ * find it works everywhere except Vercel.
+ *
+ * None of that was necessary. The error existed; nothing surfaced it.
+ *
+ * This page is admin-only, so the message is shown in full rather than
+ * sanitised: the only person who can read it is the person who needs it.
+ */
+function AnalyticsFailure({ error }: { error: Error }) {
+  return (
+    <div className="mt-8 rounded-xl border border-red-500/40 bg-red-500/10 p-5 text-sm leading-relaxed text-red-200">
+      <p className="font-semibold text-red-100">
+        The traffic numbers could not be loaded.
+      </p>
+      <p className="mt-2">
+        Nothing is wrong with the shop. This is the reporting page only --
+        orders, checkout and the other tabs are unaffected.
+      </p>
+      <p className="mt-3">It has also been sent to Sentry. The error was:</p>
+      <pre className="mt-2 overflow-x-auto rounded-lg border border-red-500/30 bg-black/30 p-3 text-xs text-red-100">
+        {error.message}
+      </pre>
+    </div>
+  )
+}
+
 export default async function AdminAnalyticsPage() {
   const admin = await getAdminUser()
 
@@ -422,6 +508,44 @@ export default async function AdminAnalyticsPage() {
 
   const now = new Date()
   const monthAgo = daysAgo(now, 30)
+
+  const loaded = await inBatches([
+    () => liveVisitors(now),
+    () => visitsSince(startOfUtcDay(now)),
+    () => visitsSince(daysAgo(now, 7)),
+    () => visitsSince(monthAgo),
+    () => sourceBreakdown(monthAgo),
+    () => topReferrers(monthAgo),
+    () => dailyVisits(14, now),
+    () => monthlyVisits(),
+    () => monthlySales(),
+    () => salesSince(startOfUtcDay(now)),
+    () => salesSince(daysAgo(now, 7)),
+    () => salesSince(monthAgo),
+    () => dailySales(14, now),
+    () => dailyUnits(14, now),
+    () => monthlyUnits(),
+    () => campaignBreakdown(monthAgo),
+    () => topLandingPages(monthAgo),
+    // `as const` so the tuple is inferred positionally. Without it the array
+    // widens to a union and every name above arrives as "number | SourceCount[]
+    // | ..." -- which compiles nothing useful and hides real mistakes.
+  ] as const).catch((cause: unknown) => {
+    // Returned, not rethrown: a throw here reaches the global error boundary,
+    // which is exactly where the generic apology came from.
+    Sentry.captureException(cause)
+    return cause instanceof Error ? cause : new Error(String(cause))
+  })
+
+  if (loaded instanceof Error) {
+    return (
+      <AdminPage>
+        <AdminHeader title="Traffic" subtitle={`Signed in as ${admin.email}`} />
+        <AdminTabs current="analytics" />
+        <AnalyticsFailure error={loaded} />
+      </AdminPage>
+    )
+  }
 
   const [
     live,
@@ -441,25 +565,7 @@ export default async function AdminAnalyticsPage() {
     monthUnits,
     campaigns,
     landings,
-  ] = await Promise.all([
-    liveVisitors(now),
-    visitsSince(startOfUtcDay(now)),
-    visitsSince(daysAgo(now, 7)),
-    visitsSince(monthAgo),
-    sourceBreakdown(monthAgo),
-    topReferrers(monthAgo),
-    dailyVisits(14, now),
-    monthlyVisits(),
-    monthlySales(),
-    salesSince(startOfUtcDay(now)),
-    salesSince(daysAgo(now, 7)),
-    salesSince(monthAgo),
-    dailySales(14, now),
-    dailyUnits(14, now),
-    monthlyUnits(),
-    campaignBreakdown(monthAgo),
-    topLandingPages(monthAgo),
-  ])
+  ] = loaded
 
   const months = joinMonthly(monthVisits, monthSales, monthUnits)
   const ordersByDay = new Map(dailyOrders.map((d) => [d.day, d]))
