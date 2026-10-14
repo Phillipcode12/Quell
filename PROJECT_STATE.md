@@ -149,12 +149,10 @@ means a missing table would hit every page, not one route.
    close to go-live" on 2026-09-03 was his reply to Phillip telling him. An
    earlier version of this file read that as him being unaware.)*
 
-   > **"He also created an account that day and is an admin" was here until
-   > 2026-10-06, and the second half of it is no longer true.** A direct read of
-   > the production user table that day found **exactly one row** — Phillip's,
-   > created 2026-10-02. Whether Ryan once had an account cannot be settled from
-   > here; the cleanup after the 122 bot signups is the obvious candidate, and
-   > Phillip's own row being younger than the shop points the same way.
+   > **The line about Ryan having an account is correct, and a "correction" to
+   > it on 2026-10-06 was wrong — see §52.** That day I read the user table and
+   > found one row, and said so here. I had read `quell_dev`, not production.
+   > Production has had two rows since 2026-09-03: Phillip's and Ryan's.
    >
    > Being in `ADMIN_EMAILS` and having an account are different things, and
    > this file asserted the second from the first. **That is the exact drift
@@ -162,9 +160,11 @@ means a missing table would hit every page, not one route.
    > allowlist and the user table side by side, so a wrong line here could sit
    > unchallenged for a month.
 
-11. **Give Ryan a way in** (§50). The only step left on the admin login, and it
-    needs Phillip because **Hobby has no team members, so Ryan cannot be added
-    to Vercel** (item 2) and cannot edit this himself.
+11. ~~**Give Ryan a way in**~~ — **WITHDRAWN 2026-10-14, see §52.** It rested on
+    "production has one user row", which came from the **dev** database. Ryan has
+    had an account since 2026-09-03 and is an admin. If he cannot sign in, the
+    answer is *Forgot password* on `/login`. The steps below are kept only
+    because they are still how a genuinely new admin would be added.
 
     **Check `/admin/staff` first.** It lists `ADMIN_EMAILS` as the running
     deployment sees it. If Ryan is already there as *No account yet*, step 1 is
@@ -1794,6 +1794,11 @@ was not encouraging**:
 | Pages Bing / DuckDuckGo held | **1** — the home page |
 | Visits from search, ever | **0** |
 
+> **Both of those rows are wrong — see §52.** The visit figure came from the
+> **dev** database; production had **15** search visits from all three engines.
+> The `site:` counts were scraped queries, which DuckDuckGo was rate-limiting,
+> and it sent six visitors in the same week it appeared to hold one page.
+
 That was put to Phillip before anything was built, in one line rather than as a
 re-argument: another hundred is being added to a set the index has so far
 declined. **His call stands, and it is a reasonable one** — the thresholds and
@@ -2135,6 +2140,94 @@ real reason: they read the session.
 pages.** The on-page work is now genuinely in good shape, and §51's closing point
 stands unchanged: it is not the binding constraint. Google is crawling hard and
 keeping one page, and what moves that is authority — real links from real sites.
+
+---
+
+## 52. I was reading the wrong database — corrected 2026-10-14
+
+**Everything this file recorded as a "production" measurement between 2026-10-06
+and 2026-10-13 came from `quell_dev`, not from production.** This section is the
+correction of record. Where an earlier section conflicts with it, this one is
+right.
+
+### How it surfaced
+
+The Traffic tab started failing with *"Something went wrong."* After the failure
+panel was added (§51) it reported the actual error:
+
+```
+Invalid `prisma.visit.groupBy()` invocation:
+The column `Visit.landingPath` does not exist in the current database.
+```
+
+Which was impossible, because the migration had been applied **and verified** by
+reading `information_schema.columns`. Both facts were true — of different
+databases.
+
+```
+local .env   DATABASE_URL  -> ep-old-glitter-awfgqo42.c-12…neon.tech  db=quell_dev
+Vercel prod  DATABASE_URL  -> ep-old-glitter-awfgqo42-pooler…         db=neondb
+             DATABASE_URL_UNPOOLED -> ep-old-glitter-awfgqo42…        db=neondb
+```
+
+Same Neon endpoint, **different database**. `.env` points at a dev database, as
+it should. The mistake was mine: I read it and called it production, repeatedly,
+without checking the database name.
+
+> **The rule this earns.** `.env` is a *development* file. Before stating any
+> fact about production, confirm the database name — and prefer
+> `DATABASE_URL_UNPOOLED` pulled from Vercel for DDL, per §0. A query that
+> succeeds is not evidence it ran where you think.
+
+### What was wrong, and what is actually true
+
+| Claimed from `quell_dev` | Actually, in production |
+| --- | --- |
+| "Production holds exactly **one** user row" | **Two.** `moorerevenue@outlook.com` (Phillip Moore, 2026-08-31) and `ryan.peterson@meibum.com` (Ryan Peterson, **2026-09-03**) |
+| "Phillip's account is *Dev Admin*, created 2026-10-02" | *Phillip Moore*, created 2026-08-31 |
+| "21 visits ever" | **591** — 468 in September, 123 in October |
+| "**Zero** search visits, ever" | **15**: duckduckgo.com 6, google.com 5, bing.com 4 |
+| "5 orders" | **11** — 9 cancelled, 1 shipped, 1 pending |
+| "Stock 250" | 249 |
+
+### The two conclusions that have to be withdrawn
+
+**1. Ryan's account was never missing.** §50 and open item 10 were *correct* as
+originally written — he registered on 2026-09-03 and is an admin by virtue of
+`ADMIN_EMAILS`. The 2026-10-06 "correction" that said otherwise was itself the
+error, drawn from the dev database. **Open item 11 (`Give Ryan a way in`) is
+therefore not a real task:** if he cannot sign in, the answer is *Forgot
+password* on `/login`, not an invite.
+
+> What survives from that work, and is still worth having: `/admin`, the Staff
+> tab showing the allowlist beside the user table, and **the guard stopping the
+> Emails tab deleting an admin's own account** — that hole was real regardless
+> of whether anything had fallen through it. The invite flow is now a
+> convenience rather than a fix.
+
+**2. "No search traffic ever" was wrong.** All three engines have sent visitors
+— the first on **2026-10-01**, before the city pages existed. So the site is
+indexed and is being found, at a small scale.
+
+Two caveats, so this is not over-read in the other direction:
+
+- **September's 468 "direct" visits are not trustworthy.** The referrer bug
+  (§37) recorded every arrival as direct until it was fixed around 2026-10-01.
+  Only October data is sound.
+- **None of the 15 can be attributed to a city page.** They span 2026-10-01 to
+  2026-10-08 and `landingPath` recorded nothing in production until today. From
+  now on the Traffic tab can answer it; for the past it cannot.
+
+### Also corrected by this
+
+The `site:` checks in §51 that reported "one page indexed" were measuring
+nothing reliable — DuckDuckGo alone sent six visitors in the same week it
+appeared to have one page. **Scraped `site:` queries are not a measurement**,
+which is the third time an external check has misled here and the strongest
+argument yet for Bing Webmaster Tools and Search Console over anything scraped.
+
+The backlink findings in open item 12 are unaffected: those were read from the
+live websites, not from a database.
 
 ---
 
