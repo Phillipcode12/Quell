@@ -2231,6 +2231,71 @@ live websites, not from a database.
 
 ---
 
+## 53. The outage, and the move to a new database — 2026-10-19
+
+The shop could not take an order for most of a day. **Cause: Neon's free-tier
+compute quota was exhausted on the old project**, so every database read failed
+and `/` and `/cart` returned 500 while all 1,600 static pages served normally.
+
+### Why the quota went
+
+`VisitTracker` re-reported **every 60 seconds** so the admin could show a
+"visitors here now" count. Neon suspends compute after about five minutes idle —
+that is how a month's allowance lasts a month. A write every sixty seconds means
+it never suspends: **one browser tab left open on the site bills compute around
+the clock.** For a live-visitor counter, on a shop taking thirteen visits a week.
+
+Two theories were tested and dropped, so nobody re-runs them:
+
+- **Not a shared account allowance.** The Magic Shop's database was *working*
+  while Quell's was blocked, so the limit was scoped to Quell's project.
+  Separating them would have changed nothing, and Phillip was talked out of a
+  migration that would not have helped.
+- **Not the diagnostics.** They were real but were hundreds of queries, not a
+  month of uptime.
+
+### What was done
+
+| | |
+| --- | --- |
+| Heartbeat | **Removed.** Do not add one back — the note in `VisitTracker` says why |
+| Home page | `force-dynamic` → **`revalidate = 60`**, so crawlers stop waking the database on every hit |
+| Both DB pages | Render `OrderingUnavailable` (**200**) instead of a 500 |
+| Database | **Moved to a new Neon account** (work email), project `quell`, `ep-jolly-snow-b8z280ig`, `us-east-1` |
+
+**The 500s mattered more than they looked.** Googlebot treats repeated 500s on a
+home page as a reason to drop it, and search engines had only just started
+sending real visitors (§52).
+
+### The state this leaves
+
+> **The new database is EMPTY of history.** Schema and the product row (`$29.99`,
+> stock **249**) only. The old database holds 11 orders, 2 users, 2 subscribers
+> and 591 visits, and is **blocked until 2026-11-01**, when its quota resets.
+>
+> **On 2026-11-01: copy that data across.** Get a fresh connection string from
+> the old Neon project (old account, GitHub login) — Vercel no longer holds it.
+> **Do not delete the old project before that is done.** Until then
+> `/admin/orders` is empty, which is a display gap, not data loss.
+
+Also outstanding:
+
+- **The old Neon integration is still attached to the Vercel project.** It owns
+  the Preview copies of `DATABASE_URL*` and could re-sync and overwrite
+  Production with the old database's details, silently breaking the shop again.
+  **Disconnect it** (Vercel → quell → Settings → Integrations → remove Neon). It
+  touches neither database.
+- `DATABASE_URL` was stored as **Secret**, so it cannot be pulled.
+  `DATABASE_URL_UNPOOLED` is **Config** and is what tooling reads. Keep it that
+  way: migrations and the data copy depend on it.
+- Preview still points at the old database. Harmless, worth tidying.
+
+> **One practical trap, for whoever is next.** `npx` fails in Phillip's
+> PowerShell — *"npx.ps1 cannot be loaded because running scripts is disabled"*.
+> **Use `npx.cmd`.** Several commands given to him failed for this reason alone.
+
+---
+
 ## 34. The reorder reminder — shipped 2026-09-30
 
 Daily cron at **16:00 UTC**, an hour after the abandoned-cart job so the two
