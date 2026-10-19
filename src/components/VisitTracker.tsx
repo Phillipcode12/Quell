@@ -31,7 +31,27 @@ import type { CampaignTags } from '@/lib/campaign'
  */
 
 const STORAGE_KEY = 'quell.vid'
-const HEARTBEAT_MS = 60 * 1000
+
+/**
+ * **There is deliberately no heartbeat any more. Do not add one back.**
+ *
+ * This component used to re-report every 60 seconds so the admin could show a
+ * "visitors here now" count. On 2026-10-19 that took the whole shop offline.
+ *
+ * Neon's free tier suspends the database after about five minutes idle, which
+ * is how a month's compute allowance is meant to last a month. A write every
+ * sixty seconds means it **never** suspends: one browser tab left open on the
+ * site bills compute around the clock. The quota ran out, every database read
+ * started failing, and `/` and `/cart` returned 500 — for a live-visitor
+ * counter on a shop taking about thirteen visits a week.
+ *
+ * A visit is still recorded on arrival and on each client-side navigation, so
+ * the visit counts, sources and landing pages are unaffected. What is gone is
+ * only the resolution of `lastSeenAt` between page loads, which makes the
+ * admin's "here now" figure mean "loaded a page in the last five minutes"
+ * rather than "has a tab open". That is a fair description of a visitor and it
+ * costs nothing.
+ */
 
 function visitId(): string | null {
   try {
@@ -110,12 +130,6 @@ export function VisitTracker() {
       report(id, campaign, pathname)
     }
 
-    const beat = setInterval(() => {
-      // A background tab is not someone looking at the site.
-      if (document.visibilityState === 'visible') report(id, campaign, pathname)
-    }, HEARTBEAT_MS)
-
-    return () => clearInterval(beat)
   }, [pathname])
 
   return null

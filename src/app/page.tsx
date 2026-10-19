@@ -1,4 +1,6 @@
+import * as Sentry from '@sentry/nextjs'
 import { prisma } from '@/lib/db'
+import { OrderingUnavailable } from '@/components/OrderingUnavailable'
 import { Hero } from '@/components/home/Hero'
 import { WhyItWorks } from '@/components/home/WhyItWorks'
 import { BuySection } from '@/components/home/BuySection'
@@ -23,23 +25,43 @@ import { faqSchema, productSchema } from '@/lib/structured-data'
  * charged another. Prerendered stock is worse -- it would keep offering a
  * sold-out bottle.
  *
- * ISR with a short revalidate was considered and rejected. It would bound the
- * staleness rather than remove it, and a bounded window of showing the wrong
- * price is still showing the wrong price on the page where the money is taken.
- * One uncacheable page out of 1,452 is a trivial crawl cost for that
- * guarantee.
+ * **Reversed on 2026-10-19: this is now `revalidate = 60`.** The reasoning
+ * above was sound and the conclusion was wrong, because it priced only one side
+ * of the trade. A query per request meant every crawler hit woke the database,
+ * and combined with the visit heartbeat it exhausted the free tier's compute
+ * quota and took the shop offline for a day.
  *
- * **Do not "optimise" this away.** If this page ever stops reading the price
- * and the stock, remove this with a note saying so.
+ * So the trade is now stated properly: a price or stock figure up to **sixty
+ * seconds** stale, against the shop being reachable at all. Sixty seconds is
+ * short enough that nobody can act on a stale number — the cart and
+ * `/api/checkout` still compute from the database at the moment of payment,
+ * so the figure that is actually charged is never cached.
+ *
+ * **Do not raise this much past a minute**, and do not make it fully static:
+ * the window has to stay shorter than the time it takes someone to read the
+ * page and decide.
  */
-export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
 export default async function HomePage() {
   // Single-SKU storefront: the homepage is the product page. The full Drug
   // Facts panel lives at /drug-facts rather than in this scroll.
   // Buying no longer needs an account until the cart, so the homepage does not
   // read the session.
-  const product = await prisma.product.findFirst({ where: { active: true } })
+  /**
+   * A failure here renders the unavailable notice rather than a 500 — see
+   * `OrderingUnavailable`. Googlebot had only just started sending real
+   * visitors when the database quota ran out, and repeated 500s on a home page
+   * are how a site loses its place in the index.
+   */
+  const product = await prisma.product
+    .findFirst({ where: { active: true } })
+    .catch((cause: unknown) => {
+      Sentry.captureException(cause)
+      return null
+    })
+
+  if (!product) return <OrderingUnavailable />
 
   return (
     <>
