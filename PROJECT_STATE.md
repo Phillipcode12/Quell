@@ -2296,6 +2296,100 @@ Also outstanding:
 
 ---
 
+## 54. Where Quell stands — 2026-10-22
+
+Written as a handover after the outage week. **If you read one section before
+touching this project, read this one and §53.**
+
+### Right now
+
+| | |
+| --- | --- |
+| Shop | **Live and selling.** All pages 200, `$29.99`, stock 249 |
+| Database | New Neon account (Phillip's **work email**), project `quell`, `ep-jolly-snow-b8z280ig`, `us-east-1`, db `neondb` |
+| Orders since the move | **None** |
+| Published city pages | 1,600, plus 51 state pages — 1,651 sitemap URLs |
+| Tests | 561 |
+
+### The crawler, and why the visit numbers lie
+
+Two days after the move the new database had recorded **924 visits** on a shop
+that had been getting about thirteen a week — 310 one day, **610** the next,
+with **exactly one from a search engine**. The rest had no referrer and were
+spread four-at-a-time across hundreds of generated city pages.
+
+**That is a crawler walking the sitemap, not demand.** Anyone looking at the
+admin and seeing a 600-visit day should read it that way until the *From search*
+column says otherwise.
+
+It was not only a cosmetic problem. Those writes landed roughly every two
+minutes and **Neon suspends only after five minutes idle** — the same mechanism
+that exhausted the previous database (§53). The heartbeat was the acute form of
+this; a crawler sweep is the chronic one.
+
+**Fix: a visit is recorded only once the page has been open five seconds**
+(`REPORT_DELAY_MS`). A crawler fetches and leaves; a person is still reading.
+The server-side `isBot` filter is unchanged and still drops anything that
+identifies itself — this catches the ones that do not.
+
+> **The landing path is pinned on arrival, and that detail is load-bearing.**
+> Without it the delay would corrupt the one number it exists to protect:
+> someone arriving from Google and clicking through inside five seconds would
+> have had the *second* page recorded as their landing page. `document.referrer`
+> needs no such care — it survives client-side navigation.
+
+Verified in a browser against the running app: nothing three seconds after a
+fresh load, one `POST /api/track` → 204 after nine.
+
+### The November 1st job — in this order
+
+The old database unblocks when its quota period resets. **Do these in sequence;
+the last two are irreversible.**
+
+1. **Get a fresh connection string** from the *old* Neon project — old account,
+   **GitHub login**. Vercel no longer holds it.
+2. **Copy the data across**: 11 orders (9 cancelled, 1 shipped, 1 pending), 2
+   users, 2 subscribers, 591 visits. Watch for id collisions with anything
+   created since 2026-10-19.
+3. **Verify** — order numbers, totals, tracking, `shippingEmailSentAt` and
+   `confirmationEmailSentAt` all intact.
+4. **Only then** remove the Neon integration from the Vercel project.
+5. **Only then** delete the old Neon project.
+
+> **Do not reverse 3 and 4.** A Vercel Marketplace integration can *deprovision*
+> the resource it manages, and that resource is the old database holding the
+> order history. This was checked and deliberately deferred on 2026-10-19.
+
+Until it is done: `/admin/orders` is empty — a display gap, not data loss — and
+**Phillip's account does not exist in the new database**, so signing in needs
+*Forgot password* on `/login`.
+
+### Traps worth knowing
+
+- **`npx` fails in Phillip's PowerShell** — *"npx.ps1 cannot be loaded because
+  running scripts is disabled"*. **Use `npx.cmd`.** Several commands given to him
+  failed for this reason alone and it was invisible until his terminal was
+  readable.
+- **`.env` is `quell_dev`, not production** (§52). Print the database name before
+  calling any reading "production".
+- **`DATABASE_URL` is stored as a Vercel *Secret*** and cannot be pulled.
+  **`DATABASE_URL_UNPOOLED` is *Config*** and is what tooling reads — migrations
+  and the data copy both depend on it staying that way.
+- **Preview still points at the old database.** Harmless; tidy it after the 1st.
+- The Vercel env list has ~18 `DATABASE_*` variables from the old integration.
+  The app reads only the two above.
+
+### Open, and not mine to do
+
+- **Bing Webmaster Tools** (§51) — still the only instrument that reports
+  indexing from the inside rather than being inferred from scraped `site:`
+  queries, which have misled three times.
+- **Backlinks from the sites already in the family** (open item 12) — deferred
+  2026-10-13, and Phillip asked to be reminded.
+- **2026-11-01** also remains the decision date for the city pages (§49).
+
+---
+
 ## 34. The reorder reminder — shipped 2026-09-30
 
 Daily cron at **16:00 UTC**, an hour after the abandoned-cart job so the two
