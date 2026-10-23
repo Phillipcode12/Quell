@@ -104,6 +104,31 @@ function report(id: string, campaign: CampaignTags, path: string) {
   }
 }
 
+/**
+ * How long a page must stay open before a visit is recorded.
+ *
+ * **Five seconds, from 2026-10-22, because of what the numbers looked like.**
+ * In the two days after the database move the new project recorded **924
+ * visits** on a shop that had been getting about thirteen a week — 310 on one
+ * day, 610 the next, with exactly one of them from a search engine. The rest
+ * arrived with no referrer, spread four-at-a-time across hundreds of generated
+ * city pages. That is a crawler walking the sitemap, not customers.
+ *
+ * It matters beyond a wrong number in the admin. Those writes landed roughly
+ * every two minutes, and **Neon only suspends after five minutes idle** — the
+ * same mechanism that exhausted the previous database's quota and took the shop
+ * offline for a day (§53). The heartbeat was the acute version of this; a
+ * crawler sweep is the chronic one.
+ *
+ * A crawler that executes JavaScript still fetches and moves on. A person is
+ * still reading at five seconds. So the delay removes most of those writes
+ * without losing a visitor who was ever going to buy anything.
+ *
+ * **It does not make the bot filter redundant** — `isBot` on the server still
+ * drops anything that identifies itself. This catches the ones that do not.
+ */
+const REPORT_DELAY_MS = 5000
+
 export function VisitTracker() {
   const pathname = usePathname()
 
@@ -116,21 +141,47 @@ export function VisitTracker() {
    */
   const reported = useRef<string | null>(null)
 
+  /**
+   * The page this visit arrived on, remembered for the life of the tab.
+   *
+   * **Without this the delay would quietly corrupt the one number it exists to
+   * protect.** Someone who lands on a city page from Google and clicks through
+   * within five seconds would have their visit created from the *second* page,
+   * recording that as the landing page. The attribution question -- did a
+   * generated city page earn this visit -- would answer itself wrongly.
+   *
+   * `document.referrer` needs no such care: it does not change across
+   * client-side navigation, so it still names the search engine.
+   */
+  const landing = useRef<string | null>(null)
+
   useEffect(() => {
     const id = visitId()
     if (!id || !pathname) return
+
+    if (landing.current === null) landing.current = pathname
 
     // Reads the tags off the landing URL and holds them for this tab. After
     // the first page the URL has none and the stored value comes back
     // unchanged, so this is safe to call on every navigation.
     const campaign = captureCampaign()
 
-    if (reported.current !== pathname) {
-      reported.current = pathname
-      report(id, campaign, pathname)
-    }
+    if (reported.current === pathname) return
 
+    const timer = setTimeout(() => {
+      // A page sitting in a background tab is not someone looking at the site,
+      // and a crawler's page is never visible at all.
+      if (document.visibilityState !== 'visible') return
+
+      reported.current = pathname
+      report(id, campaign, landing.current ?? pathname)
+    }, REPORT_DELAY_MS)
+
+    // Navigating or closing before the delay elapses cancels the report. That
+    // is the point: the visit is only worth recording once it has lasted.
+    return () => clearTimeout(timer)
   }, [pathname])
 
   return null
 }
+
