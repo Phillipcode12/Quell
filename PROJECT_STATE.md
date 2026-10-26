@@ -2450,6 +2450,32 @@ measured and should be read as stale, not current.
 The ramp has not been the lever since §49, and still is not. **The four sites
 already in the family link to quelldrop.com nowhere** (open item 12).
 
+### The push broke, and it was not this repo's fault
+
+`git push` to `Phillipcode12/Quell` came back **403, "denied to
+phillipBlephex"** — on a repo that had been pushed to four days earlier with
+nothing changed in it.
+
+`gh auth setup-git` had written **`credential.https://github.com.helper` into
+his global `.gitconfig`**, pointing at the GitHub CLI. The CLI is signed in as
+`phillipBlephex` for the BlephEx and DECB work, and that account has no push
+access here — so gh's token was being handed over in place of the
+`Phillipcode12` one that Windows Credential Manager still holds and that Quell
+needs.
+
+**Fixed inside this repo only**, so nothing about his gh login or the DECB work
+changes:
+
+```
+git config --local --add "credential.https://github.com.helper" ""
+git config --local --add "credential.https://github.com.helper" "manager"
+```
+
+The empty value resets the inherited helper list, then `manager` is the only
+one left. If a push ever fails this way again, read the whole list rather than
+one value — `git config --list --show-origin | grep credential` — because the
+global file contributes two entries and `--get` shows only the first.
+
 ### Also confirmed this session
 
 - **The five-second visit delay is holding.** 310 writes on 10-21, 610 on
