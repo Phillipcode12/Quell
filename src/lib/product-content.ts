@@ -273,7 +273,7 @@ export const FAQS = [
  * The three FAQs shown on every city page.
  *
  * **Named here rather than sliced by index**, so reordering `FAQS` cannot
- * silently change what 1,600 pages say, and so the choice is reviewable in one
+ * silently change what 1,700 pages say, and so the choice is reviewable in one
  * place instead of buried in a template.
  *
  * Why these three: *prescription* is the question someone arriving from a
@@ -284,7 +284,7 @@ export const FAQS = [
  * next to the full Drug Facts panel, not abbreviated on a shipping page.
  *
  * `cityPageFaqs()` throws if a question is missing rather than quietly
- * rendering fewer, because the failure mode otherwise is 1,600 pages losing a
+ * rendering fewer, because the failure mode otherwise is 1,700 pages losing a
  * section and nobody noticing.
  */
 export const CITY_PAGE_FAQ_QUESTIONS = [

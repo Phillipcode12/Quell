@@ -275,7 +275,7 @@ export default async function LocationPage({ params }: Params) {
         * carrying the label, the ingredients and real answers has
         * **independent value to someone who lands on it**, which is the actual
         * test for a doorway page. It is also byte-for-byte identical across
-        * 1,600 pages, which feeds the *"Duplicate without user-selected
+        * 1,700 pages, which feeds the *"Duplicate without user-selected
         * canonical"* signal that section 51 names as the sharper warning.
         *
         * The judgement: while these pages are not being indexed at all,
@@ -284,7 +284,7 @@ export default async function LocationPage({ params }: Params) {
         * keep them from being literally the same document.
         *
         * **No FAQPage schema here**, deliberately, even though the home page
-        * has one. The same FAQ markup repeated across 1,600 URLs is a spam
+        * has one. The same FAQ markup repeated across 1,700 URLs is a spam
         * signal rather than sixteen hundred chances at a rich result.
         */}
       <section className="mt-10">
@@ -306,7 +306,7 @@ export default async function LocationPage({ params }: Params) {
         </ul>
         {/* The inactives are named, not listed in full: the complete panel is
             on the Drug Facts page, and repeating all eleven would be the
-            longest identical block on 1,600 pages for no reader benefit. */}
+            longest identical block on 1,700 pages for no reader benefit. */}
         <p className="mt-3 text-sm leading-relaxed text-muted">
           The inactive ingredients include emu oil, manuka honey and Dead Sea
           salt. The{' '}

@@ -199,7 +199,7 @@ describe('what a testimonial is allowed to say', () => {
 describe('cityPageFaqs', () => {
   it('finds every question it names', () => {
     // The failure this guards: FAQS gets reworded, the find() returns nothing,
-    // and 1,600 pages quietly lose a section with nobody looking at them.
+    // and 1,700 pages quietly lose a section with nobody looking at them.
     const faqs = cityPageFaqs()
     expect(faqs).toHaveLength(CITY_PAGE_FAQ_QUESTIONS.length)
     for (const faq of faqs) {
@@ -209,7 +209,7 @@ describe('cityPageFaqs', () => {
   })
 
   it('quotes the reviewed answers verbatim, never a paraphrase', () => {
-    // The point of selecting FAQs by name is that 1,600 pages show the copy
+    // The point of selecting FAQs by name is that 1,700 pages show the copy
     // Dr. Rynerson reviewed. A reworded answer here would be an unreviewed
     // claim on every one of them.
     //

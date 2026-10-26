@@ -99,8 +99,29 @@ export function locationPagesEnabled(): boolean {
  * on each page. Indexing had not moved — still one page of 1,551 — and that was
  * said again before building. No new states, no slug collisions, and the name
  * scanner came back clean once it was fixed to use word boundaries after the
- * "Burbank" false positive. California's state page: 258 -> 275 links. */
-export const PUBLISHED_LOCATION_COUNT = 1_600
+ * "Burbank" false positive. California's state page: 258 -> 275 links.
+ *
+ * **1,700 on 2026-10-26**, Phillip's call again, asked for in the same breath
+ * as "do we still have a login". The measurement behind it is thinner than
+ * last time rather than better: in the eight days since the database moved,
+ * the site's own tracking recorded **one visit from search** — DuckDuckGo —
+ * and four direct visits across the three days after the crawler stopped
+ * being counted. Search Console was deliberately not re-read for this, so
+ * "one page of 1,551" above remains the last indexing figure anyone actually
+ * measured; treat it as stale, not current.
+ *
+ * Checks before raising, same list as before: no new states (all 51 were
+ * already represented), no slug collisions, no malformed slugs, and the name
+ * scanner clean across all 100. 34 counties are new to the set. California's
+ * state page goes 275 -> 282 links, and the largest jump is Illinois at
+ * 88 -> 102 — still the number to watch for the same reason.
+ *
+ * **This is the last raise of this size the dataset supports.** 1,923 places
+ * exist at the 20,000-population floor, so 223 remain. Going further means
+ * lowering that floor, which is a different decision from this one: it stops
+ * publishing places that were already generated and name-checked and starts
+ * reaching for smaller towns to fill a quota. */
+export const PUBLISHED_LOCATION_COUNT = 1_700
 
 /** The places that actually get a page, largest first. */
 export function publishedLocations(): Location[] {

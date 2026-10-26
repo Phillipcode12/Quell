@@ -2308,7 +2308,7 @@ touching this project, read this one and §53.**
 | Shop | **Live and selling.** All pages 200, `$29.99`, stock 249 |
 | Database | New Neon account (Phillip's **work email**), project `quell`, `ep-jolly-snow-b8z280ig`, `us-east-1`, db `neondb` |
 | Orders since the move | **None** |
-| Published city pages | 1,600, plus 51 state pages — 1,651 sitemap URLs |
+| Published city pages | 1,600 when this was written; **1,700 since 2026-10-26** (§55), plus 51 state pages |
 | Tests | 561 |
 
 ### The crawler, and why the visit numbers lie
@@ -2360,9 +2360,12 @@ the last two are irreversible.**
 > the resource it manages, and that resource is the old database holding the
 > order history. This was checked and deliberately deferred on 2026-10-19.
 
-Until it is done: `/admin/orders` is empty — a display gap, not data loss — and
-**Phillip's account does not exist in the new database**, so signing in needs
-*Forgot password* on `/login`.
+Until it is done: `/admin/orders` is empty — a display gap, not data loss.
+
+> **Corrected 2026-10-26:** this section used to say that signing in needed
+> *Forgot password*. It did not work and could not have — there was no account
+> in the new database for that endpoint to mail. See §55, which also adds a
+> step to the copy above.
 
 ### Traps worth knowing
 
@@ -2387,6 +2390,82 @@ Until it is done: `/admin/orders` is empty — a display gap, not data loss — 
 - **Backlinks from the sites already in the family** (open item 12) — deferred
   2026-10-13, and Phillip asked to be reminded.
 - **2026-11-01** also remains the decision date for the city pages (§49).
+
+---
+
+## 55. 1,700 city pages, and the login that was not there — 2026-10-26
+
+Two things asked for in one message: another hundred city pages, and *"do we
+still have a login or no?"*
+
+### The login: no — and *Forgot password* could not have fixed it
+
+§54 told the next reader that signing in needed *Forgot password*. **That was
+wrong**, and the correction matters because following it would have looked like
+a broken site rather than a missing account:
+
+- The new database had **zero users**. The account itself went with the move,
+  not just its password.
+- `/api/auth/forgot-password` only mails an address that **already has an
+  account**, and it answers identically either way (§32) — by design, so it
+  cannot be used to discover who has one. The link would simply never have
+  arrived, with nothing on screen explaining why.
+- `/register` is closed (`ALLOW_REGISTRATION=0`, §32), so there was no way to
+  create one either.
+
+**Fixed by creating the account shell exactly as `sendStaffSetupLink` does**:
+the row plus a 72-hour setup token, where `passwordHash` is a real bcrypt hash
+of random bytes that are then discarded. No password was chosen for anyone and
+none was transmitted — he sets his own at `/reset-password`.
+`moorerevenue@outlook.com` is one of the three addresses in `ADMIN_EMAILS`, so
+admin access follows from config the moment he is signed in.
+
+> **This adds a step to the November 1st copy.** The shell's user id is
+> `cmvphfzb10000lguioztoa30h`; the old database holds a **different id for the
+> same address**, and the old orders point at that one. **Delete the shell
+> before copying users**, then copy the old rows with their original ids.
+> Inserting over it hits the unique-email constraint, and leaving it in place
+> orphans the orders it cannot be matched to.
+
+### The pages: 1,600 → 1,700
+
+Checks before raising, the same list as every previous raise: no new states —
+all 51 were already represented — no slug collisions, no malformed slugs, the
+name scanner clean across all 100, and 34 counties new to the set. California's
+state page goes 275 → 282 links, and **Illinois is the biggest jump, 88 → 102**.
+
+1,923 places exist at the 20,000-population floor, so **223 remain**. This is
+the last raise of this size the dataset supports; going further means lowering
+the floor, which is a different decision (§49).
+
+### What the measurement actually said
+
+Stated before building, as every time. In the eight days since the move the
+site's own tracking recorded **one visit from search** — DuckDuckGo — and
+**four direct visits** across the three days after the crawler stopped being
+counted. No orders. Search Console was deliberately not re-read, so "one page
+of 1,551" in `lib/locations.ts` remains the last indexing figure anyone
+measured and should be read as stale, not current.
+
+The ramp has not been the lever since §49, and still is not. **The four sites
+already in the family link to quelldrop.com nowhere** (open item 12).
+
+### Also confirmed this session
+
+- **The five-second visit delay is holding.** 310 writes on 10-21, 610 on
+  10-22, then 1 (my own verification), 0, 4, 0. The crawler is no longer
+  waking the database every two minutes.
+- **City pages served from the edge at an age of 2.7 days**, so rendering one
+  does not touch the database at all. That is the behaviour that keeps this
+  inside the free tier, and `X-Vercel-Cache: HIT` is the signal to check —
+  not `s-maxage`, which Vercel strips when it serves from cache.
+- **Two dataset rows carry an empty county** (`methuen-ma`, `watertown-ma`) and
+  have since the first build. Their pages render like any other; that was
+  checked against production rather than assumed. Worth recording because a
+  check script written for this raise required a non-empty county, silently
+  skipped both, and shifted the hundred it was examining by two. **The
+  measuring tool was wrong before the data was** — the third time that has
+  happened here, after the case-insensitive slug test and "Burbank".
 
 ---
 
