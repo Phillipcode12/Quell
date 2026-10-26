@@ -182,6 +182,16 @@ means a missing table would hit every page, not one route.
     Phillip on 2026-10-13 — "save that task for later" — and he asked to be
     reminded the next time this comes up.** Nothing has been done yet.
 
+    > **Why they are missing, learned 2026-10-26: Phillip is rebuilding all
+    > four sites, and the rebuilds will carry a link to Quell.** The absence
+    > is sequencing, not an oversight, and it should not be raised again as
+    > though it were one. Re-measured that day across the four homepages and
+    > 36 inner pages from their sitemaps — still zero mentions, as expected.
+    > **What to check instead is whether a rebuilt site has shipped**, and
+    > whether the link actually made it in; that is the moment this becomes
+    > actionable. The DECB rebuild lives in its own repo at
+    > `C:/dev/dryeyecenterofbrentwood`.
+
     He asked whether eyecare directories could supply backlinks. **Mostly they
     cannot**, and that is the finding worth keeping: what exists is
     *practitioner* directories (VA optometry, Unum's provider locator, BBB's
