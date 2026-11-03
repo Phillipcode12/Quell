@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: 'Track your order',
   description:
     'Check the status of a Quell order using your order number and the email you checked out with.',
+  // A lookup form, not content (the sitemap leaves it out for the same
+  // reason): kept out of search results, links still followed.
+  robots: { index: false, follow: true },
 }
 
 export default async function OrdersPage({

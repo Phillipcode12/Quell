@@ -1,7 +1,11 @@
 import type { Metadata } from 'next'
 import { ForgotPasswordForm } from '@/components/ForgotPasswordForm'
 
-export const metadata: Metadata = { title: 'Reset your password' }
+// Not content: kept out of search results, links still followed.
+export const metadata: Metadata = {
+  title: 'Reset your password',
+  robots: { index: false, follow: true },
+}
 
 export default function ForgotPasswordPage() {
   // Read here rather than inside the client component so that a build without

@@ -2,7 +2,11 @@ import { ImageResponse } from 'next/og'
 
 // Browser tab icon, drawn from the Quell eye mark rather than the default
 // Next.js logo that shipped with the scaffold.
-export const size = { width: 64, height: 64 }
+//
+// 96px, not 64, from 2026-11-03. Google only shows a favicon beside a search
+// result when it is a multiple of 48px square; at 64 it was ineligible and the
+// result showed a generic globe. Everything inside is scaled by the same 1.5.
+export const size = { width: 96, height: 96 }
 export const contentType = 'image/png'
 
 export default function Icon() {
@@ -21,7 +25,7 @@ export default function Icon() {
         {/* Production artwork — see src/components/Logo.tsx. The evenodd
             knockouts fall through to the dark ground behind. The keyline is
             omitted: it's sub-pixel at this size and only muddies the shape. */}
-        <svg width="60" height="41" viewBox="38.46 24.86 169.61 117.14">
+        <svg width="90" height="62" viewBox="38.46 24.86 169.61 117.14">
           <path
             fillRule="evenodd"
             fill="#00a7b5"

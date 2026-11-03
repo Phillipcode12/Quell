@@ -57,6 +57,9 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       description,
       url,
       type: 'article',
+      // Setting openGraph here replaces the layout's whole object, including
+      // the site image, so it is named again or shares go out with no preview.
+      images: ['/opengraph-image'],
     },
   }
 }

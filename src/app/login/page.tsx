@@ -5,7 +5,11 @@ import { AuthForm } from '@/components/AuthForm'
 import { getCurrentUser } from '@/lib/auth'
 import { registrationOpen } from '@/lib/registration'
 
-export const metadata: Metadata = { title: 'Sign in' }
+// Not content: kept out of search results, links still followed.
+export const metadata: Metadata = {
+  title: 'Sign in',
+  robots: { index: false, follow: true },
+}
 
 /** Dynamic for the same reason /register is: the flag is meant to be flipped
  *  in Vercel without a redeploy, and a static page would bake in today's

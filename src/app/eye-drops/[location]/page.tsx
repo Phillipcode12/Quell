@@ -86,6 +86,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       description: `${BRAND.trademark} ${BRAND.productType.toLowerCase()}, delivered to ${full}.`,
       url: `${appUrl()}${locationPath(location)}`,
       type: 'website',
+      // Named again because this object replaces the layout's, image and all.
+      images: ['/opengraph-image'],
     },
   }
 }

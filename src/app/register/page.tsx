@@ -6,7 +6,11 @@ import { AuthForm } from '@/components/AuthForm'
 import { getCurrentUser } from '@/lib/auth'
 import { REGISTRATION_CLOSED_MESSAGE, registrationOpen } from '@/lib/registration'
 
-export const metadata: Metadata = { title: 'Create an account' }
+// Not content: kept out of search results, links still followed.
+export const metadata: Metadata = {
+  title: 'Create an account',
+  robots: { index: false, follow: true },
+}
 
 /**
  * The page is dynamic because `registrationOpen()` reads an environment
