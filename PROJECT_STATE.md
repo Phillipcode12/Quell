@@ -2610,6 +2610,46 @@ has kept climbing, that is the point for `LOCATION_PAGES=off`.
 `sitemap-guides.xml` was submitted the same day: read immediately, Success,
 110 discovered.
 
+### The real reason only the home page was indexed — fixed the same day
+
+Found while requesting indexing in URL Inspection: **the root layout set
+`alternates: { canonical: '/' }`**, and Next.js metadata is inherited by every
+page that does not override it. Drug Facts, About, Reviews, the self-check,
+Terms and Privacy all declared the home page as their canonical — in effect
+*"I am a duplicate of `/`, index that instead."* URL Inspection listed the
+self-check as **"Alternate page with proper canonical tag"**; Drug Facts and
+About had **never been crawled**. Only pages built later with their own
+canonical (city pages, `/eye-drops`, guides) escaped it. `og:url: '/'` in the
+layout had the same flaw for link previews.
+
+Fixed in `d6fa00a`: the canonical moved onto the home page, each of the six
+pages names itself, `og:url` is gone from the layout, and **`layout.test.ts`
+fails if a canonical is ever set in the layout again**. Verified live on every
+page.
+
+> **This changes how the November 1st verdict reads.** The city pages had their
+> own canonicals all along, so their 428 "crawled, not indexed" stands on its
+> own. But a site whose core pages all pointed at its home page was giving
+> Google very little to go on, and that is now fixed. The 2026-11-17 re-read is
+> the first one that will reflect it.
+
+**Indexing requested (URL Inspection), 2026-11-03**, after the fix was live
+unless noted: `/drug-facts` and `/about` (both *before* the fix — if Google
+crawled them within minutes it will correct on the next visit), `/self-check`,
+`/` (re-crawl, for the new guide links), `/guides`, and four cornerstone
+guides: buying online safely, preservative-free, lubricating drops, and
+prescriptions. `/reviews` turned out to be indexed already, so the
+2026-10-22 report was behind. About ten requests a day is the limit; the rest
+of the cornerstone guides can go in on a later day.
+
+**Also on the home page now:** a Guides section after the FAQ linking the ten
+cornerstone guides (`components/home/Guides.tsx`), since the home page is the
+one page Google trusts and the guides were linked only from the footer.
+
+Search Console's Overview also offers **"Display your 1 products on the
+Shopping tab"** — Merchant Center free listings, the next free channel
+recommended to Phillip. Not started.
+
 ### 110 guide articles at `/guides`
 
 Ten longer cornerstone guides plus a hundred shorter ones, in seven categories:
