@@ -6,6 +6,7 @@ import { BRAND, COMPANY, DRUG_FACTS } from '@/lib/product-content'
 export const metadata: Metadata = {
   title: 'Terms of Service',
   description: `The terms governing your purchase and use of ${BRAND.trademark}.`,
+  alternates: { canonical: '/terms' },
 }
 
 const LAST_UPDATED = 'August 18, 2026'

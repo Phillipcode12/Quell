@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import * as Sentry from '@sentry/nextjs'
 import { prisma } from '@/lib/db'
 import { OrderingUnavailable } from '@/components/OrderingUnavailable'
@@ -43,6 +44,15 @@ import { faqSchema, productSchema } from '@/lib/structured-data'
  * page and decide.
  */
 export const revalidate = 60
+
+/**
+ * The home page's own canonical. It used to live in the root layout, which
+ * made it every page's canonical — see the note in `layout.tsx`. Title and
+ * description still come from the layout's defaults.
+ */
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+}
 
 export default async function HomePage() {
   // Single-SKU storefront: the homepage is the product page. The full Drug

@@ -6,6 +6,7 @@ import { BRAND, COMPANY } from '@/lib/product-content'
 export const metadata: Metadata = {
   title: 'Privacy Policy',
   description: `How ${COMPANY.name} collects, uses, and protects your information.`,
+  alternates: { canonical: '/privacy' },
 }
 
 const LAST_UPDATED = 'August 18, 2026'

@@ -39,19 +39,32 @@ export const metadata: Metadata = {
   },
   description,
   applicationName: BRAND.name,
+  /**
+   * **No `url` here, and no `alternates.canonical` below — both removed
+   * 2026-11-03, and they must not come back.**
+   *
+   * Metadata set in this layout is inherited by every page that does not
+   * override it. `alternates: { canonical: '/' }` here meant Drug Facts, About,
+   * Reviews, the self-check, Terms and Privacy all told Google *"the home page
+   * is the real version of me"*. Google took them at their word: Search
+   * Console listed the self-check as "Alternate page with proper canonical
+   * tag", and for two months the home page was the only page indexed (§56).
+   * `og:url: '/'` did the same to link previews.
+   *
+   * Each page now declares its own canonical. `layout.test.ts` fails if one is
+   * put back here.
+   */
   openGraph: {
     type: 'website',
     siteName: BRAND.name,
     title,
     description,
-    url: '/',
   },
   twitter: {
     card: 'summary_large_image',
     title,
     description,
   },
-  alternates: { canonical: '/' },
   /**
    * Google Search Console ownership.
    *

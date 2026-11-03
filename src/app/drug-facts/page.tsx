@@ -7,6 +7,7 @@ import { BRAND, COMPANY, MANUFACTURER } from '@/lib/product-content'
 export const metadata: Metadata = {
   title: 'Drug Facts',
   description: `The complete over-the-counter Drug Facts panel for ${BRAND.trademark} ${BRAND.productType}, as printed on the carton.`,
+  alternates: { canonical: '/drug-facts' },
 }
 
 export default function DrugFactsPage() {

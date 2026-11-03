@@ -5,6 +5,7 @@ import { BRAND } from '@/lib/product-content'
 export const metadata: Metadata = {
   title: 'Dry eye self-check',
   description: `Eight questions, about ninety seconds. Get a symptom score and find out whether your answers fit the pattern of a tear film that evaporates too quickly. From the makers of ${BRAND.trademark}.`,
+  alternates: { canonical: '/self-check' },
 }
 
 /**
