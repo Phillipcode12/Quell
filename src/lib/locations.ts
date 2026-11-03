@@ -120,8 +120,27 @@ export function locationPagesEnabled(): boolean {
  * exist at the 20,000-population floor, so 223 remain. Going further means
  * lowering that floor, which is a different decision from this one: it stops
  * publishing places that were already generated and name-checked and starts
- * reaching for smaller towns to fill a quota. */
-export const PUBLISHED_LOCATION_COUNT = 1_700
+ * reaching for smaller towns to fill a quota.
+ *
+ * (That was wrong: 223 left is room for two more raises of a hundred, not
+ * none. Corrected here rather than rewritten above, so the record reads in
+ * order.)
+ *
+ * **1,800 on 2026-11-03**, Phillip's call, in the same message as roughly a
+ * hundred new guide articles. **Made before the 2026-11-01 verdict was read.**
+ * The thresholds above depend on Search Console's page-indexing report, which
+ * needs his Google sign-in. He was told the right move might be fewer pages if
+ * the duplicate row had filled, and chose to go ahead. Site tracking since the
+ * last raise: eight visits in eight days, one from Google, to the home page.
+ *
+ * Checks: no new states, no slug collisions, no malformed slugs, no empty
+ * counties among the hundred, 32 new counties. The name scanner flagged
+ * **Prairie Village**, which is the real name of a city in Johnson County,
+ * Kansas (Elk Grove Village, IL has been live since the 1,400 raise). That is
+ * the fourth time the check has been wrong rather than the data. California's
+ * state page goes 282 -> 290 links; Illinois 102 -> 112. **123 places remain**
+ * at the 20,000 floor. */
+export const PUBLISHED_LOCATION_COUNT = 1_800
 
 /** The places that actually get a page, largest first. */
 export function publishedLocations(): Location[] {
