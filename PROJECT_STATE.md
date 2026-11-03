@@ -2659,12 +2659,38 @@ slashes 308 to the bare path. Fixed:
   now `noindex, follow`.** They were indexable, mostly with the home page's
   description.
 
-**Left for a business decision, not code:** Search Console's Merchant listings
-report flags `returnMethod`, `returnFees` and `deliveryTime` as missing. All
-three are absent on purpose — `/terms` does not say how returns are sent, who
-pays return postage, or how long delivery takes, and putting them in the markup
-would publish commitments nobody at Aurora has made (`structured-data.ts`).
-If Aurora decides them, they go in `/terms` first and the markup second.
+**The returns policy changed the same day — Phillip's decision** (`7996d7f`).
+Search Console's Merchant listings report had flagged `returnMethod`,
+`returnFees` and `deliveryTime` as missing, all absent on purpose because the
+terms did not commit to them. Asked how returns should work, the
+recommendation was to stop taking bottles back, and he agreed:
+
+| | Policy |
+| --- | --- |
+| Opened bottle | Not refundable (unchanged) |
+| Damaged, incorrect, broken seal | Free replacement within 30 days (unchanged) |
+| Unopened, changed their mind | **Product price refunded within 30 days of delivery — not sent back** |
+
+The reason: a returned bottle can never be resold, sealed or not, because its
+storage range (59–86°F) cannot be confirmed once it has left the shop — the
+same logic as FDA's returned-drug rule, 21 CFR 211.204. Collecting it cost the
+customer effort and the shop postage, to throw it away.
+
+Changed together: `/terms` §7 (dated November 3), `RETURNS_SUMMARY` beside the
+buy button ("30-day refunds on unopened bottles, no need to send them back"),
+the site helper, every guide that mentioned returns, and the markup —
+**`returnFees: FreeReturn`**, which is now true. **`returnMethod` stays out**:
+its only values are mail, in store and kiosk, each a return the shop does not
+ask for, so Google's warning on it is the accurate outcome.
+
+**Still open: `deliveryTime`.** It needs a realistic handling-and-transit
+figure from whoever packs orders — something the office can meet every week,
+holidays included. It goes in `/terms` first, the markup second.
+
+**Worth watching:** refunds are on the honor system (nothing comes back to
+prove a bottle was unopened). At one product price per claim the exposure is
+small, but if abuse ever appears, a one-refund-per-order or per-customer limit
+is the first lever.
 
 Search Console's Overview also offers **"Display your 1 products on the
 Shopping tab"** — Merchant Center free listings, the next free channel
