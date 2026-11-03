@@ -18,7 +18,7 @@ export const USING_GUIDES: Guide[] = [
     category: 'using',
     body: [
       {
-        p: `At the labeled dose, roughly a month, give or take. Quell’s directions are {directions}, which is six drops a day, and a {size} bottle holds a couple of hundred drops, depending on the size of each one.`,
+        p: `At the labeled dose, roughly a month, give or take. Quell’s directions read “{directions},” which is six drops a day, and a {size} bottle holds a couple of hundred drops, depending on the size of each one.`,
       },
       { h: 'Why the answer is approximate' },
       {
@@ -51,7 +51,7 @@ export const USING_GUIDES: Guide[] = [
     category: 'using',
     body: [
       {
-        p: `Not Quell. The label’s storage line is {storage}, which is room temperature. A household refrigerator normally runs well below the bottom of that range, so the fridge is outside what the label allows.`,
+        p: `Not Quell. The label’s storage line reads “{storage},” which is room temperature. A household refrigerator normally runs well below the bottom of that range, so the fridge is outside what the label allows.`,
       },
       { h: 'Other drops can differ' },
       {
@@ -80,7 +80,7 @@ export const USING_GUIDES: Guide[] = [
     category: 'using',
     body: [
       {
-        p: `Better not. Quell’s storage line is {storage}, and the top of that range is a warm day. A car parked in the sun climbs well past it, and does so fast, even when the weather outside does not feel extreme.`,
+        p: `Better not. Quell’s storage line reads “{storage},” and the top of that range is a warm day. A car parked in the sun climbs well past it, and does so fast, even when the weather outside does not feel extreme.`,
       },
       { h: 'Glove boxes and door pockets' },
       {
@@ -202,7 +202,7 @@ export const USING_GUIDES: Guide[] = [
       'Quell’s directions are one drop three times a day in each eye. What to do if that does not feel like enough, according to the label itself.',
     category: 'using',
     body: [
-      { p: `The directions are {directions}. Using more is not part of them.` },
+      { p: `The directions read: {directions}. Using more is not part of them.` },
       { h: '“In each eye”' },
       {
         p: `Three times a day in each eye is six drops a day in total. If you have been counting three, you have been using the right amount per eye.`,

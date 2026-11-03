@@ -90,7 +90,7 @@ export const FEATURED_GUIDES: Guide[] = [
         p: `Preservatives such as benzalkonium chloride are a common source of irritation for people using drops several times a day. That is the main reason preservative-free drops exist as a category, and it is why Quell leaves them out entirely.`,
       },
       {
-        p: `Frequency is the point. Quell’s directions are {directions}, every day. An ingredient you might never notice in an occasional drop is one your eyes meet six times a day at that rate, which is why people who use drops on a schedule tend to read the inactive list more carefully than anyone.`,
+        p: `Frequency is the point. Quell’s directions call for use every day: {directions}. An ingredient you might never notice in an occasional drop is one your eyes meet six times a day at that rate, which is why people who use drops on a schedule tend to read the inactive list more carefully than anyone.`,
       },
       { h: 'How to check a label yourself' },
       {
@@ -166,7 +166,7 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'Other information' },
       {
-        p: `This section collects practical details. Quell has two. The first, {milky}, saves a good deal of worry, because a milky brown drop looks unusual to anyone used to clear ones. {appearance}`,
+        p: `This section collects practical details. Quell has two. The first reads: {milky}. That line saves a good deal of worry, because a milky brown drop looks unusual to anyone used to clear ones. {appearance}`,
       },
       {
         p: `The second is storage: {storage}.`,
@@ -220,7 +220,7 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'How they are used' },
       {
-        p: `Directions vary from brand to brand, so the only ones that matter are on the bottle in your hand. Quell’s are {directions}. The panel adds one handling rule: {tip}.`,
+        p: `Directions vary from brand to brand, so the only ones that matter are on the bottle in your hand. Quell’s read: {directions}. The panel adds one handling rule: {tip}.`,
       },
       { h: 'Who should check first' },
       {
@@ -263,7 +263,7 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'What over the counter means for you' },
       {
-        p: `An over-the-counter product is one its label says you can use on your own, by following the directions and warnings. That puts the reading on you. For Quell it means {directions}, and it means knowing the caution that opens the warnings: {warnings}.`,
+        p: `An over-the-counter product is one its label says you can use on your own, by following the directions and warnings. That puts the reading on you. For Quell, that means following the directions — {directions} — and knowing the caution that opens the warnings: {warnings}.`,
       },
       { h: 'Why ordering online is simple' },
       {

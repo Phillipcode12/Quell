@@ -20,7 +20,7 @@ export const CHOOSING_GUIDES: Guide[] = [
       },
       { h: 'The label does the job instructions would' },
       {
-        p: `Without a doctor’s instructions, the Drug Facts panel is your instructions. It says what the product is for, how to use it and when to stop. Quell’s directions are {directions}.`,
+        p: `Without a doctor’s instructions, the Drug Facts panel is your instructions. It says what the product is for, how to use it and when to stop. Quell’s directions read: {directions}.`,
       },
       { h: 'The warnings still apply' },
       {

@@ -258,7 +258,7 @@ export const ORDERING_GUIDES: Guide[] = [
       },
       { h: 'What they should read' },
       {
-        p: `Over-the-counter drugs are meant to be used by following the label, so make sure they read it, on the carton or on the [Drug Facts](/drug-facts) page. The directions are {directions}, and the stop-use section tells them when to get advice.`,
+        p: `Over-the-counter drugs are meant to be used by following the label, so make sure they read it, on the carton or on the [Drug Facts](/drug-facts) page. The directions read “{directions},” and the stop-use section tells them when to get advice.`,
       },
       { h: 'If they use other drops or wear lenses' },
       {

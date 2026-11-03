@@ -223,7 +223,7 @@ export const FORMULA_GUIDES: Guide[] = [
       },
       { h: 'If you use drops often' },
       {
-        p: `Quell’s directions are {directions}, every day. At that frequency the inactive list matters more than it would for an occasional drop.`,
+        p: `Quell’s directions call for daily use: {directions}. At that frequency the inactive list matters more than it would for an occasional drop.`,
       },
       {
         p: `[What preservative-free means](/guides/what-does-preservative-free-mean) covers the rest of the picture.`,

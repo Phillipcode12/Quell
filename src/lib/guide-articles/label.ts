@@ -181,7 +181,7 @@ export const LABEL_GUIDES: Guide[] = [
       },
       { h: 'Storing it properly' },
       {
-        p: `The label’s storage line is {storage}. [How to store eye drops](/guides/how-to-store-eye-drops) covers where that leaves you at home and away.`,
+        p: `The label’s storage line reads: {storage}. [How to store eye drops](/guides/how-to-store-eye-drops) covers where that leaves you at home and away.`,
       },
     ],
   },
