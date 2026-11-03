@@ -2646,6 +2646,26 @@ of the cornerstone guides can go in on a later day.
 cornerstone guides (`components/home/Guides.tsx`), since the home page is the
 one page Google trusts and the guides were linked only from the footer.
 
+**A technical audit of the live site followed** (`79d2b18`). Clean: one H1 per
+page, no duplicate titles, http/www redirect to the apex, real 404s, trailing
+slashes 308 to the bare path. Fixed:
+
+- **Favicon 64 → 96px.** Google only shows a favicon in results at a multiple
+  of 48px square; at 64 the results showed a generic globe.
+- **Guide and city pages had no `og:image`.** A page that sets `openGraph`
+  replaces the layout's whole object, image included; both name
+  `/opengraph-image` again.
+- **Sign in, Create an account, both password pages and Track your order are
+  now `noindex, follow`.** They were indexable, mostly with the home page's
+  description.
+
+**Left for a business decision, not code:** Search Console's Merchant listings
+report flags `returnMethod`, `returnFees` and `deliveryTime` as missing. All
+three are absent on purpose — `/terms` does not say how returns are sent, who
+pays return postage, or how long delivery takes, and putting them in the markup
+would publish commitments nobody at Aurora has made (`structured-data.ts`).
+If Aurora decides them, they go in `/terms` first and the markup second.
+
 Search Console's Overview also offers **"Display your 1 products on the
 Shopping tab"** — Merchant Center free listings, the next free channel
 recommended to Phillip. Not started.
