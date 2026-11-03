@@ -7,6 +7,15 @@ Update it when something here stops being true.
 
 ## Start here — next session
 
+> **Latest state: §56 (2026-11-03), then §55 and §54.** The numbered list
+> below predates them and some items in it are closed; where the two disagree,
+> §56 is current. The repo now lives at **`C:\dev\quell`**.
+>
+> **Next dated item: 2026-11-17** — re-read Search Console (URL-prefix
+> property). It is the first report that reflects the canonical fix, the
+> guides and the indexing requests. If the city pages are still at zero
+> indexed, that is the point for `LOCATION_PAGES=off` (§56).
+
 **The store is live and takes real card payments.** `main` deploys to a shop
 with a working checkout, and Google indexes it, so mistakes are public. Apply
 migrations to Neon **before** pushing (§20) — the tracker in the root layout
@@ -2764,6 +2773,50 @@ benefit. Do not add it back.
 The order-status guide quotes the tracking page, which said "Cancelled"; the
 page now reads "Canceled" (US English). The database value `cancelled` is
 unchanged.
+
+### The copy pass, and end of day (`66bc593`)
+
+Phillip asked for the guides to be checked for AI register. Counted first,
+then read in full, per his standing note:
+
+- **British usage a Tennessee customer reads as foreign**: "parcel" (52) →
+  package; "post" in the mail sense (18) → ship/mail, **including the
+  city-page template**, so all 1,800 city pages changed; plus "to hand",
+  "sorted out", "tick", "got ready", "cupboard", "advert", "reached on" a
+  number.
+- **Repeated phrasing**: "rather than" 26 → 0, "carries" 25 → 8, "worth" 18
+  → 1, "that is" 50 → 28, "whatever" 11 → 4, "plain(ly)" 9 → 1.
+- **214 negations contracted** (don't, isn't). The uniformly formal form
+  read as generated. Left exact: the label's "Do not use", "not a
+  diagnosis", quotations of the terms. The pass hit one page address
+  (`…-cannot-be-returned`); the slug test caught it.
+
+**Housekeeping, checked rather than assumed:**
+
+| | |
+| --- | --- |
+| Vercel | 40 deployments (free, kept as rollback points); **no storage attached** — the old Neon resource is no longer linked to the project; 20 production variables, **every one referenced by the code** |
+| Database | **8.8 MB of 512 MB** free allowance; Visit is the largest table at 1,572 rows |
+| Local | `.next` build cache (774 MB) cleared — it regenerates on build. A stray `C:\dev\null` (a saved copy of the home page from an Oct 23 command that meant to discard it) deleted |
+| Live site | 25 checks pass: pages, canonicals, noindex, refund wording and markup, both sitemaps, all 119 guides rendering in US English, the icon |
+
+**Not touched, and flagged to Phillip:** the old copy of the repo in
+`OneDrive\Documents\quell` is out of date and off limits under his `C:\dev`
+rule — his to delete once he is happy `C:\dev\quell` is the real one (it is,
+and GitHub has every commit).
+
+**Open, in order:**
+
+1. **2026-11-05** — Chase gets the reorder reminder for Q-QRABWBQ9. Expected.
+2. **2026-11-17** — Search Console re-read (see the top of this file).
+3. **Delivery time** for the Merchant-listing markup — needs a realistic
+   figure from whoever packs orders; `/terms` first, markup second.
+4. **Michael** to review the guides (roughly 37,000 words of OTC promotional
+   copy, built from approved wording but not reviewed).
+5. **Bing Webmaster Tools** import — Phillip, two minutes.
+6. **Google Merchant Center** free listings — Phillip creates the account;
+   the product feed is a build job here.
+7. The rebuilt family sites linking to Quell — watch for them shipping.
 
 ### Traps hit this session
 
