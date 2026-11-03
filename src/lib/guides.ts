@@ -64,11 +64,17 @@ export type { Guide, GuideBlock, GuideCategory } from '@/lib/guide-types'
  * reach a guide — inside the verbatim stop-use warning, never as relief.
  *
  * Specifically **not** stated anywhere: a delivery window or a carrier name
- * (`lib/shipping.ts` explains why), who pays return postage (/terms does not
- * say), refund timing, or anything about changing or canceling an order.
+ * (`lib/shipping.ts` explains why), refund timing, or anything about changing
+ * or canceling an order. (Return postage was on this list until 2026-11-03,
+ * when /terms §7 settled it: unopened bottles are refunded without being sent
+ * back, so there is none.)
  */
 
-/** /terms §7: unopened, original packaging, within 30 days of delivery. */
+/**
+ * /terms §7: an unopened bottle is refunded within 30 days of delivery, and
+ * from 2026-11-03 it is not sent back. Damaged, incorrect or broken-seal
+ * orders are replaced within the same 30 days.
+ */
 export const RETURN_WINDOW_DAYS = 30
 
 /** When this set went live. Used for the Article markup, not shown as a date. */

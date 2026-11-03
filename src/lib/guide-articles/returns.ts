@@ -3,40 +3,49 @@ import type { Guide } from '@/lib/guide-types'
 /**
  * Returns, damaged parcels, refunds and contact. See `lib/guides.ts`.
  *
- * Everything here restates /terms §5–§7 and the privacy policy. **Who pays
- * return postage is deliberately never said**, because the terms do not say
- * it — the same gap `structured-data.ts` leaves in the return-policy markup.
+ * Everything here restates /terms §5–§7 and the privacy policy.
+ *
+ * **From 2026-11-03 unopened bottles are refunded without being sent back**
+ * (/terms §7, Phillip's decision). A returned bottle could not be resold —
+ * nobody can confirm how it was stored — so collecting it only cost postage.
+ * The guides say "refund", not "return", wherever an unopened bottle is meant,
+ * so none of them describes a parcel the customer never has to send.
  */
 export const RETURNS_GUIDES: Guide[] = [
   {
     slug: 'can-you-return-eye-drops',
     title: 'Can you return eye drops?',
     description:
-      'Unopened Quell can be returned within {returnDays} days of delivery; opened bottles cannot. The full rule, and what happens with damaged parcels.',
+      'Unopened Quell is refunded within {returnDays} days of delivery, and you keep the bottle. Opened bottles are not refundable. The full rule.',
     category: 'returns',
     body: [
       {
-        p: `Unopened ones, yes. Quell in its original packaging can be returned within {returnDays} days of delivery for a refund of the product price. Opened bottles cannot be returned.`,
+        p: `If it is unopened, you get your money back and do not have to send anything. Change your mind about an unopened bottle of Quell within {returnDays} days of delivery and the product price is refunded. Opened bottles are not refundable.`,
       },
       { h: 'The rule in full' },
       {
         list: [
-          'Unopened, in the original packaging.',
-          'Within {returnDays} days of delivery.',
-          'A refund of the product price. Original shipping is not refunded.',
+          'The bottle must be unopened.',
+          'Get in touch within {returnDays} days of delivery.',
+          'The product price is refunded. Original shipping is not.',
+          'Nothing needs to be posted back.',
         ],
+      },
+      { h: 'Why you keep the bottle' },
+      {
+        p: `A bottle that has left the shop cannot be confirmed to have been stored as its label requires, so it could never be sold again, sealed or not. Asking you to post it back would cost you time and cost the shop postage, all to collect something that would be thrown away.`,
       },
       { h: 'Why opened bottles are excluded' },
       {
-        p: `For health and safety reasons. A bottle that has left the shop’s control cannot be confirmed sterile, so it cannot be resold, and so it cannot be taken back. [Why opened eye drops cannot be returned](/guides/why-opened-eye-drops-cannot-be-returned) goes into it.`,
+        p: `For health and safety reasons, opened eye drops cannot be refunded, returned or resold. [Why opened eye drops cannot be returned](/guides/why-opened-eye-drops-cannot-be-returned) goes into it.`,
       },
       { h: 'Damaged, wrong, or with a broken seal' },
       {
-        p: `That is a separate rule from returns. If an order arrives damaged, incorrect, or with a broken tamper seal, contact us within {returnDays} days and it is replaced at no charge. Returns are for unopened bottles you no longer want; when something is wrong with the order itself, the replacement rule is the one to use.`,
+        p: `That is a separate rule. If an order arrives damaged, incorrect, or with a broken tamper seal, contact us within {returnDays} days and it is replaced at no charge.`,
       },
-      { h: 'Starting a return' },
+      { h: 'Asking for a refund' },
       {
-        p: `Call {phone}, {hours}, with your order number. The [terms](/terms) hold the authoritative wording. If you are buying several bottles, leaving the spares sealed until you need them keeps the option open.`,
+        p: `Call {phone}, {hours}, with your order number. The [terms](/terms) hold the authoritative wording.`,
       },
     ],
   },
@@ -58,7 +67,7 @@ export const RETURNS_GUIDES: Guide[] = [
       { h: 'What you can still do' },
       {
         list: [
-          'Return unopened bottles in their original packaging within {returnDays} days of delivery.',
+          'Get a refund on unopened bottles within {returnDays} days of delivery, without sending them back.',
           'Report a damaged or incorrect order, or a broken tamper seal, within {returnDays} days for a free replacement.',
         ],
       },
@@ -75,54 +84,54 @@ export const RETURNS_GUIDES: Guide[] = [
 
   {
     slug: 'how-to-return-an-unopened-bottle',
-    title: 'How to return an unopened bottle of Quell',
+    title: 'Refunds on unopened bottles of Quell',
     description:
-      'Returning unopened Quell: the conditions, the time limit, what is refunded, and the phone call that starts it.',
+      'Changed your mind about an unopened bottle? How the refund works, the time limit, what is refunded, and why nothing needs to be sent back.',
     category: 'returns',
     body: [
       {
-        p: `Call {phone}, {hours}, with your order number, and say you would like to return unopened bottles. They need to be unopened, in their original packaging, and within {returnDays} days of delivery.`,
+        p: `Call {phone}, {hours}, with your order number, and say which unopened bottles you no longer want. If it is within {returnDays} days of delivery, the product price is refunded. You do not need to post anything back.`,
       },
       { h: 'Have this ready' },
       {
         list: [
           'The order number, from your confirmation email.',
-          'How many bottles you want to return.',
-          'That they are unopened and still in their packaging.',
+          'How many bottles you want refunded.',
+          'That they are unopened.',
         ],
       },
       { h: 'What is refunded' },
       {
-        p: `The product price of the bottles you send back. Original shipping is not refunded. [What is refunded](/guides/what-is-refunded-on-a-return) sets out each case side by side.`,
+        p: `The product price of those bottles. Original shipping is not refunded. [What is refunded](/guides/what-is-refunded-on-a-return) sets out each case side by side.`,
       },
       { h: 'When the clock starts' },
       {
         p: `The {returnDays} days count from delivery, not from the day you ordered, so a parcel that took a while to arrive does not eat into your time to decide.`,
       },
-      { h: 'Keep them sealed in the meantime' },
+      { h: 'What to do with the bottle' },
       {
-        p: `Store them the way the label says while the return is arranged — {storage} — and resist opening one to check.`,
+        p: `It is yours to keep. It cannot go back on sale, because nobody can confirm how it was stored once it left the shop, which is exactly why you are not asked to send it.`,
       },
-      { h: 'Not a return: a replacement' },
+      { h: 'Not a refund: a replacement' },
       {
-        p: `If what you received was damaged, incorrect, or had a broken tamper seal, that is not a return. It is replaced at no charge if you report it within {returnDays} days, so mention it when you call.`,
+        p: `If what you received was damaged, incorrect, or had a broken tamper seal, it is replaced at no charge instead, if you report it within {returnDays} days. Mention it when you call.`,
       },
     ],
   },
 
   {
     slug: 'what-is-refunded-on-a-return',
-    title: 'What is refunded when you return Quell?',
+    title: 'What is refunded on a Quell order?',
     description:
-      'What you get back in each case: unopened returns, orders that cannot be filled, listing mistakes, damaged parcels and opened bottles.',
+      'What you get back in each case: unopened bottles you no longer want, orders that cannot be filled, listing mistakes, damaged parcels and opened bottles.',
     category: 'returns',
     body: [
       {
         p: `It depends on why the money is coming back. The terms cover five situations, and each works differently.`,
       },
-      { h: 'Unopened bottles you return' },
+      { h: 'Unopened bottles you no longer want' },
       {
-        p: `A refund of the product price. Original shipping is not refunded. The bottles must be unopened, in their original packaging, and within {returnDays} days of delivery.`,
+        p: `A refund of the product price, within {returnDays} days of delivery, and the bottles stay with you. Original shipping is not refunded.`,
       },
       { h: 'An order that cannot be filled' },
       {
@@ -141,7 +150,7 @@ export const RETURNS_GUIDES: Guide[] = [
         p: `Not refundable, for the health and safety reason given in the [terms](/terms). [Why opened drops cannot be returned](/guides/why-opened-eye-drops-cannot-be-returned) explains it.`,
       },
       {
-        p: `Keep your confirmation email. It shows the product price and the shipping on separate lines, which is how the amount for an unopened return is worked out. Questions about a refund: {phone}, {hours}, with your order number.`,
+        p: `Keep your confirmation email. It shows the product price and the shipping on separate lines, which is how the refund on an unopened bottle is worked out. Questions about a refund: {phone}, {hours}, with your order number.`,
       },
     ],
   },
@@ -224,7 +233,7 @@ export const RETURNS_GUIDES: Guide[] = [
       },
       { h: 'Remember the default' },
       {
-        p: `The buy panel starts at two bottles. If you meant to order one and two arrived, look at the confirmation email: it shows the quantity that was paid for. If it says two, that is what was ordered, and the unopened extra can be returned within {returnDays} days of delivery.`,
+        p: `The buy panel starts at two bottles. If you meant to order one and two arrived, look at the confirmation email: it shows the quantity that was paid for. If it says two, that is what was ordered, and the unopened extra can be refunded within {returnDays} days of delivery, without sending it back.`,
       },
       { h: 'If the confirmation itself looks wrong' },
       {
@@ -264,7 +273,7 @@ export const RETURNS_GUIDES: Guide[] = [
       { h: 'What we can help with' },
       {
         list: [
-          'Orders: tracking, damaged parcels and returns of unopened bottles.',
+          'Orders: tracking, damaged parcels and refunds on unopened bottles.',
           'The product: what the label says, the ingredients, storage.',
           'Your information: the privacy policy says requests to access, correct or delete it are made by phone or by mail.',
         ],
@@ -291,7 +300,7 @@ export const RETURNS_GUIDES: Guide[] = [
           'The order number.',
           'The email address you used at checkout.',
           'The name and shipping address on the order.',
-          'What the problem is: missing, damaged, incorrect, a broken seal, or a return.',
+          'What the problem is: missing, damaged, incorrect, a broken seal, or a refund on an unopened bottle.',
           'What the tracking shows, if the parcel has shipped.',
         ],
       },
@@ -324,7 +333,7 @@ export const RETURNS_GUIDES: Guide[] = [
       {
         list: [
           'Tracking, delivery and damaged parcels.',
-          'Returning unopened bottles.',
+          'Refunds on unopened bottles.',
           'What the label says, the ingredients, and storage.',
         ],
       },

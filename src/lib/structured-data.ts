@@ -256,19 +256,23 @@ function shippingDetails(): JsonLd[] {
 /**
  * The returns policy, as far as it is actually written down.
  *
- * `/terms` says: unopened, original packaging, within 30 days of delivery,
- * refund of the product price, original shipping not refunded.
+ * `/terms` §7, from 2026-11-03: an unopened bottle is refunded within 30 days
+ * of delivery **without being sent back**; original shipping is not refunded;
+ * opened bottles are not refundable.
  *
- * **What is deliberately absent is who pays return postage**, because the
- * terms do not say. Google lists `returnFees` as a recommended field and will
- * note it missing — that warning is the correct outcome. Guessing it would
- * publish a commitment nobody at Aurora has made, to every search engine at
- * once, and this is a drug company that has already been cited for website
- * copy it could not support.
+ * **`returnFees` is `FreeReturn`** — true, because the customer pays nothing:
+ * there is nothing to post. Until that policy was decided this field was left
+ * out on purpose, since the old terms never said who paid return postage.
  *
- * `merchantReturnLink` is what carries the conditions. The headline "30 days"
- * is true; "unopened, in original packaging" is the part a structured field
- * cannot express, so the link to the authoritative text goes with it.
+ * **`returnMethod` is still absent, deliberately.** Its only values are by
+ * mail, in store and at a kiosk, and every one would describe a return this
+ * shop does not ask for. Google notes the field as missing; that warning is
+ * the accurate outcome, and a false method published to every search engine is
+ * not — this is a drug company that has already been cited for website copy it
+ * could not support.
+ *
+ * `merchantReturnLink` carries the conditions a field cannot express
+ * ("unopened", "no need to send it back"), so it goes with the headline days.
  */
 function returnPolicy(base: string): JsonLd {
   return {
@@ -276,6 +280,7 @@ function returnPolicy(base: string): JsonLd {
     applicableCountry: SHIPPABLE_COUNTRIES[0],
     returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
     merchantReturnDays: 30,
+    returnFees: 'https://schema.org/FreeReturn',
     merchantReturnLink: `${base}/terms`,
   }
 }

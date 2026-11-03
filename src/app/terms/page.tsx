@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/terms' },
 }
 
-const LAST_UPDATED = 'August 18, 2026'
+const LAST_UPDATED = 'November 3, 2026'
 
 export default function TermsPage() {
   return (
@@ -101,15 +101,33 @@ export default function TermsPage() {
             delays caused by the carrier or by an incorrect address.
           </p>
 
-          <h2>7. Returns</h2>
+          {/* Rewritten 2026-11-03, Phillip's decision. Unopened bottles are now
+              refunded without being sent back: a returned bottle could not be
+              resold anyway (see below), so collecting it cost postage for
+              nothing. RETURN_WINDOW_DAYS in lib/guides.ts and returnPolicy()
+              in lib/structured-data.ts restate this; change all three together. */}
+          <h2>7. Returns and refunds</h2>
           <p>
-            Unopened {BRAND.trademark} in its original packaging can be returned
-            within 30 days of delivery for a refund of the product price.
-            Original shipping is not refunded. For health and safety reasons,
-            opened eye drops cannot be returned or resold — a bottle that has
-            left our control cannot be confirmed sterile. If your order arrives
+            <strong>Unopened bottles.</strong> If you change your mind about an
+            unopened bottle of {BRAND.trademark}, contact us within 30 days of
+            delivery and we will refund the product price.{' '}
+            <strong>You do not need to send it back.</strong> A bottle that has
+            left our control cannot be confirmed to have been stored as its
+            label requires, so it could not be resold. Original shipping is not
+            refunded.
+          </p>
+          <p>
+            <strong>Opened bottles.</strong> For health and safety reasons,
+            opened eye drops cannot be refunded, returned or resold.
+          </p>
+          <p>
+            <strong>Damaged or incorrect orders.</strong> If your order arrives
             damaged, incorrect, or with a broken tamper seal, contact us within
             30 days and we will replace it at no charge.
+          </p>
+          <p>
+            For a refund or a replacement, call {COMPANY.phone} ({COMPANY.hours})
+            with your order number.
           </p>
 
           <h2>8. Acceptable use</h2>

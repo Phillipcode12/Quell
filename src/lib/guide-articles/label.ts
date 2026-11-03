@@ -405,7 +405,7 @@ export const LABEL_GUIDES: Guide[] = [
       },
       { h: 'Spares you will not get to' },
       {
-        p: `Unopened bottles in their original packaging can be returned within {returnDays} days of delivery. [How to store eye drops](/guides/how-to-store-eye-drops) covers keeping the rest in good condition.`,
+        p: `Unopened bottles can be refunded within {returnDays} days of delivery, with nothing to send back. [How to store eye drops](/guides/how-to-store-eye-drops) covers keeping the rest in good condition.`,
       },
     ],
   },

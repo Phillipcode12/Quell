@@ -284,7 +284,7 @@ export const USING_GUIDES: Guide[] = [
     slug: 'keeping-spare-bottles',
     title: 'Keeping spare bottles of eye drops',
     description:
-      'Ordering several bottles at once? How to store the spares, why to leave them sealed, and what the returns policy means for unopened bottles.',
+      'Ordering several bottles at once? How to store the spares, why to leave them sealed, and what the refund policy means for unopened bottles.',
     category: 'using',
     body: [
       {
@@ -292,7 +292,7 @@ export const USING_GUIDES: Guide[] = [
       },
       { h: 'Why sealed' },
       {
-        p: `Two reasons. A sealed bottle is one you can still return: unopened bottles in their original packaging can come back within {returnDays} days of delivery. And opening a bottle you will not use for weeks gains you nothing.`,
+        p: `Two reasons. A sealed bottle is one you can still get a refund on: unopened bottles can be refunded within {returnDays} days of delivery, with no need to send them back. And opening a bottle you will not use for weeks gains you nothing.`,
       },
       {
         p: `Those {returnDays} days run from delivery, so if you have over-ordered, decide early. After that, the spares are yours to keep in range until you need them.`,

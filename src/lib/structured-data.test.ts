@@ -202,17 +202,25 @@ describe('shipping and returns published to search engines', () => {
   it('states the return window and links to the conditions', () => {
     const policy = offer().hasMerchantReturnPolicy as Record<string, unknown>
     expect(policy.merchantReturnDays).toBe(30)
-    // "Unopened, in original packaging" cannot be expressed as a field, so the
-    // link to the authoritative text has to be there.
+    // "Unopened" and "nothing needs to be sent back" cannot be expressed as
+    // fields, so the link to the authoritative text has to be there.
     expect(policy.merchantReturnLink).toMatch(/\/terms$/)
   })
 
-  it('does not claim who pays return postage', () => {
-    // /terms does not say. Guessing publishes a commitment nobody at Aurora
-    // has made. Google noting the field as missing is the correct outcome.
+  it('says returns cost the customer nothing, because nothing is sent back', () => {
+    // /terms §7 from 2026-11-03: unopened bottles are refunded without being
+    // returned, so there is no return postage for anyone to pay.
     const policy = offer().hasMerchantReturnPolicy as Record<string, unknown>
-    expect(policy.returnFees).toBeUndefined()
+    expect(policy.returnFees).toBe('https://schema.org/FreeReturn')
     expect(policy.returnShippingFeesAmount).toBeUndefined()
+  })
+
+  it('does not invent a return method', () => {
+    // By mail, in store or at a kiosk would each describe a return this shop
+    // does not ask for. Google noting the field as missing is the accurate
+    // outcome.
+    const policy = offer().hasMerchantReturnPolicy as Record<string, unknown>
+    expect(policy.returnMethod).toBeUndefined()
   })
 })
 

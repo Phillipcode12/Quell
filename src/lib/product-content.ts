@@ -154,11 +154,17 @@ export const DRUG_FACTS = {
  * The returns policy in one line, for the point of purchase.
  *
  * The page at /terms is the authoritative text and this is only a summary, so
- * it says less rather than saying it differently: unopened, 30 days. It
- * deliberately omits the refund amount and the damaged-order replacement,
- * because a summary that starts listing exceptions is a policy with two versions.
+ * it says less rather than saying it differently: unopened, 30 days, nothing
+ * to send back. It deliberately omits the refund amount and the damaged-order
+ * replacement, because a summary that starts listing exceptions is a policy
+ * with two versions.
+ *
+ * "Refunds" rather than "returns" from 2026-11-03, when unopened bottles
+ * stopped being sent back (/terms §7). "Returns" would now promise a process
+ * the customer does not go through.
  */
-export const RETURNS_SUMMARY = '30-day returns on unopened bottles'
+export const RETURNS_SUMMARY =
+  '30-day refunds on unopened bottles, no need to send them back'
 
 /**
  * The appearance reassurance shown beside the buy button, written by Phillip.

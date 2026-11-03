@@ -22,7 +22,7 @@ export const ORDERING_GUIDES: Guide[] = [
       },
       { h: 'What an account adds' },
       {
-        p: `An account lets you sign in and see all your orders in one place. It is not needed to buy, to track a parcel, or to return an unopened bottle.`,
+        p: `An account lets you sign in and see all your orders in one place. It is not needed to buy, to track a parcel, or to get a refund on an unopened bottle.`,
       },
       {
         p: `Ready? [See prices and buy](/#buy), or follow the [step-by-step ordering guide](/guides/how-to-order-quell-step-by-step) for a look at each screen first.`,
@@ -206,7 +206,7 @@ export const ORDERING_GUIDES: Guide[] = [
       },
       { h: 'Do not overbuy' },
       {
-        p: `Spare bottles need the same conditions as the one in use: {storage}. Only unopened bottles can be returned, within {returnDays} days of delivery. If you are torn, two is a sensible middle.`,
+        p: `Spare bottles need the same conditions as the one in use: {storage}. Only unopened bottles can be refunded, within {returnDays} days of delivery. If you are torn, two is a sensible middle.`,
       },
       {
         p: `The [buy panel](/#buy) shows the delivered price at every quantity, and [how long a bottle lasts](/guides/how-long-does-a-bottle-of-eye-drops-last) goes through the arithmetic.`,
@@ -348,7 +348,7 @@ export const ORDERING_GUIDES: Guide[] = [
       },
       { h: 'How many this time' },
       {
-        p: `{freeBottles} bottles or more ship free; below that it is a flat {shipping}. Unopened bottles can be returned within {returnDays} days of delivery, so adding a spare carries little risk.`,
+        p: `{freeBottles} bottles or more ship free; below that it is a flat {shipping}. Unopened bottles can be refunded within {returnDays} days of delivery without being sent back, so adding a spare carries little risk.`,
       },
       { h: 'If the reminder brought you here' },
       {
@@ -422,7 +422,7 @@ export const ORDERING_GUIDES: Guide[] = [
     category: 'ordering',
     body: [
       {
-        p: `The drop is the same; what surrounds it is different. Online you can read the whole label at leisure before buying, but you wait for delivery and handle returns by phone. Quell is sold online and posted to you, so this is the route for it.`,
+        p: `The drop is the same; what surrounds it is different. Online you can read the whole label at leisure before buying, but you wait for delivery and sort out refunds or problems by phone. Quell is sold online and posted to you, so this is the route for it.`,
       },
       { h: 'You read the label first, not in an aisle' },
       {
@@ -438,7 +438,7 @@ export const ORDERING_GUIDES: Guide[] = [
       },
       { h: 'Returns work differently' },
       {
-        p: `Unopened bottles can come back within {returnDays} days of delivery; opened ones cannot. A parcel that arrives damaged is replaced at no charge if you report it within the same window.`,
+        p: `Change your mind about an unopened bottle within {returnDays} days of delivery and it is refunded without being sent back; opened ones are not refundable. A parcel that arrives damaged is replaced at no charge if you report it within the same window.`,
       },
     ],
   },

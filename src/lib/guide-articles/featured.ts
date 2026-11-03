@@ -42,7 +42,7 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'Know the returns policy before you need it' },
       {
-        p: `Eye drops are not like shoes. A bottle that has left the seller’s control cannot be confirmed sterile, so opened drops generally cannot go back, and that is the rule here. Quell’s policy in one line is {returns}: unopened bottles in their original packaging can come back within {returnDays} days of delivery for a refund of the product price. Original shipping is not refunded.`,
+        p: `Eye drops are not like shoes. A bottle that has left the seller’s control cannot be confirmed sterile, so opened drops generally cannot be refunded, and that is the rule here. For unopened bottles Quell’s policy is simple: change your mind within {returnDays} days of delivery and the product price is refunded. You do not post the bottle back. Original shipping is not refunded.`,
       },
       {
         p: `A good policy also covers the parcel that arrives in bad shape. This one does: if an order arrives damaged, incorrect, or with a broken tamper seal, contact us within {returnDays} days and it is replaced at no charge. The full wording is in the [terms](/terms).`,
@@ -332,7 +332,7 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'Spare bottles' },
       {
-        p: `If you order several at once, keep the unopened ones in the same conditions as the one in use. There is a practical reason to leave spares sealed until you need them, too: unopened bottles in their original packaging can be returned within {returnDays} days of delivery, and opened ones cannot.`,
+        p: `If you order several at once, keep the unopened ones in the same conditions as the one in use. There is a practical reason to leave spares sealed until you need them, too: unopened bottles can be refunded within {returnDays} days of delivery without being sent back, and opened ones cannot.`,
       },
       { h: 'Away from home' },
       {
@@ -457,7 +457,7 @@ export const FEATURED_GUIDES: Guide[] = [
         p: `The site ships within the United States only and does not promise a delivery date, so order with time to spare rather than counting on a parcel arriving the day before you leave. Every order gets an email when it ships, with a tracking number when one is available, and you can check on it at any time from the [order tracking page](/orders).`,
       },
       {
-        p: `{freeBottles} bottles or more ship free, which can make sense ahead of a long trip. Unopened spares in their original packaging can be returned within {returnDays} days of delivery if you end up not needing them.`,
+        p: `{freeBottles} bottles or more ship free, which can make sense ahead of a long trip. Unopened spares can be refunded within {returnDays} days of delivery if you end up not needing them, and they do not have to be posted back.`,
       },
       { h: 'If something goes wrong while you are away' },
       {

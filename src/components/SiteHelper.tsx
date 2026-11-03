@@ -124,7 +124,7 @@ export const TOPICS: Topic[] = [
     id: 'returns',
     question: "What's your returns policy?",
     answer:
-      'Unopened and in the original packaging, within 30 days. Opened drops cannot be returned, for sterility.',
+      'Changed your mind about an unopened bottle? Call within 30 days of delivery and we refund the product price — no need to send it back. Opened drops cannot be refunded, for safety. Damaged or wrong orders are replaced free.',
     href: '/terms',
     linkLabel: 'Read the terms',
   },

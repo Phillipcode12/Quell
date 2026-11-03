@@ -35,7 +35,7 @@ export const SHIPPING_GUIDES: Guide[] = [
         p: `A delivery date. The site does not promise one, and the [terms](/terms) describe delivery estimates as estimates only. Every shipped order gets an email, with tracking where a number is available.`,
       },
       {
-        p: `Shipping is also not refunded if you return an unopened bottle; the refund covers the product price.`,
+        p: `Shipping is also not refunded if you change your mind about an unopened bottle; the refund covers the product price, and there is nothing to send back.`,
       },
     ],
   },
@@ -64,7 +64,7 @@ export const SHIPPING_GUIDES: Guide[] = [
       },
       { h: 'Is three right for you?' },
       {
-        p: `Three bottles is a longer supply than many people buy at once. Keep the spares sealed and in range: {storage}. Unopened bottles can be returned within {returnDays} days of delivery if you overestimate.`,
+        p: `Three bottles is a longer supply than many people buy at once. Keep the spares sealed and in range: {storage}. If you overestimate, unopened bottles can be refunded within {returnDays} days of delivery, without sending them back.`,
       },
       { h: 'No code needed' },
       {
@@ -382,7 +382,7 @@ export const SHIPPING_GUIDES: Guide[] = [
       },
       { h: 'Spares' },
       {
-        p: `Bottles you will not open yet can stay in their original packaging. Unopened, they can be returned within {returnDays} days of delivery if you do not need them.`,
+        p: `Bottles you will not open yet can stay in their original packaging. Unopened, they can be refunded within {returnDays} days of delivery if you do not need them, and you do not have to send them back.`,
       },
       { h: 'If something is wrong' },
       {
