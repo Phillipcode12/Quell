@@ -7,6 +7,7 @@ import { BuySection } from '@/components/home/BuySection'
 import { HowToUse } from '@/components/home/HowToUse'
 import { Lifestyle } from '@/components/home/Lifestyle'
 import { Faq } from '@/components/home/Faq'
+import { Guides } from '@/components/home/Guides'
 import { FinalCta } from '@/components/home/FinalCta'
 import { JsonLd } from '@/components/JsonLd'
 import { faqSchema, productSchema } from '@/lib/structured-data'
@@ -80,6 +81,10 @@ export default async function HomePage() {
       <HowToUse />
       <Lifestyle />
       <Faq />
+      {/* After the FAQ, before the closing pitch: the guides answer the
+          questions the FAQ does not, and this is the only indexed page, so
+          its links are what lead a crawler to them (§56). */}
+      <Guides />
       <FinalCta />
     </>
   )
