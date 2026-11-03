@@ -40,10 +40,12 @@ const STATUS: Record<string, { label: string; className: string; note: string }>
       className: 'border-emerald-500/40 bg-emerald-500/10 text-emerald-200',
       note: 'On its way. Check your email for tracking details.',
     },
+    // The key is the database value and keeps its spelling; what a customer
+    // reads is US English, like the rest of the site.
     cancelled: {
-      label: 'Cancelled',
+      label: 'Canceled',
       className: 'border-red-500/40 bg-red-500/10 text-red-300',
-      note: 'This order was cancelled. You were not charged, or you were refunded.',
+      note: 'This order was canceled. You were not charged, or you were refunded.',
     },
   }
 

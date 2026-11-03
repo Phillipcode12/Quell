@@ -44,8 +44,8 @@ const STATIC_LINKS = new Set([
 ])
 
 describe('guides: the set', () => {
-  it('is 110 guides, ten of them featured', () => {
-    expect(guides).toHaveLength(110)
+  it('is 119 guides, ten of them featured', () => {
+    expect(guides).toHaveLength(119)
     expect(guides.filter((g) => g.featured)).toHaveLength(10)
   })
 
@@ -265,7 +265,7 @@ describe('guides: the kill switch', () => {
   afterEach(() => vi.unstubAllEnvs())
 
   it('publishes them by default', () => {
-    expect(publishedGuides()).toHaveLength(110)
+    expect(publishedGuides()).toHaveLength(119)
   })
 
   it.each(['off', '0', 'false', ' OFF '])('withdraws them all for GUIDE_PAGES=%j', (v) => {

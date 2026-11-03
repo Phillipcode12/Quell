@@ -284,4 +284,156 @@ export const CHOOSING_GUIDES: Guide[] = [
       },
     ],
   },
+
+  // The second set of ten, added 2026-11-03 at Phillip's request. Each answers
+  // a question the first 110 did not; guides.test.ts checks they stay distinct.
+  {
+    slug: 'how-the-dry-eye-self-check-scores-you',
+    title: 'How the dry eye self-check scores your answers',
+    description:
+      'Inside the self-check: the two answer scales, the four result bands, the evaporation pattern, and the safety question that skips the score.',
+    category: 'choosing',
+    body: [
+      {
+        p: `The [self-check](/self-check) adds up your answers to the symptom questions into a single score, places it in one of four bands, and separately looks for a pattern. One question can override all of that, and it comes last.`,
+      },
+      { h: 'Two kinds of question, two scales' },
+      {
+        p: `Questions about how often something happens over a week are answered Never, Some days, Most days or Every day. Questions about what happens around a specific trigger, like screen use or moving air, are answered Never, Occasionally, Frequently or Every time. Days would be the wrong unit for those, so they get their own.`,
+      },
+      { h: 'The four bands' },
+      {
+        list: ['Minimal', 'Mild and occasional', 'Moderate, most days', 'Significant, daily'],
+      },
+      {
+        p: `One question, about when your eyes are at their worst, is not scored at all. If you say you do not use drops, the question about how long drops help is left out of the score rather than counted as zero.`,
+      },
+      { h: 'The pattern' },
+      {
+        p: `Some answers point toward a tear film that evaporates too quickly. The result says whether your answers fit that pattern or whether the picture is unclear. It describes what your answers said; it is not a diagnosis.`,
+      },
+      { h: 'The safety question' },
+      {
+        p: `The last question asks whether any warning signs apply right now, among them eye pain, changes in vision, and symptoms lasting more than 72 hours. Tick any of them and there is no score at all, just one recommendation: see an eye care professional.`,
+      },
+      { h: 'What it never says' },
+      {
+        p: `No result tells you to buy anything, and none names a product. Quell’s Uses section is a separate matter: {uses}.`,
+      },
+    ],
+  },
+
+  {
+    slug: 'reading-eye-drop-reviews-online',
+    title: 'How to read eye drop reviews online',
+    description:
+      'What a review can and cannot tell you about an eye drop, what to look for, and how the reviews on Quell’s own site were collected.',
+    category: 'choosing',
+    body: [
+      {
+        p: `Read reviews for what they are good at: how a drop feels, how easy the bottle is to use, how it fits someone’s day. Do not read them as a guide to what a drop can do. That is the label’s job.`,
+      },
+      { h: 'Useful signs' },
+      {
+        list: [
+          'Specific detail: the texture, the bottle, how often they use it.',
+          'A reviewer who describes their own routine rather than making promises about yours.',
+          'A mix of experiences, not a wall of identical praise.',
+        ],
+      },
+      { h: 'Signs to be wary of' },
+      {
+        list: [
+          'A review that says a drop fixed a condition its label does not mention.',
+          'Claims that one product beats every other on the shelf.',
+          'Pressure to buy now, or a code that comes with the review.',
+        ],
+      },
+      { h: 'The label outranks the review' },
+      {
+        p: `A customer’s experience is real, but it cannot widen what a product is for. For Quell, the Uses section reads: {uses}. If a review says more than that, believe the label.`,
+      },
+      { h: 'Quell’s own reviews' },
+      {
+        p: `The [reviews](/reviews) page quotes people who bought Quell and agreed to have their words published. Their names were changed for privacy, which the page says plainly; nothing else was edited. There are no star ratings on this site, because none would be honest until there are enough real reviews to average.`,
+      },
+    ],
+  },
+
+  {
+    slug: 'questions-to-ask-your-eye-doctor',
+    title: 'Questions to ask your eye doctor about dry eyes',
+    description:
+      'Making the most of an appointment about dry or irritated eyes: what to bring, what to ask, and the warning signs that mean booking sooner.',
+    category: 'choosing',
+    body: [
+      {
+        p: `An appointment goes further when you arrive with notes and leave with answers. These are the questions worth asking an eye doctor about eyes that feel dry or irritated, whatever you end up using.`,
+      },
+      { h: 'Questions about the cause' },
+      {
+        list: [
+          'What do you think is behind my symptoms?',
+          'Could my screen time, contact lenses, or the air at home or work be part of it?',
+          'Is there anything you would want to rule out?',
+        ],
+      },
+      { h: 'Questions about what to use' },
+      {
+        list: [
+          'Is an over-the-counter lubricating drop reasonable for me?',
+          'Are there ingredients I should avoid, given my allergies?',
+          'How does a drop fit around anything else you have prescribed?',
+        ],
+      },
+      { h: 'Questions about what comes next' },
+      {
+        list: [
+          'What should make me call you before my next visit?',
+          'When should I come back?',
+        ],
+      },
+      { h: 'What to bring' },
+      {
+        p: `The products you use, or photos of their labels, and a short note of when symptoms started and what makes them better or worse. A [simple eye drop log](/guides/keeping-an-eye-drop-log) covers most of that.`,
+      },
+      { h: 'Do not wait for an appointment if' },
+      {
+        p: `You have sudden vision loss, eye pain or an eye injury; those need emergency care. Quell’s label adds its own guidance: {stopUse}`,
+      },
+    ],
+  },
+
+  {
+    slug: 'optometrist-or-ophthalmologist',
+    title: 'Optometrist or ophthalmologist: which to see?',
+    description:
+      'The difference between an optometrist and an ophthalmologist, which one to start with for eyes that feel dry, and when to go straight to emergency care.',
+    category: 'choosing',
+    body: [
+      {
+        p: `For most everyday eye questions, either is a reasonable first stop, and many people start with an optometrist. The difference is mainly in training and in what each can do.`,
+      },
+      { h: 'Optometrists' },
+      {
+        p: `Optometrists hold a Doctor of Optometry degree. They examine eyes, prescribe glasses and contact lenses, and look after many common eye problems. Exactly what they are allowed to do varies from state to state.`,
+      },
+      { h: 'Ophthalmologists' },
+      {
+        p: `Ophthalmologists are medical doctors who specialize in the eye. They can do everything above and also perform eye surgery. An optometrist will refer you to one when something calls for it.`,
+      },
+      { h: 'Opticians are different again' },
+      {
+        p: `Opticians fit and adjust glasses and sometimes contact lenses from a prescription. They do not examine eyes.`,
+      },
+      { h: 'Where to start with dry or irritated eyes' },
+      {
+        p: `An optometrist is usually the simplest place to begin, and often the quickest to book. Bring the labels of anything you have been using; [questions to ask your eye doctor](/guides/questions-to-ask-your-eye-doctor) has a list worth taking along.`,
+      },
+      { h: 'When it cannot wait' },
+      {
+        p: `Sudden vision loss, eye pain or an eye injury need emergency care, not an appointment next week. For a medical emergency, call your local emergency number.`,
+      },
+    ],
+  },
 ]

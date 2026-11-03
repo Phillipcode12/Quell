@@ -463,4 +463,39 @@ export const RETURNS_GUIDES: Guide[] = [
       },
     ],
   },
+
+  // The second set of ten, added 2026-11-03.
+  {
+    slug: 'why-we-do-not-ask-for-bottles-back',
+    title: 'Why we don’t ask for unopened bottles back',
+    description:
+      'Quell refunds unopened bottles without asking for them to be posted back. The reasoning behind that policy, and what it means for you.',
+    category: 'returns',
+    body: [
+      {
+        p: `Because a bottle that comes back could never be sold again, so posting it would cost you a trip and cost the shop postage, all to end with the bottle in the trash. Refunding without the parcel skips the waste.`,
+      },
+      { h: 'Why a sealed bottle still cannot be resold' },
+      {
+        p: `Quell’s label sets a storage range: {storage}. Once a bottle has left the shop, nobody can confirm it stayed inside that range, whether it sat in a hot car or a cold mailbox on the way back. A drug whose storage cannot be vouched for is not something to put in the next customer’s hands.`,
+      },
+      { h: 'What it means for you' },
+      {
+        list: [
+          'Change your mind about an unopened bottle within {returnDays} days of delivery and the product price is refunded.',
+          'No label to print, no parcel to post, no trip to a drop-off point.',
+          'Original shipping is not refunded.',
+          'Opened bottles are not refundable, for health and safety reasons.',
+        ],
+      },
+      { h: 'It runs on trust' },
+      {
+        p: `Nothing comes back to prove a bottle was unopened, so the policy relies on customers telling the truth. That is a trade the shop has chosen to make, because the alternative was making every honest customer pay for a trip to the post office.`,
+      },
+      { h: 'What to do with the bottle' },
+      {
+        p: `It is yours. Keep it sealed and in range if you may use it later, or see [how to dispose of eye drops](/guides/how-to-dispose-of-eye-drops). To ask for a refund, call {phone}, {hours}, with your order number.`,
+      },
+    ],
+  },
 ]

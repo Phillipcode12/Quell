@@ -372,4 +372,105 @@ export const USING_GUIDES: Guide[] = [
       },
     ],
   },
+
+  // The second set of ten, added 2026-11-03.
+  {
+    slug: 'keeping-an-eye-drop-log',
+    title: 'Keeping a simple eye drop log',
+    description:
+      'A few lines a day that make the label’s 72-hour limit easy to track and give your eye doctor something concrete: what to note, and how.',
+    category: 'using',
+    body: [
+      {
+        p: `A log does not need an app. A note on your phone with a line a day is enough, and it answers the questions that are hard to recall from memory: when this started, how often you use drops, and whether things are getting better.`,
+      },
+      { h: 'What to write down' },
+      {
+        list: [
+          'The date you opened the bottle.',
+          'The day the symptoms started, which starts the clock on the label’s 72 hours.',
+          'Each day’s doses, against the directions: {directions}.',
+          'What made things worse or better: screens, wind, heating, a long drive.',
+          'Any other product you put in your eyes, and when.',
+        ],
+      },
+      { h: 'Why the 72 hours matters' },
+      {
+        p: `Quell’s stop-use section ends with a time limit, and a dated note makes it easy to see when you have reached it. The full sentence is: {stopUse}`,
+      },
+      { h: 'Taking it to an appointment' },
+      {
+        p: `A week of notes says more in a minute than a description from memory. Bring it with the carton, and see [questions to ask your eye doctor](/guides/questions-to-ask-your-eye-doctor) for what to ask.`,
+      },
+      { h: 'Keep it short' },
+      {
+        p: `The point is a record you will actually keep. If a line a day feels like a chore, note only the days something changes.`,
+      },
+    ],
+  },
+
+  {
+    slug: 'do-you-shake-eye-drops',
+    title: 'Do you need to shake eye drops?',
+    description:
+      'Quell’s directions do not mention shaking the bottle. What that means for a milky solution, where to look on any label, and who to ask.',
+    category: 'using',
+    body: [
+      {
+        p: `Only if the label says so, and Quell’s does not. Its directions read: {directions}. There is no instruction to shake the bottle first.`,
+      },
+      { h: 'Why people ask about Quell' },
+      {
+        p: `Because it is milky. {milky}, which is how it is meant to look, and milky solutions make people wonder whether something has settled. The label’s instruction about appearance is a different one: do not use it if the color changes from how it arrived.`,
+      },
+      { h: 'Other drops can differ' },
+      {
+        p: `Some products do include “shake well” in their directions, so read each label on its own terms. The instruction that applies to a bottle is the one printed on it.`,
+      },
+      { h: 'If you are unsure' },
+      {
+        p: `Ask a pharmacist, with the carton or the [Drug Facts](/drug-facts) page in front of you. And whatever you do with the bottle, the handling rule still applies: {tip}.`,
+      },
+      { h: 'Storage, not shaking' },
+      {
+        p: `What the label does ask about is where the bottle is kept: {storage}. [How to store eye drops](/guides/how-to-store-eye-drops) covers that in full.`,
+      },
+    ],
+  },
+
+  {
+    slug: 'how-to-dispose-of-eye-drops',
+    title: 'How to dispose of eye drops',
+    description:
+      'Getting rid of eye drops you no longer need: take-back sites, the household-trash method the FDA describes, and what to do with an empty bottle.',
+    category: 'using',
+    body: [
+      {
+        p: `Check the label first for disposal instructions; Quell’s carton does not give any. After that, the simplest safe options are a drug take-back site or the household-trash method the FDA describes for most medicines.`,
+      },
+      { h: 'Take-back sites' },
+      {
+        p: `Many pharmacies have drop-off kiosks for unwanted medicines, and some police stations do too. There are also national take-back days through the year. Search for a take-back location near you before reaching for the trash.`,
+      },
+      { h: 'The household-trash method' },
+      {
+        list: [
+          'Mix the drops with something unappealing, such as used coffee grounds, dirt or cat litter.',
+          'Seal the mixture in a plastic bag or a container with a lid.',
+          'Put it in your household trash.',
+        ],
+      },
+      {
+        p: `The point is that children and pets cannot get at it, and that nobody mistakes it for something usable.`,
+      },
+      { h: 'Empty bottles' },
+      {
+        p: `An empty bottle can go in the trash with its cap on. Check your local recycling rules before putting small plastic medicine bottles in the recycling.`,
+      },
+      { h: 'Unopened bottles you got a refund on' },
+      {
+        p: `Under the [refund policy](/guides/why-we-do-not-ask-for-bottles-back), an unopened bottle you change your mind about stays with you. Keep it sealed and within its storage range if you may use it later, or dispose of it the same way as any other medicine.`,
+      },
+    ],
+  },
 ]

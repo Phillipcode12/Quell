@@ -489,4 +489,38 @@ export const SHIPPING_GUIDES: Guide[] = [
       },
     ],
   },
+
+  // The second set of ten, added 2026-11-03.
+  {
+    slug: 'what-your-order-status-means',
+    title: 'What your Quell order status means',
+    description:
+      'The four statuses on the order tracking page, Awaiting payment, Paid, Shipped and Canceled, what each one means and what to do about it.',
+    category: 'shipping',
+    body: [
+      {
+        p: `Look an order up on the [track your order](/orders) page and it shows one of four statuses, each with a line explaining it. Here is what each means in practice.`,
+      },
+      { h: 'Awaiting payment' },
+      {
+        p: `The order exists but the payment has not been confirmed yet. If you have just paid, give it a moment and refresh; confirmation can take a little time to come through. If you closed the payment page without finishing, nothing was charged.`,
+      },
+      { h: 'Paid — preparing' },
+      {
+        p: `Payment has been received and the order is being got ready in Brentwood. This is the status that matches your confirmation email. The next change is to Shipped.`,
+      },
+      { h: 'Shipped' },
+      {
+        p: `The parcel is on its way. The shipping email has the tracking number and, for the carriers the shop links to, a link to follow it on the carrier’s own page.`,
+      },
+      { h: 'Canceled' },
+      {
+        p: `The order will not be filled. The page puts it plainly: you were not charged, or you were refunded. If you did not expect to see this, call {phone}, {hours}.`,
+      },
+      { h: 'Status not changing?' },
+      {
+        p: `Orders sit at Paid while they are being packed, and the site does not promise a ship date. If it has been longer than you expected, call with your order number and we will look.`,
+      },
+    ],
+  },
 ]
