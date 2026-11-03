@@ -2579,6 +2579,37 @@ real city in Kansas — the fourth time the check was wrong rather than the data
 §55's "last raise of this size the dataset supports" was wrong (223 left was
 room for two more) and is corrected in the same comment.
 
+### The November 1st verdict — read the same day, after the raise
+
+Phillip signed in to Search Console once the work above had shipped. **Use the
+URL-prefix property** (`resource_id=https://quelldrop.com/`); a `sc-domain:`
+link says the account has no access, which looks like being signed in to the
+wrong account.
+
+| Page indexing, whole site | |
+| --- | --- |
+| Indexed | **1** — the home page, last crawled 2026-10-23 |
+| Crawled – currently not indexed | **428**, every example a city page, crawled ~2026-10-24 |
+| Alternate page with proper canonical tag | 1 |
+| Duplicate without user-selected canonical | **none** |
+| Report last updated | **2026-10-22** — before the 1,700 and 1,800 raises |
+
+The sitemap-filtered view still said *"Processing data"*.
+
+**Against the thresholds as written, neither has tripped**: 428 is not a large
+majority of the set, and the duplicate row is empty. **Against what those
+thresholds were standing in for, the answer is plain: Google has evaluated 428
+city pages and indexed none of them.** Not one city page is in the index, and
+apart from the home page neither are the product pages.
+
+Recommended to Phillip, not decided: **no further raises**, and a re-read
+around **2026-11-17**, when the report will cover the raises and the guides.
+If the city pages are still at zero indexed and the crawled-not-indexed count
+has kept climbing, that is the point for `LOCATION_PAGES=off`.
+
+`sitemap-guides.xml` was submitted the same day: read immediately, Success,
+110 discovered.
+
 ### 110 guide articles at `/guides`
 
 Ten longer cornerstone guides plus a hundred shorter ones, in seven categories:
