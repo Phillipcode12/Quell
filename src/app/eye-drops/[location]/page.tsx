@@ -324,14 +324,14 @@ export default async function LocationPage({ params }: Params) {
           Ordering from {location.city}
         </h2>
         <p className="mt-3 leading-relaxed text-muted">
-          {BRAND.trademark} is posted from Brentwood, Tennessee to{' '}
+          {BRAND.trademark} ships from Brentwood, Tennessee, to{' '}
           {location.city}
           {location.county ? ' and the rest of ' + location.county : ''}, and{' '}
           {otherCities === 0
             ? location.city + ' is the only city in ' + location.state + ' with a page here'
             : otherCities + (otherCities === 1 ? ' other city in ' : ' other cities in ') + location.state + (otherCities === 1 ? ' has a page like this one' : ' have a page like this one')}
           . There is no pharmacy counter and no prescription — it is ordered
-          here and posted to you. There is no local stock and no pricing that
+          here and shipped to you. There is no local stock and no pricing that
           changes by city either: the bottle, the price and the shipping are the
           same wherever it goes.
         </p>

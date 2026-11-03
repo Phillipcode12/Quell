@@ -93,12 +93,12 @@ export const GUIDE_CATEGORIES: {
   {
     key: 'shipping',
     name: 'Shipping and delivery',
-    intro: 'What shipping costs, where it goes, and how to follow a parcel.',
+    intro: 'What shipping costs, where it goes, and how to follow a package.',
   },
   {
     key: 'returns',
     name: 'Returns and help',
-    intro: 'Returns, damaged parcels, refunds and how to reach us.',
+    intro: 'Refunds, damaged packages, and how to reach us.',
   },
   {
     key: 'label',

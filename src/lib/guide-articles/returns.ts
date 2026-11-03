@@ -1,7 +1,7 @@
 import type { Guide } from '@/lib/guide-types'
 
 /**
- * Returns, damaged parcels, refunds and contact. See `lib/guides.ts`.
+ * Returns, damaged packages, refunds and contact. See `lib/guides.ts`.
  *
  * Everything here restates /terms §5–§7 and the privacy policy.
  *
@@ -9,35 +9,35 @@ import type { Guide } from '@/lib/guide-types'
  * (/terms §7, Phillip's decision). A returned bottle could not be resold —
  * nobody can confirm how it was stored — so collecting it only cost postage.
  * The guides say "refund", not "return", wherever an unopened bottle is meant,
- * so none of them describes a parcel the customer never has to send.
+ * so none of them describes a package the customer never has to send.
  */
 export const RETURNS_GUIDES: Guide[] = [
   {
     slug: 'can-you-return-eye-drops',
     title: 'Can you return eye drops?',
     description:
-      'Unopened Quell is refunded within {returnDays} days of delivery, and you keep the bottle. Opened bottles are not refundable. The full rule.',
+      'Unopened Quell is refunded within {returnDays} days of delivery, and you keep the bottle. Opened bottles aren’t refundable. The full rule.',
     category: 'returns',
     body: [
       {
-        p: `If it is unopened, you get your money back and do not have to send anything. Change your mind about an unopened bottle of Quell within {returnDays} days of delivery and the product price is refunded. Opened bottles are not refundable.`,
+        p: `If it is unopened, you get your money back and don’t have to send anything. Change your mind about an unopened bottle of Quell within {returnDays} days of delivery and the product price is refunded. Opened bottles aren’t refundable.`,
       },
       { h: 'The rule in full' },
       {
         list: [
           'The bottle must be unopened.',
           'Get in touch within {returnDays} days of delivery.',
-          'The product price is refunded. Original shipping is not.',
-          'Nothing needs to be posted back.',
+          'The product price is refunded. Original shipping isn’t.',
+          'Nothing needs to be mailed back.',
         ],
       },
       { h: 'Why you keep the bottle' },
       {
-        p: `A bottle that has left the shop cannot be confirmed to have been stored as its label requires, so it could never be sold again, sealed or not. Asking you to post it back would cost you time and cost the shop postage, all to collect something that would be thrown away.`,
+        p: `A bottle that has left the shop can’t be confirmed to have been stored as its label requires, so it could never be sold again, sealed or not. Asking you to mail it back would cost you time and cost the shop postage, all to collect something that would be thrown away.`,
       },
       { h: 'Why opened bottles are excluded' },
       {
-        p: `For health and safety reasons, opened eye drops cannot be refunded, returned or resold. [Why opened eye drops cannot be returned](/guides/why-opened-eye-drops-cannot-be-returned) goes into it.`,
+        p: `For health and safety reasons, opened eye drops can’t be refunded, returned or resold. [Why opened eye drops can’t be returned](/guides/why-opened-eye-drops-cannot-be-returned) goes into it.`,
       },
       { h: 'Damaged, wrong, or with a broken seal' },
       {
@@ -54,15 +54,15 @@ export const RETURNS_GUIDES: Guide[] = [
     slug: 'why-opened-eye-drops-cannot-be-returned',
     title: 'Why opened eye drops can’t be returned',
     description:
-      'Opened eye drops cannot be returned or resold, because a bottle that has left the seller’s control cannot be confirmed sterile. What that means for you.',
+      'Opened eye drops cannot be returned or resold, because a bottle that has left the seller’s control can’t be confirmed sterile. What that means for you.',
     category: 'returns',
     body: [
       {
-        p: `Because nobody can vouch for them afterward. The [terms](/terms) put it this way: for health and safety reasons, opened eye drops cannot be returned or resold, because a bottle that has left the shop’s control cannot be confirmed sterile.`,
+        p: `Because nobody can vouch for them afterward. The [terms](/terms) put it this way: for health and safety reasons, opened eye drops cannot be returned or resold, because a bottle that has left the shop’s control can’t be confirmed sterile.`,
       },
       { h: 'It protects the next customer' },
       {
-        p: `Eye drops go into eyes. A returned bottle could not go back on sale without the shop knowing what had happened to it: where it was kept, whether the tip touched anything, whether the seal was disturbed. It is the same concern behind the label’s instruction: {tip}.`,
+        p: `Eye drops go into eyes. A returned bottle couldn’t go back on sale without the shop knowing what had happened to it: where it was kept, whether the tip touched anything, whether the seal was disturbed. It is the same concern behind the label’s instruction: {tip}.`,
       },
       { h: 'What you can still do' },
       {
@@ -71,7 +71,7 @@ export const RETURNS_GUIDES: Guide[] = [
           'Report a damaged or incorrect order, or a broken tamper seal, within {returnDays} days for a free replacement.',
         ],
       },
-      { h: 'If Quell did not suit you' },
+      { h: 'If Quell didn’t suit you' },
       {
         p: `Tell us: call {phone}, {hours}, and say what happened. If you had a problem using it, the label is clear about what to do: {stopUse}`,
       },
@@ -90,7 +90,7 @@ export const RETURNS_GUIDES: Guide[] = [
     category: 'returns',
     body: [
       {
-        p: `Call {phone}, {hours}, with your order number, and say which unopened bottles you no longer want. If it is within {returnDays} days of delivery, the product price is refunded. You do not need to post anything back.`,
+        p: `Call {phone}, {hours}, with your order number, and say which unopened bottles you no longer want. If it is within {returnDays} days of delivery, the product price is refunded. You don’t need to mail anything back.`,
       },
       { h: 'Have this ready' },
       {
@@ -102,15 +102,15 @@ export const RETURNS_GUIDES: Guide[] = [
       },
       { h: 'What is refunded' },
       {
-        p: `The product price of those bottles. Original shipping is not refunded. [What is refunded](/guides/what-is-refunded-on-a-return) sets out each case side by side.`,
+        p: `The product price of those bottles. Original shipping isn’t refunded. [What is refunded](/guides/what-is-refunded-on-a-return) sets out each case side by side.`,
       },
       { h: 'When the clock starts' },
       {
-        p: `The {returnDays} days count from delivery, not from the day you ordered, so a parcel that took a while to arrive does not eat into your time to decide.`,
+        p: `The {returnDays} days count from delivery, not from the day you ordered, so a package that took a while to arrive doesn’t eat into your time to decide.`,
       },
       { h: 'What to do with the bottle' },
       {
-        p: `It is yours to keep. It cannot go back on sale, because nobody can confirm how it was stored once it left the shop, which is exactly why you are not asked to send it.`,
+        p: `It is yours to keep. It can’t go back on sale, because nobody can confirm how it was stored once it left the shop, which is exactly why you aren’t asked to send it.`,
       },
       { h: 'Not a refund: a replacement' },
       {
@@ -123,7 +123,7 @@ export const RETURNS_GUIDES: Guide[] = [
     slug: 'what-is-refunded-on-a-return',
     title: 'What is refunded on a Quell order?',
     description:
-      'What you get back in each case: unopened bottles you no longer want, orders that cannot be filled, listing mistakes, damaged parcels and opened bottles.',
+      'What you get back in each case: unopened bottles you no longer want, orders that can’t be filled, listing mistakes, damaged packages and opened bottles.',
     category: 'returns',
     body: [
       {
@@ -131,11 +131,11 @@ export const RETURNS_GUIDES: Guide[] = [
       },
       { h: 'Unopened bottles you no longer want' },
       {
-        p: `A refund of the product price, within {returnDays} days of delivery, and the bottles stay with you. Original shipping is not refunded.`,
+        p: `A refund of the product price, within {returnDays} days of delivery, and the bottles stay with you. Original shipping isn’t refunded.`,
       },
-      { h: 'An order that cannot be filled' },
+      { h: 'An order that can’t be filled' },
       {
-        p: `If the shop cannot fill your order, the authorization is released or refunded in full.`,
+        p: `If the shop can’t fill your order, the authorization is released or refunded in full.`,
       },
       { h: 'A listing that was wrong' },
       {
@@ -143,11 +143,11 @@ export const RETURNS_GUIDES: Guide[] = [
       },
       { h: 'Damaged, incorrect, or a broken seal' },
       {
-        p: `These are replaced rather than refunded. Contact us within {returnDays} days and the order is replaced at no charge.`,
+        p: `These are replaced, not refunded. Contact us within {returnDays} days and the order is replaced at no charge.`,
       },
       { h: 'Opened bottles' },
       {
-        p: `Not refundable, for the health and safety reason given in the [terms](/terms). [Why opened drops cannot be returned](/guides/why-opened-eye-drops-cannot-be-returned) explains it.`,
+        p: `Not refundable, for the health and safety reason given in the [terms](/terms). [Why opened drops can’t be returned](/guides/why-opened-eye-drops-cannot-be-returned) explains it.`,
       },
       {
         p: `Keep your confirmation email. It shows the product price and the shipping on separate lines, which is how the refund on an unopened bottle is worked out. Questions about a refund: {phone}, {hours}, with your order number.`,
@@ -167,7 +167,7 @@ export const RETURNS_GUIDES: Guide[] = [
       },
       { h: 'Set a damaged bottle aside' },
       {
-        p: `If a bottle is cracked or leaking, do not use it. The label’s handling rule — {tip} — is there to keep the solution clean, and a damaged bottle cannot be relied on to have stayed that way. A replacement costs you nothing.`,
+        p: `If a bottle is cracked or leaking, do not use it. The label’s handling rule — {tip} — is there to keep the solution clean, and a damaged bottle can’t be relied on to have stayed that way. A replacement costs you nothing.`,
       },
       { h: 'What helps when you call' },
       {
@@ -183,7 +183,7 @@ export const RETURNS_GUIDES: Guide[] = [
       },
       { h: 'Look soon after it arrives' },
       {
-        p: `The window is {returnDays} days, so open the parcel and check it shortly after delivery rather than when you first reach for a spare.`,
+        p: `The window is {returnDays} days, so open the package and check it shortly after delivery, not when you first reach for a spare.`,
       },
     ],
   },
@@ -200,13 +200,13 @@ export const RETURNS_GUIDES: Guide[] = [
       },
       { h: 'Why the seal matters' },
       {
-        p: `A seal shows that a product has not been opened since it was packed. Once it is broken, there is no way to tell what happened to the bottle on the way, which is why the terms put it in the same category as damage.`,
+        p: `A seal shows that a product hasn’t been opened since it was packed. Once it is broken, there is no way to tell what happened to the bottle on the way, which is why the terms put it in the same category as damage.`,
       },
       { h: 'Check before the first dose' },
       {
-        p: `Look at the seal when the parcel arrives, not weeks later when you reach for a spare. Every bottle in the order deserves a glance.`,
+        p: `Look at the seal when the package arrives, not weeks later when you reach for a spare. Every bottle in the order deserves a glance.`,
       },
-      { h: 'Until it is sorted out' },
+      { h: 'Until it is resolved' },
       {
         p: `Keep the bottle and its packaging until you have spoken to us. There is no reason to use it in the meantime, since the replacement costs nothing.`,
       },
@@ -229,7 +229,7 @@ export const RETURNS_GUIDES: Guide[] = [
       },
       { h: 'Check it against the confirmation' },
       {
-        p: `Your confirmation email lists exactly what was ordered and paid for. Compare the parcel with it before calling, so you can say what is missing or different.`,
+        p: `Your confirmation email lists exactly what was ordered and paid for. Compare the package with it before calling, so you can say what is missing or different.`,
       },
       { h: 'Remember the default' },
       {
@@ -237,15 +237,15 @@ export const RETURNS_GUIDES: Guide[] = [
       },
       { h: 'If the confirmation itself looks wrong' },
       {
-        p: `If the confirmation email shows a quantity or an address you did not choose, say so when you call. It is the record of what was paid for, so a mistake there is worth raising whether or not the parcel has arrived.`,
+        p: `If the confirmation email shows a quantity or an address you didn’t choose, say so when you call. It is the record of what was paid for, so raise a mistake there whether or not the package has arrived.`,
       },
       { h: 'Keep everything for now' },
       {
-        p: `Hold on to the parcel and its contents until it is sorted out, and leave any extra bottles sealed.`,
+        p: `Hold on to the package and its contents until it is resolved, and leave any extra bottles sealed.`,
       },
       { h: 'Other problems' },
       {
-        p: `A damaged parcel or a broken tamper seal falls under the same replacement rule; see [damaged orders](/guides/damaged-order).`,
+        p: `A damaged package or a broken tamper seal falls under the same replacement rule; see [damaged orders](/guides/damaged-order).`,
       },
     ],
   },
@@ -258,7 +258,7 @@ export const RETURNS_GUIDES: Guide[] = [
     category: 'returns',
     body: [
       {
-        p: `By phone on {phone}, {hours}. That line handles questions about the product and about orders.`,
+        p: `By phone at {phone}, {hours}. That line handles questions about the product and about orders.`,
       },
       { h: 'Time zones' },
       {
@@ -273,12 +273,12 @@ export const RETURNS_GUIDES: Guide[] = [
       { h: 'What we can help with' },
       {
         list: [
-          'Orders: tracking, damaged parcels and refunds on unopened bottles.',
+          'Orders: tracking, damaged packages and refunds on unopened bottles.',
           'The product: what the label says, the ingredients, storage.',
           'Your information: the privacy policy says requests to access, correct or delete it are made by phone or by mail.',
         ],
       },
-      { h: 'What we cannot help with' },
+      { h: 'What we can’t help with' },
       {
         p: `Medical advice. For a medical emergency, call your local emergency number instead of contacting us, and for whether Quell suits you, ask your doctor or pharmacist. [Order questions vs. medical questions](/guides/order-questions-vs-medical-questions) explains where the line falls, and [before you call](/guides/before-you-call-about-an-order) lists what to have ready.`,
       },
@@ -301,7 +301,7 @@ export const RETURNS_GUIDES: Guide[] = [
           'The email address you used at checkout.',
           'The name and shipping address on the order.',
           'What the problem is: missing, damaged, incorrect, a broken seal, or a refund on an unopened bottle.',
-          'What the tracking shows, if the parcel has shipped.',
+          'What the tracking shows, if the package has shipped.',
         ],
       },
       { h: 'When to call' },
@@ -310,7 +310,7 @@ export const RETURNS_GUIDES: Guide[] = [
       },
       { h: 'Keep the evidence' },
       {
-        p: `For a damaged or incorrect order, keep the packaging and the bottles until things are sorted out, and take a photo before anything goes in the trash. The window for reporting is {returnDays} days, so a call made in the first week leaves plenty of room.`,
+        p: `For a damaged or incorrect order, keep the packaging and the bottles until things are resolved, and take a photo before anything goes in the trash. The window for reporting is {returnDays} days, so a call made in the first week leaves plenty of room.`,
       },
       { h: 'No order number?' },
       {
@@ -332,7 +332,7 @@ export const RETURNS_GUIDES: Guide[] = [
       { h: 'Ask us about' },
       {
         list: [
-          'Tracking, delivery and damaged parcels.',
+          'Tracking, delivery and damaged packages.',
           'Refunds on unopened bottles.',
           'What the label says, the ingredients, and storage.',
         ],
@@ -341,15 +341,15 @@ export const RETURNS_GUIDES: Guide[] = [
       {
         list: [
           'Whether Quell suits you.',
-          'Using it with contact lenses or other eye drops, or for a child. The label does not cover these.',
-          'Symptoms that have not settled.',
+          'Using it with contact lenses or other eye drops, or for a child. The label doesn’t cover these.',
+          'Symptoms that haven’t settled.',
         ],
       },
       { h: 'When to stop and get advice' },
       { p: `The label is explicit: {stopUse}` },
       { h: 'When it is urgent' },
       {
-        p: `This site does not provide medical advice. If you have sudden vision loss, eye pain or an eye injury, seek emergency care immediately; for a medical emergency, call your local emergency number rather than us.`,
+        p: `This site doesn’t provide medical advice. If you have sudden vision loss, eye pain or an eye injury, seek emergency care immediately; for a medical emergency, call your local emergency number, not us.`,
       },
       {
         p: `Our line is {phone}, {hours}. More on symptoms in [eye symptoms that need a doctor](/guides/eye-symptoms-that-need-a-doctor).`,
@@ -411,7 +411,7 @@ export const RETURNS_GUIDES: Guide[] = [
       },
       { h: 'Without the order number' },
       {
-        p: `Every email about an order carries it: the confirmation, the shipping notice and the reminder. Search your inbox for “Quell.”`,
+        p: `Every email about an order includes it: the confirmation, the shipping notice and the reminder. Search your inbox for “Quell.”`,
       },
       { h: 'Ordered on another device?' },
       {
@@ -432,7 +432,7 @@ export const RETURNS_GUIDES: Guide[] = [
     category: 'returns',
     body: [
       {
-        p: `Your order and shipping details are used to take payment and ship the order, and the [privacy policy](/privacy) says personal information is not sold.`,
+        p: `Your order and shipping details are used to take payment and ship the order, and the [privacy policy](/privacy) says personal information isn’t sold.`,
       },
       { h: 'What is collected' },
       {
@@ -469,23 +469,23 @@ export const RETURNS_GUIDES: Guide[] = [
     slug: 'why-we-do-not-ask-for-bottles-back',
     title: 'Why we don’t ask for unopened bottles back',
     description:
-      'Quell refunds unopened bottles without asking for them to be posted back. The reasoning behind that policy, and what it means for you.',
+      'Quell refunds unopened bottles without asking for them to be mailed back. The reasoning behind that policy, and what it means for you.',
     category: 'returns',
     body: [
       {
-        p: `Because a bottle that comes back could never be sold again, so posting it would cost you a trip and cost the shop postage, all to end with the bottle in the trash. Refunding without the parcel skips the waste.`,
+        p: `Because a bottle that comes back could never be sold again, so mailing it would cost you a trip and cost the shop postage, all to end with the bottle in the trash. Refunding without the package skips the waste.`,
       },
-      { h: 'Why a sealed bottle still cannot be resold' },
+      { h: 'Why a sealed bottle still can’t be resold' },
       {
-        p: `Quell’s label sets a storage range: {storage}. Once a bottle has left the shop, nobody can confirm it stayed inside that range, whether it sat in a hot car or a cold mailbox on the way back. A drug whose storage cannot be vouched for is not something to put in the next customer’s hands.`,
+        p: `Quell’s label sets a storage range: {storage}. Once a bottle has left the shop, nobody can confirm it stayed inside that range, whether it sat in a hot car or a cold mailbox on the way back. A drug whose storage can’t be vouched for isn’t something to put in the next customer’s hands.`,
       },
       { h: 'What it means for you' },
       {
         list: [
           'Change your mind about an unopened bottle within {returnDays} days of delivery and the product price is refunded.',
-          'No label to print, no parcel to post, no trip to a drop-off point.',
-          'Original shipping is not refunded.',
-          'Opened bottles are not refundable, for health and safety reasons.',
+          'No label to print, no package to mail, no trip to a drop-off point.',
+          'Original shipping isn’t refunded.',
+          'Opened bottles aren’t refundable, for health and safety reasons.',
         ],
       },
       { h: 'It runs on trust' },

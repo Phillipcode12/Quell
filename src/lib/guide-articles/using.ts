@@ -22,7 +22,7 @@ export const USING_GUIDES: Guide[] = [
       },
       { h: 'Why the answer is approximate' },
       {
-        p: `Drop size varies between products and with how firmly the bottle is squeezed, so the number of drops in a bottle is not fixed. Quell’s label gives the volume, {size}, not a drop count.`,
+        p: `Drop size varies between products and with how firmly the bottle is squeezed, so the number of drops in a bottle isn’t fixed. Quell’s label gives the volume, {size}, not a drop count.`,
       },
       { h: 'Your own pace' },
       {
@@ -38,7 +38,7 @@ export const USING_GUIDES: Guide[] = [
       },
       { h: 'Reorder before you run out' },
       {
-        p: `Delivery dates are not promised, so order again while there is still some left. [How to reorder](/guides/how-to-reorder-quell) takes a couple of clicks, and your details are remembered in the browser.`,
+        p: `Delivery dates aren’t promised, so order again while there is still some left. [How to reorder](/guides/how-to-reorder-quell) takes a couple of clicks, and your details are remembered in the browser.`,
       },
     ],
   },
@@ -55,19 +55,19 @@ export const USING_GUIDES: Guide[] = [
       },
       { h: 'Other drops can differ' },
       {
-        p: `Some products, prescription ones especially, carry different storage instructions, so read every label on its own terms. The instruction that applies to a bottle is the one printed on it.`,
+        p: `Some products, prescription ones especially, come with different storage instructions, so read every label on its own terms. The instruction that applies to a bottle is the one printed on it.`,
       },
       { h: 'The appeal of a cold drop' },
       {
-        p: `Some people like the feel of a chilled drop. With Quell, that is not an option the label leaves open.`,
+        p: `Some people like the feel of a chilled drop. With Quell, that isn’t an option the label leaves open.`,
       },
       { h: 'Where to keep it' },
       {
-        p: `A drawer or cupboard away from heat sources, out of direct sun and out of children’s reach. [How to store eye drops](/guides/how-to-store-eye-drops) has the full rundown.`,
+        p: `A drawer or cabinet away from heat sources, out of direct sun and out of children’s reach. [How to store eye drops](/guides/how-to-store-eye-drops) has the full rundown.`,
       },
       { h: 'If it went in the fridge by mistake' },
       {
-        p: `The label does not say what to do in that case. Look at the bottle — the Do not use line reads: {doNotUse} — and if you are in any doubt, ask a pharmacist before using it.`,
+        p: `The label doesn’t say what to do in that case. Look at the bottle — the Do not use line reads: {doNotUse} — and if you are in any doubt, ask a pharmacist before using it.`,
       },
     ],
   },
@@ -80,7 +80,7 @@ export const USING_GUIDES: Guide[] = [
     category: 'using',
     body: [
       {
-        p: `Better not. Quell’s storage line reads “{storage},” and the top of that range is a warm day. A car parked in the sun climbs well past it, and does so fast, even when the weather outside does not feel extreme.`,
+        p: `Better not. Quell’s storage line reads “{storage},” and the top of that range is a warm day. A car parked in the sun climbs well past it, and does so fast, even when the weather outside doesn’t feel extreme.`,
       },
       { h: 'Glove boxes and door pockets' },
       {
@@ -88,7 +88,7 @@ export const USING_GUIDES: Guide[] = [
       },
       { h: 'What to do instead' },
       {
-        p: `Keep the bottle on you, in a bag you carry, or take it inside when you go. On a road trip, keep it in the cabin with you rather than in the trunk, and out of direct sun.`,
+        p: `Keep the bottle on you, in a bag you carry, or take it inside when you go. On a road trip, keep it in the cabin with you, not in the trunk, and out of direct sun.`,
       },
       { h: 'If it has been left in the heat' },
       {
@@ -109,23 +109,23 @@ export const USING_GUIDES: Guide[] = [
     category: 'using',
     body: [
       {
-        p: `Because of what is in it. Quell appears as a milky brown solution because of its natural oil-based ingredients. That is expected, and the label says so: {milky}.`,
+        p: `Because of what is in it. Quell appears as a milky brown solution because of its natural oil-based ingredients. It is expected, and the label says so: {milky}.`,
       },
       { h: 'The ingredients behind it' },
       {
-        p: `The formula pairs its lubricants with an emollient, light mineral oil, and with inactive ingredients that include emu oil, manuka honey, Dead Sea salt and Terminalia chebula. A clear, watery drop would not carry those.`,
+        p: `The formula pairs its lubricants with an emollient, light mineral oil, and with inactive ingredients that include emu oil, manuka honey, Dead Sea salt and Terminalia chebula. A clear, watery drop wouldn’t contain those.`,
       },
       { h: 'Why it is oil-based at all' },
       {
-        p: `Quell is designed to reinforce the tear film’s oil layer to help reduce moisture loss, rather than only topping up the watery layer. [The tear film’s oil layer](/guides/the-tear-films-oil-layer) explains it.`,
+        p: `Quell is designed to reinforce the tear film’s oil layer to help reduce moisture loss, instead of only topping up the watery layer. [The tear film’s oil layer](/guides/the-tear-films-oil-layer) explains it.`,
       },
-      { h: 'Normal, and what is not' },
+      { h: 'Normal, and what isn’t' },
       {
         p: `{appearance} What the label asks you to watch for is a change: {doNotUse}. Compare a bottle with how it looked when it arrived.`,
       },
       { h: 'The first bottle' },
       {
-        p: `If you are used to clear drops, the first one can be a surprise. That is the main reason the note about color sits right beside the buy button.`,
+        p: `If you are used to clear drops, the first one can be a surprise. It is the main reason the note about color sits right beside the buy button.`,
       },
     ],
   },
@@ -134,11 +134,11 @@ export const USING_GUIDES: Guide[] = [
     slug: 'contact-lenses-and-quell',
     title: 'Can I use Quell with contact lenses?',
     description:
-      'Quell’s label does not give directions for use with contact lenses. What that means, and who to ask before you try it.',
+      'Quell’s label doesn’t give directions for use with contact lenses. What that means, and who to ask before you try it.',
     category: 'using',
     body: [
       {
-        p: `Quell’s label does not say. Its directions — {directions} — make no mention of contact lenses either way, and this site will not fill that gap with a guess.`,
+        p: `Quell’s label doesn’t say. Its directions — {directions} — make no mention of contact lenses either way, and this site won’t fill that gap with a guess.`,
       },
       { h: 'Who to ask' },
       {
@@ -150,11 +150,11 @@ export const USING_GUIDES: Guide[] = [
       },
       { h: 'Until you have an answer' },
       {
-        p: `The label is the only instruction that applies, and it does not cover lenses. Ask before combining the two, and if your eye doctor gives you specific advice about timing or lens removal, follow that.`,
+        p: `The label is the only instruction that applies, and it doesn’t cover lenses. Ask before combining the two, and if your eye doctor gives you specific advice about timing or lens removal, follow that.`,
       },
       { h: 'Other questions the label leaves open' },
       {
-        p: `Using Quell alongside other eye drops, and using it for a child, are not covered either. See [using Quell with other eye drops](/guides/using-quell-with-other-eye-drops) and [eye drops and children](/guides/eye-drops-and-children).`,
+        p: `Using Quell alongside other eye drops, and using it for a child, aren’t covered either. See [using Quell with other eye drops](/guides/using-quell-with-other-eye-drops) and [eye drops and children](/guides/eye-drops-and-children).`,
       },
     ],
   },
@@ -163,11 +163,11 @@ export const USING_GUIDES: Guide[] = [
     slug: 'using-quell-with-other-eye-drops',
     title: 'Can I use Quell with other eye drops?',
     description:
-      'Quell’s label does not cover using it alongside other eye drops. Why that question belongs with your eye doctor or pharmacist, and what to bring.',
+      'Quell’s label doesn’t cover using it alongside other eye drops. Why that question belongs with your eye doctor or pharmacist, and what to bring.',
     category: 'using',
     body: [
       {
-        p: `The label does not cover it. Quell’s directions are written for Quell on its own, and they say nothing about combining it with other products.`,
+        p: `The label doesn’t cover it. Quell’s directions are written for Quell on its own, and they say nothing about combining it with other products.`,
       },
       { h: 'Prescribed drops' },
       {
@@ -185,7 +185,7 @@ export const USING_GUIDES: Guide[] = [
           'How often you use each one.',
         ],
       },
-      { h: 'Quell’s own directions do not change' },
+      { h: 'Quell’s own directions don’t change' },
       {
         p: `Whatever you are told about other products, Quell’s directions stay the same: {directions}. The stop-use section still applies as well: {stopUse}`,
       },
@@ -199,17 +199,17 @@ export const USING_GUIDES: Guide[] = [
     slug: 'can-i-use-more-than-three-drops-a-day',
     title: 'Can I use more than three drops a day?',
     description:
-      'Quell’s directions are one drop three times a day in each eye. What to do if that does not feel like enough, according to the label itself.',
+      'Quell’s directions are one drop three times a day in each eye. What to do if that doesn’t feel like enough, according to the label itself.',
     category: 'using',
     body: [
-      { p: `The directions read: {directions}. Using more is not part of them.` },
+      { p: `The directions read: {directions}. Using more isn’t part of them.` },
       { h: '“In each eye”' },
       {
         p: `Three times a day in each eye is six drops a day in total. If you have been counting three, you have been using the right amount per eye.`,
       },
-      { h: 'If it does not feel like enough' },
+      { h: 'If it doesn’t feel like enough' },
       {
-        p: `That is worth acting on, and the label tells you how: {stopUse} A problem that persists is a reason to see a doctor, not to raise the dose.`,
+        p: `Act on that; the label tells you how: {stopUse} A problem that persists is a reason to see a doctor, not to raise the dose.`,
       },
       { h: 'Why stick to the label' },
       {
@@ -230,7 +230,7 @@ export const USING_GUIDES: Guide[] = [
     category: 'using',
     body: [
       {
-        p: `Concentrating on a screen cuts how often you blink, and your tear film evaporates while you stare. That is the short version, and it is why eyes can feel dry by the end of a working day spent at a monitor.`,
+        p: `Concentrating on a screen cuts how often you blink, and your tear film evaporates while you stare. It explains why eyes can feel dry by the end of a working day spent at a monitor.`,
       },
       { h: 'Why blinking matters' },
       {
@@ -242,7 +242,7 @@ export const USING_GUIDES: Guide[] = [
       },
       { h: 'Screen days and the directions' },
       {
-        p: `The directions do not change with your schedule: {directions}. Tying doses to fixed points in the workday, like lunch, can make them easier to remember.`,
+        p: `The directions don’t change with your schedule: {directions}. Tying doses to fixed points in the workday, like lunch, can make them easier to remember.`,
       },
       { h: 'When it is more than tired eyes' },
       {
@@ -259,7 +259,7 @@ export const USING_GUIDES: Guide[] = [
     category: 'using',
     body: [
       {
-        p: `Wind and altitude outdoors, air conditioning and central heat indoors — all of it pulls moisture off your eyes faster than you can replace it. That is why eyes can feel drier with the seasons, and in some places more than others.`,
+        p: `Wind and altitude outdoors, air conditioning and central heat indoors — all of it pulls moisture off your eyes faster than you can replace it. So eyes can feel drier with the seasons, and in some places more than others.`,
       },
       { h: 'Indoors' },
       {
@@ -292,14 +292,14 @@ export const USING_GUIDES: Guide[] = [
       },
       { h: 'Why sealed' },
       {
-        p: `Two reasons. A sealed bottle is one you can still get a refund on: unopened bottles can be refunded within {returnDays} days of delivery, with no need to send them back. And opening a bottle you will not use for weeks gains you nothing.`,
+        p: `Two reasons. A sealed bottle is one you can still get a refund on: unopened bottles can be refunded within {returnDays} days of delivery, with no need to send them back. And opening a bottle you won’t use for weeks gains you nothing.`,
       },
       {
         p: `Those {returnDays} days run from delivery, so if you have over-ordered, decide early. After that, the spares are yours to keep in range until you need them.`,
       },
       { h: 'Where' },
       {
-        p: `Together, in one drawer or cupboard, away from heat and out of children’s reach. Keeping them in one place stops a bottle being forgotten in a bag or a car.`,
+        p: `Together, in one drawer or cabinet, away from heat and out of children’s reach. Keeping them in one place stops a bottle being forgotten in a bag or a car.`,
       },
       { h: 'Which to open first' },
       {
@@ -307,7 +307,7 @@ export const USING_GUIDES: Guide[] = [
       },
       { h: 'How many to keep' },
       {
-        p: `At the labeled dose a bottle lasts roughly a month, so one spare covers the wait for a new order. {freeBottles} or more ship free if you would rather stock up.`,
+        p: `At the labeled dose a bottle lasts roughly a month, so one spare covers the wait for a new order. Orders of {freeBottles} or more ship free if you would rather stock up.`,
       },
     ],
   },
@@ -320,15 +320,15 @@ export const USING_GUIDES: Guide[] = [
     category: 'using',
     body: [
       {
-        p: `Quell’s label does not give separate directions for children. Its directions — {directions} — are written without an age range, and this site will not supply one.`,
+        p: `Quell’s label doesn’t give separate directions for children. Its directions — {directions} — are written without an age range, and this site won’t supply one.`,
       },
       { h: 'Ask first' },
       {
-        p: `If you are thinking of using Quell for a child, ask a pediatrician or eye doctor first, and bring the label. A child’s eyes, and whatever is behind the symptoms, are for them to judge.`,
+        p: `If you are thinking of using Quell for a child, ask a pediatrician or eye doctor first, and bring the label. A child’s eyes, and the cause of the symptoms, are for them to judge.`,
       },
       { h: 'What the label does say about children' },
       {
-        p: `Keep out of reach of children, and: {swallowed}. In the U.S., Poison Control is on 1-800-222-1222.`,
+        p: `Keep out of reach of children, and: {swallowed}. In the U.S., Poison Control is at 1-800-222-1222.`,
       },
       { h: 'Who can order' },
       {
@@ -349,7 +349,7 @@ export const USING_GUIDES: Guide[] = [
     category: 'using',
     body: [
       {
-        p: `A pharmacist can go through a label with you in a couple of minutes. These are the questions worth bringing, together with the label itself: the carton, or the [Drug Facts](/drug-facts) page.`,
+        p: `A pharmacist can go through a label with you in a couple of minutes. These are good questions to bring, together with the label itself: the carton, or the [Drug Facts](/drug-facts) page.`,
       },
       {
         list: [
@@ -368,7 +368,7 @@ export const USING_GUIDES: Guide[] = [
       },
       { h: 'For an eye doctor instead' },
       {
-        p: `Anything about what is causing your symptoms, and anything involving pain, changes in vision, or symptoms that have not settled. The label’s own guidance is: {stopUse}`,
+        p: `Anything about what is causing your symptoms, and anything involving pain, changes in vision, or symptoms that haven’t settled. The label’s own guidance is: {stopUse}`,
       },
     ],
   },
@@ -382,7 +382,7 @@ export const USING_GUIDES: Guide[] = [
     category: 'using',
     body: [
       {
-        p: `A log does not need an app. A note on your phone with a line a day is enough, and it answers the questions that are hard to recall from memory: when this started, how often you use drops, and whether things are getting better.`,
+        p: `A log doesn’t need an app. A note on your phone with a line a day is enough, and it answers the questions that are hard to recall from memory: when this started, how often you use drops, and whether things are getting better.`,
       },
       { h: 'What to write down' },
       {
@@ -413,11 +413,11 @@ export const USING_GUIDES: Guide[] = [
     slug: 'do-you-shake-eye-drops',
     title: 'Do you need to shake eye drops?',
     description:
-      'Quell’s directions do not mention shaking the bottle. What that means for a milky solution, where to look on any label, and who to ask.',
+      'Quell’s directions don’t mention shaking the bottle. What that means for a milky solution, where to look on any label, and who to ask.',
     category: 'using',
     body: [
       {
-        p: `Only if the label says so, and Quell’s does not. Its directions read: {directions}. There is no instruction to shake the bottle first.`,
+        p: `Only if the label says so, and Quell’s doesn’t. Its directions read: {directions}. There is no instruction to shake the bottle first.`,
       },
       { h: 'Why people ask about Quell' },
       {
@@ -429,7 +429,7 @@ export const USING_GUIDES: Guide[] = [
       },
       { h: 'If you are unsure' },
       {
-        p: `Ask a pharmacist, with the carton or the [Drug Facts](/drug-facts) page in front of you. And whatever you do with the bottle, the handling rule still applies: {tip}.`,
+        p: `Ask a pharmacist, with the carton or the [Drug Facts](/drug-facts) page in front of you. Either way, the handling rule still applies: {tip}.`,
       },
       { h: 'Storage, not shaking' },
       {
@@ -446,7 +446,7 @@ export const USING_GUIDES: Guide[] = [
     category: 'using',
     body: [
       {
-        p: `Check the label first for disposal instructions; Quell’s carton does not give any. After that, the simplest safe options are a drug take-back site or the household-trash method the FDA describes for most medicines.`,
+        p: `Check the label first for disposal instructions; Quell’s carton doesn’t give any. After that, the simplest safe options are a drug take-back site or the household-trash method the FDA describes for most medicines.`,
       },
       { h: 'Take-back sites' },
       {
@@ -461,7 +461,7 @@ export const USING_GUIDES: Guide[] = [
         ],
       },
       {
-        p: `The point is that children and pets cannot get at it, and that nobody mistakes it for something usable.`,
+        p: `The point is that children and pets can’t get at it, and that nobody mistakes it for something usable.`,
       },
       { h: 'Empty bottles' },
       {

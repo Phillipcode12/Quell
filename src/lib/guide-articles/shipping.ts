@@ -16,11 +16,11 @@ export const SHIPPING_GUIDES: Guide[] = [
     category: 'shipping',
     body: [
       {
-        p: `A flat {shipping} on orders under {freeBottles} bottles, and free on {freeBottles} or more — that is, on orders of {freeThreshold} and up. That is the whole rule. It does not change with your state, your city or the size of the parcel.`,
+        p: `A flat {shipping} on orders under {freeBottles} bottles, and free on {freeBottles} or more — in other words, on orders of {freeThreshold} and up. There is no other rule. It doesn’t change with your state, your city or the size of the package.`,
       },
       { h: 'Where you see it' },
       {
-        p: `The buy panel shows the delivered price for whatever quantity you choose, and the cart has its own shipping line before you go to pay. The confirmation email repeats it, and reads “Free” when nothing was charged.`,
+        p: `The buy panel shows the delivered price for any quantity you choose, and the cart has its own shipping line before you go to pay. The confirmation email repeats it, and reads “Free” when nothing was charged.`,
       },
       { h: 'Charged once per order' },
       {
@@ -28,11 +28,11 @@ export const SHIPPING_GUIDES: Guide[] = [
       },
       { h: 'Where it goes' },
       {
-        p: `Anywhere in the United States, posted from Brentwood, Tennessee. The site does not ship outside the U.S.`,
+        p: `Anywhere in the United States, shipped from Brentwood, Tennessee. The site doesn’t ship outside the U.S.`,
       },
-      { h: 'What it does not include' },
+      { h: 'What it doesn’t include' },
       {
-        p: `A delivery date. The site does not promise one, and the [terms](/terms) describe delivery estimates as estimates only. Every shipped order gets an email, with tracking where a number is available.`,
+        p: `A delivery date. The site doesn’t promise one, and the [terms](/terms) describe delivery estimates as estimates only. Every shipped order gets an email, with tracking where a number is available.`,
       },
       {
         p: `Shipping is also not refunded if you change your mind about an unopened bottle; the refund covers the product price, and there is nothing to send back.`,
@@ -77,11 +77,11 @@ export const SHIPPING_GUIDES: Guide[] = [
     slug: 'where-quell-ships-from',
     title: 'Where does Quell ship from?',
     description:
-      'Quell is posted from Brentwood, Tennessee, where Aurora Pharmaceuticals is based. What that means for ordering from anywhere in the U.S.',
+      'Quell ships from Brentwood, Tennessee, where Aurora Pharmaceuticals is based. What that means for ordering from anywhere in the U.S.',
     category: 'shipping',
     body: [
       {
-        p: `Brentwood, Tennessee. That is where {company}, the company that sells Quell, is based, and orders are packed and posted from there.`,
+        p: `Brentwood, Tennessee. That is where {company}, the company that sells Quell, is based, and orders are packed and shipped from there.`,
       },
       { h: 'The same from everywhere' },
       {
@@ -89,7 +89,7 @@ export const SHIPPING_GUIDES: Guide[] = [
       },
       { h: 'Delivery time' },
       {
-        p: `Distance from Brentwood affects how long a parcel takes, but the site does not publish delivery windows for any destination. The shipping email arrives when your parcel leaves, with tracking where available.`,
+        p: `Distance from Brentwood affects how long a package takes, but the site doesn’t publish delivery windows for any destination. The shipping email arrives when your package leaves, with tracking where available.`,
       },
       {
         p: `Because no date is promised, it pays to order before you run out, and a little earlier still if you live a long way from Tennessee.`,
@@ -121,7 +121,7 @@ export const SHIPPING_GUIDES: Guide[] = [
       },
       { h: 'If you live outside the U.S.' },
       {
-        p: `Quell is not sold internationally through this site. Rules on importing an over-the-counter drug differ from country to country, so a forwarding service is not something we can advise on.`,
+        p: `Quell isn’t sold internationally through this site. Rules on importing an over-the-counter drug differ from country to country, so a forwarding service isn’t something we can advise on.`,
       },
       { h: 'Prices and payment' },
       {
@@ -157,13 +157,13 @@ export const SHIPPING_GUIDES: Guide[] = [
       },
       { h: 'The city and state pages' },
       {
-        p: `[Where we ship](/eye-drops) lists states and cities with a page of their own, each answering “can I get these eye drops here?” for one place. An address that is not listed can order just the same.`,
+        p: `[Where we ship](/eye-drops) lists states and cities with a page of their own, each answering “can I get these eye drops here?” for one place. An address that isn’t listed can order just the same.`,
       },
       { h: 'Delivery' },
       {
-        p: `Parcels are posted from Brentwood, Tennessee. Farther destinations can take longer, and the site does not publish delivery windows; the shipping email arrives when the parcel leaves.`,
+        p: `Packages ship from Brentwood, Tennessee. Farther destinations can take longer, and the site doesn’t publish delivery windows; the shipping email arrives when the package leaves.`,
       },
-      { h: 'What cannot be shipped to' },
+      { h: 'What can’t be shipped to' },
       {
         p: `Addresses outside the United States. Checkout accepts U.S. addresses only.`,
       },
@@ -177,11 +177,11 @@ export const SHIPPING_GUIDES: Guide[] = [
     slug: 'how-long-does-delivery-take',
     title: 'How long does Quell take to arrive?',
     description:
-      'Why the site does not promise a delivery date, what it does tell you, and how to follow a parcel once the shipping email arrives.',
+      'Why the site doesn’t promise a delivery date, what it does tell you, and how to follow a package once the shipping email arrives.',
     category: 'shipping',
     body: [
       {
-        p: `The site does not promise a delivery date, and that is deliberate. A date printed here would be a commitment, and delivery depends on the carrier and the distance from Brentwood, Tennessee. The [terms](/terms) put it plainly: delivery estimates are estimates.`,
+        p: `The site doesn’t promise a delivery date, and that is deliberate. A date printed here would be a commitment, and delivery depends on the carrier and the distance from Brentwood, Tennessee. The [terms](/terms) say so directly: delivery estimates are estimates.`,
       },
       { h: 'What you will know' },
       {
@@ -218,15 +218,15 @@ export const SHIPPING_GUIDES: Guide[] = [
       },
       { h: 'Before it ships' },
       {
-        p: `Until the parcel leaves, there is no tracking number to follow. The lookup page still finds the order, and the shipping email arrives the moment it goes.`,
+        p: `Until the package leaves, there is no tracking number to follow. The lookup page still finds the order, and the shipping email arrives the moment it goes.`,
       },
       { h: 'What the carrier’s page shows' },
       {
-        p: `The latest scans and the carrier’s own estimate. That is more current than anything this site could show, so once the parcel is moving, the carrier’s page is the one to watch.`,
+        p: `The latest scans and the carrier’s own estimate. That is more current than anything this site could show, so once the package is moving, the carrier’s page is the one to watch.`,
       },
       { h: 'A number but no link' },
       {
-        p: `Now and then an order goes out with a carrier the site does not link to. You still get the tracking number in the email; enter it on that carrier’s website.`,
+        p: `Now and then an order goes out with a carrier the site doesn’t link to. You still get the tracking number in the email; enter it on that carrier’s website.`,
       },
       { h: 'Help' },
       {
@@ -239,7 +239,7 @@ export const SHIPPING_GUIDES: Guide[] = [
     slug: 'finding-your-order-number',
     title: 'Where to find your order number',
     description:
-      'Your Quell order number is in the subject line of your confirmation email. What it looks like, and what to do if you cannot find it.',
+      'Your Quell order number is in the subject line of your confirmation email. What it looks like, and what to do if you can’t find it.',
     category: 'shipping',
     body: [
       {
@@ -253,7 +253,7 @@ export const SHIPPING_GUIDES: Guide[] = [
       {
         p: `Together with your email address, it finds your order on the [track your order](/orders) page. It is also the first thing to give when you call about an order, and quicker to read out than an email address. Keep the confirmation email somewhere you can find it; it doubles as your receipt.`,
       },
-      { h: 'If you cannot find it' },
+      { h: 'If you can’t find it' },
       {
         p: `Search your inbox for “Quell,” and check spam or junk. If the email never arrived, the address may have been mistyped at checkout; [what to do about a mistyped email](/guides/mistyped-email-at-checkout) covers that.`,
       },
@@ -271,11 +271,11 @@ export const SHIPPING_GUIDES: Guide[] = [
     category: 'shipping',
     body: [
       {
-        p: `Call {phone} as soon as you notice, during business hours ({hours}), with your order number ready. The earlier it is raised, the better the chance of catching it before the parcel leaves.`,
+        p: `Call {phone} as soon as you notice, during business hours ({hours}), with your order number ready. The earlier it is raised, the better the chance of catching it before the package leaves.`,
       },
       { h: 'Why speed matters' },
       {
-        p: `Once a parcel is with the carrier, it goes where the label says. The [terms](/terms) are clear that the shop is not responsible for delays caused by an incorrect address, and that risk of loss passes on delivery to the address you provide.`,
+        p: `Once a package is with the carrier, it goes where the label says. The [terms](/terms) are clear that the shop isn’t responsible for delays caused by an incorrect address, and that risk of loss passes on delivery to the address you provide.`,
       },
       { h: 'Read the confirmation email' },
       {
@@ -296,23 +296,23 @@ export const SHIPPING_GUIDES: Guide[] = [
     slug: 'getting-the-address-right',
     title: 'Getting the shipping address right',
     description:
-      'Apartment numbers, suites, offices and remembered addresses: the details that keep a Quell parcel from going astray.',
+      'Apartment numbers, suites, offices and remembered addresses: the details that keep a Quell package from going astray.',
     category: 'shipping',
     body: [
       {
-        p: `A parcel can only go where its address sends it, so a minute spent on the details at checkout is well spent. Checkout has a separate, optional line for an apartment, suite or unit number. Use it whenever there is one.`,
+        p: `A package can only go where its address sends it, so a minute spent on the details at checkout is well spent. Checkout has a separate, optional line for an apartment, suite or unit number. Use it whenever there is one.`,
       },
       { h: 'Apartments and shared buildings' },
       {
-        p: `Put the unit number on the apartment or suite line rather than squeezing it onto the end of the street address, so it reads clearly on the label.`,
+        p: `Put the unit number on the apartment or suite line instead of squeezing it onto the end of the street address, so it reads clearly on the label.`,
       },
       { h: 'Work addresses' },
       {
-        p: `In a building with several tenants, add the company name on the suite line next to the suite number. A parcel with only a street address can sit in a lobby or a mailroom without anyone knowing whose it is.`,
+        p: `In a building with several tenants, add the company name on the suite line next to the suite number. A package with only a street address can sit in a lobby or a mailroom without anyone knowing whose it is.`,
       },
       { h: 'State and ZIP' },
       {
-        p: `Checkout asks for the state and ZIP code separately. Check the ZIP against the city; a mismatch can send a parcel the wrong way.`,
+        p: `Checkout asks for the state and ZIP code separately. Check the ZIP against the city; a mismatch can send a package the wrong way.`,
       },
       { h: 'Remembered addresses' },
       {
@@ -320,7 +320,7 @@ export const SHIPPING_GUIDES: Guide[] = [
       },
       { h: 'Whose name goes on it' },
       {
-        p: `The name you enter is the name on the parcel. Ordering for someone else? Use their name and address with your own email; [ordering for someone else](/guides/ordering-eye-drops-for-someone-else) has more.`,
+        p: `The name you enter is the name on the package. Ordering for someone else? Use their name and address with your own email; [ordering for someone else](/guides/ordering-eye-drops-for-someone-else) has more.`,
       },
     ],
   },
@@ -329,11 +329,11 @@ export const SHIPPING_GUIDES: Guide[] = [
     slug: 'eye-drops-shipped-in-hot-or-cold-weather',
     title: 'Eye drops shipped in hot or cold weather',
     description:
-      'What to do when a Quell parcel arrives on a very hot or freezing day: the storage range on the label, and what to check before using a bottle.',
+      'What to do when a Quell package arrives on a very hot or freezing day: the storage range on the label, and what to check before using a bottle.',
     category: 'shipping',
     body: [
       {
-        p: `Bring the parcel inside promptly, let the bottle come to room temperature, and look at it before use. Quell’s label gives a storage range — {storage} — and a parcel left on a hot porch or a frozen step can spend a while outside it.`,
+        p: `Bring the package inside promptly, let the bottle come to room temperature, and look at it before use. Quell’s label gives a storage range — {storage} — and a package left on a hot porch or a frozen step can spend a while outside it.`,
       },
       { h: 'What to look at' },
       {
@@ -341,9 +341,9 @@ export const SHIPPING_GUIDES: Guide[] = [
       },
       { h: 'Timing an order' },
       {
-        p: `If you will be away, or the weather is extreme, try to order so the parcel arrives when someone is home to bring it in. The site does not publish delivery dates, but the shipping email tells you when it has left, and the tracking link shows its progress.`,
+        p: `If you will be away, or the weather is extreme, try to order so the package arrives when someone is home to bring it in. The site doesn’t publish delivery dates, but the shipping email tells you when it has left, and the tracking link shows its progress.`,
       },
-      { h: 'A damaged parcel' },
+      { h: 'A damaged package' },
       {
         p: `If an order arrives damaged, incorrect or with a broken tamper seal, contact us within {returnDays} days and it is replaced at no charge.`,
       },
@@ -358,11 +358,11 @@ export const SHIPPING_GUIDES: Guide[] = [
     slug: 'what-to-check-when-your-order-arrives',
     title: 'What to check when your Quell order arrives',
     description:
-      'A quick check when a Quell parcel arrives: the right number of bottles, an intact tamper seal, the carton, and the milky brown color that is normal.',
+      'A quick check when a Quell package arrives: the right number of bottles, an intact tamper seal, the carton, and the milky brown color that is normal.',
     category: 'shipping',
     body: [
       {
-        p: `A minute spent checking the parcel on arrival saves trouble later, because the window for reporting a problem is {returnDays} days.`,
+        p: `A minute spent checking the package on arrival saves trouble later, because the window for reporting a problem is {returnDays} days.`,
       },
       { h: 'The contents' },
       {
@@ -382,7 +382,7 @@ export const SHIPPING_GUIDES: Guide[] = [
       },
       { h: 'Spares' },
       {
-        p: `Bottles you will not open yet can stay in their original packaging. Unopened, they can be refunded within {returnDays} days of delivery if you do not need them, and you do not have to send them back.`,
+        p: `Bottles you won’t open yet can stay in their original packaging. Unopened, they can be refunded within {returnDays} days of delivery if you don’t need them, and you don’t have to send them back.`,
       },
       { h: 'If something is wrong' },
       {
@@ -393,13 +393,13 @@ export const SHIPPING_GUIDES: Guide[] = [
 
   {
     slug: 'tracking-says-delivered-but-no-parcel',
-    title: 'Tracking says delivered, but no parcel?',
+    title: 'Tracking says delivered, but no package?',
     description:
       'When tracking shows your Quell order as delivered and nothing is there: where to look, who to contact first, and what the terms say about delivery.',
     category: 'shipping',
     body: [
       {
-        p: `Look around before anything else: porches, side doors, mailrooms, parcel lockers, and the neighbors. Carriers occasionally mark a parcel delivered shortly before it turns up, so it is also worth giving it until the end of the day.`,
+        p: `Look around before anything else: porches, side doors, mailrooms, package lockers, and the neighbors. Carriers occasionally mark a package delivered shortly before it turns up, so give it until the end of the day as well. Packages left out of sight are easy to miss.`,
       },
       { h: 'Check the address' },
       {
@@ -407,7 +407,7 @@ export const SHIPPING_GUIDES: Guide[] = [
       },
       { h: 'Contact the carrier' },
       {
-        p: `The tracking link in your shipping email goes to the carrier’s own page, which usually has delivery details and a way to raise a query about a missing parcel.`,
+        p: `The tracking link in your shipping email goes to the carrier’s own page, which usually has delivery details and a way to raise a query about a missing package.`,
       },
       { h: 'Let us know' },
       {
@@ -415,7 +415,7 @@ export const SHIPPING_GUIDES: Guide[] = [
       },
       { h: 'What the terms say' },
       {
-        p: `The [terms](/terms) say that risk of loss passes on delivery to the address you provide, and that the shop is not responsible for delays caused by the carrier or by an incorrect address. That is why the carrier is the first call when tracking says a parcel arrived and it has not.`,
+        p: `The [terms](/terms) say that risk of loss passes on delivery to the address you provide, and that the shop isn’t responsible for delays caused by the carrier or by an incorrect address. That is why the carrier is the first call when tracking says a package arrived and it hasn’t.`,
       },
     ],
   },
@@ -435,7 +435,7 @@ export const SHIPPING_GUIDES: Guide[] = [
         p: `Place two separate one-bottle orders and each is charged shipping. Put both bottles in one order and the charge is shared between them.`,
       },
       {
-        p: `The same goes for adding to an order you have already placed. Each checkout is its own order, so bottles bought later carry their own shipping, unless that new order reaches {freeBottles} bottles by itself.`,
+        p: `The same goes for adding to an order you have already placed. Each checkout is its own order, so bottles bought later pay their own shipping, unless that new order reaches {freeBottles} bottles by itself.`,
       },
       { h: 'The same figure everywhere' },
       {
@@ -466,20 +466,20 @@ export const SHIPPING_GUIDES: Guide[] = [
       {
         list: [
           'Your order number.',
-          'The tracking number, and for the carriers the shop links to, a link to follow the parcel.',
-          'The address the parcel is going to.',
+          'The tracking number, and for the carriers the shop links to, a link to follow the package.',
+          'The address the package is going to.',
           'A reminder of the directions: {directions}.',
         ],
       },
       { h: 'No tracking number?' },
       {
-        p: `Occasionally an order is marked shipped before its number is to hand. The email still confirms it has left, and the order can be looked up on the [track your order](/orders) page.`,
+        p: `Occasionally an order is marked shipped before its number is available. The email still confirms it has left, and the order can be looked up on the [track your order](/orders) page.`,
       },
       { h: 'No link?' },
       {
-        p: `A few carriers are not linked. Copy the number into the carrier’s own website instead.`,
+        p: `A few carriers aren’t linked. Copy the number into the carrier’s own website instead.`,
       },
-      { h: 'Keep it until the parcel arrives' },
+      { h: 'Keep it until the package arrives' },
       {
         p: `The tracking link in it is the quickest answer to “where is it?”, and the order number at the top is what to give if you need to call.`,
       },
@@ -499,27 +499,27 @@ export const SHIPPING_GUIDES: Guide[] = [
     category: 'shipping',
     body: [
       {
-        p: `Look an order up on the [track your order](/orders) page and it shows one of four statuses, each with a line explaining it. Here is what each means in practice.`,
+        p: `Look an order up on the [track your order](/orders) page and it shows one of four statuses, each with a line explaining it. Below is what each one means in practice.`,
       },
       { h: 'Awaiting payment' },
       {
-        p: `The order exists but the payment has not been confirmed yet. If you have just paid, give it a moment and refresh; confirmation can take a little time to come through. If you closed the payment page without finishing, nothing was charged.`,
+        p: `The order exists but the payment hasn’t been confirmed yet. If you have just paid, give it a moment and refresh; confirmation can take a little time to come through. If you closed the payment page without finishing, nothing was charged.`,
       },
       { h: 'Paid — preparing' },
       {
-        p: `Payment has been received and the order is being got ready in Brentwood. This is the status that matches your confirmation email. The next change is to Shipped.`,
+        p: `Payment has been received and the order is being prepared in Brentwood. This is the status that matches your confirmation email. The next change is to Shipped.`,
       },
       { h: 'Shipped' },
       {
-        p: `The parcel is on its way. The shipping email has the tracking number and, for the carriers the shop links to, a link to follow it on the carrier’s own page.`,
+        p: `The package is on its way. The shipping email has the tracking number and, for the carriers the shop links to, a link to follow it on the carrier’s own page.`,
       },
       { h: 'Canceled' },
       {
-        p: `The order will not be filled. The page puts it plainly: you were not charged, or you were refunded. If you did not expect to see this, call {phone}, {hours}.`,
+        p: `The order won’t be filled. The page says: you were not charged, or you were refunded. If you didn’t expect to see this, call {phone}, {hours}.`,
       },
       { h: 'Status not changing?' },
       {
-        p: `Orders sit at Paid while they are being packed, and the site does not promise a ship date. If it has been longer than you expected, call with your order number and we will look.`,
+        p: `Orders sit at Paid while they are being packed, and the site doesn’t promise a ship date. If it has been longer than you expected, call with your order number and we will look.`,
       },
     ],
   },

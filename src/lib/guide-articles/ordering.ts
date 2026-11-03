@@ -10,19 +10,19 @@ export const ORDERING_GUIDES: Guide[] = [
     category: 'ordering',
     body: [
       {
-        p: `No. Checkout here is guest-only by design. You enter an email address, a name, a shipping address and a phone number, pay on the payment provider’s secure page, and that is the whole of it. Nobody is asked to make up a password at the moment they are about to pay, because that step adds friction and nothing else.`,
+        p: `No. Checkout here is guest-only by design. You enter an email address, a name, a shipping address and a phone number, pay on the payment provider’s secure page, and you are done. Nobody is asked to make up a password at the moment they are about to pay, because that step adds friction and nothing else.`,
       },
       { h: 'Finding an order without an account' },
       {
-        p: `Everything you need arrives by email. The confirmation email carries your order number, and the [track your order](/orders) page finds the order from that number plus the email address you used at checkout.`,
+        p: `Everything you need arrives by email. The confirmation email has your order number, and the [track your order](/orders) page finds the order from that number plus the email address you used at checkout.`,
       },
       { h: 'What the site remembers instead' },
       {
-        p: `When you check out as a guest, your name, address, email and phone number are saved in your own browser so you do not have to type them next time. According to the [privacy policy](/privacy), they stay on your device and the shop never receives a copy. A “Not you? Clear details” link on the cart page removes them.`,
+        p: `When you check out as a guest, your name, address, email and phone number are saved in your own browser so you don’t have to type them next time. According to the [privacy policy](/privacy), they stay on your device and the shop never receives a copy. A “Not you? Clear details” link on the cart page removes them.`,
       },
       { h: 'What an account adds' },
       {
-        p: `An account lets you sign in and see all your orders in one place. It is not needed to buy, to track a parcel, or to get a refund on an unopened bottle.`,
+        p: `An account lets you sign in and see all your orders in one place. It isn’t needed to buy, to track a package, or to get a refund on an unopened bottle.`,
       },
       {
         p: `Ready? [See prices and buy](/#buy), or follow the [step-by-step ordering guide](/guides/how-to-order-quell-step-by-step) for a look at each screen first.`,
@@ -42,7 +42,7 @@ export const ORDERING_GUIDES: Guide[] = [
       },
       { h: 'Email' },
       {
-        p: `The confirmation email and the shipping email go here, and together with your order number it is how the [order lookup page](/orders) finds your order. If an address looks mistyped, checkout suggests a correction, because a receipt sent to a misspelled inbox is one you cannot easily get back.`,
+        p: `The confirmation email and the shipping email go here, and together with your order number it is how the [order lookup page](/orders) finds your order. If an address looks mistyped, checkout suggests a correction, because a receipt sent to a misspelled inbox is one you can’t easily get back.`,
       },
       { h: 'Name and shipping address' },
       {
@@ -67,7 +67,7 @@ export const ORDERING_GUIDES: Guide[] = [
     slug: 'how-payment-works',
     title: 'How payment works when you order Quell',
     description:
-      'Card details go straight to Authorize.net on its own secure page. Why the card form lives elsewhere, and what this site does and does not keep.',
+      'Card details go straight to Authorize.net on its own secure page. Why the card form lives elsewhere, and what this site does and doesn’t keep.',
     category: 'ordering',
     body: [
       {
@@ -77,13 +77,13 @@ export const ORDERING_GUIDES: Guide[] = [
       {
         p: `Handing card entry to a payment processor means the shop never handles your card number. The privacy policy states that card details never pass through or rest on this site’s servers, and that the shop keeps only a payment reference and the outcome of the charge.`,
       },
-      { h: 'What your browser remembers, and what it does not' },
+      { h: 'What your browser remembers, and what it doesn’t' },
       {
-        p: `For guests, the browser remembers your name, address, email and phone so you do not have to retype them. Card details are not among them; they are never saved anywhere on this site. On a shared computer, use “Not you? Clear details” on the cart page.`,
+        p: `For guests, the browser remembers your name, address, email and phone so you don’t have to retype them. Card details aren’t among them; they are never saved anywhere on this site. On a shared computer, use “Not you? Clear details” on the cart page.`,
       },
       { h: 'Checking you are on the right page' },
       {
-        p: `The payment page belongs to the processor, so its web address will not be quelldrop.com, and that is expected. You reach it from this site’s checkout button. If a payment page ever turns up some other way, by email or text, close it.`,
+        p: `The payment page belongs to the processor, so its web address won’t be quelldrop.com, and that is expected. You reach it from this site’s checkout button. If a payment page ever turns up some other way, by email or text, close it.`,
       },
       { h: 'Questions' },
       {
@@ -96,7 +96,7 @@ export const ORDERING_GUIDES: Guide[] = [
     slug: 'when-is-my-card-charged',
     title: 'When is my card charged?',
     description:
-      'You authorize the charge when you submit the order. What the amount is made of, what happens if an order cannot be filled, and price changes.',
+      'You authorize the charge when you submit the order. What the amount is made of, what happens if an order can’t be filled, and price changes.',
     category: 'ordering',
     body: [
       {
@@ -106,9 +106,9 @@ export const ORDERING_GUIDES: Guide[] = [
       {
         p: `The bottles, plus shipping — a flat {shipping} below {freeBottles} bottles and nothing at {freeBottles} or more. The cart shows the delivered total before you pay, and the confirmation email repeats the subtotal, shipping and total afterward.`,
       },
-      { h: 'If the order cannot be filled' },
+      { h: 'If the order can’t be filled' },
       {
-        p: `If the shop cannot fill an order, the authorization is released or refunded in full. You are not left paying for something that is not coming.`,
+        p: `If the shop can’t fill an order, the authorization is released or refunded in full. You aren’t left paying for something that isn’t coming.`,
       },
       { h: 'If a listing was wrong' },
       {
@@ -116,7 +116,7 @@ export const ORDERING_GUIDES: Guide[] = [
       },
       { h: 'Price changes' },
       {
-        p: `Prices may change without notice. A change made after you order does not alter the amount you authorized. The [buy panel](/#buy) always shows the current price.`,
+        p: `Prices may change without notice. A change made after you order doesn’t alter the amount you authorized. The [buy panel](/#buy) always shows the current price.`,
       },
       {
         p: `Questions about a charge: {phone}, {hours}, with the order number from your confirmation email.`,
@@ -132,7 +132,7 @@ export const ORDERING_GUIDES: Guide[] = [
     category: 'ordering',
     body: [
       {
-        p: `Checkout tries to catch it first. When an address looks like a common slip, such as a misspelled email provider, it suggests the likely correction before you pay. It is worth a second look; the suggestion is there because a receipt sent to the wrong address is hard to recover.`,
+        p: `Checkout tries to catch it first. When an address looks like a common slip, such as a misspelled email provider, it suggests the likely correction before you pay. Give it a second look; the suggestion is there because a receipt sent to the wrong address is hard to recover.`,
       },
       { h: 'Why the address matters' },
       {
@@ -144,7 +144,7 @@ export const ORDERING_GUIDES: Guide[] = [
       },
       { h: 'What to do next' },
       {
-        p: `Call {phone}, {hours}. Have the name and shipping address you used ready, and the day you ordered, since without the email you will not have an order number to give.`,
+        p: `Call {phone}, {hours}. Have the name and shipping address you used ready, and the day you ordered, since without the email you won’t have an order number to give.`,
       },
       { h: 'Next time' },
       {
@@ -157,7 +157,7 @@ export const ORDERING_GUIDES: Guide[] = [
     slug: 'checkout-remembers-your-details',
     title: 'Why checkout remembers your details',
     description:
-      'Guest details are saved in your own browser so you do not retype them. What is kept, what never is, and how to clear it on a shared computer.',
+      'Guest details are saved in your own browser so you don’t retype them. What is kept, what never is, and how to clear it on a shared computer.',
     category: 'ordering',
     body: [
       {
@@ -165,7 +165,7 @@ export const ORDERING_GUIDES: Guide[] = [
       },
       { h: 'Where it is kept' },
       {
-        p: `On your device and nowhere else. The [privacy policy](/privacy) says the shop never receives a copy of what is stored there. Card details are never saved anywhere on this site, so they are not part of it.`,
+        p: `On your device and nowhere else. The [privacy policy](/privacy) says the shop never receives a copy of what is stored there. Card details are never saved anywhere on this site, so they aren’t part of it.`,
       },
       { h: 'Shared and family computers' },
       {
@@ -190,7 +190,7 @@ export const ORDERING_GUIDES: Guide[] = [
     category: 'ordering',
     body: [
       {
-        p: `Start from the directions: {directions}. That is six drops a day. Exactly how long a bottle lasts depends on drop size, which varies, but at that dose a {size} bottle runs out in weeks rather than months.`,
+        p: `Start from the directions: {directions}. Six drops a day, in total. Exactly how long a bottle lasts depends on drop size, which varies, but at that dose a {size} bottle runs out in weeks, not months.`,
       },
       { h: 'The shipping side' },
       {
@@ -204,7 +204,7 @@ export const ORDERING_GUIDES: Guide[] = [
           'Three or more if you use it daily and want free shipping.',
         ],
       },
-      { h: 'Do not overbuy' },
+      { h: 'Don’t overbuy' },
       {
         p: `Spare bottles need the same conditions as the one in use: {storage}. Only unopened bottles can be refunded, within {returnDays} days of delivery. If you are torn, two is a sensible middle.`,
       },
@@ -222,7 +222,7 @@ export const ORDERING_GUIDES: Guide[] = [
     category: 'ordering',
     body: [
       {
-        p: `Yes. The buy panel starts with two bottles selected, but that is a default, not a minimum. Choose 1 from the quantity menu and it adds one.`,
+        p: `Yes. The buy panel starts with two bottles selected, but you can change it: it is a default, not a minimum. Choose 1 from the quantity menu and it adds one.`,
       },
       { h: 'Why the default is two' },
       {
@@ -262,11 +262,11 @@ export const ORDERING_GUIDES: Guide[] = [
       },
       { h: 'If they use other drops or wear lenses' },
       {
-        p: `Quell’s label does not cover use alongside contact lenses or other eye drops. If either applies, they should ask their eye doctor or pharmacist first.`,
+        p: `Quell’s label doesn’t cover use alongside contact lenses or other eye drops. If either applies, they should ask their eye doctor or pharmacist first.`,
       },
       { h: 'Who can buy, and where it goes' },
       {
-        p: `The person paying must be at least 18, and the site ships within the United States only. A parcel that arrives damaged or incorrect is replaced at no charge if reported within {returnDays} days, so ask them to open it and check soon after it arrives.`,
+        p: `The person paying must be at least 18, and the site ships within the United States only. A package that arrives damaged or incorrect is replaced at no charge if reported within {returnDays} days, so ask them to open it and check soon after it arrives.`,
       },
     ],
   },
@@ -279,15 +279,15 @@ export const ORDERING_GUIDES: Guide[] = [
     category: 'ordering',
     body: [
       {
-        p: `It compares what you are about to pay with what the same bottles would cost bought one at a time, each with its own shipping. It is not a discount and nothing is deducted. It is the difference shipping makes.`,
+        p: `It compares what you are about to pay with what the same bottles would cost bought one at a time, each with its own shipping. It isn’t a discount and nothing is deducted. It is the difference shipping makes.`,
       },
       { h: 'Why single bottles are the comparison' },
       {
-        p: `One bottle on its own carries a flat {shipping} shipping charge. Two bottles share the same charge, and {freeBottles} or more ship free. So the more bottles in one order, the less shipping each one carries.`,
+        p: `One bottle on its own pays a flat {shipping} for shipping. Two bottles share the same charge, and {freeBottles} or more ship free. So the more bottles in one order, the less shipping each one costs.`,
       },
       { h: 'Why not the shelf price?' },
       {
-        p: `Measuring against the bottle price alone would make a multi-bottle order look like a markup, because a shelf price does not include getting the bottle to you. One bottle, delivered, is the fair reference, so that is the one used.`,
+        p: `Measuring against the bottle price alone would make a multi-bottle order look like a markup, because a shelf price doesn’t include getting the bottle to you. One bottle, delivered, is the fair reference, so that is the one used.`,
       },
       { h: 'Where you see it' },
       {
@@ -295,7 +295,7 @@ export const ORDERING_GUIDES: Guide[] = [
       },
       { h: 'What you actually pay' },
       {
-        p: `The cart’s delivered total: subtotal plus shipping. That is the figure on the payment page and in your confirmation email. There are no codes to apply on top; [promo codes](/guides/quell-coupons-and-promo-codes) explains why.`,
+        p: `The cart’s delivered total: subtotal plus shipping. The same figure appears on the payment page and in your confirmation email. There are no codes to apply on top; [promo codes](/guides/quell-coupons-and-promo-codes) explains why.`,
       },
     ],
   },
@@ -320,7 +320,7 @@ export const ORDERING_GUIDES: Guide[] = [
       },
       { h: 'The nearest thing to a standing order' },
       {
-        p: `Ordering several bottles at once. {freeBottles} or more ship free, and unopened bottles keep in the same conditions as the one you are using: {storage}.`,
+        p: `Ordering several bottles at once. Orders of {freeBottles} or more ship free, and unopened bottles keep in the same conditions as the one you are using: {storage}.`,
       },
       {
         p: `When you want more, order the same way as the first time. [How to reorder](/guides/how-to-reorder-quell) covers the quickest route.`,
@@ -348,7 +348,7 @@ export const ORDERING_GUIDES: Guide[] = [
       },
       { h: 'How many this time' },
       {
-        p: `{freeBottles} bottles or more ship free; below that it is a flat {shipping}. Unopened bottles can be refunded within {returnDays} days of delivery without being sent back, so adding a spare carries little risk.`,
+        p: `Orders of {freeBottles} bottles or more ship free; below that it is a flat {shipping}. Unopened bottles can be refunded within {returnDays} days of delivery without being sent back, so adding a spare is low risk.`,
       },
       { h: 'If the reminder brought you here' },
       {
@@ -369,15 +369,15 @@ export const ORDERING_GUIDES: Guide[] = [
       },
       { h: 'How the timing works' },
       {
-        p: `The estimate scales with how many bottles you ordered, since two bottles last twice as long as one at the labeled dose. Only orders that were paid or shipped get one, so a canceled or unfinished order will not.`,
+        p: `The estimate scales with how many bottles you ordered, since two bottles last twice as long as one at the labeled dose. Only orders that were paid or shipped get one, so a canceled or unfinished order won’t.`,
       },
-      { h: 'It asks rather than assumes' },
+      { h: 'It asks; it doesn’t assume' },
       {
         p: `The email says “if you’re getting near the end.” People use drops at different rates, share a bottle, or stop, so it is written as a question. If you still have plenty, there is nothing to do.`,
       },
       { h: 'Replying' },
       {
-        p: `The email invites a reply if something was not right, or if you stopped using it. That reply is read by a person, and it is genuinely useful to hear.`,
+        p: `The email invites a reply if something wasn’t right, or if you stopped using it. That reply is read by a person, and it is genuinely useful to hear.`,
       },
       { h: 'No subscription' },
       {
@@ -394,22 +394,22 @@ export const ORDERING_GUIDES: Guide[] = [
     category: 'ordering',
     body: [
       {
-        p: `Yes. The [terms](/terms) say you must be at least 18 years old to buy from this site, and the privacy policy says the site does not knowingly create accounts for anyone younger.`,
+        p: `Yes. The [terms](/terms) say you must be at least 18 years old to buy from this site, and the privacy policy says the site doesn’t knowingly create accounts for anyone younger.`,
       },
       { h: 'Buying for a household' },
       {
         p: `An adult can order for anyone at home, and the shipping address can be anywhere in the United States. The age rule applies to the person paying.`,
       },
       {
-        p: `What the label covers, though, is use by the person following it. Quell’s label does not give separate directions for children, so if you are thinking of using it for a child, ask a pediatrician or eye doctor first.`,
+        p: `What the label covers, though, is use by the person following it. Quell’s label doesn’t give separate directions for children, so if you are thinking of using it for a child, ask a pediatrician or eye doctor first.`,
       },
       { h: 'Keeping it away from children' },
       {
-        p: `Every bottle carries the same instruction to keep it out of reach of children, and Quell’s label adds: {swallowed}. A closed cabinet or a high shelf does the job at home; in a bag, an inside pocket.`,
+        p: `Every bottle has the same instruction to keep it out of reach of children, and Quell’s label adds: {swallowed}. A closed cabinet or a high shelf does the job at home; in a bag, an inside pocket.`,
       },
       { h: 'Where to read more' },
       {
-        p: `[Eye drops and children](/guides/eye-drops-and-children) covers what the label does and does not say. The full panel is on the [Drug Facts](/drug-facts) page.`,
+        p: `[Eye drops and children](/guides/eye-drops-and-children) covers what the label does and doesn’t say. The full panel is on the [Drug Facts](/drug-facts) page.`,
       },
     ],
   },
@@ -422,23 +422,23 @@ export const ORDERING_GUIDES: Guide[] = [
     category: 'ordering',
     body: [
       {
-        p: `The drop is the same; what surrounds it is different. Online you can read the whole label at leisure before buying, but you wait for delivery and sort out refunds or problems by phone. Quell is sold online and posted to you, so this is the route for it.`,
+        p: `The drop is the same; what surrounds it is different. Online you can read the whole label at leisure before buying, but you wait for delivery and sort out refunds or problems by phone. Quell is sold online and shipped to you, so this is the route for it.`,
       },
       { h: 'You read the label first, not in an aisle' },
       {
-        p: `In a store you read the box standing up. Online, a listing should show the full Drug Facts panel before you pay, and Quell’s is on the [Drug Facts](/drug-facts) page word for word. Take your time with it; that is the advantage of buying this way.`,
+        p: `In a store you read the box standing up. Online, a listing should show the full Drug Facts panel before you pay, and Quell’s is on the [Drug Facts](/drug-facts) page word for word. Take your time with it. That is the advantage of buying this way.`,
       },
       { h: 'There is no counter to ask at' },
       {
-        p: `For Quell there is no pharmacy counter and no prescription: it is ordered here and posted to you. That also means no pharmacist at the point of sale, so if you want to know whether it suits you, ask your own pharmacist or eye doctor before ordering.`,
+        p: `For Quell there is no pharmacy counter and no prescription: it is ordered here and shipped to you. That also means no pharmacist at the point of sale, so if you want to know whether it suits you, ask your own pharmacist or eye doctor before ordering.`,
       },
       { h: 'Delivery instead of pickup' },
       {
-        p: `Orders are posted from Brentwood, Tennessee, and shipping is a flat {shipping} unless you order {freeBottles} or more. There is no delivery promise, so order before you run out rather than on the day you do.`,
+        p: `Orders go out from Brentwood, Tennessee, and shipping is a flat {shipping} unless you order {freeBottles} or more. There is no delivery promise, so order before you run out, not on the day you do.`,
       },
       { h: 'Returns work differently' },
       {
-        p: `Change your mind about an unopened bottle within {returnDays} days of delivery and it is refunded without being sent back; opened ones are not refundable. A parcel that arrives damaged is replaced at no charge if you report it within the same window.`,
+        p: `Change your mind about an unopened bottle within {returnDays} days of delivery and it is refunded without being sent back; opened ones aren’t refundable. A package that arrives damaged is replaced at no charge if you report it within the same window.`,
       },
     ],
   },
@@ -451,7 +451,7 @@ export const ORDERING_GUIDES: Guide[] = [
     category: 'ordering',
     body: [
       {
-        p: `Right here. Quell is ordered online and posted from Brentwood, Tennessee, to anywhere in the United States.`,
+        p: `Right here. Quell is ordered online and shipped from Brentwood, Tennessee, to anywhere in the United States.`,
       },
       { h: 'Is there a store near me?' },
       {
@@ -496,7 +496,7 @@ export const ORDERING_GUIDES: Guide[] = [
         ],
       },
       {
-        p: `A genuine shop is consistent about who it is. If the name on a site, the name on its policies and the name on the carton do not match, that is the moment to stop and check.`,
+        p: `A genuine shop is consistent about who it is. If the name on a site, the name on its policies and the name on the carton don’t match, that is the moment to stop and check.`,
       },
       { h: 'The manufacturer' },
       {
@@ -508,7 +508,7 @@ export const ORDERING_GUIDES: Guide[] = [
       },
       { h: 'If something looks wrong' },
       {
-        p: `If you find Quell offered somewhere with claims its label does not support, or a page that looks like this one at a different address, call {phone}, {hours}, and say where you saw it.`,
+        p: `If you find Quell offered somewhere with claims its label doesn’t support, or a page that looks like this one at a different address, call {phone}, {hours}, and say where you saw it.`,
       },
     ],
   },
@@ -517,7 +517,7 @@ export const ORDERING_GUIDES: Guide[] = [
     slug: 'quell-coupons-and-promo-codes',
     title: 'Are there Quell coupons or promo codes?',
     description:
-      'Quell does not use promo codes. How an order costs less instead: shipping shared across bottles, and free shipping at three or more.',
+      'Quell doesn’t use promo codes. How an order costs less instead: shipping shared across bottles, and free shipping at three or more.',
     category: 'ordering',
     body: [
       {
@@ -525,11 +525,11 @@ export const ORDERING_GUIDES: Guide[] = [
       },
       { h: 'How an order costs less' },
       {
-        p: `Through shipping. One bottle carries a flat {shipping} charge; two bottles share the same charge; {freeBottles} or more ship free. The buy panel and the cart show the saving against buying the same bottles one at a time.`,
+        p: `Through shipping. One bottle pays a flat {shipping} charge; two bottles split the same charge; {freeBottles} or more ship free. The buy panel and the cart show the saving against buying the same bottles one at a time.`,
       },
       { h: 'Be wary of coupon sites' },
       {
-        p: `Coupon sites list codes for shops that have never issued one. A Quell code from one of them will not work here, and it is not worth handing over an email address to find that out.`,
+        p: `Coupon sites list codes for shops that have never issued one. A Quell code from one of them won’t work here, and it isn’t worth handing over an email address to find that out.`,
       },
       { h: 'No subscribe-and-save price either' },
       {
@@ -562,7 +562,7 @@ export const ORDERING_GUIDES: Guide[] = [
       },
       { h: 'Paying with an HSA or FSA card' },
       {
-        p: `Payment is taken by card on the payment provider’s secure page. Whether a particular HSA or FSA card is accepted depends on the card and the plan, and this site cannot tell you in advance. If one is declined, you can pay another way and claim reimbursement afterward, where your plan allows it.`,
+        p: `Payment is taken by card on the payment provider’s secure page. Whether a particular HSA or FSA card is accepted depends on the card and the plan, and this site can’t tell you in advance. If one is declined, you can pay another way and claim reimbursement afterward, where your plan allows it.`,
       },
       { h: 'Keep the receipt' },
       {
@@ -570,7 +570,7 @@ export const ORDERING_GUIDES: Guide[] = [
       },
       { h: 'Shipping' },
       {
-        p: `Whether shipping is reimbursable is a question for your plan. {freeBottles} bottles or more ship free, which takes the question away.`,
+        p: `Whether shipping is reimbursable is a question for your plan. Orders of {freeBottles} bottles or more ship free, which takes the question away.`,
       },
     ],
   },
@@ -608,15 +608,15 @@ export const ORDERING_GUIDES: Guide[] = [
     slug: 'your-cart-is-saved-on-this-device',
     title: 'Is my cart saved if I leave the site?',
     description:
-      'Your Quell cart is stored in your own browser, so it is still there when you come back. Why it does not follow you to another device.',
+      'Your Quell cart is stored in your own browser, so it is still there when you come back. Why it doesn’t follow you to another device.',
     category: 'ordering',
     body: [
       {
-        p: `Yes, in that browser. The cart is stored in your own browser on your own device, so closing the tab, or coming back tomorrow, leaves it as you left it. You do not need an account for that.`,
+        p: `Yes, in that browser. The cart is stored in your own browser on your own device, so closing the tab, or coming back tomorrow, leaves it as you left it. You don’t need an account for that.`,
       },
-      { h: 'Why it does not follow you' },
+      { h: 'Why it doesn’t follow you' },
       {
-        p: `The [privacy policy](/privacy) is specific: the cart is stored in your browser and never sent to the shop. That keeps it private, and it also means a cart started on your phone will not appear on your laptop.`,
+        p: `The [privacy policy](/privacy) is specific: the cart is stored in your browser and never sent to the shop. That keeps it private, and it also means a cart started on your phone won’t appear on your laptop.`,
       },
       { h: 'Private browsing' },
       {
@@ -641,7 +641,7 @@ export const ORDERING_GUIDES: Guide[] = [
     category: 'ordering',
     body: [
       {
-        p: `Ordering takes a few minutes and needs no account and no prescription. Here is each step in order.`,
+        p: `Ordering takes a few minutes and needs no account and no prescription. The steps are below.`,
       },
       { h: '1. Choose a quantity' },
       {
@@ -661,7 +661,7 @@ export const ORDERING_GUIDES: Guide[] = [
       },
       { h: '5. Watch your inbox' },
       {
-        p: `A confirmation email arrives with your order number and a link to track the order, and a second email follows when it ships. Before you start, it is worth reading the label on the [Drug Facts](/drug-facts) page.`,
+        p: `A confirmation email arrives with your order number and a link to track the order, and a second email follows when it ships. Before you start, read the label on the [Drug Facts](/drug-facts) page.`,
       },
     ],
   },

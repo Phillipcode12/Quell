@@ -24,11 +24,11 @@ export const CHOOSING_GUIDES: Guide[] = [
       },
       { h: 'The warnings still apply' },
       {
-        p: `Over the counter does not mean without conditions. Quell’s warnings begin: {warnings}.`,
+        p: `Over the counter doesn’t mean without conditions. Quell’s warnings begin: {warnings}.`,
       },
       { h: 'Buying online' },
       {
-        p: `Because no prescription is needed, Quell can be ordered directly on this site, with guest checkout, by anyone 18 or over. [How to buy eye drops online safely](/guides/how-to-buy-eye-drops-online-safely) covers the checks worth making.`,
+        p: `Because no prescription is needed, Quell can be ordered directly on this site, with guest checkout, by anyone 18 or over. [How to buy eye drops online safely](/guides/how-to-buy-eye-drops-online-safely) covers the checks to make.`,
       },
       { h: 'HSA and FSA' },
       {
@@ -79,7 +79,7 @@ export const CHOOSING_GUIDES: Guide[] = [
     slug: 'the-dry-eye-self-check',
     title: 'The dry eye self-check: what it is',
     description:
-      'Eight questions, about ninety seconds: what Quell’s dry eye self-check asks about, what you get back, and what it is not.',
+      'Eight questions, about ninety seconds: what Quell’s dry eye self-check asks about, what you get back, and what it isn’t.',
     category: 'choosing',
     body: [
       {
@@ -89,17 +89,17 @@ export const CHOOSING_GUIDES: Guide[] = [
       {
         p: `By email. You give an address at the start and the result is sent to it. The page says the address is never sold.`,
       },
-      { h: 'What it is not' },
+      { h: 'What it isn’t' },
       {
         p: `It is not a diagnosis, and it is no substitute for an eye exam. It is a structured way of describing your symptoms, which can be a useful thing to take to an eye doctor.`,
       },
       { h: 'If it says to see a doctor' },
       {
-        p: `Some answers lead to a result that recommends seeing a doctor, and that email says so in its subject line. Take it seriously, and book the appointment rather than ordering drops first.`,
+        p: `Some answers lead to a result that recommends seeing a doctor, and that email says so in its subject line. Take it seriously, and book the appointment before ordering any drops.`,
       },
       { h: 'Where Quell comes in' },
       {
-        p: `Quell’s Uses section reads: {uses}. The self-check does not change that, and the result is not a recommendation to buy anything.`,
+        p: `Quell’s Uses section reads: {uses}. The self-check doesn’t change that, and the result isn’t a recommendation to buy anything.`,
       },
     ],
   },
@@ -112,7 +112,7 @@ export const CHOOSING_GUIDES: Guide[] = [
     category: 'choosing',
     body: [
       {
-        p: `Some eye problems are for an eye doctor, and a few are emergencies. Quell’s label and terms draw those lines clearly, and they apply whatever drop you use.`,
+        p: `Some eye problems are for an eye doctor, and a few are emergencies. Quell’s label and terms draw those lines clearly, and they apply to any drop you use.`,
       },
       { h: 'Emergencies' },
       {
@@ -122,11 +122,11 @@ export const CHOOSING_GUIDES: Guide[] = [
       { p: `{stopUse}` },
       { h: 'Outside what the label covers' },
       {
-        p: `Quell’s Uses section reads: {uses}. If what you are experiencing does not fit that description, or you do not know what it is, an eye exam is how to find out.`,
+        p: `Quell’s Uses section reads: {uses}. If what you are experiencing doesn’t fit that description, or you don’t know what it is, an eye exam is how to find out.`,
       },
       { h: 'Not medical advice' },
       {
-        p: `This site does not provide medical advice, and using Quell does not create a doctor-patient relationship, as the [terms](/terms) say.`,
+        p: `This site doesn’t provide medical advice, and using Quell doesn’t create a doctor-patient relationship, as the [terms](/terms) say.`,
       },
       { h: 'Before the appointment' },
       {
@@ -147,7 +147,7 @@ export const CHOOSING_GUIDES: Guide[] = [
       },
       { h: 'Uses' },
       {
-        p: `What each product is for. Quell’s: {uses}. A drop whose Uses do not match your problem is not the drop for it.`,
+        p: `What each product is for. Quell’s: {uses}. A drop whose Uses don’t match your problem isn’t the drop for it.`,
       },
       { h: 'Active ingredients' },
       {
@@ -155,11 +155,11 @@ export const CHOOSING_GUIDES: Guide[] = [
       },
       { h: 'Inactive ingredients and preservatives' },
       {
-        p: `Read them for allergies and for preservatives. Quell is preservative-free, and its inactive list includes emu oil, which is why its label carries an egg and bird allergy caution.`,
+        p: `Read them for allergies and for preservatives. Quell is preservative-free, and its inactive list includes emu oil, which is why its label includes an egg and bird allergy caution.`,
       },
       { h: 'Directions' },
       {
-        p: `How often you would use it, and so how fast you would go through a bottle.`,
+        p: `How often you would use it, and so how fast you would go through a bottle. A cheaper bottle used more often can cost more by the month.`,
       },
       { h: 'Delivered price' },
       {
@@ -176,7 +176,7 @@ export const CHOOSING_GUIDES: Guide[] = [
     slug: 'comparing-eye-drop-prices-with-shipping',
     title: 'Comparing eye drop prices? Count the shipping',
     description:
-      'The sticker price of a bottle of eye drops is not what it costs to get it to you. How to compare delivered prices, using Quell’s as the example.',
+      'The sticker price of a bottle of eye drops isn’t what it costs to get it to you. How to compare delivered prices, using Quell’s as the example.',
     category: 'choosing',
     body: [
       {
@@ -196,7 +196,7 @@ export const CHOOSING_GUIDES: Guide[] = [
       },
       { h: 'Watch for extras' },
       {
-        p: `Codes that do not work, subscriptions that renew, and shipping that only appears at the last step. Quell has no codes and no subscription, and shipping is shown in the cart before you pay, so the delivered total there is the whole cost.`,
+        p: `Codes that don’t work, subscriptions that renew, and shipping that only appears at the last step. Quell has no codes and no subscription, and shipping is shown in the cart before you pay, so the delivered total there is the whole cost.`,
       },
     ],
   },
@@ -243,7 +243,7 @@ export const CHOOSING_GUIDES: Guide[] = [
       },
       { h: 'What the label says' },
       { p: `The Uses section of the Drug Facts panel reads: {uses}.` },
-      { h: 'What kind of drop it is not' },
+      { h: 'What kind of drop it isn’t' },
       {
         p: `Quell contains no antihistamine; its actives are lubricants and an emollient and nothing else. If you are looking for an allergy medicine, that is a different kind of product, and a pharmacist can point you to one.`,
       },
@@ -274,13 +274,13 @@ export const CHOOSING_GUIDES: Guide[] = [
       },
       { h: 'Directions' },
       {
-        p: `{directions}. The directions do not change when your eyes feel worse. Stick to them, and if things are not settling, the stop-use section below is the one that applies.`,
+        p: `{directions}. The directions don’t change when your eyes feel worse. Stick to them, and if things aren’t settling, the stop-use section below is the one that applies.`,
       },
       { h: 'When to stop' },
       { p: `{stopUse}` },
-      { h: 'What the label does not cover' },
+      { h: 'What the label doesn’t cover' },
       {
-        p: `An eye injury is not what a lubricating drop is for. Injuries need emergency care, not a drop. [Eye symptoms that need a doctor](/guides/eye-symptoms-that-need-a-doctor) sets out the lines.`,
+        p: `An eye injury isn’t what a lubricating drop is for. Injuries need emergency care, not a drop. [Eye symptoms that need a doctor](/guides/eye-symptoms-that-need-a-doctor) sets out the lines.`,
       },
     ],
   },
@@ -306,7 +306,7 @@ export const CHOOSING_GUIDES: Guide[] = [
         list: ['Minimal', 'Mild and occasional', 'Moderate, most days', 'Significant, daily'],
       },
       {
-        p: `One question, about when your eyes are at their worst, is not scored at all. If you say you do not use drops, the question about how long drops help is left out of the score rather than counted as zero.`,
+        p: `One question, about when your eyes are at their worst, isn’t scored at all. If you say you do not use drops, the question about how long drops help is left out of the score, not counted as zero.`,
       },
       { h: 'The pattern' },
       {
@@ -314,7 +314,7 @@ export const CHOOSING_GUIDES: Guide[] = [
       },
       { h: 'The safety question' },
       {
-        p: `The last question asks whether any warning signs apply right now, among them eye pain, changes in vision, and symptoms lasting more than 72 hours. Tick any of them and there is no score at all, just one recommendation: see an eye care professional.`,
+        p: `The last question asks whether any warning signs apply right now, among them eye pain, changes in vision, and symptoms lasting more than 72 hours. Check any of them and there is no score at all, just one recommendation: see an eye care professional.`,
       },
       { h: 'What it never says' },
       {
@@ -327,35 +327,35 @@ export const CHOOSING_GUIDES: Guide[] = [
     slug: 'reading-eye-drop-reviews-online',
     title: 'How to read eye drop reviews online',
     description:
-      'What a review can and cannot tell you about an eye drop, what to look for, and how the reviews on Quell’s own site were collected.',
+      'What a review can and can’t tell you about an eye drop, what to look for, and how the reviews on Quell’s own site were collected.',
     category: 'choosing',
     body: [
       {
-        p: `Read reviews for what they are good at: how a drop feels, how easy the bottle is to use, how it fits someone’s day. Do not read them as a guide to what a drop can do. That is the label’s job.`,
+        p: `Read reviews for what they are good at: how a drop feels, how easy the bottle is to use, how it fits someone’s day. Don’t read them as a guide to what a drop can do; the label covers that.`,
       },
       { h: 'Useful signs' },
       {
         list: [
           'Specific detail: the texture, the bottle, how often they use it.',
-          'A reviewer who describes their own routine rather than making promises about yours.',
+          'A reviewer who describes their own routine and makes no promises about yours.',
           'A mix of experiences, not a wall of identical praise.',
         ],
       },
       { h: 'Signs to be wary of' },
       {
         list: [
-          'A review that says a drop fixed a condition its label does not mention.',
+          'A review that says a drop fixed a condition its label doesn’t mention.',
           'Claims that one product beats every other on the shelf.',
           'Pressure to buy now, or a code that comes with the review.',
         ],
       },
       { h: 'The label outranks the review' },
       {
-        p: `A customer’s experience is real, but it cannot widen what a product is for. For Quell, the Uses section reads: {uses}. If a review says more than that, believe the label.`,
+        p: `A customer’s experience is real, but it can’t widen what a product is for. For Quell, the Uses section reads: {uses}. If a review says more than that, believe the label.`,
       },
       { h: 'Quell’s own reviews' },
       {
-        p: `The [reviews](/reviews) page quotes people who bought Quell and agreed to have their words published. Their names were changed for privacy, which the page says plainly; nothing else was edited. There are no star ratings on this site, because none would be honest until there are enough real reviews to average.`,
+        p: `The [reviews](/reviews) page quotes people who bought Quell and agreed to have their words published. Their names were changed for privacy, which the page says outright; nothing else was edited. There are no star ratings on this site, because none would be honest until there are enough real reviews to average.`,
       },
     ],
   },
@@ -368,7 +368,7 @@ export const CHOOSING_GUIDES: Guide[] = [
     category: 'choosing',
     body: [
       {
-        p: `An appointment goes further when you arrive with notes and leave with answers. These are the questions worth asking an eye doctor about eyes that feel dry or irritated, whatever you end up using.`,
+        p: `An appointment goes further when you arrive with notes and leave with answers. These are good questions to put to an eye doctor about eyes that feel dry or irritated, before you settle on any drop.`,
       },
       { h: 'Questions about the cause' },
       {
@@ -397,7 +397,7 @@ export const CHOOSING_GUIDES: Guide[] = [
       {
         p: `The products you use, or photos of their labels, and a short note of when symptoms started and what makes them better or worse. A [simple eye drop log](/guides/keeping-an-eye-drop-log) covers most of that.`,
       },
-      { h: 'Do not wait for an appointment if' },
+      { h: 'Don’t wait for an appointment if' },
       {
         p: `You have sudden vision loss, eye pain or an eye injury; those need emergency care. Quell’s label adds its own guidance: {stopUse}`,
       },
@@ -424,13 +424,13 @@ export const CHOOSING_GUIDES: Guide[] = [
       },
       { h: 'Opticians are different again' },
       {
-        p: `Opticians fit and adjust glasses and sometimes contact lenses from a prescription. They do not examine eyes.`,
+        p: `Opticians fit and adjust glasses and sometimes contact lenses from a prescription. They don’t examine eyes.`,
       },
       { h: 'Where to start with dry or irritated eyes' },
       {
-        p: `An optometrist is usually the simplest place to begin, and often the quickest to book. Bring the labels of anything you have been using; [questions to ask your eye doctor](/guides/questions-to-ask-your-eye-doctor) has a list worth taking along.`,
+        p: `An optometrist is usually the simplest place to begin, and often the quickest to book. Bring the labels of anything you have been using; [questions to ask your eye doctor](/guides/questions-to-ask-your-eye-doctor) has a list to take along.`,
       },
-      { h: 'When it cannot wait' },
+      { h: 'When it can’t wait' },
       {
         p: `Sudden vision loss, eye pain or an eye injury need emergency care, not an appointment next week. For a medical emergency, call your local emergency number.`,
       },

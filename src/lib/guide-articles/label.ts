@@ -33,7 +33,7 @@ export const LABEL_GUIDES: Guide[] = [
       },
       { h: 'Active versus inactive' },
       {
-        p: `Everything else in the bottle is listed further down, under Inactive ingredients. Inactive does not mean unimportant: Quell’s emu oil is an inactive ingredient, and it is the reason for the label’s allergy caution.`,
+        p: `Everything else in the bottle is listed further down, under Inactive ingredients. Inactive doesn’t mean unimportant: Quell’s emu oil is an inactive ingredient, and it is the reason for the label’s allergy caution.`,
       },
       { h: 'Each one in more detail' },
       {
@@ -52,7 +52,7 @@ export const LABEL_GUIDES: Guide[] = [
       {
         p: `The Inactive ingredients section lists everything in the bottle apart from the actives, in alphabetical order. Quell’s has {inactiveCount} entries: {inactives}.`,
       },
-      { h: 'Why it is worth reading' },
+      { h: 'Why it matters' },
       {
         p: `Allergies, mainly. If you react to a particular ingredient, this is where it would appear. Quell’s warnings call out one case directly — {warnings} — and the emu oil behind that caution is on this list.`,
       },
@@ -66,7 +66,7 @@ export const LABEL_GUIDES: Guide[] = [
       },
       { h: 'Check before you buy' },
       {
-        p: `If any ingredient gives you pause, take the list to your doctor or pharmacist before ordering rather than after. The full panel is on the [Drug Facts](/drug-facts) page.`,
+        p: `If any ingredient gives you pause, take the list to your doctor or pharmacist before ordering, not after. The full panel is on the [Drug Facts](/drug-facts) page.`,
       },
     ],
   },
@@ -87,9 +87,9 @@ export const LABEL_GUIDES: Guide[] = [
       {
         p: `It has two parts. “A protectant against further irritation” is about protecting an eye that is already irritated. “To relieve dryness of the eye” is about relief. On this site, the two are summarized as relief for dryness, irritation and itching.`,
       },
-      { h: 'What it does not say' },
+      { h: 'What it doesn’t say' },
       {
-        p: `The Uses section names nothing beyond those words, and nothing on this site should be read as claiming more. If your symptoms are something else, or you are not sure what they are, see an eye doctor.`,
+        p: `The Uses section names nothing beyond those words, and nothing on this site should be read as claiming more. If your symptoms are something else, or you aren’t sure what they are, see an eye doctor.`,
       },
       { h: 'Why it matters online' },
       {
@@ -169,15 +169,15 @@ export const LABEL_GUIDES: Guide[] = [
       },
       { h: 'The starting point' },
       {
-        p: `{milky}. That is how it is meant to look, because of the natural oil-based ingredients. {appearance}`,
+        p: `{milky}. The natural oil-based ingredients give it that look. {appearance}`,
       },
       { h: 'What counts as a change' },
       {
-        p: `A bottle that no longer looks the way it did when it arrived. The FAQ puts it plainly: do not use the product if the color changes from how it arrived. It helps to take a good look at a new bottle the first time you open it, so you have something to compare against later.`,
+        p: `A bottle that no longer looks the way it did when it arrived. The FAQ says it directly: do not use the product if the color changes from how it arrived. It helps to take a good look at a new bottle the first time you open it, so you have something to compare against later.`,
       },
       { h: 'What to do' },
       {
-        p: `Stop using that bottle. If a new bottle looks wrong straight out of the parcel, call {phone}, {hours}, before using it, and have your order number ready.`,
+        p: `Stop using that bottle. If a new bottle looks wrong straight out of the package, call {phone}, {hours}, before using it, and have your order number ready.`,
       },
       { h: 'Storing it properly' },
       {
@@ -210,15 +210,15 @@ export const LABEL_GUIDES: Guide[] = [
       },
       { h: 'The cap' },
       {
-        p: `Recap the bottle straight after each dose, and set the cap down on its top rather than its open end while you use the drop.`,
+        p: `Recap the bottle straight after each dose, and set the cap down on its top, not its open end while you use the drop.`,
       },
       { h: 'No preservative, so habits count' },
       {
-        p: `Quell contains no preservative, which makes clean handling part of using it properly rather than an optional extra.`,
+        p: `Quell contains no preservative, which makes clean handling part of using it properly, not an optional extra.`,
       },
       { h: 'If the tip does touch something' },
       {
-        p: `The label does not say what to do then, so ask a pharmacist. For the rest of the panel’s handling guidance, see [how to use eye drops as directed](/guides/how-to-use-eye-drops-as-directed).`,
+        p: `The label doesn’t say what to do then, so ask a pharmacist. For the rest of the panel’s handling guidance, see [how to use eye drops as directed](/guides/how-to-use-eye-drops-as-directed).`,
       },
     ],
   },
@@ -227,7 +227,7 @@ export const LABEL_GUIDES: Guide[] = [
     slug: 'when-to-stop-using-eye-drops',
     title: 'When to stop using eye drops and see a doctor',
     description:
-      'The stop-use section of Quell’s label, explained: what it asks you to watch for, the 72-hour limit, and when it cannot wait.',
+      'The stop-use section of Quell’s label, explained: what it asks you to watch for, the 72-hour limit, and when it can’t wait.',
     category: 'label',
     body: [
       { p: `Quell’s label is specific about this. In full: {stopUse}` },
@@ -237,9 +237,9 @@ export const LABEL_GUIDES: Guide[] = [
       },
       { h: 'Pain and vision come first' },
       {
-        p: `Eye pain and changes in your vision are listed first in that sentence, and neither has a waiting period attached. Do not wait out the 72 hours for those.`,
+        p: `Eye pain and changes in your vision are listed first in that sentence, and neither has a waiting period attached. Don’t wait out the 72 hours for those.`,
       },
-      { h: 'When it cannot wait at all' },
+      { h: 'When it can’t wait at all' },
       {
         p: `Sudden vision loss, eye pain or an eye injury call for emergency care straight away. For a medical emergency, call your local emergency number.`,
       },
@@ -266,7 +266,7 @@ export const LABEL_GUIDES: Guide[] = [
       },
       { h: 'What it is telling you' },
       {
-        p: `Quell’s label covers dryness and irritation. If three days of using it as directed has not settled things, or things are getting worse, the label’s answer is not more drops. It is a doctor.`,
+        p: `Quell’s label covers dryness and irritation. If three days of using it as directed hasn’t settled things, or things are getting worse, the label’s answer isn’t more drops. It is a doctor.`,
       },
       { h: 'Worsens or persists' },
       {
@@ -298,7 +298,7 @@ export const LABEL_GUIDES: Guide[] = [
       },
       { h: 'Poison Control' },
       {
-        p: `In the United States, Poison Control can be reached on 1-800-222-1222. Keep the bottle or carton with you when you call, so you can read out exactly what was swallowed.`,
+        p: `In the United States, Poison Control can be reached at 1-800-222-1222. Keep the bottle or carton with you when you call, so you can read out exactly what was swallowed.`,
       },
       { h: 'At home' },
       {
@@ -306,7 +306,7 @@ export const LABEL_GUIDES: Guide[] = [
       },
       { h: 'In bags' },
       {
-        p: `An inside zip pocket rather than an open one, especially in a bag that ends up on the floor or on a chair where small hands can reach it.`,
+        p: `Use an inside zip pocket, not an open one, especially in a bag that ends up on the floor or on a chair where small hands can reach it.`,
       },
       { h: 'Visiting' },
       {
@@ -339,7 +339,7 @@ export const LABEL_GUIDES: Guide[] = [
       },
       { h: 'If you notice a difference' },
       {
-        p: `Call {phone}, {hours}, and say what you saw and where. A difference is worth knowing about, whichever side it turns up on. In the meantime, follow the carton: it is the version that applies to the bottle you have.`,
+        p: `Call {phone}, {hours}, and say what you saw and where. We want to hear about any difference, whichever side it turns up on. In the meantime, follow the carton: it is the version that applies to the bottle you have.`,
       },
       { h: 'Reading the carton' },
       {
@@ -372,7 +372,7 @@ export const LABEL_GUIDES: Guide[] = [
           'Artificial tears: a common name for lubricating eye drops.',
           'Tear film: the thin layer covering the surface of the eye, with a watery layer beneath an oil layer.',
           'Lipid layer: the oil layer of the tear film. The oil itself is called meibum.',
-          'Tamper seal: a seal showing a product has not been opened since it was packed.',
+          'Tamper seal: a seal showing a product hasn’t been opened since it was packed.',
         ],
       },
       {
@@ -397,13 +397,13 @@ export const LABEL_GUIDES: Guide[] = [
       },
       { h: 'Opened versus unopened' },
       {
-        p: `Quell’s label does not give a separate use-by period once a bottle is opened. If you want guidance on how long to keep using an opened bottle, your pharmacist is the person to ask. Writing the opening date on the carton makes that conversation easier, because you will know exactly how long it has been in use.`,
+        p: `Quell’s label doesn’t give a separate use-by period once a bottle is opened. If you want guidance on how long to keep using an opened bottle, your pharmacist is the person to ask. Writing the opening date on the carton makes that conversation easier, because you will know exactly how long it has been in use.`,
       },
       { h: 'Buying ahead' },
       {
         p: `If you order several bottles, check the dates when they arrive and open the earliest first. Keep the others sealed and within the storage range.`,
       },
-      { h: 'Spares you will not get to' },
+      { h: 'Spares you won’t get to' },
       {
         p: `Unopened bottles can be refunded within {returnDays} days of delivery, with nothing to send back. [How to store eye drops](/guides/how-to-store-eye-drops) covers keeping the rest in good condition.`,
       },
@@ -426,7 +426,7 @@ export const LABEL_GUIDES: Guide[] = [
       },
       { h: 'Comparing products' },
       {
-        p: `Percentages compare directly only for the same ingredient. One drop’s glycerol figure tells you nothing about another drop’s different lubricant, and a higher number is not automatically better or worse. Watch for alternative names, too: glycerol is also sold as glycerin, so compare under both.`,
+        p: `Percentages compare directly only for the same ingredient. One drop’s glycerol figure tells you nothing about another drop’s different lubricant, and a higher number isn’t automatically better or worse. Watch for alternative names, too: glycerol is also sold as glycerin, so compare under both.`,
       },
       { h: 'What the figure leaves out' },
       {

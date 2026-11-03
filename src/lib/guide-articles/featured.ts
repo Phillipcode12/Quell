@@ -24,7 +24,7 @@ export const FEATURED_GUIDES: Guide[] = [
         p: `A legitimate seller gives you its name, a mailing address and a phone number that somebody answers. On this site that is {company}, at {address}. The phone line is {phone}, {hours}. The same details sit in the footer of every page and on [About us](/about).`,
       },
       {
-        p: `A listing with no company name, or nothing but a contact form, leaves you nobody to call when a parcel goes missing or a bottle arrives cracked. That alone is a reason to keep looking.`,
+        p: `A listing with no company name, or nothing but a contact form, leaves you nobody to call when a package goes missing or a bottle arrives cracked. That alone is a reason to keep looking.`,
       },
       { h: 'Read the whole label before you pay' },
       {
@@ -38,34 +38,34 @@ export const FEATURED_GUIDES: Guide[] = [
         p: `Two parts of a label deserve a careful read even if you skim the rest. The warnings, because they can rule a product out for you — Quell’s says: {warnings}. And the directions, because they tell you how quickly you will get through a bottle: {directions}.`,
       },
       {
-        p: `If you already use other eye drops, wear contact lenses, or are buying for a child, ask your eye doctor or pharmacist before ordering. A seller is not the right person to answer those questions, and a good one will say so.`,
+        p: `If you already use other eye drops, wear contact lenses, or are buying for a child, ask your eye doctor or pharmacist before ordering. A seller isn’t the right person to answer those questions, and a good one will say so.`,
       },
       { h: 'Know the returns policy before you need it' },
       {
-        p: `Eye drops are not like shoes. A bottle that has left the seller’s control cannot be confirmed sterile, so opened drops generally cannot be refunded, and that is the rule here. For unopened bottles Quell’s policy is simple: change your mind within {returnDays} days of delivery and the product price is refunded. You do not post the bottle back. Original shipping is not refunded.`,
+        p: `Eye drops aren’t like shoes. A bottle that has left the seller’s control can’t be confirmed sterile, so opened drops generally can’t be refunded, and the same rule applies here. For unopened bottles Quell’s policy is simple: change your mind within {returnDays} days of delivery and the product price is refunded. You don’t mail the bottle back. Original shipping isn’t refunded.`,
       },
       {
-        p: `A good policy also covers the parcel that arrives in bad shape. This one does: if an order arrives damaged, incorrect, or with a broken tamper seal, contact us within {returnDays} days and it is replaced at no charge. The full wording is in the [terms](/terms).`,
+        p: `A good policy also covers the package that arrives in bad shape. This one does: if an order arrives damaged, incorrect, or with a broken tamper seal, contact us within {returnDays} days and it is replaced at no charge. The full wording is in the [terms](/terms).`,
       },
       { h: 'Know where your card details go' },
       {
         p: `Look for a checkout that hands payment to a named, established processor. Here, card details are entered directly with Authorize.net and never pass through or rest on this site’s servers, according to the [privacy policy](/privacy). The shop keeps a payment reference and whether the charge went through.`,
       },
       {
-        p: `The same policy says the site uses no advertising trackers or third-party cookies and does not sell personal information. Both are worth looking for wherever you shop.`,
+        p: `The same policy says the site uses no advertising trackers or third-party cookies and doesn’t sell personal information. Look for both wherever you shop.`,
       },
       { h: 'A short checklist' },
       {
         list: [
           'A company name, address and phone number you can find without hunting.',
           'The complete Drug Facts panel, readable before you pay.',
-          'Warnings that do not rule the product out for you.',
-          'A written returns policy that covers damaged parcels.',
+          'Warnings that don’t rule the product out for you.',
+          'A written returns policy that covers damaged packages.',
           'Card entry handled by a named payment processor.',
         ],
       },
       {
-        p: `Quell meets each of these, and you can [see prices and buy](/#buy) whenever you are ready. If something here is unclear, call {phone} before you order rather than after.`,
+        p: `Quell meets each of these, and you can [see prices and buy](/#buy) whenever you are ready. If something here is unclear, call {phone} before you order, not after.`,
       },
     ],
   },
@@ -87,14 +87,14 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'Why some people look for drops without one' },
       {
-        p: `Preservatives such as benzalkonium chloride are a common source of irritation for people using drops several times a day. That is the main reason preservative-free drops exist as a category, and it is why Quell leaves them out entirely.`,
+        p: `Preservatives such as benzalkonium chloride are a common source of irritation for people using drops several times a day. Preservative-free drops exist as a category mainly for that reason, and it is why Quell leaves them out entirely.`,
       },
       {
         p: `Frequency is the point. Quell’s directions call for use every day: {directions}. An ingredient you might never notice in an occasional drop is one your eyes meet six times a day at that rate, which is why people who use drops on a schedule tend to read the inactive list more carefully than anyone.`,
       },
       { h: 'How to check a label yourself' },
       {
-        p: `Go to the Drug Facts panel and find the Inactive ingredients section. It lists everything in the bottle that is not an active ingredient, and a preservative would appear there. Quell’s reads: {inactives}.`,
+        p: `Go to the Drug Facts panel and find the Inactive ingredients section. It lists everything in the bottle that isn’t an active ingredient, and a preservative would appear there. Quell’s reads: {inactives}.`,
       },
       {
         p: `You can read that list yourself, or take it to a pharmacist if you want a second opinion on any ingredient in it. The front of a carton tells you what a maker wants you to notice first; the panel is the full account, and it is the part to rely on if the two ever seem to disagree.`,
@@ -111,9 +111,9 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'If your eyes are sensitive' },
       {
-        p: `If you have reacted to an eye drop before, or you use several products, the most useful thing you can do is bring the labels to your eye doctor or pharmacist and ask which ingredients to avoid. Quell’s label carries one specific caution of its own worth knowing before you order: {warnings}.`,
+        p: `If you have reacted to an eye drop before, or you use several products, the most useful thing you can do is bring the labels to your eye doctor or pharmacist and ask which ingredients to avoid. Quell’s label adds one specific caution to know before you order: {warnings}.`,
       },
-      { h: 'What preservative-free does not tell you' },
+      { h: 'What preservative-free doesn’t tell you' },
       {
         p: `It describes one thing a formula leaves out. It says nothing about what the drop is for, which is the job of the Uses section. For Quell, that reads: {uses}.`,
       },
@@ -143,7 +143,7 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'Uses' },
       {
-        p: `Uses states what the product is for, in its maker’s approved words. Quell’s reads: {uses}. When a website or an advert claims more than this section does, believe the label.`,
+        p: `Uses states what the product is for, in its maker’s approved words. Quell’s reads: {uses}. When a website or an ad claims more than this section does, believe the label.`,
       },
       { h: 'Warnings' },
       {
@@ -162,7 +162,7 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'Directions' },
       {
-        p: `Directions give the dose and how often to take it. Quell’s: {directions}. That is three drops a day in each eye, six altogether. If you are unsure whether directions apply to you, ask a pharmacist before you open the bottle, not after.`,
+        p: `Directions give the dose and how often to take it. Quell’s: {directions}. Three drops a day in each eye makes six altogether. If you are unsure whether directions apply to you, ask a pharmacist before you open the bottle, not after.`,
       },
       { h: 'Other information' },
       {
@@ -177,7 +177,7 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'Questions or comments' },
       {
-        p: `Many panels end with a phone number for questions. Quell’s maker can be reached on {phone}, {hours}. That line can help with the product and your order; it cannot give medical advice, which is a job for your doctor or pharmacist.`,
+        p: `Many panels end with a phone number for questions. Quell’s maker can be reached at {phone}, {hours}. That line can help with the product and your order; it can’t give medical advice, which is a job for your doctor or pharmacist.`,
       },
       { h: 'Read it twice' },
       {
@@ -199,7 +199,7 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'What makes a drop a lubricating drop' },
       {
-        p: `It comes down to the active ingredients and the purpose the label gives them. Quell’s panel lists {actives}. The first two carry the purpose “lubricant.” The third, light mineral oil, is listed as an emollient: an oily ingredient that softens and coats.`,
+        p: `It comes down to the active ingredients and the purpose the label gives them. Quell’s panel lists {actives}. The first two are listed with the purpose “lubricant.” The third, light mineral oil, is listed as an emollient: an oily ingredient that softens and coats.`,
       },
       {
         p: `Glycerol and polysorbate 80 are used in other lubricating drops as well, which is one reason panels from different brands can look similar at a glance. The differences tend to sit in the concentrations, the inactive ingredients, and whether a preservative is included.`,
@@ -216,7 +216,7 @@ export const FEATURED_GUIDES: Guide[] = [
         p: `Most drops top up the water layer of the tear film. Quell’s formula is designed to reinforce the eye’s natural lipid (oil) layer instead — the outermost barrier of the tear film, responsible for minimizing evaporation of the watery layer beneath it.`,
       },
       {
-        p: `That design is why the formula carries an emollient and natural oils alongside its lubricants, and why it looks milky brown rather than clear. {appearance} There is more on this in [the tear film’s oil layer, explained](/guides/the-tear-films-oil-layer).`,
+        p: `That design is why the formula includes an emollient and natural oils alongside its lubricants, and why it looks milky brown instead of clear. {appearance} There is more on this in [the tear film’s oil layer, explained](/guides/the-tear-films-oil-layer).`,
       },
       { h: 'How they are used' },
       {
@@ -227,15 +227,15 @@ export const FEATURED_GUIDES: Guide[] = [
         p: `Quell’s label opens its warnings with this: {warnings}. The caution exists because the formula contains emu oil. If that applies to you, ask your doctor before ordering.`,
       },
       {
-        p: `If you use prescribed eye drops, wear contact lenses, or are thinking about drops for a child, ask too. The label does not give directions for those situations.`,
+        p: `If you use prescribed eye drops, wear contact lenses, or are thinking about drops for a child, ask too. The label doesn’t give directions for those situations.`,
       },
-      { h: 'When a lubricating drop is not the answer' },
+      { h: 'When a lubricating drop isn’t the answer' },
       {
-        p: `Quell’s label covers dryness and irritation, and that is all. It is not a substitute for an eye exam. {stopUse} Sudden vision loss, eye pain or an eye injury call for emergency care straight away, not a drop.`,
+        p: `Quell’s label covers dryness and irritation. It goes no further. It isn’t a substitute for an eye exam. {stopUse} Sudden vision loss, eye pain or an eye injury call for emergency care straight away, not a drop.`,
       },
       { h: 'Buying them online' },
       {
-        p: `Lubricating drops do not need a prescription, so you can order them directly. Quell ships anywhere in the United States for a flat {shipping}, and free on {freeBottles} bottles or more. [See prices](/#buy), or read [how to buy eye drops online safely](/guides/how-to-buy-eye-drops-online-safely) first.`,
+        p: `Lubricating drops don’t need a prescription, so you can order them directly. Quell ships anywhere in the United States for a flat {shipping}, and free on {freeBottles} bottles or more. [See prices](/#buy), or read [how to buy eye drops online safely](/guides/how-to-buy-eye-drops-online-safely) first.`,
       },
     ],
   },
@@ -244,7 +244,7 @@ export const FEATURED_GUIDES: Guide[] = [
     slug: 'do-you-need-a-prescription-for-eye-drops',
     title: 'Do you need a prescription for eye drops?',
     description:
-      'Some eye drops need a prescription and many do not. How to tell which is which, and why Quell can be ordered online without one.',
+      'Some eye drops need a prescription and many don’t. How to tell which is which, and why Quell can be ordered online without one.',
     category: 'choosing',
     featured: true,
     body: [
@@ -253,13 +253,13 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'How to tell which kind you are looking at' },
       {
-        p: `Over-the-counter drugs carry a Drug Facts panel, the standardized box listing active ingredients, uses, warnings and directions. Prescription drops come with prescribing information and a pharmacy label instead. If a product has a Drug Facts panel, it is sold over the counter.`,
+        p: `Over-the-counter drugs come with a Drug Facts panel, the standardized box listing active ingredients, uses, warnings and directions. Prescription drops come with prescribing information and a pharmacy label instead. If a product has a Drug Facts panel, it is sold over the counter.`,
       },
       {
         p: `Whether a drop needs a prescription depends on its active ingredients and what it is meant for. Lubricating drops, whose actives are lubricants, are generally over the counter. Quell’s panel is on the [Drug Facts](/drug-facts) page, and its Uses section reads: {uses}.`,
       },
       {
-        p: `Where a drop sits in a store is not the test. Some over-the-counter products are kept near the pharmacy counter, and prescription rules also differ between countries, so a drop sold freely in one place can need a prescription in another. The panel on the box is what tells you.`,
+        p: `Where a drop sits in a store isn’t the test. Some over-the-counter products are kept near the pharmacy counter, and prescription rules also differ between countries, so a drop sold freely in one place can need a prescription in another. The panel on the box is what tells you.`,
       },
       { h: 'What over the counter means for you' },
       {
@@ -278,17 +278,17 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'When you should still talk to a doctor' },
       {
-        p: `No prescription does not mean no doctor. If you already use prescribed eye drops, ask the prescriber before adding another product. The same goes for contact lens wearers and anyone thinking of using drops for a child, because Quell’s label gives no directions for either.`,
+        p: `No prescription doesn’t mean no doctor. If you already use prescribed eye drops, ask the prescriber before adding another product. The same goes for contact lens wearers and anyone thinking of using drops for a child, because Quell’s label gives no directions for either.`,
       },
       {
         p: `The label is explicit about when to stop and get advice: {stopUse}`,
       },
       {
-        p: `And it is not a substitute for an eye exam. If something about your eyes has changed and you do not know why, that is a question for an eye doctor, whatever you end up buying.`,
+        p: `And it isn’t a substitute for an eye exam. If something about your eyes has changed and you don’t know why, that is a question for an eye doctor, whichever product you end up buying.`,
       },
       { h: 'The short answer' },
       {
-        p: `For prescription-only drops, yes. For over-the-counter lubricating drops like Quell, no. You can [order it here](/#buy), and it is posted from Brentwood, Tennessee, to anywhere in the United States.`,
+        p: `For prescription-only drops, yes. For over-the-counter lubricating drops like Quell, no. You can [order it here](/#buy), and it ships from Brentwood, Tennessee, to anywhere in the United States.`,
       },
     ],
   },
@@ -302,7 +302,7 @@ export const FEATURED_GUIDES: Guide[] = [
     featured: true,
     body: [
       {
-        p: `Find the storage line on the label and follow it; it is the only instruction written for your particular bottle. Quell’s is short: {storage}. That is ordinary room temperature, which in most homes means a cupboard, a drawer or a bag, and not the refrigerator.`,
+        p: `Find the storage line on the label and follow it; it is the only instruction written for your particular bottle. Quell’s is short: {storage}. In other words, room temperature, which in most homes means a cabinet, a drawer or a bag, and not the refrigerator.`,
       },
       { h: 'The range in everyday terms' },
       {
@@ -313,7 +313,7 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'Keep the tip clean' },
       {
-        p: `The label’s handling rule matters as much as temperature: {tip}. That includes your eye and your fingers. Recap the bottle after each use, and keep it somewhere it will not knock around loose with keys or coins.`,
+        p: `The label’s handling rule matters as much as temperature: {tip}. That includes your eye and your fingers. Recap the bottle after each use, and keep it somewhere it won’t knock around loose with keys or coins.`,
       },
       { h: 'Keep it away from children' },
       {
@@ -321,7 +321,7 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'Know what it should look like' },
       {
-        p: `{milky}. That is how it is meant to look, because of its natural oil-based ingredients. {appearance}`,
+        p: `{milky}. It is meant to look like that, because of its natural oil-based ingredients. {appearance}`,
       },
       {
         p: `What the label asks you to watch for is change. Its Do not use line reads: {doNotUse}. Compare the bottle with how it looked when it arrived. If the color has changed, do not use it.`,
@@ -332,7 +332,7 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'Spare bottles' },
       {
-        p: `If you order several at once, keep the unopened ones in the same conditions as the one in use. There is a practical reason to leave spares sealed until you need them, too: unopened bottles can be refunded within {returnDays} days of delivery without being sent back, and opened ones cannot.`,
+        p: `If you order several at once, keep the unopened ones in the same conditions as the one in use. There is a practical reason to leave spares sealed until you need them, too: unopened bottles can be refunded within {returnDays} days of delivery without being sent back, and opened ones can’t.`,
       },
       { h: 'Away from home' },
       {
@@ -370,29 +370,29 @@ export const FEATURED_GUIDES: Guide[] = [
         p: `“In each eye” makes the dose a per-eye dose. Three times a day in both eyes is six drops a day altogether, not three.`,
       },
       {
-        p: `The label does not name times of day. If you need to fit doses around something specific, such as other eye drops or an upcoming procedure, ask your eye doctor or pharmacist how the directions fit.`,
+        p: `The label doesn’t name times of day. If you need to fit doses around something specific, such as other eye drops or an upcoming procedure, ask your eye doctor or pharmacist how the directions fit.`,
       },
       { h: 'Before each drop' },
       {
-        p: `The When using section gives one instruction: {tip}. The home page says it more plainly — that includes your eye and your fingers. The aim is to keep the solution clean for every dose after this one.`,
+        p: `The When using section gives one instruction: {tip}. On the home page, the same rule names your eye and your fingers too. The aim is to keep the solution clean for every dose after this one.`,
       },
       {
         p: `Glance at the color while you are at it. {milky}, which is expected. The Do not use line reads: {doNotUse}. If it no longer looks the way it did when it arrived, leave it.`,
       },
       { h: 'What the label leaves to your doctor' },
       {
-        p: `Some common questions are not answered on Quell’s label at all: whether to use it with contact lenses, how to combine it with other eye drops, and whether to use it for a child. When a label is silent, the right person to ask is a pharmacist or your eye doctor, with the carton in your hand.`,
+        p: `Some common questions aren’t answered on Quell’s label at all: whether to use it with contact lenses, how to combine it with other eye drops, and whether to use it for a child. When a label is silent, the right person to ask is a pharmacist or your eye doctor, with the carton in your hand.`,
       },
       { h: 'Using more, or less' },
       {
-        p: `The directions are the directions. Extra drops are not part of them. If three a day in each eye is not giving you the relief you hoped for, that is worth acting on rather than working around, and the label says how: {stopUse}`,
+        p: `The directions are the directions. Extra drops aren’t part of them. If three a day in each eye isn’t giving you the relief you hoped for, don’t work around it. The label says what to do: {stopUse}`,
       },
       {
-        p: `The panel also carries a general caution worth reading once: {warnings}.`,
+        p: `The panel also opens with a general caution: {warnings}.`,
       },
       { h: 'Building it into your day' },
       {
-        p: `It can help to tie doses to things you already do at fixed points, like breakfast or the end of the workday, so a dose is not left to memory. Whatever routine suits you, the numbers on the label stay the same.`,
+        p: `It can help to tie doses to things you already do at fixed points, like breakfast or the end of the workday, so a dose isn’t left to memory. Pick any routine you like; the numbers on the label stay the same.`,
       },
       { h: 'Keeping the bottle in good order' },
       {
@@ -400,11 +400,11 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'Finishing a bottle' },
       {
-        p: `At six drops a day, a {size} bottle will not last indefinitely, and it helps to know roughly when you will need the next one. [How long a bottle lasts](/guides/how-long-does-a-bottle-of-eye-drops-last) works through the arithmetic.`,
+        p: `At six drops a day, a {size} bottle won’t last indefinitely, and it helps to know roughly when you will need the next one. Ordering a few days ahead means you never run short. [How long a bottle lasts](/guides/how-long-does-a-bottle-of-eye-drops-last) works through the arithmetic.`,
       },
       { h: 'The full panel' },
       {
-        p: `The complete label, including every ingredient, is on the [Drug Facts](/drug-facts) page. If you have not ordered yet, the [buy panel](/#buy) shows prices and lets you choose how many bottles.`,
+        p: `The complete label, including every ingredient, is on the [Drug Facts](/drug-facts) page. If you haven’t ordered yet, the [buy panel](/#buy) shows prices and lets you choose how many bottles.`,
       },
     ],
   },
@@ -425,10 +425,10 @@ export const FEATURED_GUIDES: Guide[] = [
         p: `Pack the bottle where it is shielded from heat and from being crushed. A closed pouch inside a carry-on works better than a jacket pocket, or the bottom of a tote where it rattles around with keys.`,
       },
       {
-        p: `Bring the carton if there is room. It carries the full Drug Facts panel, which is handy if you need to show someone what the product is, or want to reread the warnings away from home.`,
+        p: `Bring the carton if there is room. It has the full Drug Facts panel printed on it, which is handy if you need to show someone what the product is, or want to reread the warnings away from home.`,
       },
       {
-        p: `If the trip is longer than your bottle has left, pack a sealed spare. Used as directed, a bottle goes in roughly a month, and buying a replacement on the road is not an option when the product is sold online.`,
+        p: `If the trip is longer than your bottle has left, pack a sealed spare. Used as directed, a bottle goes in roughly a month, and buying a replacement on the road isn’t an option when the product is sold online.`,
       },
       { h: 'Heat is the main risk' },
       {
@@ -454,10 +454,10 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'Ordering before you go' },
       {
-        p: `The site ships within the United States only and does not promise a delivery date, so order with time to spare rather than counting on a parcel arriving the day before you leave. Every order gets an email when it ships, with a tracking number when one is available, and you can check on it at any time from the [order tracking page](/orders).`,
+        p: `The site ships within the United States only and doesn’t promise a delivery date, so order with time to spare instead of counting on a package arriving the day before you leave. Every order gets an email when it ships, with a tracking number when one is available, and you can check on it at any time from the [order tracking page](/orders).`,
       },
       {
-        p: `{freeBottles} bottles or more ship free, which can make sense ahead of a long trip. Unopened spares can be refunded within {returnDays} days of delivery if you end up not needing them, and they do not have to be posted back.`,
+        p: `Orders of {freeBottles} bottles or more ship free, which can make sense ahead of a long trip. Unopened spares can be refunded within {returnDays} days of delivery if you end up not needing them, and they don’t have to be mailed back.`,
       },
       { h: 'If something goes wrong while you are away' },
       {
@@ -475,32 +475,32 @@ export const FEATURED_GUIDES: Guide[] = [
     featured: true,
     body: [
       {
-        p: `You get an email straight away confirming the order, a second email when it ships, and a page where you can check on it whenever you like. Here is the whole sequence, step by step.`,
+        p: `You get an email straight away confirming the order, a second email when it ships, and a page where you can check on it whenever you like. This is the whole sequence, step by step.`,
       },
       { h: 'At checkout' },
       {
         p: `Checkout works as a guest, so there is no account to create. You enter an email address, your name, a shipping address and a phone number, then pay on the payment provider’s secure page. Under the [terms](/terms), you authorize the charge when you submit the order.`,
       },
       {
-        p: `If the shop cannot fill an order for any reason, the authorization is released or refunded in full.`,
+        p: `If the shop can’t fill an order for any reason, the authorization is released or refunded in full.`,
       },
       { h: 'The confirmation email' },
       {
-        p: `Once payment goes through, a confirmation email arrives with your order number in the subject line. It lists what you ordered, the subtotal, the shipping, the total and the address the parcel is going to, and it has a button to track the order.`,
+        p: `Once payment goes through, a confirmation email arrives with your order number in the subject line. It lists what you ordered, the subtotal, the shipping, the total and the address the package is going to, and it has a button to track the order.`,
       },
       {
         p: `The order number starts with Q- and is followed by eight letters and digits. Keep that email. It is your receipt, and the order number is what you will be asked for if you ever call about the order.`,
       },
       {
-        p: `Read the address in it while you are there. If something is wrong — a missing apartment number, an old address the browser remembered — call {phone} straight away, {hours}. The earlier a mistake is raised, the better the chance of catching it before the parcel leaves.`,
+        p: `Read the address in it while you are there. If something is wrong — a missing apartment number, an old address the browser remembered — call {phone} straight away, {hours}. The earlier a mistake is raised, the better the chance of catching it before the package leaves.`,
       },
-      { h: 'Packing and posting' },
+      { h: 'Packing and shipping' },
       {
-        p: `Orders are packed and posted from Brentwood, Tennessee. The site does not publish a delivery window, and the terms are plain that delivery estimates are only estimates, so the thing to watch for is the next email rather than a date.`,
+        p: `Orders are packed and shipped from Brentwood, Tennessee. The site doesn’t publish a delivery window, and the terms say outright that delivery estimates are only estimates, so watch for the next email, not a date.`,
       },
       { h: 'The shipping email' },
       {
-        p: `When the parcel leaves, a second email tells you the order has shipped. If a tracking number is available, it is included with a link to follow the parcel on the carrier’s own site. The same email repeats the directions: {directions}.`,
+        p: `When the package leaves, a second email tells you the order has shipped. If a tracking number is available, it is included with a link to follow the package on the carrier’s own site. The same email repeats the directions: {directions}.`,
       },
       { h: 'Looking an order up' },
       {
@@ -508,10 +508,10 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'When it arrives' },
       {
-        p: `Check the parcel before putting it away. If anything arrives damaged, incorrect, or with a broken tamper seal, contact us within {returnDays} days and it will be replaced at no charge.`,
+        p: `Check the package before putting it away. If anything arrives damaged, incorrect, or with a broken tamper seal, contact us within {returnDays} days and it will be replaced at no charge.`,
       },
       {
-        p: `Then read the label on the carton before the first dose; it is the version that applies to the bottle in your hand. The first bottle can come as a surprise, so it is worth knowing in advance: {appearance}`,
+        p: `Then read the label on the carton before the first dose; it is the version that applies to the bottle in your hand. The first bottle can come as a surprise, so here is what to expect: {appearance}`,
       },
       { h: 'Later on' },
       {
@@ -519,7 +519,7 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'If you need help' },
       {
-        p: `Call {phone}, {hours}, with your order number to hand. [Before you call](/guides/before-you-call-about-an-order) lists what else is useful to have ready.`,
+        p: `Call {phone}, {hours}, with your order number handy. The same line handles refunds on unopened bottles. [Before you call](/guides/before-you-call-about-an-order) lists what else is useful to have ready.`,
       },
     ],
   },
@@ -554,7 +554,7 @@ export const FEATURED_GUIDES: Guide[] = [
         p: `Most drops top up the water layer. Quell reinforces the lipid layer above it, which is what slows evaporation down. The formula is designed to reinforce the eye’s natural lipid layer, and it is rich in bioactive fatty acids and botanical antioxidants, which support a more stable tear film.`,
       },
       {
-        p: `That is why it pairs two lubricants with an emollient — light mineral oil — and a set of natural oil-based ingredients, instead of being a plain watery solution.`,
+        p: `So it pairs two lubricants with an emollient, light mineral oil, and a set of natural oil-based ingredients, instead of being a plain watery solution. That mix is also where the milky color comes from.`,
       },
       { h: 'Where emu oil comes in' },
       { p: `{emuOil}` },
@@ -566,7 +566,7 @@ export const FEATURED_GUIDES: Guide[] = [
         p: `The science is the reasoning behind the formula. What the product is officially for is in the Uses section of the Drug Facts panel: {uses}.`,
       },
       {
-        p: `Because the formula contains emu oil, the first warning on the panel is worth reading before your first bottle: {warnings}.`,
+        p: `Because the formula contains emu oil, read the first warning on the panel before your first bottle: {warnings}.`,
       },
       { h: 'Who developed it' },
       {

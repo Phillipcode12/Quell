@@ -18,7 +18,7 @@ export const FORMULA_GUIDES: Guide[] = [
     body: [
       { p: `{emuOil}` },
       {
-        p: `That is the carton’s own description, and it is the reason emu oil is in Quell. The formula is built around the tear film’s oil layer, and emu oil is one of the natural ingredients chosen to support it.`,
+        p: `Those are the carton’s own words, and they explain why emu oil is in Quell. The formula is built around the tear film’s oil layer, and emu oil is one of the natural ingredients chosen to support it.`,
       },
       { h: 'Where it sits on the label' },
       {
@@ -57,13 +57,13 @@ export const FORMULA_GUIDES: Guide[] = [
       {
         p: `Rich in bioactive fatty acids and botanical antioxidants, the formula supports a more stable tear film. These natural compounds are known for their calming and soothing properties.`,
       },
-      { h: 'Natural is not the same as suitable for everyone' },
+      { h: 'Natural isn’t the same as suitable for everyone' },
       {
         p: `Emu oil is the reason for the label’s caution: {warnings}. If you have other allergies, check the full list with a doctor or pharmacist before ordering.`,
       },
       { h: 'The color' },
       {
-        p: `These ingredients are a large part of why the drop is milky brown rather than clear. [Why Quell is milky brown](/guides/why-is-quell-milky-brown) explains.`,
+        p: `These ingredients account for much of the drop’s milky brown color. [Why Quell is milky brown](/guides/why-is-quell-milky-brown) explains.`,
       },
     ],
   },
@@ -117,7 +117,7 @@ export const FORMULA_GUIDES: Guide[] = [
       },
       { h: 'An oil-and-water formula' },
       {
-        p: `Quell combines watery and oily ingredients, which is part of why it is a milky solution rather than a clear one. Polysorbate 80 is widely used in products that bring oil and water together.`,
+        p: `Quell combines watery and oily ingredients, which is part of why the solution is milky. Polysorbate 80 is widely used in products that bring oil and water together.`,
       },
       {
         p: `That combination is deliberate. The formula is designed to reinforce the tear film’s oil layer, not only its watery one, so it needs ingredients from both sides. [The tear film’s oil layer](/guides/the-tear-films-oil-layer) explains why.`,
@@ -161,7 +161,7 @@ export const FORMULA_GUIDES: Guide[] = [
       },
       { h: 'Reading the strength' },
       {
-        p: `The percentage is its concentration in the solution; [what the percentages mean](/guides/what-the-percentages-on-the-label-mean) covers how to read it, and what it does not tell you.`,
+        p: `The percentage is its concentration in the solution; [what the percentages mean](/guides/what-the-percentages-on-the-label-mean) covers how to read it, and what it doesn’t tell you.`,
       },
     ],
   },
@@ -182,7 +182,7 @@ export const FORMULA_GUIDES: Guide[] = [
       },
       { h: 'Patented' },
       {
-        p: `A patent protects a specific invention, here the formula. It describes ownership of an idea rather than measuring how a product performs, so read it alongside the label, not instead of it.`,
+        p: `A patent protects a specific invention, here the formula. It describes ownership of an idea; it doesn’t measure how a product performs, so read it alongside the label, not instead of it.`,
       },
       { h: 'The other two front-panel claims' },
       {
@@ -207,7 +207,7 @@ export const FORMULA_GUIDES: Guide[] = [
     category: 'formula',
     body: [
       {
-        p: `Benzalkonium chloride is a preservative found in many multi-use eye drops. Quell does not contain it, or any other preservative.`,
+        p: `Benzalkonium chloride is a preservative found in many multi-use eye drops. Quell doesn’t contain it, or any other preservative.`,
       },
       { h: 'Why it comes up' },
       {
@@ -219,7 +219,7 @@ export const FORMULA_GUIDES: Guide[] = [
       },
       { h: 'Quell’s inactive list' },
       {
-        p: `{inactives}. Benzalkonium chloride is not among them, and the carton states Preservative-Free.`,
+        p: `{inactives}. Benzalkonium chloride isn’t among them, and the carton states Preservative-Free.`,
       },
       { h: 'If you use drops often' },
       {
@@ -243,7 +243,7 @@ export const FORMULA_GUIDES: Guide[] = [
       },
       { h: 'Where emu oil comes in' },
       {
-        p: `The About page puts the connection plainly: emu oil is also where the name of the slogan comes from. The carton describes it as an all natural oil with a long history of use by the Aboriginal people of Australia, and credits it with soothing support of the tear film’s oil layer. [Emu oil in eye drops](/guides/emu-oil-in-eye-drops) has its full description.`,
+        p: `The About page makes the connection directly: emu oil is also where the name of the slogan comes from. The carton describes it as an all natural oil with a long history of use by the Aboriginal people of Australia, and credits it with soothing support of the tear film’s oil layer. [Emu oil in eye drops](/guides/emu-oil-in-eye-drops) has its full description.`,
       },
       { h: 'The serious part' },
       {
@@ -291,9 +291,9 @@ export const FORMULA_GUIDES: Guide[] = [
       },
       { h: 'Where orders come from' },
       {
-        p: `Orders are packed and posted from Brentwood to anywhere in the United States. Shipping is {shipping} below {freeBottles} bottles and free from {freeBottles} up.`,
+        p: `Orders are packed and shipped from Brentwood to anywhere in the United States. Shipping is {shipping} below {freeBottles} bottles and free from {freeBottles} up.`,
       },
-      { h: 'What the company cannot do' },
+      { h: 'What the company can’t do' },
       {
         p: `Give medical advice. The phone line handles questions about orders and about what is on the label; questions about your eyes belong with your doctor.`,
       },
@@ -314,7 +314,7 @@ export const FORMULA_GUIDES: Guide[] = [
       { p: `As printed on the carton: {inactives}.` },
       { h: 'Why emu oil is in it' },
       {
-        p: `It is central to the formula rather than an incidental extra. Quell is built around the tear film’s oil layer, and emu oil is one of the natural ingredients chosen for that job. [Emu oil in eye drops](/guides/emu-oil-in-eye-drops) quotes the carton in full.`,
+        p: `It is central to the formula, not an incidental extra. Quell is built around the tear film’s oil layer, and emu oil is one of the natural ingredients chosen for that job. [Emu oil in eye drops](/guides/emu-oil-in-eye-drops) quotes the carton in full.`,
       },
       { h: 'The allergy caution' },
       {
@@ -322,7 +322,7 @@ export const FORMULA_GUIDES: Guide[] = [
       },
       { h: 'If you avoid animal ingredients' },
       {
-        p: `Quell is not the drop for you, because the emu oil is part of its design. A pharmacist can help you find one that suits. The complete panel is on the [Drug Facts](/drug-facts) page if you want to check anything else.`,
+        p: `Quell isn’t the drop for you, because the emu oil is part of its design. A pharmacist can help you find one that suits. The complete panel is on the [Drug Facts](/drug-facts) page if you want to check anything else.`,
       },
     ],
   },
@@ -378,7 +378,7 @@ export const FORMULA_GUIDES: Guide[] = [
       {
         p: `They come from people who bought Quell and agreed to let their words be published. The names were changed for privacy, and that is the only change. The quotes above are excerpts; the reviews page shows each one in full.`,
       },
-      { h: 'What a review is not' },
+      { h: 'What a review isn’t' },
       {
         p: `A customer’s experience is their own. What Quell is for is set out in its Uses section — {uses} — and that, with the warnings, is what to read before deciding.`,
       },
@@ -397,7 +397,7 @@ export const FORMULA_GUIDES: Guide[] = [
     category: 'formula',
     body: [
       {
-        p: `One size: {size}. It is the only bottle Quell comes in, so the one you buy first is the same one you would buy again.`,
+        p: `One size: {size}. It is the only bottle Quell comes in, so the one you buy first is the same one you would buy again. There is one price for it, too.`,
       },
       { h: 'Is there a trial size?' },
       {
@@ -409,11 +409,11 @@ export const FORMULA_GUIDES: Guide[] = [
       },
       { h: 'Two units on the carton' },
       {
-        p: `The carton gives the size in both fluid ounces and milliliters, so you can compare it with whichever unit another product uses. When comparing prices, divide by the milliliters rather than by the bottle, because bottle sizes differ from brand to brand.`,
+        p: `The carton gives the size in both fluid ounces and milliliters, so you can compare it with whichever unit another product uses. When comparing prices, divide by milliliters, not by bottles, because bottle sizes differ from brand to brand.`,
       },
       { h: 'Buying more than one' },
       {
-        p: `{freeBottles} bottles or more ship free, and below that shipping is a flat {shipping}. Spare bottles keep in the same conditions as the one in use: {storage}.`,
+        p: `Orders of {freeBottles} bottles or more ship free, and below that shipping is a flat {shipping}. Spare bottles keep in the same conditions as the one in use: {storage}.`,
       },
     ],
   },
@@ -438,7 +438,7 @@ export const FORMULA_GUIDES: Guide[] = [
       },
       { h: 'The label’s version' },
       {
-        p: `The Drug Facts panel does not use these words. It lists the ingredients and states the use: {uses}. The science copy explains the reasoning behind the formula; the panel says what the product is for.`,
+        p: `The Drug Facts panel doesn’t use these words. It lists the ingredients and states the use: {uses}. The science copy explains the reasoning behind the formula; the panel says what the product is for.`,
       },
       { h: 'Allergy' },
       {
@@ -455,7 +455,7 @@ export const FORMULA_GUIDES: Guide[] = [
     category: 'formula',
     body: [
       {
-        p: `To quell something is to quiet it or bring it under control. The tagline on the carton makes the same point in three words: Quiet the Storm. It is a short, plain English word, which also makes it easy to say and to search for.`,
+        p: `To quell something is to quiet it or bring it under control. The tagline on the carton makes the same point in three words: Quiet the Storm. It is a short, everyday English word, which also makes it easy to say and to search for.`,
       },
       { h: 'The tagline and the slogan' },
       {
@@ -469,7 +469,7 @@ export const FORMULA_GUIDES: Guide[] = [
       {
         p: `Quell, Quiet the Storm and the eye mark belong to {company}, as the [terms](/terms) set out.`,
       },
-      { h: 'What the name does not tell you' },
+      { h: 'What the name doesn’t tell you' },
       {
         p: `A name is a name. What the product is actually for is in the Uses section of the Drug Facts panel: {uses}.`,
       },
