@@ -2800,6 +2800,17 @@ then read in full, per his standing note:
 | Local | `.next` build cache (774 MB) cleared — it regenerates on build. A stray `C:\dev\null` (a saved copy of the home page from an Oct 23 command that meant to discard it) deleted |
 | Live site | 25 checks pass: pages, canonicals, noindex, refund wording and markup, both sitemaps, all 119 guides rendering in US English, the icon |
 
+> **Correction, same evening: the Vercel row above was wrong.** Vercel then
+> warned that team `quell1` had used **75% of the free 10 GB Deployment
+> Storage**. Deployments are free in money but each one stores the whole
+> prerendered site (~12,000 files), and **83** had accumulated — about 17 from
+> this one day's pushes. **80 were deleted** (`npx vercel remove <urls> --safe
+> --yes`), keeping the live deployment and two rollbacks; the site was checked
+> serving afterwards. From now on: **batch commits and push once per piece of
+> work**, and prune before closing a session that pushed often. A Deployment
+> Retention Policy (project Settings → Security in the dashboard) would automate
+> it; offered to Phillip, not set.
+
 **Not touched, and flagged to Phillip:** the old copy of the repo in
 `OneDrive\Documents\quell` is out of date and off limits under his `C:\dev`
 rule — his to delete once he is happy `C:\dev\quell` is the real one (it is,
