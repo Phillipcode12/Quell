@@ -82,6 +82,36 @@ export function breadcrumbSchema(
   }
 }
 
+/**
+ * A guide article, added 2026-11-03 with `/guides`.
+ *
+ * The author is the company, not a person: no individual wrote these under
+ * their own name, and inventing a byline would be the kind of small dishonesty
+ * the reviews page is careful to avoid. `datePublished` is the day the set went
+ * live and nothing more precise, for the same reason the sitemap carries no
+ * `lastmod` — a date nobody can stand behind is worse than none.
+ */
+export function articleSchema(article: {
+  title: string
+  description: string
+  path: string
+  datePublished: string
+}): JsonLd {
+  const base = appUrl()
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    description: article.description,
+    url: `${base}${article.path}`,
+    mainEntityOfPage: `${base}${article.path}`,
+    datePublished: article.datePublished,
+    inLanguage: 'en-US',
+    author: { '@id': `${base}/#organization` },
+    publisher: { '@id': `${base}/#organization` },
+  }
+}
+
 /** The seller. Stable across every page. */
 export function organizationSchema(): JsonLd {
   const base = appUrl()

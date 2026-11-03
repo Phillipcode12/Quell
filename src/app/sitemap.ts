@@ -38,6 +38,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // sitemap-locations.xml because it is a page of the site in its own
     // right -- the split exists to measure the generated set, not this.
     { url: `${base}/eye-drops`, priority: 0.5 },
+    // The guides index, here for the same reason as /eye-drops: it is a page
+    // of the site in its own right. The articles are in sitemap-guides.xml.
+    { url: `${base}/guides`, priority: 0.6 },
     { url: `${base}/privacy`, priority: 0.3 },
     { url: `${base}/terms`, priority: 0.3 },
   ]

@@ -98,12 +98,17 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
      * Always the canonical host, never the host being served: a sitemap on the
      * fallback domain must still point people at the real one.
      *
-     * Two files, deliberately. The city pages live in their own so Search
-     * Console reports their indexing separately from the real pages — see
-     * `sitemap-locations.xml/route.ts`. It is listed here whether or not those
-     * pages are switched on; with `LOCATION_PAGES=off` it is simply empty,
-     * which is a cleaner signal than URLs starting to 404.
+     * Three files, deliberately. The city pages and the guide articles each
+     * live in their own so Search Console reports their indexing separately
+     * from the real pages — see `sitemap-locations.xml/route.ts`. Each is
+     * listed whether or not its pages are switched on; with `LOCATION_PAGES` or
+     * `GUIDE_PAGES` off it is simply empty, which is a cleaner signal than URLs
+     * starting to 404.
      */
-    sitemap: [`${base}/sitemap.xml`, `${base}/sitemap-locations.xml`],
+    sitemap: [
+      `${base}/sitemap.xml`,
+      `${base}/sitemap-locations.xml`,
+      `${base}/sitemap-guides.xml`,
+    ],
   }
 }

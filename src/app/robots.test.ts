@@ -147,18 +147,20 @@ describe('once every guard passes', () => {
     servingHost = 'quelldrop.com'
   })
 
-  it('allows crawling and points at both sitemaps on the real domain', async () => {
+  it('allows crawling and points at all three sitemaps on the real domain', async () => {
     const result = await robots()
 
     expect(result.rules).toMatchObject({ userAgent: '*', allow: '/' })
     /**
-     * Two files since 2026-10-04. The city pages are declared separately so
-     * Search Console reports their indexing on its own, apart from the real
-     * pages -- which is the only way to tell which half moved the numbers.
+     * Two files since 2026-10-04, three since 2026-11-03. The city pages and
+     * the guide articles are each declared separately so Search Console
+     * reports their indexing on its own, apart from the real pages -- which is
+     * the only way to tell which set moved the numbers.
      */
     expect(result.sitemap).toEqual([
       'https://quelldrop.com/sitemap.xml',
       'https://quelldrop.com/sitemap-locations.xml',
+      'https://quelldrop.com/sitemap-guides.xml',
     ])
   })
 

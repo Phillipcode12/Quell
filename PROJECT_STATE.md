@@ -2353,6 +2353,9 @@ fresh load, one `POST /api/track` → 204 after nine.
 
 ### The November 1st job — in this order
 
+> **Done 2026-11-03, steps 1–4 — see §56.** Step 5 was deliberately not
+> taken: the old database is kept as a free backup.
+
 The old database unblocks when its quota period resets. **Do these in sequence;
 the last two are irreversible.**
 
@@ -2502,6 +2505,144 @@ global file contributes two entries and `--get` shows only the first.
   skipped both, and shifted the hundred it was examining by two. **The
   measuring tool was wrong before the data was** — the third time that has
   happened here, after the case-insensitive slug test and "Burbank".
+
+---
+
+## 56. History restored, 1,800 city pages, and 110 guides — 2026-11-03
+
+Phillip asked for three things in one message: a health check, *"if we have
+anything on the to-do list, go ahead and start working on that"*, and *"perhaps
+100 more SEO articles, stuff related to ordering eye drops online"*. Offered
+three readings of the last one, he answered **"do all 3"**.
+
+### The November 1st job, done
+
+**Step 1 needed nothing from Phillip.** §54 said Vercel no longer held the old
+connection string. It did: the old Neon integration still owned the *Preview*
+copies of `DATABASE_URL*`, pointing at `ep-old-glitter-awfgqo42`. Its quota had
+reset, and it answered.
+
+**Step 2, in one transaction**, dry-run first and rolled back, then for real:
+
+| | Old | Copied |
+| --- | --- | --- |
+| Users | 2 | 2 (Phillip since 2026-09-01, Ryan since 2026-09-04) |
+| Orders / items | 11 / 11 | 11 / 11 |
+| Subscribers | 2 | 2 |
+| Visits | 628 | 628, no id collisions with the 937 already there |
+
+- The §55 account shell (`cmvphfzb10000lguioztoa30h`) was **deleted first**,
+  after checking it owned no orders. Its setup token went with it (cascade).
+  Phillip's **original** account and password are back.
+- **Order items needed their product remapped.** Same product, same slug, but
+  a different id in each database (`cmsxt3jyy…` old, `cmvfj4t5n…` new). Items
+  were inserted against the live product by slug. Any future copy has the same
+  trap.
+- Columns were taken from the *new* database's schema, so nothing could be
+  written that it lacked. Both had 13 migrations.
+
+**Step 3, verified field by field, not by count**: 447 fields across users,
+orders, items and subscribers compared against the old database, **all
+identical**; all 11 items point at the live product; all 628 visit ids
+present. Q-QRABWBQ9, the real sale, has its tracking, receipt and shipping
+email flags intact.
+
+**Step 4, disconnected rather than removed.** `vercel integration resource
+disconnect neon-carmine-anchor quell` unlinks the resource from the project
+**without deleting it**. Checked first: the app reads exactly one variable,
+`DATABASE_URL` (`prisma.config.ts`, `lib/db.ts`), and the Production copy of
+it is the one created by hand on 2026-10-19, not one of the integration's. The
+integration's 18 leftover variables and both Preview copies are gone; the shop
+was confirmed reading the database afterwards **by page content, not status
+code**, since `OrderingUnavailable` also returns 200.
+
+**Step 5 was not taken, deliberately.** The old database is on the free tier,
+costs nothing, and is now a complete backup of the history. There is no reason
+to destroy it. It still exists as resource `neon-carmine-anchor`, connected to
+no project.
+
+> **One consequence worth knowing:** Q-QRABWBQ9 (shipped 2026-10-01, one
+> bottle) is due its reorder reminder on **2026-11-05**. That is the system
+> working as designed — it would have gone out on schedule had the outage never
+> happened — but it is a real email to a real customer, triggered by data that
+> was restored today.
+
+### 1,700 → 1,800 city pages
+
+Made **before the 2026-11-01 verdict was read**: the §49 thresholds depend on
+Search Console, which needs Phillip's Google sign-in. He was told the right
+move might be fewer pages, and chose to go ahead. Checks and the reasoning are
+in `lib/locations.ts`; the name scanner flagged **Prairie Village**, which is a
+real city in Kansas — the fourth time the check was wrong rather than the data.
+123 places remain at the 20,000 floor.
+
+§55's "last raise of this size the dataset supports" was wrong (223 left was
+room for two more) and is corrected in the same comment.
+
+### 110 guide articles at `/guides`
+
+Ten longer cornerstone guides plus a hundred shorter ones, in seven categories:
+ordering, shipping, returns, the label, using and storing, the formula, and
+choosing drops. The concern was stated before building and is recorded at the
+top of `lib/guides.ts`: **there are not a hundred distinct true things to say
+about one narrow topic without new health claims.** He chose all three anyway.
+
+What makes it survivable, in the same pattern as the city pages:
+
+- **`GUIDE_PAGES=off` withdraws all of them** — routes, index, sitemap and the
+  footer link. One variable and a redeploy.
+- **Their own sitemap**, `/sitemap-guides.xml`, listed in robots.txt. **It
+  still needs submitting in Search Console** to get its own indexing report
+  (Phillip's sign-in).
+- **`guides.test.ts` (46 tests) polices the writing mechanically**, and it
+  caught real problems while they were being written:
+  - no paragraph may appear in two guides, and no pair may share 15% or more of
+    their five-word sequences — the scaled-content guard;
+  - banned phrasing, matched against the text *before* tokens are filled:
+    cure/heal/treat, superiority, duration of action, "FDA approved", named
+    carriers, delivery windows, "free returns", and conditions the label does
+    not cover;
+  - **no dollar amount or ingredient percentage may be typed in**; both come
+    from tokens;
+  - US spellings; every link must resolve; minimum lengths.
+
+**The claims line.** Every product statement traces to the Drug Facts panel or
+copy already on the home and About pages. Legally load-bearing wording (Uses,
+directions, warnings, the stop-use list, storage) is never retyped: it arrives
+through `{tokens}` that read the same constants as `/drug-facts`. That is the
+only route by which "redness" reaches a guide — **checked in the build output:
+20 occurrences across 110 pages, every one inside the verbatim stop-use
+warning.** Where the label is silent (contact lenses, other drops, children,
+an opened-bottle use-by period) the guide says so and sends the reader to a
+doctor or pharmacist.
+
+**Three of the ten proposed titles were changed** from the list Phillip saw,
+because each would have needed a claim nobody has approved: "single-use vials
+vs. multi-dose bottles" (sterility), "lubricating vs. redness-relief drops"
+(the withheld claim), and "how to put in eye drops properly" (technique beyond
+the label). They became *what are lubricating eye drops*, *the tear film's oil
+layer* and *how to use eye drops as directed*.
+
+Also not stated anywhere, by design: a delivery window, a carrier name, who
+pays return postage, refund timing, or anything about changing or canceling an
+order. None of those is written down anywhere Aurora has committed to.
+
+> **Worth a regulatory read.** The testimonials do not ship without Michael
+> (`product-content.ts`), and these are roughly 37,000 words of promotional copy
+> for an OTC drug. They are built only from approved wording, but that is the
+> author's judgement, not a review. Recommended before anything extends them.
+
+### Traps hit this session
+
+- **The repo is now `C:\dev\quell`.** Phillip's global rule puts all work in
+  `C:\dev` and blocks OneDrive. **The deny hook resolves relative paths against
+  the session folder, not a `cd` target** — so `cd /c/dev/quell && grep x
+  .gitignore` is checked against `Documents\.gitignore` and refused. Use
+  absolute paths in every shell command.
+- **Unquoted globs** like `--include=*.ts` trip the same hook; use the Grep tool.
+- **Node needs Windows paths** (`C:/dev/...`), not Git Bash's `/c/dev/...`.
+- **`npx tsx` scripts need a function wrapper**: top-level await fails under
+  the CJS output it defaults to.
 
 ---
 

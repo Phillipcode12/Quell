@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { QuellLogoInline } from '@/components/Logo'
 import { BRAND, COMPANY } from '@/lib/product-content'
 import { FREE_SHIPPING_BOTTLES, SHIPPING_LABEL } from '@/lib/shipping'
+import { guidePagesEnabled } from '@/lib/guides'
 
 const columns = [
   {
@@ -15,6 +16,9 @@ const columns = [
       // would otherwise have left the page unreachable on a phone.
       { label: 'Reviews', href: '/reviews' },
       { label: 'Drug Facts', href: '/drug-facts' },
+      // The only link into /guides from anywhere a person browses, for the
+      // same reason as "Where we ship" below. Withdrawn with GUIDE_PAGES=off.
+      ...(guidePagesEnabled() ? [{ label: 'Guides', href: '/guides' }] : []),
     ],
   },
   {
