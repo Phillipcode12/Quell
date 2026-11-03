@@ -2749,6 +2749,22 @@ order. None of those is written down anywhere Aurora has committed to.
 > for an OTC drug. They are built only from approved wording, but that is the
 > author's judgement, not a review. Recommended before anything extends them.
 
+### Nine more guides, 110 → 119 (`7896e60`)
+
+Phillip asked for ten more the same day. Each answers a question the first 110
+did not: how the self-check scores answers, reading reviews, questions for an
+eye doctor, optometrist or ophthalmologist, keeping a drop log, shaking
+drops, disposal, why unopened bottles are not taken back, and what each order
+status means.
+
+**A tenth, on what happens if Quell is out of stock, was written and pulled
+at Phillip's call** — a page about running out plants the idea for no
+benefit. Do not add it back.
+
+The order-status guide quotes the tracking page, which said "Cancelled"; the
+page now reads "Canceled" (US English). The database value `cancelled` is
+unchanged.
+
 ### Traps hit this session
 
 - **The repo is now `C:\dev\quell`.** Phillip's global rule puts all work in
