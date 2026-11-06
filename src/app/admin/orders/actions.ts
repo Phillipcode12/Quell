@@ -95,6 +95,8 @@ export async function markCancelled(orderId: string) {
   if (fromPaid.count > 0) {
     await restoreStock(orderId)
     revalidatePath('/admin/orders')
+    // Stock went back on the shelf, and the home page shows the count.
+    revalidatePath('/')
     return { ok: true }
   }
 

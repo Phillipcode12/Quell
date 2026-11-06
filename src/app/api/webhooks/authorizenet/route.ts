@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
 import {
   getTransactionDetails,
@@ -168,6 +169,16 @@ async function handleAuthCapture(event: WebhookEvent) {
           result.reason,
         )
       }
+    }
+
+    // The home page shows the stock count and is cached for a day (see
+    // app/page.tsx), so a sale is one of the moments it has to be rebuilt.
+    // Last and guarded: nothing here may stand between a paid order and the
+    // emails that get it packed.
+    try {
+      revalidatePath('/')
+    } catch (error) {
+      console.error('[webhook] home page revalidation failed:', error)
     }
   }
 }

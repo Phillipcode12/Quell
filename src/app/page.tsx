@@ -39,11 +39,29 @@ import { faqSchema, productSchema } from '@/lib/structured-data'
  * `/api/checkout` still compute from the database at the moment of payment,
  * so the figure that is actually charged is never cached.
  *
- * **Do not raise this much past a minute**, and do not make it fully static:
- * the window has to stay shorter than the time it takes someone to read the
- * page and decide.
+ * ~~Do not raise this much past a minute~~ — **superseded 2026-11-06: now a
+ * day, with on-demand rebuilds.** Sixty seconds cost more than it looked.
+ * Something (crawlers, Sentry's uptime check) asks for this page around the
+ * clock, so it was rebuilt about once a minute, and each rebuild writes ~200 KB
+ * to Vercel's ISR cache: ~25 write units. That burned 75% of the Hobby
+ * plan's 200,000 monthly ISR writes in six days, and **past 100% Vercel
+ * pauses the whole site.**
+ *
+ * The page only needs rebuilding when what it shows changes, and both of
+ * those moments are known:
+ *
+ * - **A sale draws stock down** → the Authorize.net webhook calls
+ *   `revalidatePath('/')`.
+ * - **Stock goes back or is set by hand** → the admin cancel and update-stock
+ *   actions do the same.
+ *
+ * The daily rebuild is the fallback for the one change nothing announces: a
+ * price edited directly in the database, which shows within a day (or at
+ * once on the next deploy). As before, the cart and `/api/checkout` compute
+ * from the database at the moment of payment, so the figure actually charged
+ * is never cached.
  */
-export const revalidate = 60
+export const revalidate = 86400
 
 /**
  * The home page's own canonical. It used to live in the root layout, which

@@ -7,7 +7,7 @@ Update it when something here stops being true.
 
 ## Start here — next session
 
-> **Latest state: §56 (2026-11-03), then §55 and §54.** The numbered list
+> **Latest state: §57 (2026-11-06), §56 (2026-11-03), then §55 and §54.** The numbered list
 > below predates them and some items in it are closed; where the two disagree,
 > §56 is current. The repo now lives at **`C:\dev\quell`**.
 >
@@ -2840,6 +2840,55 @@ and GitHub has every commit).
 - **Node needs Windows paths** (`C:/dev/...`), not Git Bash's `/c/dev/...`.
 - **`npx tsx` scripts need a function wrapper**: top-level await fails under
   the CJS output it defaults to.
+
+---
+
+## 57. ISR writes at 75%, and the home page that rebuilt every minute — 2026-11-06
+
+Vercel warned that team `quell1` had used **75% of the Hobby plan's 200,000
+monthly ISR writes**, and that **past 100% it pauses the projects** — the shop
+would go offline. Three days after the Deployment Storage warning (§56), and a
+different limit.
+
+### The cause, measured
+
+The home page was the only page on a timer (`revalidate = 60`). Requesting it
+showed `Age: 62` / `X-Vercel-Cache: STALE`, then `Age: 0` / `HIT` — it was
+being **rebuilt about once a minute, around the clock**, because something
+(crawlers, Sentry's uptime check) asks for it constantly. Each rebuild writes
+the page to Vercel's ISR cache: **~134 KB of HTML plus ~67 KB of RSC payload,
+~25 write units** at Vercel's 8 KB unit. A few hundred to a thousand rebuilds a
+day reaches 150,000 in six days, which is what happened. For contrast, a guide
+page showed `Age: 197852` — built once, never rewritten.
+
+Vercel's per-path usage breakdown (`vercel metrics`) needs Observability Plus,
+a paid add-on; it was not used (Phillip’s rule: no paid add-ons).
+
+### The fix (`app/page.tsx`, the webhook, admin actions)
+
+**Rebuild when what the page shows changes, not on a clock.**
+
+| Moment | What rebuilds the home page |
+| --- | --- |
+| A sale draws stock down | the Authorize.net webhook calls `revalidatePath('/')` — last, and in a try/catch, so it can never stand between a paid order and its emails |
+| A paid order is canceled (stock restored) | the admin cancel action |
+| Stock set by hand | the admin update-stock action (already did) |
+| A price edited directly in the database | nothing announces it, so `revalidate` is now **86400** (one day) as the fallback; a deploy also refreshes it |
+
+Writes go from ~1,440 rebuilds a day to about one a day plus one per sale.
+The cart and `/api/checkout` still read the database at payment, so the price
+actually charged is never cached. Webhook tests cover the rebuild on a sale,
+no rebuild on a replay, and a 200 even if the rebuild throws.
+
+### Still unknown, and why batching matters anyway
+
+Whether Vercel also counts each **deploy's** ~2,000 prerendered pages as ISR
+writes is not documented and could not be measured on Hobby. If it does, the
+seventeen pushes of 2026-11-03 contributed. Either way the rule from §56
+stands: **batch commits, push once per piece of work.**
+
+**Watch:** if a warning comes again, `/api/cron/*` and the sitemaps are
+`force-dynamic` (no ISR), so look first at deploy frequency.
 
 ---
 

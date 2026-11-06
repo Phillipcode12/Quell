@@ -38,7 +38,9 @@ const verifyWebhookSignatureDetailed = vi.fn()
 const drawDownStock = vi.fn()
 const sendOrderConfirmation = vi.fn()
 const sendNewOrderNotification = vi.fn()
+const revalidatePath = vi.fn()
 
+vi.mock('next/cache', () => ({ revalidatePath }))
 vi.mock('@/lib/db', () => ({ prisma }))
 vi.mock('@/lib/authorizenet', () => ({
   getTransactionDetails,
@@ -242,6 +244,22 @@ describe('the happy path', () => {
     expect(sendNewOrderNotification).toHaveBeenCalledWith(ORDER.id)
   })
 
+  it('rebuilds the home page, which shows the stock count', async () => {
+    // The home page is cached for a day (app/page.tsx); a sale is one of the
+    // moments it has to change.
+    await post(authCapture())
+    expect(revalidatePath).toHaveBeenCalledWith('/')
+  })
+
+  it('still answers 200 if the rebuild request throws', async () => {
+    revalidatePath.mockImplementationOnce(() => {
+      throw new Error('cache unavailable')
+    })
+    const res = await post(authCapture())
+    expect(res.status).toBe(200)
+    expect(sendOrderConfirmation).toHaveBeenCalledWith(ORDER.id)
+  })
+
   it('scopes the update to pending, which is what makes a replay safe', async () => {
     // Not decoration: this where-clause is the whole replay defence. Without
     // `status: 'pending'` a redelivery would re-pay a shipped order.
@@ -263,6 +281,8 @@ describe('a redelivery of a payment already processed', () => {
     expect(drawDownStock).not.toHaveBeenCalled()
     expect(sendOrderConfirmation).not.toHaveBeenCalled()
     expect(sendNewOrderNotification).not.toHaveBeenCalled()
+    // Nothing changed, so nothing is rebuilt: every rebuild is an ISR write.
+    expect(revalidatePath).not.toHaveBeenCalled()
   })
 })
 
