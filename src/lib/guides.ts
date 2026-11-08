@@ -22,6 +22,7 @@ import { LABEL_GUIDES } from '@/lib/guide-articles/label'
 import { USING_GUIDES } from '@/lib/guide-articles/using'
 import { FORMULA_GUIDES } from '@/lib/guide-articles/formula'
 import { CHOOSING_GUIDES } from '@/lib/guide-articles/choosing'
+import { SEASONAL_GUIDES } from '@/lib/guide-articles/seasonal'
 
 export type { Guide, GuideBlock, GuideCategory } from '@/lib/guide-types'
 
@@ -119,6 +120,11 @@ export const GUIDE_CATEGORIES: {
     key: 'choosing',
     name: 'Choosing eye drops',
     intro: 'What to compare, and when a drop is not the answer.',
+  },
+  {
+    key: 'seasonal',
+    name: 'Gifts and the holidays',
+    intro: 'Giving Quell as a gift, holiday shipping, and the winter months.',
   },
 ]
 
@@ -228,6 +234,7 @@ const ALL_GUIDES: Guide[] = [
   ...USING_GUIDES,
   ...FORMULA_GUIDES,
   ...CHOOSING_GUIDES,
+  ...SEASONAL_GUIDES,
 ]
 
 /** Every guide, published or not. For tooling and tests. */

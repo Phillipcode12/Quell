@@ -18,7 +18,7 @@ import { appUrl } from '@/lib/site'
  * without an index once and sat orphaned for a day (see `/eye-drops`). Pages
  * reachable only from a sitemap crawl badly and look like a shadow set.
  *
- * Every guide is linked from here, about 120 links. That is fine for a page
+ * Every guide is linked from here, about 140 links. That is fine for a page
  * whose job is to be a table of contents, and it is split into the categories
  * so a reader can find their question without scanning the lot.
  */

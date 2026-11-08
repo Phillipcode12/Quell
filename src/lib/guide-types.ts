@@ -12,6 +12,7 @@ export type GuideCategory =
   | 'using'
   | 'formula'
   | 'choosing'
+  | 'seasonal'
 
 /**
  * One block of an article body.

@@ -7,7 +7,7 @@ Update it when something here stops being true.
 
 ## Start here — next session
 
-> **Latest state: §57 (2026-11-06), §56 (2026-11-03), then §55 and §54.** The numbered list
+> **Latest state: §58 (2026-11-07), §57 (2026-11-06), §56 (2026-11-03), then §55 and §54.** The numbered list
 > below predates them and some items in it are closed; where the two disagree,
 > §56 is current. The repo now lives at **`C:\dev\quell`**.
 >
@@ -2889,6 +2889,35 @@ stands: **batch commits, push once per piece of work.**
 
 **Watch:** if a warning comes again, `/api/cron/*` and the sitemaps are
 `force-dynamic` (no ISR), so look first at deploy frequency.
+
+---
+
+## 58. Twenty gift and holiday guides — 2026-11-07
+
+Phillip: "20 more articles… things similar to Christmas or gifts for people
+with dry eye", then "SEO". They are search pages, so the titles follow the way
+people phrase the question ("Gift ideas for someone with dry eyes", "Does
+Quell have Black Friday deals?"). **139 guides now**, in a new eighth category
+`seasonal` ("Gifts and the holidays") in `lib/guide-articles/seasonal.ts`. The
+index and the guide sitemap pick it up from `GUIDE_CATEGORIES`.
+
+Lines held, beyond the usual claims rules (header of `seasonal.ts`):
+
+- **No "arrives by Christmas".** The site promises no delivery date, so the
+  holiday guides say "order early" (November) and suggest giving a card that
+  says the bottle is on its way.
+- **No gift-wrap or gift-message option is described**, because checkout has
+  none. Gift orders use the recipient's address and the buyer's email.
+- **Every gift guide points to the egg/bird caution**, and to the label's
+  silence on contact lenses, other drops and children (the teenager guide sends
+  the decision to their doctor; buyers must be 18).
+- **No Black Friday code.** That guide says there isn't one and explains the
+  shipping savings. If a holiday sale is ever run, that guide must change.
+- **FSA year-end**: deadlines, grace periods and carryover are described as
+  plan-dependent, with no dollar figures.
+
+Tests: counts 119 → 139; all claims, distinctness and length checks passed on
+the first run. Full suite 618 passing, build clean.
 
 ---
 
