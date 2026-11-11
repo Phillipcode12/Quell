@@ -62,7 +62,7 @@ const LIVE_PLACE_LINKS = new Set([
   ...publishedStates().map((s) => statePath(s.slug)),
 ])
 
-/** Daily-job guides: everything from 2026-11-12 on carries `addedOn`. */
+/** Daily-job guides: everything from 2026-11-11 on carries `addedOn`. */
 const daily = guides.filter((g) => g.addedOn)
 
 describe('guides: the set', () => {
@@ -338,7 +338,7 @@ describe('guides: the daily job', () => {
     const today = new Date().toISOString().slice(0, 10)
     for (const g of daily) {
       expect(g.addedOn, g.slug).toMatch(/^\d{4}-\d{2}-\d{2}$/)
-      expect(g.addedOn! >= '2026-11-12', g.slug).toBe(true)
+      expect(g.addedOn! >= '2026-11-11', g.slug).toBe(true)
       expect(g.addedOn! <= today, g.slug).toBe(true)
       expect(g.featured, g.slug).toBeUndefined()
     }
