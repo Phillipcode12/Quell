@@ -23,8 +23,9 @@ import { USING_GUIDES } from '@/lib/guide-articles/using'
 import { FORMULA_GUIDES } from '@/lib/guide-articles/formula'
 import { CHOOSING_GUIDES } from '@/lib/guide-articles/choosing'
 import { SEASONAL_GUIDES } from '@/lib/guide-articles/seasonal'
+import { DAILY_GUIDES } from '@/lib/guide-articles/daily'
 
-export type { Guide, GuideBlock, GuideCategory } from '@/lib/guide-types'
+export type { Guide, GuideBlock, GuideCategory, GuideFaq } from '@/lib/guide-types'
 
 /**
  * Guide articles: questions people ask about buying and using eye drops,
@@ -125,6 +126,11 @@ export const GUIDE_CATEGORIES: {
     key: 'seasonal',
     name: 'Gifts and the holidays',
     intro: 'Giving Quell as a gift, holiday shipping, and the winter months.',
+  },
+  {
+    key: 'local',
+    name: 'Dry eyes where you live',
+    intro: 'Climate, altitude and seasons in US cities and states, from public weather records.',
   },
 ]
 
@@ -235,6 +241,7 @@ const ALL_GUIDES: Guide[] = [
   ...FORMULA_GUIDES,
   ...CHOOSING_GUIDES,
   ...SEASONAL_GUIDES,
+  ...DAILY_GUIDES,
 ]
 
 /** Every guide, published or not. For tooling and tests. */
@@ -276,6 +283,35 @@ export function relatedGuides(guide: Guide, take = 3): Guide[] {
   return out
 }
 
+/** The day a guide went live: its own date, or the day the first set did. */
+export function guideDate(guide: Guide): string {
+  return guide.addedOn ?? GUIDES_PUBLISHED_ON
+}
+
+/**
+ * A category's guides, newest first. Featured guides are left out because
+ * the index lists them on their own.
+ */
+export function guidesInCategory(key: GuideCategory): Guide[] {
+  const inCategory = publishedGuides().filter(
+    (g) => g.category === key && !g.featured,
+  )
+  // Stable sort: same-day guides keep the order they were written in.
+  return inCategory
+    .map((g, i) => ({ g, i }))
+    .sort((a, b) => guideDate(b.g).localeCompare(guideDate(a.g)) || a.i - b.i)
+    .map((x) => x.g)
+}
+
+/** The page that lists every guide in one category. */
+export function categoryPath(key: GuideCategory): string {
+  return `/guides/topic/${key}`
+}
+
+export function findCategory(key: string) {
+  return GUIDE_CATEGORIES.find((c) => c.key === key)
+}
+
 /** The readable text of a guide with tokens filled and link syntax removed. */
 export function guideText(guide: Guide): string {
   const parts: string[] = [guide.title]
@@ -284,6 +320,7 @@ export function guideText(guide: Guide): string {
     else if ('p' in block) parts.push(block.p)
     else parts.push(...block.list)
   }
+  for (const item of guide.faq ?? []) parts.push(item.q, item.a)
   return parts
     .map((part) =>
       parseInline(fillTokens(part))

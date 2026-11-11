@@ -5,6 +5,7 @@ import {
   STANDARD_SHIPPING_CENTS,
 } from '@/lib/shipping'
 import { appUrl } from '@/lib/site'
+import { fillTokens, parseInline } from '@/lib/guides'
 
 /**
  * JSON-LD for search engines.
@@ -109,6 +110,34 @@ export function articleSchema(article: {
     inLanguage: 'en-US',
     author: { '@id': `${base}/#organization` },
     publisher: { '@id': `${base}/#organization` },
+  }
+}
+
+/**
+ * FAQPage markup for one guide's "Frequently asked questions" block.
+ *
+ * Built from the same strings the page renders (`GuideFaqList`), with tokens
+ * filled and link syntax reduced to its label, so the markup is exactly the
+ * visible text. The `@id` is page-scoped so it never collides with the home
+ * page's `/#faq`.
+ */
+export function guideFaqSchema(
+  path: string,
+  items: { q: string; a: string }[],
+): JsonLd {
+  const plain = (t: string) =>
+    parseInline(fillTokens(t))
+      .map((s) => s.text)
+      .join('')
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    '@id': `${appUrl()}${path}#faq`,
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: plain(item.q),
+      acceptedAnswer: { '@type': 'Answer', text: plain(item.a) },
+    })),
   }
 }
 

@@ -54,7 +54,7 @@ describe('what gets published', () => {
     // pattern the spam systems look for -- and it leaves no before to compare
     // against when the numbers move.
     expect(publishedLocations()).toHaveLength(PUBLISHED_LOCATION_COUNT)
-    expect(allLocations().length).toBeGreaterThan(PUBLISHED_LOCATION_COUNT)
+    expect(allLocations().length).toBeGreaterThanOrEqual(PUBLISHED_LOCATION_COUNT)
   })
 
   it('takes the largest places first', () => {

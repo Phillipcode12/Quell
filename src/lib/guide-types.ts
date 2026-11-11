@@ -13,6 +13,7 @@ export type GuideCategory =
   | 'formula'
   | 'choosing'
   | 'seasonal'
+  | 'local'
 
 /**
  * One block of an article body.
@@ -34,4 +35,19 @@ export type Guide = {
   /** The ten longer cornerstone guides, listed first on the index. */
   featured?: true
   body: GuideBlock[]
+  /**
+   * The day it went live (YYYY-MM-DD). Set on every guide from the daily job
+   * (2026-11-12 on); older guides fall back to `GUIDES_PUBLISHED_ON`. Used for
+   * the Article markup, the sitemap's `lastmod` and newest-first ordering.
+   */
+  addedOn?: string
+  /**
+   * Questions and short answers, shown at the end as "Frequently asked
+   * questions" and emitted as FAQPage markup — the question → answer shape
+   * that search engines and AI assistants quote. Same rules as the body:
+   * tokens and `[label](/path)` links allowed, nothing else.
+   */
+  faq?: GuideFaq[]
 }
+
+export type GuideFaq = { q: string; a: string }

@@ -5,18 +5,23 @@ import { BRAND } from '@/lib/product-content'
 import { formatUsd } from '@/lib/money'
 import { FREE_SHIPPING_BOTTLES, STANDARD_SHIPPING_CENTS } from '@/lib/shipping'
 import {
-  GUIDES_PUBLISHED_ON,
   categoryName,
+  categoryPath,
   fillTokens,
   findGuide,
+  guideDate,
   guidePath,
   publishedGuides,
   relatedGuides,
 } from '@/lib/guides'
 import { appUrl } from '@/lib/site'
 import { JsonLd } from '@/components/JsonLd'
-import { GuideBody } from '@/components/GuideBody'
-import { articleSchema, breadcrumbSchema } from '@/lib/structured-data'
+import { GuideBody, GuideFaqList } from '@/components/GuideBody'
+import {
+  articleSchema,
+  breadcrumbSchema,
+  guideFaqSchema,
+} from '@/lib/structured-data'
 
 /**
  * One guide article.
@@ -83,15 +88,24 @@ export default async function GuidePage({ params }: Params) {
           Guides
         </Link>
         <span>/</span>
-        <span className="text-white">{categoryName(guide.category)}</span>
+        <Link
+          href={categoryPath(guide.category)}
+          className="hover:text-white"
+        >
+          {categoryName(guide.category)}
+        </Link>
       </nav>
 
-      {/* Mirrors the trail above. The category is shown but not linked, as
-          there is no page per category, so it is not a step in the markup. */}
+      {/* Mirrors the trail above. Since 2026-11-11 each category has its own
+          page, so it is a step in the markup too. */}
       <JsonLd
         data={breadcrumbSchema([
           { name: BRAND.name, path: '/' },
           { name: 'Guides', path: '/guides' },
+          {
+            name: categoryName(guide.category),
+            path: categoryPath(guide.category),
+          },
           { name: guide.title },
         ])}
       />
@@ -100,15 +114,20 @@ export default async function GuidePage({ params }: Params) {
           title: guide.title,
           description: fillTokens(guide.description),
           path,
-          datePublished: GUIDES_PUBLISHED_ON,
+          datePublished: guideDate(guide),
         })}
       />
+      {guide.faq && guide.faq.length > 0 && (
+        <JsonLd data={guideFaqSchema(path, guide.faq)} />
+      )}
 
       <h1 className="mt-6 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
         {guide.title}
       </h1>
 
       <GuideBody blocks={guide.body} />
+
+      {guide.faq && guide.faq.length > 0 && <GuideFaqList items={guide.faq} />}
 
       <div className="mt-12 rounded-2xl border border-line bg-surface p-6">
         <p className="text-lg font-semibold text-white">
@@ -153,6 +172,13 @@ export default async function GuidePage({ params }: Params) {
             ))}
           </ul>
           <p className="mt-5 text-sm">
+            <Link
+              href={categoryPath(guide.category)}
+              className="text-muted hover:text-white"
+            >
+              Everything in {categoryName(guide.category)}
+            </Link>
+            <span className="mx-2 text-muted">·</span>
             <Link href="/guides" className="text-muted hover:text-white">
               All guides
             </Link>

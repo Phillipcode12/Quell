@@ -1,5 +1,10 @@
 import Link from 'next/link'
-import { fillTokens, parseInline, type GuideBlock } from '@/lib/guides'
+import {
+  fillTokens,
+  parseInline,
+  type GuideBlock,
+  type GuideFaq,
+} from '@/lib/guides'
 
 /**
  * Renders a guide's blocks.
@@ -26,6 +31,33 @@ function Inline({ text }: { text: string }) {
         ),
       )}
     </>
+  )
+}
+
+/**
+ * The "Frequently asked questions" block at the end of a guide. The same
+ * strings feed `guideFaqSchema`, so the page and the markup cannot disagree —
+ * Google requires the marked-up answers to be visible on the page.
+ */
+export function GuideFaqList({ items }: { items: GuideFaq[] }) {
+  return (
+    <section className="mt-12">
+      <h2 className="text-lg font-semibold text-white">
+        Frequently asked questions
+      </h2>
+      <div className="mt-2">
+        {items.map((item, i) => (
+          <div key={i} className="mt-6">
+            <h3 className="font-semibold text-white">
+              <Inline text={item.q} />
+            </h3>
+            <p className="mt-2 leading-relaxed text-muted">
+              <Inline text={item.a} />
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
   )
 }
 

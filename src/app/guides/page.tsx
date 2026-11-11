@@ -4,9 +4,11 @@ import { notFound } from 'next/navigation'
 import { BRAND } from '@/lib/product-content'
 import {
   GUIDE_CATEGORIES,
+  categoryPath,
   fillTokens,
   guidePagesEnabled,
   guidePath,
+  guidesInCategory,
   publishedGuides,
 } from '@/lib/guides'
 import { appUrl } from '@/lib/site'
@@ -18,9 +20,10 @@ import { appUrl } from '@/lib/site'
  * without an index once and sat orphaned for a day (see `/eye-drops`). Pages
  * reachable only from a sitemap crawl badly and look like a shadow set.
  *
- * Every guide is linked from here, about 140 links. That is fine for a page
- * whose job is to be a table of contents, and it is split into the categories
- * so a reader can find their question without scanning the lot.
+ * Until 2026-11-11 every guide was linked from here (about 140). The daily job
+ * adds a hundred a day, so each category now shows its newest
+ * `PER_CATEGORY` and links to its own topic page (/guides/topic/<key>) for
+ * the rest. Every guide stays two clicks from here.
  */
 
 export const metadata: Metadata = {
@@ -28,6 +31,8 @@ export const metadata: Metadata = {
   description: `Plain answers about ordering eye drops online, shipping and returns, reading the Drug Facts label, and using ${BRAND.trademark} as directed.`,
   alternates: { canonical: `${appUrl()}/guides` },
 }
+
+const PER_CATEGORY = 12
 
 export default function GuidesIndexPage() {
   // Withdrawn means gone, not an empty page.
@@ -71,16 +76,19 @@ export default function GuidesIndexPage() {
       </section>
 
       {GUIDE_CATEGORIES.map((category) => {
-        const inCategory = guides.filter(
-          (g) => g.category === category.key && !g.featured,
-        )
+        const inCategory = guidesInCategory(category.key)
         if (inCategory.length === 0) return null
+        const shown = inCategory.slice(0, PER_CATEGORY)
         return (
           <section key={category.key} className="mt-12">
-            <h2 className="text-lg font-semibold text-white">{category.name}</h2>
+            <h2 className="text-lg font-semibold text-white">
+              <Link href={categoryPath(category.key)} className="hover:underline">
+                {category.name}
+              </Link>
+            </h2>
             <p className="mt-1 text-sm text-muted">{category.intro}</p>
             <ul className="mt-4 grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
-              {inCategory.map((g) => (
+              {shown.map((g) => (
                 <li key={g.slug}>
                   <Link
                     href={guidePath(g.slug)}
@@ -91,6 +99,14 @@ export default function GuidesIndexPage() {
                 </li>
               ))}
             </ul>
+            <p className="mt-4 text-sm">
+              <Link
+                href={categoryPath(category.key)}
+                className="font-semibold text-brand-light hover:underline"
+              >
+                See all {inCategory.length} guides
+              </Link>
+            </p>
           </section>
         )
       })}

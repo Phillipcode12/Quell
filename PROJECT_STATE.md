@@ -7,7 +7,7 @@ Update it when something here stops being true.
 
 ## Start here — next session
 
-> **Latest state: §58 (2026-11-07), §57 (2026-11-06), §56 (2026-11-03), then §55 and §54.** The numbered list
+> **Latest state: §59 (2026-11-11, the 100-a-day job), §58 (2026-11-07), §57 (2026-11-06), §56 (2026-11-03), then §55 and §54.** The numbered list
 > below predates them and some items in it are closed; where the two disagree,
 > §56 is current. The repo now lives at **`C:\dev\quell`**.
 >
@@ -2918,6 +2918,58 @@ Lines held, beyond the usual claims rules (header of `seasonal.ts`):
 
 Tests: counts 119 → 139; all claims, distinctness and length checks passed on
 the first run. Full suite 618 passing, build clean.
+
+---
+
+## 59. The daily job: 100 pages a day — set up 2026-11-11
+
+Phillip asked for a scheduled agent like Sleight's two (sleightmagic.com runs
+25 articles + 25 researched city pages a day) but for Quell at **100 a day**,
+"as many words as you can", facts, current searches, and reach in AI search.
+He was shown the risks first: Quell pages go live by deploy (not a database,
+as on Sleight); only 123 template cities were left; health facts are limited
+to the label; Google's verdict on the existing pages lands 2026-11-17. He
+answered **"100 no matter what."** Recorded so nobody later mistakes the
+volume for an oversight. **If Search Console shows a manual action or the
+indexed count collapsing, `GUIDE_PAGES=off` and `LOCATION_PAGES=off` are
+still the recovery**, and the job should be paused in the app's Scheduled
+list.
+
+**The task:** `quell-daily-seo-guides`, 11 a.m. daily, local (runs while the
+Claude app is open; a missed run fires on next launch). Its full prompt is
+`C:\Users\phill\.claude\scheduled-tasks\quell-daily-seo-guides\SKILL.md`. It
+researches with Google autocomplete and WebSearch, splits the day across five
+writer subagents, checks, pushes **once**, verifies live, prunes deployments
+to three, and logs to `docs/GUIDE-AGENT-LOG.md`.
+
+**The mix:** 25 template city pages a day until all 1,923 are live (five
+days), the rest guides. After that, 100 guides a day, about a fifth of them in
+the new `local` category ("Dry eyes where you live") built on NOAA/USGS facts
+with the source named, linking the city or state page. That replaces
+templated pages below 20,000 population, which would read as doorways.
+
+**Built for it (2026-11-11):**
+- `src/lib/guide-articles/daily/`: one file per writer per day, registered
+  by `scripts/guides-register.ts` between marker comments in `index.ts`.
+- `Guide.addedOn` (Article `datePublished`, sitemap `lastmod`, newest-first)
+  and `Guide.faq` (visible "Frequently asked questions" + FAQPage markup from
+  the same strings).
+- `/guides/topic/<category>` pages; `/guides` now shows each category's
+  newest 12 and links the rest, so the index never becomes thousands of links.
+- `/llms.txt` for AI assistants, every line from the label or lib/shipping.
+- `scripts/keyword-suggest.mjs` (from Sleight), `scripts/guides-inventory.ts`,
+  `scripts/guides-verify-live.ts`.
+- `guides.test.ts`: the daily standard (≥800 words, 25–90-word direct
+  answer first, ≥5 sections, ≥3 links, 3–6 FAQs, FAQ questions unique
+  site-wide, FAQ text under the same claims scan); the five-word similarity
+  check rebuilt on an inverted index so it stays fast at thousands of guides;
+  links to city/state pages allowed only if live. The 139 hand-written guides
+  are counted separately so a deletion fails.
+
+**Watch:** build time and prerendered page count grow by ~100 a day. Vercel
+Hobby has a build-time limit; if builds approach it, move guides from
+build-time prerendering to on-demand rendering with a long cache (mind ISR
+writes, §57) or to the database, as Sleight does.
 
 ---
 

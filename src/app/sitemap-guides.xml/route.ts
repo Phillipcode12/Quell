@@ -1,5 +1,11 @@
 import { appUrl } from '@/lib/site'
-import { guidePath, publishedGuides } from '@/lib/guides'
+import {
+  GUIDE_CATEGORIES,
+  categoryPath,
+  guidePath,
+  guidesInCategory,
+  publishedGuides,
+} from '@/lib/guides'
 
 /**
  * The guide articles get their own sitemap, for the same reason the city pages
@@ -11,6 +17,8 @@ import { guidePath, publishedGuides } from '@/lib/guides'
  * `GUIDE_PAGES=off` empties it along with the routes. Submit it in Search
  * Console as a third sitemap; robots.txt lists it, but an explicit submission
  * is what turns on the per-sitemap report.
+ *
+ * Since 2026-11-11 it also lists the topic pages (/guides/topic/<key>).
  */
 
 export const dynamic = 'force-dynamic'
@@ -18,14 +26,24 @@ export const dynamic = 'force-dynamic'
 export async function GET() {
   const base = appUrl()
 
-  // No `lastmod`, matching the other two sitemaps: there is no per-URL
-  // revision date anybody here can state honestly.
-  const urls = publishedGuides()
-    .map(
-      (g) =>
-        `  <url><loc>${base}${guidePath(g.slug)}</loc><priority>${g.featured ? '0.6' : '0.5'}</priority></url>`,
-    )
-    .join('\n')
+  // `lastmod` only where it is true: guides from the daily job (2026-11-12
+  // on) carry the day they went live. Older ones have no date anybody here
+  // can state, so they carry none, matching the other two sitemaps.
+  const guides = publishedGuides()
+  const topics =
+    guides.length === 0
+      ? []
+      : GUIDE_CATEGORIES.filter((c) => guidesInCategory(c.key).length > 0).map(
+          (c) =>
+            `  <url><loc>${base}${categoryPath(c.key)}</loc><priority>0.5</priority></url>`,
+        )
+  const urls = [
+    ...topics,
+    ...guides.map((g) => {
+      const lastmod = g.addedOn ? `<lastmod>${g.addedOn}</lastmod>` : ''
+      return `  <url><loc>${base}${guidePath(g.slug)}</loc>${lastmod}<priority>${g.featured ? '0.6' : '0.5'}</priority></url>`
+    }),
+  ].join('\n')
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
