@@ -58,3 +58,6 @@ next-env.d.ts
 # Rendered by scripts/preview-emails.ts. Output, not source.
 /email-preview
 .census-cache/
+
+# Scratch and run lock for the daily guide job (scheduled task quell-daily-seo-guides).
+/.daily-job/
