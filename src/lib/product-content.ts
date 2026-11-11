@@ -43,6 +43,14 @@ export const COMPANY = {
   websiteHref: 'https://meibum.com',
 } as const
 
+/**
+ * The UPC-A barcode number printed on the carton (GTIN-12), from Phillip on
+ * 2026-11-11. Check digit verified (5). Sent to Google as `gtin` in the
+ * Merchant Center feed and as `gtin12` in the Product markup; Google matches
+ * listings by it, so it must be the carton's number exactly.
+ */
+export const PRODUCT_GTIN = '860008931115'
+
 /** Who physically makes the product, as printed on the bottle. */
 export const MANUFACTURER = {
   name: 'Aurora Pharmaceuticals, Inc',

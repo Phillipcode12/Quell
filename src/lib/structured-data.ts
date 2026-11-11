@@ -1,4 +1,4 @@
-import { BRAND, COMPANY, FAQS } from '@/lib/product-content'
+import { BRAND, COMPANY, FAQS, PRODUCT_GTIN } from '@/lib/product-content'
 import {
   FREE_SHIPPING_THRESHOLD_CENTS,
   SHIPPABLE_COUNTRIES,
@@ -210,6 +210,8 @@ export function productSchema(product: ProductForSchema | null): JsonLd | null {
     name: product.name,
     description: product.description,
     sku: product.slug,
+    // The carton's UPC; see PRODUCT_GTIN.
+    gtin12: PRODUCT_GTIN,
     // Net contents as printed on the carton, which is what a shopper compares.
     size: product.sizeLabel,
     brand: { '@type': 'Brand', name: BRAND.name },

@@ -44,6 +44,12 @@ describe('Merchant Center feed', () => {
     expect(xml).toContain('<g:id>quell-lubricating-eye-drops</g:id>')
   })
 
+  it('sends the carton barcode as the GTIN, never "no identifier"', () => {
+    const xml = buildMerchantFeed(PRODUCT, BASE)
+    expect(xml).toContain('<g:gtin>860008931115</g:gtin>')
+    expect(xml).not.toContain('identifier_exists')
+  })
+
   it('lists no item at all when there is no product, rather than a broken one', () => {
     expect(buildMerchantFeed(null, BASE)).not.toContain('<item>')
   })

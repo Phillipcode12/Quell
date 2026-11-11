@@ -1,4 +1,4 @@
-import { BRAND } from '@/lib/product-content'
+import { BRAND, PRODUCT_GTIN } from '@/lib/product-content'
 
 /**
  * The Google Merchant Center product feed (RSS 2.0 with the `g:` namespace).
@@ -14,9 +14,9 @@ import { BRAND } from '@/lib/product-content'
  * per-item `g:shipping` cannot express; it is set once as a shipping service
  * in Merchant Center (Shipping and returns), from lib/shipping.ts's values.
  *
- * `identifier_exists` is `no` until Phillip confirms whether the carton
- * carries a UPC barcode. If it does, put the number in `gtin` and drop the
- * flag — sending "no" for a product that has a GTIN is against policy.
+ * `gtin` is the carton's UPC (`PRODUCT_GTIN`, confirmed 2026-11-11). If it is
+ * ever unset, the feed falls back to `identifier_exists=no`, but sending "no"
+ * for a product that has a GTIN is against Google's policy.
  */
 
 export type FeedProduct = {
@@ -29,8 +29,7 @@ export type FeedProduct = {
   imageUrl: string | null
 }
 
-/** Set when the carton's barcode number is known. */
-const GTIN: string | null = null
+const GTIN: string | null = PRODUCT_GTIN
 
 const escapeXml = (s: string) =>
   s
