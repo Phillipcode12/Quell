@@ -1,5 +1,10 @@
 import type { Guide } from '@/lib/guide-types'
 // imports:start
+import { DAILY_20261111_A } from './2026-11-11-a'
+import { DAILY_20261111_B } from './2026-11-11-b'
+import { DAILY_20261111_C } from './2026-11-11-c'
+import { DAILY_20261111_D } from './2026-11-11-d'
+import { DAILY_20261111_E } from './2026-11-11-e'
 // imports:end
 
 /**
@@ -12,5 +17,10 @@ import type { Guide } from '@/lib/guide-types'
  */
 export const DAILY_GUIDES: Guide[] = [
   // spread:start
+  ...DAILY_20261111_A,
+  ...DAILY_20261111_B,
+  ...DAILY_20261111_C,
+  ...DAILY_20261111_D,
+  ...DAILY_20261111_E,
   // spread:end
 ]
