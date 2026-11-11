@@ -2977,6 +2977,30 @@ them or to their state (`localGuidesLinkingTo` in lib/guides.ts). Re-read
 click-through on the next export; if it hasn't moved in a few weeks, revisit
 the wording.
 
+**Google Merchant Center, set up 2026-11-11 (free listings).** Account
+**5903110366**, named "Aurora Pharmaceuticals", owned by phillipquell123@gmail.com
+(the same Google account as Search Console). Phillip created the account and
+accepted Google's terms himself; the rest was done from here.
+- **Products:** one data source, "File (URL)" →
+  `https://quelldrop.com/google-merchant-feed.xml` (`lib/merchant-feed.ts`),
+  fetched every 24 hours. It reads the live product row, so price and stock
+  can't drift from checkout. `identifier_exists=no` until Phillip says whether
+  the carton has a UPC barcode (`GTIN` constant in merchant-feed.ts).
+- **Shipping:** "Flat, 1–6 days, US, all products": $10, free over $89,
+  Mon–Fri. The days are Phillip's handling time (same or next day) plus FedEx
+  Ground's published 1–5 business days in the contiguous US. The site itself
+  still promises no date.
+- **Returns: deliberately NOT set.** Google's form requires a return method
+  (store / drop-off / mail) and, for mail, a label that is in the box,
+  downloadable or "customer's responsibility". None is true of a refund with
+  nothing sent back, and each would be shown to shoppers. Merchant Center
+  nags "add a returns policy"; it did not block the product (the only issue
+  listed was shipping, since fixed). The site's MerchantReturnPolicy markup
+  still states the real policy. Decide with Phillip before filling it in.
+- **Not turned on, on purpose:** Google Ads, the Promotions add-on, payment
+  method display. Google Customer Reviews is free and worth doing once there
+  are sales to survey.
+
 **Watch:** build time and prerendered page count grow by ~100 a day. Vercel
 Hobby has a build-time limit; if builds approach it, move guides from
 build-time prerendering to on-demand rendering with a long cache (mind ISR
