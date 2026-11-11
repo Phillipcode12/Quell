@@ -2984,8 +2984,9 @@ accepted Google's terms himself; the rest was done from here.
 - **Products:** one data source, "File (URL)" →
   `https://quelldrop.com/google-merchant-feed.xml` (`lib/merchant-feed.ts`),
   fetched every 24 hours. It reads the live product row, so price and stock
-  can't drift from checkout. `identifier_exists=no` until Phillip says whether
-  the carton has a UPC barcode (`GTIN` constant in merchant-feed.ts).
+  can't drift from checkout. The carton's UPC, **860008931115**, is
+  `PRODUCT_GTIN` in product-content.ts and goes out as `gtin` (feed) and
+  `gtin12` (Product markup). By evening the product was "Under review".
 - **Shipping:** "Flat, 1–6 days, US, all products": $10, free over $89,
   Mon–Fri. The days are Phillip's handling time (same or next day) plus FedEx
   Ground's published 1–5 business days in the contiguous US. The site itself

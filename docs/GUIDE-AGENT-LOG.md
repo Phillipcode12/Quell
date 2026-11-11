@@ -90,3 +90,11 @@ build time and deployment count.
     leftovers before committing.
   - fmcsa.dot.gov, congress.gov and the regular eCFR pages often block fetches;
     use govinfo.gov or the eCFR versioner API instead.
+- **Deploy:**
+  - Commit 52a0ee0 built on Vercel in about 1 minute (Ready).
+  - `guides-verify-live`: 75/75 OK.
+  - The new city pages return 200 (spot-checked Mukilteo WA and American
+    Canyon CA).
+  - Deployments: 3 in total, so there was nothing to prune.
+  - *(These lines were added after the push and are committed with the next
+    run.)*
