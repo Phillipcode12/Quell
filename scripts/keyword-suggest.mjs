@@ -5,16 +5,15 @@
  *   node scripts/keyword-suggest.mjs --file terms.txt
  *   node scripts/keyword-suggest.mjs --expand "eye drops"   # seed + a..z, who/what/how/can/is…
  *
- * Copied 2026-11-11 from Sleight's tool (C:\dev\magic-store\scripts) for the
- * Quell daily guide job. No credentials, no quota, no cost: the endpoint
- * behind the suggestion dropdown is public and returns real completions
- * ranked by how often they are searched. It is an ordering, not a volume
- * number, which is enough to answer the question that matters when titling a
- * page: is this what anyone calls the thing?
+ * Written 2026-11-11 for the Quell daily guide job. No credentials, no
+ * quota, no cost: the endpoint behind the suggestion dropdown is public and
+ * returns real completions ranked by how often they are searched. It is an
+ * ordering, not a volume number, which is enough to answer the question that
+ * matters when titling a page: is this what anyone calls the thing?
  *
- * Collisions worth knowing in this niche: "quell" alone returns the Quell
- * pain-relief device and a video game; "dry eye" phrases return prescription
- * brands (never name them in a guide). Use the phrase people type, not ours.
+ * Completions often include condition and brand phrases ("eye drops for pink
+ * eye", prescription brand names). Those are claims or competitors; never
+ * write them. Use the phrase people type, not ours.
  */
 
 import { readFileSync } from 'node:fs'
