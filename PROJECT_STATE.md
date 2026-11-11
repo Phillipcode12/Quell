@@ -2966,6 +2966,17 @@ templated pages below 20,000 population, which would read as doorways.
   links to city/state pages allowed only if live. The 139 hand-written guides
   are counted separately so a deletion fails.
 
+**Same day, from Search Console (`docs/SEARCH-CONSOLE-QUERIES.md`):** the
+city pages had ~390 impressions for "dry eye relief / treatment <city>" and 1
+click. City and state titles changed from "Eye Drops in Camarillo, CA" to
+**"Dry Eye Relief in Camarillo, CA — Eye Drops"** (H1 to match), and the
+descriptions now name what it relieves (from `RELIEVES`) and the free-shipping
+rule, all under ~155 characters (longest 153). "Relief" is the label's own word;
+"treatment" stays off. City pages also link to any `local` guide that links to
+them or to their state (`localGuidesLinkingTo` in lib/guides.ts). Re-read
+click-through on the next export; if it hasn't moved in a few weeks, revisit
+the wording.
+
 **Watch:** build time and prerendered page count grow by ~100 a day. Vercel
 Hobby has a build-time limit; if builds approach it, move guides from
 build-time prerendering to on-demand rendering with a long cache (mind ISR

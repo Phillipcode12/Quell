@@ -312,6 +312,39 @@ export function findCategory(key: string) {
   return GUIDE_CATEGORIES.find((c) => c.key === key)
 }
 
+/**
+ * The "Dry eyes where you live" guides that link to a given page — a city
+ * page (/eye-drops/<slug>) or a state page (/eye-drops/state/<slug>).
+ *
+ * Added 2026-11-11 so each city page links back to the local guide written
+ * about it: the guide links to the city page, and without the return link
+ * the pair could only be found from one side. Built once from the links the
+ * guides already contain, so nothing has to be kept in sync by hand.
+ */
+let localLinkIndex: Map<string, Guide[]> | null = null
+export function localGuidesLinkingTo(path: string): Guide[] {
+  if (!localLinkIndex) {
+    localLinkIndex = new Map()
+    for (const g of publishedGuides()) {
+      if (g.category !== 'local') continue
+      const texts = [
+        ...g.body.flatMap((b) => ('p' in b ? [b.p] : 'list' in b ? b.list : [])),
+        ...(g.faq ?? []).map((f) => f.a),
+      ]
+      const targets = new Set<string>()
+      for (const t of texts) {
+        for (const m of t.matchAll(/\]\((\/eye-drops\/[^)\s#]+)\)/g)) targets.add(m[1])
+      }
+      for (const target of targets) {
+        const list = localLinkIndex.get(target) ?? []
+        list.push(g)
+        localLinkIndex.set(target, list)
+      }
+    }
+  }
+  return localLinkIndex.get(path) ?? []
+}
+
 /** The readable text of a guide with tokens filled and link syntax removed. */
 export function guideText(guide: Guide): string {
   const parts: string[] = [guide.title]

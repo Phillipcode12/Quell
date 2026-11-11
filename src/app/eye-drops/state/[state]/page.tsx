@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { BRAND } from '@/lib/product-content'
+import { BRAND, relievesProse } from '@/lib/product-content'
 import {
   findState,
   locationPath,
@@ -38,8 +38,9 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   if (!found) return {}
 
   return {
-    title: `Eye Drops in ${found.state}`,
-    description: `Where ${BRAND.trademark} ${BRAND.productType.toLowerCase()} ship in ${found.state} — ${found.cities.length} cities.`,
+    // Same wording as the city pages from 2026-11-11; see the note there.
+    title: `Dry Eye Relief in ${found.state} — Eye Drops`,
+    description: `${BRAND.trademark} preservative-free eye drops relieve ${relievesProse()}. Shipped anywhere in ${found.state}; ${found.cities.length === 1 ? '1 city has its' : `${found.cities.length} cities have their`} own page.`,
     alternates: { canonical: `${appUrl()}${statePath(found.slug)}` },
   }
 }
@@ -73,7 +74,7 @@ export default async function StatePage({ params }: Params) {
       />
 
       <h1 className="mt-6 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-        Eye drops in {found.state}
+        Dry eye relief in {found.state}
       </h1>
 
       <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">

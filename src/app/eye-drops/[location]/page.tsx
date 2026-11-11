@@ -23,6 +23,7 @@ import {
   statePath,
 } from '@/lib/locations'
 import { appUrl } from '@/lib/site'
+import { guidePath, localGuidesLinkingTo } from '@/lib/guides'
 import { JsonLd } from '@/components/JsonLd'
 import { breadcrumbSchema } from '@/lib/structured-data'
 
@@ -77,13 +78,29 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
      *
      * Leading with the searched phrase rather than the brand is deliberate for
      * the same reason it is on the home page: nobody is searching "Quell" yet.
+     *
+     * **"Dry Eye Relief" from 2026-11-11.** Search Console's first real export
+     * (docs/SEARCH-CONSOLE-QUERIES.md) showed these pages earning impressions
+     * for "dry eye relief camarillo", "dry eye relief chaska" and dozens of
+     * "dry eye treatment <city>" searches, and 1 click in ~390 impressions
+     * under the old "Eye Drops in Camarillo, CA". The new title leads with the
+     * searched words and keeps "Eye Drops" for the other half of the queries.
+     * "Relief" is the label's own word (Uses: "…to relieve dryness of the
+     * eye"); "treatment" is not and stays off these pages.
+     *
+     * The description names what it relieves from `RELIEVES` (so a withheld
+     * item, redness, can never appear) and the free-shipping rule from the
+     * same constant the cart uses: the two facts that earn a click.
      */
-    title: `Eye Drops in ${short}`,
-    description: `${BRAND.trademark} ${BRAND.productType.toLowerCase()}, delivered to ${full}. ${BRAND.size}. An over-the-counter drug — no prescription needed.`,
+    title: `Dry Eye Relief in ${short} — Eye Drops`,
+    // Kept under ~155 characters for every city (the longest, Rancho Santa
+    // Margarita, CA, is 151): Google cuts longer ones, and the cut fell on the
+    // free-shipping line, the reason to click.
+    description: `${BRAND.trademark} eye drops relieve ${relievesProse()}. Preservative-free, no prescription. Free shipping to ${short} on ${FREE_SHIPPING_BOTTLES}+ bottles.`,
     alternates: { canonical: `${appUrl()}${locationPath(location)}` },
     openGraph: {
-      title: `Eye Drops in ${short} — ${BRAND.trademark}`,
-      description: `${BRAND.trademark} ${BRAND.productType.toLowerCase()}, delivered to ${full}.`,
+      title: `Dry Eye Relief in ${short} — ${BRAND.trademark} Eye Drops`,
+      description: `${BRAND.trademark} preservative-free eye drops, shipped to ${full}.`,
       url: `${appUrl()}${locationPath(location)}`,
       type: 'website',
       // Named again because this object replaces the layout's, image and all.
@@ -102,6 +119,12 @@ export default async function LocationPage({ params }: Params) {
   const faqs = cityPageFaqs()
   // Every other published city in this state, not just the six shown below.
   const otherCities = sameStateLocations(location, Number.MAX_SAFE_INTEGER).length
+  // The researched guide about this place, if the daily job has written one,
+  // then any about its state. See localGuidesLinkingTo.
+  const localGuides = [
+    ...localGuidesLinkingTo(locationPath(location)),
+    ...localGuidesLinkingTo(statePath(stateSlug(location.state))),
+  ].filter((g, i, all) => all.findIndex((x) => x.slug === g.slug) === i).slice(0, 3)
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-14">
@@ -150,7 +173,7 @@ export default async function LocationPage({ params }: Params) {
       />
 
       <h1 className="mt-6 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-        Eye drops in {full}
+        Dry eye relief in {full}
       </h1>
 
       {/* Answers the question in the title in the first line, because that is
@@ -289,6 +312,26 @@ export default async function LocationPage({ params }: Params) {
         * has one. The same FAQ markup repeated across 1,800 URLs is a spam
         * signal rather than sixteen hundred chances at a rich result.
         */}
+      {localGuides.length > 0 && (
+        <section className="mt-10 rounded-2xl border border-line bg-surface p-6">
+          <h2 className="text-lg font-semibold text-white">
+            Dry eyes in {location.city}: the local climate
+          </h2>
+          <ul className="mt-3 space-y-2">
+            {localGuides.map((g) => (
+              <li key={g.slug}>
+                <Link
+                  href={guidePath(g.slug)}
+                  className="text-brand-light hover:underline"
+                >
+                  {g.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <section className="mt-10">
         <h2 className="text-lg font-semibold text-white">How to use it</h2>
         <p className="mt-3 leading-relaxed text-muted">
