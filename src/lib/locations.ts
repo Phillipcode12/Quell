@@ -141,8 +141,9 @@ export function locationPagesEnabled(): boolean {
  * state page goes 282 -> 290 links; Illinois 102 -> 112. **123 places remain**
  * at the 20,000 floor.
  *
- * 2026-11-11: +25 (daily job). 98 left. */
-export const PUBLISHED_LOCATION_COUNT = 1_825
+ * 2026-11-11: +25 (daily job). 98 left.
+ * 2026-11-12: +25 (daily job). 73 left. */
+export const PUBLISHED_LOCATION_COUNT = 1_850
 
 /** The places that actually get a page, largest first. */
 export function publishedLocations(): Location[] {

@@ -98,3 +98,68 @@ build time and deployment count.
   - Deployments: 3 in total, so there was nothing to prune.
   - *(These lines were added after the push and are committed with the next
     run.)*
+
+---
+
+## 2026-11-12 — second daily run
+
+- **Published: 75 guides + 25 city pages = 100.**
+  - By category: local 25, using 21, seasonal 10, shipping 7, ordering 3,
+    label 3, formula 3, choosing 3.
+  - Totals after this run: 289 guides (150 from the daily job).
+- **City pages:** 1,825 → 1,850 (`PUBLISHED_LOCATION_COUNT`); 73 left, so
+  three more daily raises (25, 25, 23).
+- **Search Console cities done (local, all 25 linked to their live city page):**
+  Camarillo CA, Chaska MN, Newnan GA, Lynchburg VA, Niagara Falls NY,
+  Los Angeles CA, San Luis Obispo CA, Stamford CT, Anderson IN, Weatherford TX,
+  San Juan Capistrano CA, Lakeville MN, Kingsport TN, Sandy Springs GA,
+  Eau Claire WI, Beverly Hills CA, Milford CT, Smyrna TN, Woburn MA,
+  Port St. Lucie FL, Dana Point CA, Golden Valley MN, Bristol CT,
+  Greenfield IN, Idaho Falls ID.
+  - Every figure from NCEI 1991–2020 normals (nearest station named in the
+    prose), NOAA's relhum23 table, NWS, NPS, MN DNR or official city sites;
+    URLs in a comment above each guide. Where a city has no station or no
+    humidity row, the guide says which neighbor it used (e.g. Laguna Beach for
+    Dana Point, Pocatello humidity for Idaho Falls, La Crosse for Eau Claire).
+  - Twin Cities suburbs used non-MSP stations (New Hope, Farmington 3 NW) so
+    they don't echo the Minneapolis guide.
+  - **Next from the Search Console list:** Murfreesboro TN, Amherst MA,
+    Muncie IN, Woodstock GA, Richmond KY, Corvallis OR, Visalia CA, Antioch CA,
+    Lake Jackson TX, Columbia SC, Sumter SC, Dunwoody GA (Anchorage already
+    done 2026-11-11). Then yesterday's list: Tucson, Santa Fe, Chicago, Casper,
+    Great Falls, Rapid City, Bismarck, Duluth, Fairbanks, Sioux Falls, Omaha,
+    Wichita, Amarillo, Spokane, Bend, Honolulu, Buffalo, Milwaukee, Detroit,
+    Boston.
+- **Search Console phrasings extended:** polysorbate 80 (what-does-polysorbate-80-do-in-eye-drops),
+  emollient eye drops, eye drop volume per drop (how-much-liquid-is-in-one-eye-drop),
+  eye drops delivery near me, queel / quello / quell lotion (is-it-quell-or-queel),
+  help with eye drops (Port St. Lucie guide's how-to section).
+- **10 strongest search phrases used:** dry eye relief camarillo, eye drops
+  los angeles, polysorbate 80 eye drops, emollient eye drops, eye drop volume
+  per drop, eye drops delivery near me, can you buy eye drops with ebt, are eye
+  drops safe to use while pregnant (answered from the label's silence), dry
+  itchy eyes in winter, eye drops vs eye ointment. ("how to put in eye drops
+  without flinching" was not given its own guide; a candidate for a later run.)
+- **Skipped, and why:**
+  - USP medicine-dropper figures (20 drops per mL): only found on an
+    unofficial mirror, so the drop-volume guide says drop size isn't printed
+    on labels instead.
+  - Payment methods, PO boxes, sales tax: still unverified against checkout.
+  - "lubricant eye drops uses", "eye drops ingredients to avoid", "dry eye
+    relief without drops / at home": too close to existing guides or a
+    home-remedy angle.
+  - Off limits as before: pink eye (Woburn's query), vitamins (Smyrna,
+    Murfreesboro), "dry eye syndrome treatment" (Greenfield, Anderson).
+- **Checks:** full vitest 631 passed; `npm run build` passed in 54 s locally;
+  `tsc --noEmit` clean. Fixed in review: an "FDA approved" phrase in the NDC
+  guide (the test caught it), a retyped label line in the Queel FAQ (now
+  `{warnings}`), awkward "{doNotUse}, don’t use it" phrasing in 7 places, an
+  unsourced Point Mugu line, an over-reassuring line in the taste guide. The
+  12-digit NDC date (March 7, 2033) was checked against the Federal Register
+  final rule of 2026-03-05.
+- **Lessons:**
+  - The app process exited mid-run (about 17:20–18:30); writers A and B had
+    finished, C/D/E had 10 of 15 each and were resumed. The lock file held.
+  - `eCFR` blocks automated reads; govinfo.gov worked.
+  - Writers check their own slugs against every rule, since a failing test
+    reports only the first guide that breaks it.
