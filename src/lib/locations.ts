@@ -142,8 +142,9 @@ export function locationPagesEnabled(): boolean {
  * at the 20,000 floor.
  *
  * 2026-11-11: +25 (daily job). 98 left.
- * 2026-11-12: +25 (daily job). 73 left. */
-export const PUBLISHED_LOCATION_COUNT = 1_850
+ * 2026-11-12: +25 (daily job). 73 left.
+ * 2026-11-13: +25 (daily job). 48 left. */
+export const PUBLISHED_LOCATION_COUNT = 1_875
 
 /** The places that actually get a page, largest first. */
 export function publishedLocations(): Location[] {

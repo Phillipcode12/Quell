@@ -163,3 +163,74 @@ build time and deployment count.
   - `eCFR` blocks automated reads; govinfo.gov worked.
   - Writers check their own slugs against every rule, since a failing test
     reports only the first guide that breaks it.
+- **Deploy:**
+  - Commit 8749878 built on Vercel in about 1 minute (Ready).
+  - `guides-verify-live`: 75/75 OK. Live sitemap lists 1,850 city pages; the
+    newest (east-moline-il, mill-creek-wa, angleton-tx) return 200.
+  - Pruning: `vercel remove --safe --yes` now answers "confirmation_required … --yes doesn't approve this command", so a person must approve each deletion. Phillip approved it in chat; quell-n2zzlulsi was removed with `--confirm-name`, leaving 3. Unattended runs should skip pruning and ask in the report.
+  - *(These lines were added after the push and are committed with the next
+    run.)*
+
+---
+
+## 2026-11-13 — third daily run
+
+- **Published: 75 guides + 25 city pages = 100.**
+  - By category: local 25, using 19, seasonal 9, formula 6, ordering 4,
+    shipping 4, label 4, choosing 4.
+  - Totals after this run: 364 guides (225 from the daily job).
+- **City pages:** 1,850 → 1,875 (`PUBLISHED_LOCATION_COUNT`); 48 left, so two
+  more raises (25, then 23).
+- **Search Console cities done (all 12 remaining from the list):** Murfreesboro
+  TN, Amherst MA, Muncie IN, Woodstock GA, Richmond KY, Corvallis OR, Visalia
+  CA, Antioch CA, Lake Jackson TX, Columbia SC, Sumter SC, Dunwoody GA. The
+  Search Console city list is now finished; the next export from Phillip will
+  bring new ones.
+- **Other local guides:** Tucson, Santa Fe, Chicago, Casper, Great Falls,
+  Rapid City, Bismarck, Duluth, Fairbanks, Sioux Falls, Omaha, Wichita,
+  Amarillo. Every figure from NCEI 1991–2020 normals, NOAA relhum/wind
+  tables, NWS, USNO or official city/state sites; URLs in a comment above
+  each guide. Where a city has no humidity row, the guide names the
+  neighbor used (Nashville for Murfreesboro, Hartford for Amherst, Salem for
+  Corvallis, Fresno for Visalia, Stockton for Antioch, Houston for Lake
+  Jackson, etc.). Dunwoody uses Hartsfield so it doesn't echo Sandy Springs
+  (DeKalb-Peachtree).
+  - **Next local candidates:** Spokane, Bend, Honolulu, Buffalo, Milwaukee,
+    Detroit, Boston, then state-capital and high-plains cities not yet
+    covered (Boise has no live city page; check the inventory first).
+- **Search Console phrasings extended:** "safety of polysorbate 80 in eye
+  drops" (is-polysorbate-80-in-eye-drops-safe), "polysorbate 80 vs 20",
+  "lubricant eye drops" / "eye drops and lubricants"
+  (lubricant-vs-lubricating-eye-drops), "how many drops of eye drops should i
+  take" (exact title), "eye drops left in hot car" → its winter twin
+  (can-eye-drops-freeze-in-a-cold-car), "lubricating eye drops" (emulsion and
+  oil-based guides).
+- **10 strongest search phrases used:** how to put in eye drops without
+  flinching, why are my eyes dry all of a sudden, dry eyes in fall, are dry
+  eyes worse in summer or winter, oil based eye drops for dry eyes, how long
+  do eye drops last after opening (answered: the label sets no discard
+  period), do eye drops help tired eyes, why are my eyes dry and burning, eye
+  drops before or after shower, can you share eye drops.
+- **Skipped, and why:**
+  - Off limits as before: vitamins (Murfreesboro), pink eye/stye (Lake
+    Jackson), glaucoma (Columbia), "dry eye syndrome" (Muncie).
+  - "dry eyes in the morning menopause/perimenopause", "after lasik/cataract
+    surgery", "eye drops before or after warm compress": conditions or
+    procedures.
+  - Brand completions on "eye drops hsa" and "oil based eye drops".
+  - Limited-purpose FSA coverage of OTC eye drops: plan-specific, not written.
+  - FSA carryover dollar figure: no $ amounts allowed; guide sends readers to
+    their plan administrator.
+- **Fixed in review:** 11 doubled periods after `{stopUse}` in file b (the
+  token ends with a period; writers should never put "." after it); removed
+  an unverified "light mineral oil only in combination" line and an implied
+  efficacy line from the oil-based guide. Order-email guide checked against
+  code: hosted Authorize.net payment page and the order-number alphabet
+  (no 0, 1, I, L, O, U) are accurate.
+- **Lessons for writers:**
+  - "tiredness" and "preparedness" fail the redness scan (substring match).
+  - The test bans "treat" in every form, so "treating it is an eye doctor's
+    job" fails; use "working out the cause and what to do about it".
+  - `{stopUse}` and `{appearance}` end with a period; other tokens don't.
+- **Checks:** full vitest 631 passed; `npm run build` passed in 84 s locally;
+  `tsc --noEmit` clean. Read 10 guides end to end.
