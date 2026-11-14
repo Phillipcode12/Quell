@@ -234,3 +234,70 @@ build time and deployment count.
   - `{stopUse}` and `{appearance}` end with a period; other tokens don't.
 - **Checks:** full vitest 631 passed; `npm run build` passed in 84 s locally;
   `tsc --noEmit` clean. Read 10 guides end to end.
+- **Deploy:**
+  - Commit 0e9f685 built on Vercel in about 1 minute (Ready).
+  - `guides-verify-live`: 75/75 OK. New city pages piqua-oh and
+    libertyville-il return 200.
+  - Pruning: Phillip approved in chat. Only 4 deployments existed (the
+    earlier "8" double-counted the ls output); quell-r6nowswt2 was removed
+    with --confirm-name, leaving 3. Count with grep Ready, not grep https.
+  - *(These lines were added after the push and are committed with the next
+    run.)*
+
+---
+
+## 2026-11-14 — fourth daily run
+
+- **Published: 75 guides + 25 city pages = 100.**
+  - By category: using 23, local 17, seasonal 11, choosing 9, ordering 8,
+    label 4, formula 1, shipping 1, returns 1.
+  - Totals after this run: 439 guides (300 from the daily job).
+- **City pages:** 1,875 → 1,900 (`PUBLISHED_LOCATION_COUNT`); 23 left, so
+  one final raise of 23 tomorrow (G = 77 that day), then 100 guides a day.
+- **Local guides (17, each linked to its live city page and state page):**
+  Spokane, Bend, Portland OR, Seattle, Honolulu, San Diego, Sacramento,
+  Buffalo, Pittsburgh, Boston, Burlington VT, Milwaukee, Detroit, Des Moines,
+  Kansas City MO, St. Louis, Oklahoma City. Every figure from NCEI 1991–2020
+  normals and NOAA's relhum23 table (URLs in a comment above each guide).
+  Bend has no humidity row; Burns OR is used and named. Honolulu vog from the
+  USGS Hawaiian Volcano Observatory FAQ.
+  - **Next local candidates (all have live city pages):** Missoula, Helena,
+    Laramie, Pueblo, Grand Junction, Yuma, St. George, Provo, Ogden, Midland,
+    Odessa, San Antonio, Austin, Houston, Miami, Syracuse, Rochester NY,
+    Cleveland, Indianapolis, Nashville, Atlanta, Portland ME. (Boise still has
+    no city page.)
+- **Explainers with official sources checked today:** 21 CFR Part 349 and
+  OTC Monograph M018 (glycerin and polysorbate 80 as demulcents, light mineral
+  oil as emollient); 21 CFR 200.50 (ophthalmic sterility; OTC seal + 211.132),
+  211.132 (tamper-evident), 211.137/211.166 (expiration dating), 201.63
+  (pregnancy/breast-feeding warning applies to systemically absorbed OTC
+  drugs); IRS Pubs 502 (OTC not deductible except insulin; 7.5 percent of
+  AGI), 503 (dependent care FSA), 969 (HSA portability, spouse/dependents,
+  OTC qualified); TSA 3.4 oz liquids rule; PubChem for glyceryl undecylenate.
+- **10 strongest search phrases used:** eye drops hsa approved, eye drops in
+  bulk, can you use eye drops in your ears, dry eyes in the middle of the
+  night, dry eyes in the morning when i wake up, eye drops travel size, eye
+  drop travel case / cooler, do eye drops help with eye strain, how to make
+  eye drops more effective, are eye drops tax deductible.
+- **Skipped, and why:**
+  - Autocomplete dominated by claims or off-limits angles: "dry eyes when
+    sick/high", "eye drops after cataract surgery/lasik", "eye drops every
+    hour" (prescription completions), "dry eyes at night perimenopause",
+    "how to make eye drops at home / with honey" (home remedy), "dry eyes from
+    crying" (reflex tears aren't an on-site fact), brand completions on "eye
+    drops hsa eligible" and "buy eye drops".
+  - "why do my eyes feel hot / heavy": too close to existing burning and
+    tired-eyes guides.
+  - Still unverified against checkout: payment methods, PO boxes, APO/FPO,
+    sales tax, HSA cards at checkout.
+  - Wildfire smoke (Spokane), Santa Ana humidity figures (San Diego), NWS
+    Sacramento wind events, Oklahoma City wind speeds: no official source
+    reached today, left out.
+- **Fixed in review (10 guides read end to end):** removed an unsourced
+  "less rain than desert cities" comparison (Honolulu), a "fine for a
+  passenger" implication (pilot gifts), and an "incorrect orders are
+  replaced" stretch for expired-on-arrival bottles (expiration guide).
+  Confirmed against /terms §7 that a refund on only some unopened bottles in
+  an order matches the policy ("an unopened bottle").
+- **Checks:** full vitest 631 passed; `npm run build` passed in 74 s
+  locally; `tsc --noEmit` clean.
