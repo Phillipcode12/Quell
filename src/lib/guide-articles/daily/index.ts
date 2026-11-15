@@ -20,6 +20,11 @@ import { DAILY_20261114_B } from './2026-11-14-b'
 import { DAILY_20261114_C } from './2026-11-14-c'
 import { DAILY_20261114_D } from './2026-11-14-d'
 import { DAILY_20261114_E } from './2026-11-14-e'
+import { DAILY_20261115_A } from './2026-11-15-a'
+import { DAILY_20261115_B } from './2026-11-15-b'
+import { DAILY_20261115_C } from './2026-11-15-c'
+import { DAILY_20261115_D } from './2026-11-15-d'
+import { DAILY_20261115_E } from './2026-11-15-e'
 // imports:end
 
 /**
@@ -52,5 +57,10 @@ export const DAILY_GUIDES: Guide[] = [
   ...DAILY_20261114_C,
   ...DAILY_20261114_D,
   ...DAILY_20261114_E,
+  ...DAILY_20261115_A,
+  ...DAILY_20261115_B,
+  ...DAILY_20261115_C,
+  ...DAILY_20261115_D,
+  ...DAILY_20261115_E,
   // spread:end
 ]

@@ -301,3 +301,88 @@ build time and deployment count.
   an order matches the policy ("an unopened bottle").
 - **Checks:** full vitest 631 passed; `npm run build` passed in 74 s
   locally; `tsc --noEmit` clean.
+- **Deploy:**
+  - Commit daf5afc built on Vercel in about 2 minutes (Ready).
+  - `guides-verify-live`: 75/75 OK. New city pages miamisburg-oh and
+    johnstown-co return 200.
+  - Pruning: Phillip approved in chat. quell-nw13j72co (3 days old) was
+    removed with --confirm-name, leaving 3; quelldrop.com still 200.
+  - *(These lines were added after the push and are committed with the next
+    run.)*
+
+---
+
+## 2026-11-15 — fifth daily run
+
+- **Published: 77 guides + 23 city pages = 100.**
+  - By category: local 36, using 20, seasonal 10, ordering 4, label 3,
+    formula 2, returns 1, shipping 1.
+  - Totals after this run: 516 guides (377 from the daily job).
+  - Local ran heavier than the 20 percent guide on purpose: the Search
+    Console export shows city searches are what Google tests Quell for, the
+    ordering topics are close to saturated (see skipped), and local guides
+    are the most distinct pages we can write.
+- **City pages:** 1,900 → 1,923 (`PUBLISHED_LOCATION_COUNT`). **All 1,923
+  are now live; the ramp is finished.** From tomorrow G = 100 guides.
+- **Local guides (36, each linked to its live city page and state page):**
+  Missoula, Helena, Laramie, Pueblo, Grand Junction, Yuma, St. George, Provo,
+  Midland, San Antonio, Austin, Houston, Dallas, Miami, Tampa, New Orleans,
+  Syracuse, Rochester NY, Cleveland, Columbus, Indianapolis, Nashville,
+  Knoxville, Memphis, Louisville, Atlanta, Charlotte, Raleigh, Richmond VA,
+  Washington DC, Baltimore, Philadelphia, New York City, Portland ME, Boise
+  (city page is /eye-drops/boise-city-id), Tulsa. Figures from NCEI 1991–2020
+  normals plus NOAA relhum23/wndspd23 (URLs in a comment above each guide).
+  Stand-ins named in the prose: Laramie wind from Cheyenne (no humidity),
+  St. George humidity from Las Vegas, Provo humidity from Salt Lake City;
+  Yuma has no humidity or wind row, so both are left out. Wind is only
+  compared, never given as a speed (the table prints no units). DC's station
+  is Reagan National, in Arlington VA, and the guide says so.
+  - **Next local candidates (all live):** Ogden, Odessa, Logan UT, Pocatello,
+    Twin Falls, Casa Grande, Prescott, Las Cruces, Roswell NM, Abilene, San
+    Angelo, Corpus Christi, Jacksonville, Orlando, Savannah, Charleston SC,
+    Birmingham, Little Rock, Jackson MS, Cincinnati, Toledo, Grand Rapids,
+    Lansing, Madison, Green Bay, Peoria, Springfield IL/MO, Lincoln NE,
+    Topeka, Hartford, Providence, Albany NY, Manchester NH, Charleston WV.
+- **Other guides:** gas-station eye drops, secure payment page (checked
+  read-only against authorizenet.ts and the checkout routes: hosted
+  Authorize.net page, one-time 15-minute token, 10-bottle cap, paid only on
+  the signed notification), order-number alphabet (order-number.ts: `Q-` + 8
+  of 30 characters, no 0/1/I/L/O/U), leaking box (replacement policy),
+  paying less (no coupons; shipping rule, HSA/FSA), Medicare and OTC drops
+  (Medicare & You 2027 handbook; IRS Pub 969), the Other information and
+  Directions sections (21 CFR 201.66), barcode/UPC 860008931115 (GS1 US),
+  sterile water (21 CFR 200.50), demulcent vs. emollient (21 CFR 349.3,
+  349.12, 349.14), swallowed eye drops (Poison Help 1-800-222-1222 from
+  poisoncenters.org and poison.org), 17 people/situation guides, 10 seasonal.
+- **10 strongest search phrases used:** dry eye relief <city> (36 cities),
+  eye drops near me gas station, dry eyes in december, what happens if you
+  use too much eye drops at once, does medicare cover over the counter eye
+  drops, what to do if someone swallows eye drops, christmas gifts for a
+  software developer, what can i do for dry eyes besides eye drops, sterile
+  water in eye drops, demulcent vs emollient.
+- **Skipped, and why:**
+  - Ordering/shipping/returns are near saturated: cancel or change an order
+    and refund timing (not stated on the site), PO boxes, APO/FPO, sales tax,
+    payment methods beyond cards and HSA cards at checkout (still unverified),
+    Amazon availability (unknown).
+  - "eye drops while fasting" (religious ruling, nothing official to cite),
+    "dry eyes from dehydration" (no on-site fact), "dry eyes and headache /
+    blurry vision / light sensitivity" (symptoms), "eye drops on accutane"
+    (drug interaction), brand completions on HSA/FSA and "buy eye drops
+    online" (prescription brands).
+  - Writer C flagged for a human look: 21 CFR 349.14 lists light mineral oil
+    as allowed "in combination with one or more other emollient agents", and
+    Quell's only emollient active is light mineral oil. The guides make no
+    claim about monograph conformance; this is a regulatory question for
+    Aurora, not for the guides.
+- **Fixed in review (10 read end to end):** removed a hydration tip framed as
+  eye help (Nashville) and an unsourced "tired eyes blink less well"
+  (architects). Writers dropped unverified items themselves (Memphis rain
+  rank, Atlanta elevation claim, Midland windiest season, "don't induce
+  vomiting").
+- **Lessons for writers:** "programmer" fails the British-word scan
+  (contains "programme"); "overnight" and "all day" keep tripping the scan;
+  `{doNotUse}` and `{directions}` start with a capital, so don't drop them
+  mid-sentence.
+- **Checks:** full vitest 631 passed; `npm run build` passed in 66 s
+  locally; `tsc --noEmit` clean.

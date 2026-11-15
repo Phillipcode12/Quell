@@ -144,8 +144,9 @@ export function locationPagesEnabled(): boolean {
  * 2026-11-11: +25 (daily job). 98 left.
  * 2026-11-12: +25 (daily job). 73 left.
  * 2026-11-13: +25 (daily job). 48 left.
- * 2026-11-14: +25 (daily job). 23 left. */
-export const PUBLISHED_LOCATION_COUNT = 1_900
+ * 2026-11-14: +25 (daily job). 23 left.
+ * 2026-11-15: +23 (daily job). 0 left; all 1,923 published. */
+export const PUBLISHED_LOCATION_COUNT = 1_923
 
 /** The places that actually get a page, largest first. */
 export function publishedLocations(): Location[] {
