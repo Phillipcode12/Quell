@@ -32,6 +32,7 @@ import {
   type MonthRow,
 } from '@/lib/analytics'
 import { formatUsd } from '@/lib/money'
+import { DayBars } from './DayBars'
 
 export const metadata: Metadata = { title: 'Traffic' }
 
@@ -71,69 +72,6 @@ function dayTitle(
   if (!sales || sales.orders === 0) return `${day.day}: ${visits}`
   const orders = `${sales.orders} ${sales.orders === 1 ? 'order' : 'orders'}`
   return `${day.day}: ${visits}, ${orders}, ${formatUsd(sales.revenueCents)}`
-}
-
-type Bar = { day: string; value: number; title: string }
-
-/**
- * A bar per day.
- *
- * Plain divs rather than a charting library: one series, the page is already a
- * server component, and a dependency to draw fourteen rectangles would ship
- * more JavaScript than the whole admin section.
- *
- * Generalised over the series rather than written twice. The height trick
- * below is the kind of thing that gets fixed in one copy and left broken in
- * the other, and it already went wrong once.
- */
-function DayBars({
-  title,
-  bars,
-  tone,
-  empty,
-}: {
-  title: string
-  bars: Bar[]
-  tone: string
-  empty?: string
-}) {
-  const peak = Math.max(1, ...bars.map((b) => b.value))
-  const allZero = bars.every((b) => b.value === 0)
-
-  return (
-    <div className="mt-4 rounded-xl border border-line bg-surface-2 p-5">
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-sm font-medium text-muted">{title}</h2>
-        {allZero && empty && <p className="text-xs text-muted">{empty}</p>}
-      </div>
-      <div className="mt-5 flex gap-1.5">
-        {bars.map((bar) => {
-          const height = bar.value === 0 ? 2 : Math.max(4, (bar.value / peak) * 100)
-          return (
-            <div key={bar.day} className="flex flex-1 flex-col items-center gap-2">
-              {/*
-                The fixed height lives on this wrapper, not on the row. A
-                percentage height only resolves against a parent with a
-                definite one, and a column flex item sized by its content is
-                not definite — every bar rendered at zero pixels before this
-                wrapper existed, which looked exactly like "no data".
-              */}
-              <div className="flex h-40 w-full items-end">
-                <div
-                  className={`w-full rounded-sm ${bar.value === 0 ? 'bg-line' : tone}`}
-                  style={{ height: `${height}%` }}
-                  title={bar.title}
-                />
-              </div>
-              <span className="text-[10px] tabular-nums text-muted">
-                {bar.day.slice(8)}
-              </span>
-            </div>
-          )
-        })}
-      </div>
-    </div>
-  )
 }
 
 /**
