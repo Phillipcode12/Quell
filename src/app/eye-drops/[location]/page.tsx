@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import {
+  AFFILIATED_CLINIC,
+  AFFILIATED_CLINIC_LINE,
   APPEARANCE_NOTE,
   BRAND,
   DRUG_FACTS,
@@ -397,6 +399,27 @@ export default async function LocationPage({ params }: Params) {
           are on the main page.
         </p>
       </section>
+
+      {/* Nashville-area pages only: the affiliated clinic is local to them.
+          One fixed sentence, always "affiliated", no claims (AFFILIATED_CLINIC). */}
+      {(AFFILIATED_CLINIC.nearbySlugs as readonly string[]).includes(location.slug) && (
+        <section className="mt-10">
+          <h2 className="text-lg font-semibold text-white">
+            An affiliated clinic in the Nashville area
+          </h2>
+          <p className="mt-3 leading-relaxed text-muted">
+            {AFFILIATED_CLINIC_LINE} Its website is{' '}
+            <a
+              href={AFFILIATED_CLINIC.url}
+              rel="noopener"
+              className="text-brand-light hover:underline"
+            >
+              {AFFILIATED_CLINIC.host}
+            </a>
+            .
+          </p>
+        </section>
+      )}
 
       <section className="mt-10">
         <h2 className="text-lg font-semibold text-white">Not sure yet?</h2>

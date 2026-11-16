@@ -132,6 +132,10 @@ export const CHOOSING_GUIDES: Guide[] = [
       {
         p: `Jot down when the symptoms started, what makes them better or worse, and every product you have put in your eyes, with how often. Those are the questions an eye doctor will ask first, and Quell’s [Drug Facts](/drug-facts) page answers the last one in full.`,
       },
+      { h: 'Near Nashville' },
+      {
+        p: `If you live in or around Nashville and want someone to look at what you’re noticing: {clinic}`,
+      },
     ],
   },
 
@@ -401,6 +405,10 @@ export const CHOOSING_GUIDES: Guide[] = [
       {
         p: `You have sudden vision loss, eye pain or an eye injury; those need emergency care. Quell’s label adds its own guidance: {stopUse}`,
       },
+      { h: 'Finding an eye doctor in Middle Tennessee' },
+      {
+        p: `Looking for a practice to book with near Nashville? {clinic}`,
+      },
     ],
   },
 
@@ -429,6 +437,10 @@ export const CHOOSING_GUIDES: Guide[] = [
       { h: 'Where to start with dry or irritated eyes' },
       {
         p: `An optometrist is usually the simplest place to begin, and often the quickest to book. Bring the labels of anything you have been using; [questions to ask your eye doctor](/guides/questions-to-ask-your-eye-doctor) has a list to take along.`,
+      },
+      { h: 'One option in the Nashville area' },
+      {
+        p: `For readers in Middle Tennessee, here’s a local place to start: {clinic}`,
       },
       { h: 'When it can’t wait' },
       {

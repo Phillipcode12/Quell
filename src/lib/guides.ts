@@ -1,4 +1,6 @@
 import {
+  AFFILIATED_CLINIC,
+  AFFILIATED_CLINIC_LINE,
   APPEARANCE_NOTE,
   BRAND,
   COMPANY,
@@ -193,6 +195,13 @@ export const GUIDE_TOKENS: Record<string, () => string> = {
   hours: () => COMPANY.hours,
   company: () => COMPANY.name,
   address: () => COMPANY.addressLines.join(', '),
+  // The affiliated clinic's one fixed sentence, with its name linked. See
+  // AFFILIATED_CLINIC for why it is always "affiliated" and never a claim.
+  clinic: () =>
+    AFFILIATED_CLINIC_LINE.replace(
+      AFFILIATED_CLINIC.name,
+      `[${AFFILIATED_CLINIC.name}](${AFFILIATED_CLINIC.url})`,
+    ),
 }
 
 /** Replaces every `{token}`. Throws on an unknown one rather than printing it. */

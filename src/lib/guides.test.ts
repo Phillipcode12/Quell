@@ -11,6 +11,7 @@ import {
   relatedGuides,
 } from './guides'
 import type { Guide } from './guide-types'
+import { AFFILIATED_CLINIC, AFFILIATED_CLINIC_LINE } from './product-content'
 import {
   locationPath,
   publishedLocations,
@@ -50,6 +51,8 @@ const STATIC_LINKS = new Set([
   '/cart',
   '/guides',
   '/llms.txt',
+  // The only external link a guide may carry, through the {clinic} token.
+  AFFILIATED_CLINIC.url,
   ...GUIDE_CATEGORIES.map((c) => categoryPath(c.key)),
 ])
 
@@ -204,6 +207,19 @@ describe('guides: what they may not say', () => {
       for (const g of guides) expect(raw(g), g.slug).not.toMatch(pattern)
     })
   }
+
+  it('keeps the affiliated clinic line claim-free and disclosed', () => {
+    // Phillip, 2026-11-16: "We cannot have any claims associated with the
+    // links." The sentence reaches guides, About, the footer area and city
+    // pages, so it is held to the same list as guide prose.
+    for (const [pattern, why] of BANNED) {
+      expect(AFFILIATED_CLINIC_LINE, why).not.toMatch(pattern)
+    }
+    expect(AFFILIATED_CLINIC_LINE).not.toMatch(/redness|diagnos|relie|dry eye (disease|syndrome)/i)
+    expect(AFFILIATED_CLINIC_LINE).toMatch(/\baffiliated\b/)
+    // Only through the token, so the wording can never be retyped differently.
+    for (const g of guides) expect(raw(g), g.slug).not.toContain(AFFILIATED_CLINIC.host)
+  })
 
   it('only says "diagnosis" to say the self-check is not one', () => {
     for (const g of guides) {

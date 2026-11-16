@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { PageHero } from '@/components/PageHero'
 import { Droplet, Leaf, Medical, NoDrop } from '@/components/icons'
 import {
+  AFFILIATED_CLINIC,
+  AFFILIATED_CLINIC_LINE,
   BRAND,
   COMPANY,
   DRUG_FACTS,
@@ -179,7 +181,22 @@ export default function AboutPage() {
             </div>
           </dl>
 
-          <p className="mt-6 text-sm text-muted">
+          {/* See AFFILIATED_CLINIC: one fixed sentence, always "affiliated",
+              no claims. */}
+          <p className="mt-6 text-sm leading-relaxed text-muted">
+            Looking for an eye doctor near Nashville? {AFFILIATED_CLINIC_LINE}{' '}
+            Its website is{' '}
+            <a
+              href={AFFILIATED_CLINIC.url}
+              rel="noopener"
+              className="text-brand-light hover:underline"
+            >
+              {AFFILIATED_CLINIC.host}
+            </a>
+            .
+          </p>
+
+          <p className="mt-4 text-sm text-muted">
             For a medical emergency, call your local emergency number instead of
             contacting us.
           </p>

@@ -51,6 +51,52 @@ export const COMPANY = {
  */
 export const PRODUCT_GTIN = '860008931115'
 
+/**
+ * The affiliated clinic, linked from the footer, About, the "see a doctor"
+ * guides and the Nashville-area city pages (Phillip, 2026-11-16, when the
+ * rebuilt site went live: "We cannot have any claims associated with the
+ * links").
+ *
+ * Two rules, both deliberate:
+ *
+ * 1. **Always called "affiliated".** The practice is Dr. Rynerson's, and he is
+ *    the sole owner of Aurora Pharmaceuticals, which sells Quell (PROJECT_STATE
+ *    §19). A link that read as a neutral recommendation would hide that; one
+ *    word discloses it without naming anyone.
+ * 2. **Described only as what it is**, a dry eye and eyelid care practice in
+ *    Brentwood, which is the clinic's own description of itself. No outcome, no
+ *    "relief", no "treatment", no condition names. `AFFILIATED_CLINIC_LINE` is
+ *    the one sentence used everywhere, so the wording can't drift.
+ */
+export const AFFILIATED_CLINIC = {
+  name: 'Centers for Dry Eye',
+  url: 'https://www.centersfordryeye.com/',
+  host: 'centersfordryeye.com',
+  place: 'Brentwood, Tennessee',
+  placeShort: 'Brentwood, TN',
+  /**
+   * City-page slugs in the Nashville area, where the clinic is local. Brentwood
+   * itself and the cities around it within the Nashville metro.
+   */
+  nearbySlugs: [
+    'nashville-tn',
+    'brentwood-tn',
+    'franklin-tn',
+    'murfreesboro-tn',
+    'smyrna-tn',
+    'la-vergne-tn',
+    'spring-hill-tn',
+    'hendersonville-tn',
+    'gallatin-tn',
+    'lebanon-tn',
+    'mount-juliet-tn',
+    'columbia-tn',
+  ],
+} as const
+
+export const AFFILIATED_CLINIC_LINE =
+  'Centers for Dry Eye is a dry eye and eyelid care practice in Brentwood, Tennessee, affiliated with the company that sells Quell.'
+
 /** Who physically makes the product, as printed on the bottle. */
 export const MANUFACTURER = {
   name: 'Aurora Pharmaceuticals, Inc',

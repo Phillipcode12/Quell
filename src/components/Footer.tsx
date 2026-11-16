@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { QuellLogoInline } from '@/components/Logo'
-import { BRAND, COMPANY } from '@/lib/product-content'
+import { AFFILIATED_CLINIC, BRAND, COMPANY } from '@/lib/product-content'
 import { FREE_SHIPPING_BOTTLES, SHIPPING_LABEL } from '@/lib/shipping'
 import { guidePagesEnabled } from '@/lib/guides'
 
@@ -118,6 +118,18 @@ export function Footer() {
               >
                 {COMPANY.website}
               </a>
+            </p>
+            {/* See AFFILIATED_CLINIC: always labeled "affiliated", never a claim. */}
+            <p className="mt-1">
+              Affiliated clinic:{' '}
+              <a
+                href={AFFILIATED_CLINIC.url}
+                className="text-brand-light hover:underline"
+                rel="noopener"
+              >
+                {AFFILIATED_CLINIC.name}
+              </a>
+              , {AFFILIATED_CLINIC.placeShort}
             </p>
           </div>
         </div>
