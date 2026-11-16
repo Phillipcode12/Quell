@@ -386,3 +386,15 @@ build time and deployment count.
   mid-sentence.
 - **Checks:** full vitest 631 passed; `npm run build` passed in 66 s
   locally; `tsc --noEmit` clean.
+- **Deploy:**
+  - Commit 1e356bd built on Vercel in about 2 minutes (Ready).
+  - `guides-verify-live`: 77/77 OK. New city pages cullman-al,
+    port-angeles-wa and oconomowoc-wi return 200.
+  - Pruning held: Vercel CLI 65 answers `remove --safe --yes` with
+    "confirmation_required" ("--yes doesn't approve this command") and wants
+    `--confirm-name` only after a human approves. No one was present, so
+    quell-7ogflht08 (3 days old) is still there: 4 deployments, one over
+    the target of 3. Ask Phillip, then run
+    `npx vercel remove https://quell-7ogflht08-quell1.vercel.app --safe --confirm-name https://quell-7ogflht08-quell1.vercel.app`.
+  - *(These lines were added after the push and are committed with the next
+    run.)*
