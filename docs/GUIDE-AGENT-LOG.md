@@ -398,3 +398,87 @@ build time and deployment count.
     `npx vercel remove https://quell-7ogflht08-quell1.vercel.app --safe --confirm-name https://quell-7ogflht08-quell1.vercel.app`.
   - *(These lines were added after the push and are committed with the next
     run.)*
+
+---
+
+## 2026-11-16 — sixth daily run (first 100-guide day)
+
+- **Published: 100 guides + 0 city pages = 100.** First day that hit the full
+  100 (earlier runs gave writers about 15 each; today each of the five got 20).
+  - By category: local 45, using 30, seasonal 14, label 7, ordering 4.
+  - Totals after this run: 616 guides (477 from the daily job).
+  - Local ran heavy again for the same reason as 11-15: city searches are what
+    Google tests Quell for, and ordering/shipping/returns are near saturated.
+- **City pages:** ramp finished on 11-15 (1,923 of 1,923); nothing to add.
+- **Search Console list:** every city in docs/SEARCH-CONSOLE-QUERIES.md item 1
+  is now done (checked against the inventory). Next Search Console step is
+  Phillip's next export.
+- **Local guides (45, each linked to its live city page and state page):**
+  Pocatello, Roswell NM, Abilene, San Angelo, Corpus Christi, Jacksonville FL,
+  Orlando, Savannah, Charleston WV, Birmingham, Little Rock, Jackson MS,
+  Cincinnati (station is CVG in Kentucky, said so), Toledo, Grand Rapids,
+  Lansing, Madison, Green Bay, Peoria, Springfield IL, Springfield MO, Lincoln
+  NE, Topeka, Hartford (Bradley, Windsor Locks), Providence (T. F. Green,
+  Warwick), Albany NY, Concord NH, Waco, Shreveport, Mobile, Huntsville,
+  Lexington KY, Evansville, Fort Wayne, South Bend, Rockford, Dubuque, Sioux
+  City, North Platte, Dodge City, Elko, Medford, Eugene, Yakima, Fresno.
+  NCEI 1991–2020 normals per WBAN plus relhum23/wndspd23 (saved in
+  .daily-job). San Angelo and Eugene have no snowfall normal; left out.
+  - **Next local candidates (live city pages + NOAA humidity rows):**
+    Bakersfield, Redding, Salem OR, Concordia KS (city page?), Ogden, Odessa,
+    Logan UT, Twin Falls, Prescott, Las Cruces, Casa Grande. Check each slug in
+    locations.generated.ts and its WBAN in relhum23 first (Goodland, Scottsbluff
+    and Winnemucca have NOAA rows but no city page).
+- **Other guides:** 30 people/situations (lawyers, librarians, construction,
+  bartenders, ground crews, park rangers, mail carriers, crane operators, oil
+  field, landscapers, HVAC, stock traders, medical-image readers, housekeepers,
+  kayaking, drone pilots, birdwatching, stargazing, caregivers, real estate
+  agents, ski patrol, film crews, casino dealers, bakers, sign language
+  interpreters, loggers, commercial fishermen, highway workers, why dry all the
+  time, sticky eyelids); 14 seasonal (November, January, Thanksgiving parade,
+  tree farm, decorating, winter wedding, screen-time resolution, holiday
+  concert, gifts for runner/golfer/mechanic/writer/business traveler/commuter);
+  label (bad for you, addicted, mineral oil side effects, ophthalmic,
+  distributed by, Drug Facts history, parts of a bottle); ordering (HSA for
+  parents, letter of medical necessity, HSA before it opened, home first aid
+  kit).
+  - Official sources fetched today: IRS Pubs 969 and 501 (2025), the IRS
+    CARES Act OTC page, 21 CFR 200.50, 201.1, 201.66, 211.132 via the eCFR API
+    (the ecfr.gov web pages block automated requests; the API works), FDA's
+    Drug Facts consumer page, tsa.gov liquids rule.
+- **10 strongest search phrases used:** dry eye relief <city> (45 cities), are
+  eye drops bad for you, is it bad to use eye drops too much / regularly,
+  mineral oil eye drops side effects, why do my eyes feel dry all the time,
+  dry eyes at work, dry eyes when tired, how to keep eyes moist, eye drops for
+  dry eyes winter, letter of medical necessity for eye drops.
+- **Skipped, and why:** autocomplete for "can eye drops…", "eye drops for…",
+  "eye drops after/before…" and "best time to use eye drops" is dominated by
+  conditions, surgery, prescription brands, pets and contacts; "dry eyes when
+  sick/high", "dry eyes from accutane/allergies/crying/dehydration" (claims or
+  no on-site fact); "eye drops vs eye wash", "gritty eyes", "limited-purpose
+  FSA" and "AC dry eyes" are already answered as FAQs on other guides; "does
+  glycerin…" completions are about teeth and skin. All formula inactives are
+  already covered, so formula had 0 today.
+- **Fixed in review (10 read end to end):** removed three unverified "under
+  OSHA rules" employer-duty claims (construction workers) and an ANSI Z87.1 /
+  Z87+ citation (landscapers). Checked the letter-of-necessity guide's receipt
+  description against lib/email.ts (order number, subtotal, shipping, company
+  name: correct). Writers themselves cut unverified city comparisons, a
+  hydration tip, "snow blindness" and other unsourced lines.
+- **For a human look:** writer E noted the actives on the label as transcribed
+  in product-content.ts (Glycerol, Polysorbate 80, Light Mineral Oil) aren't
+  alphabetical, which 21 CFR 201.66 asks for; worth checking against the
+  physical carton. Not a guide issue. Local landmarks in the city guides
+  (Vulcan, WaterFire, Lambeau and so on) are from general knowledge.
+- **Checks:** full vitest 631 passed; `npm run build` passed in 62 s
+  locally; `tsc --noEmit` clean.
+- **Deploy:**
+  - Commit c1297e1 built on Vercel in about 2 minutes (Ready).
+  - `guides-verify-live`: 100/100 OK.
+  - Pruning: held at first (`vercel remove --safe --yes` answers
+    "confirmation_required"); Phillip approved in chat the same day and
+    quell-l3nabllmr and quell-7ogflht08 were removed with --confirm-name,
+    leaving 3; quelldrop.com still 200. Command used:
+    `npx vercel remove https://quell-l3nabllmr-quell1.vercel.app https://quell-7ogflht08-quell1.vercel.app --safe --confirm-name https://quell-l3nabllmr-quell1.vercel.app --confirm-name https://quell-7ogflht08-quell1.vercel.app`
+  - *(This entry was written after the push and is committed with the next
+    run.)*
