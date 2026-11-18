@@ -1421,104 +1421,101 @@ export const DAILY_20261112_C: Guide[] = [
    * - https://www.accessdata.fda.gov/drugsatfda_docs/omuf/monographs/OTC%20Monograph_M018-Ophthalmic%20Drug%20Products%20for%20OTC%20Human%20Use%2004.04.22.pdf
    *   (OTC Monograph M018, ophthalmic drug products, the deemed final order carrying
    *   part 349 forward)
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'how-are-otc-eye-drops-regulated',
     title: 'How are over-the-counter eye drops regulated?',
     description:
-      'OTC eye drops are FDA-regulated through the monograph system, which sets allowed ingredients, uses and labeling. How it works since the 2020 CARES Act.',
+      'OTC eye drops are sold as drugs under set rules for ingredients, uses and label wording. What that means for you when you read a box or shop online.',
     category: 'choosing',
     addedOn: '2026-11-12',
     body: [
       {
-        p: `Over-the-counter eye drops are regulated by the FDA as drugs. Most are sold under an OTC monograph, a set of conditions covering which active ingredients, uses, doses and label wording are allowed for a category. The FDA says monograph drugs that meet those conditions can be marketed without an individually approved application. The 2020 CARES Act modernized how those monographs are made and changed.`,
+        p: `Over-the-counter eye drops are regulated as drugs, not cosmetics. Most are sold under an OTC monograph: a standard set of rules for a whole category that says which active ingredients a drop may use, which uses it may claim and how its label must read. A drop that stays inside those rules can be sold without a prescription, and every box carries the same Drug Facts panel so you can check it.`,
       },
-      { h: 'Are eye drops regulated by the FDA?' },
+      { h: 'Are eye drops considered a drug?' },
       {
-        p: `They are. An eye drop that claims to relieve dryness or irritation is a drug under federal law, which brings it under the Food and Drug Administration’s rules on ingredients, labeling and manufacturing. Prescription eye drops go through FDA review of a drug application before they’re sold. Most over-the-counter drops take a different route: the monograph.`,
+        p: `Yes. Once a drop says it relieves dryness, burning or irritation, it’s making a drug claim, and it has to be made, labeled and sold as a drug. That’s why a lubricating drop carries a Drug Facts panel while a face mist or a makeup remover doesn’t. The label is your evidence: if a product you plan to put in your eye has no Drug Facts panel and no active ingredients listed, it isn’t being sold as an eye drop at all.`,
+      },
+      {
+        p: `Prescription and nonprescription drops take different routes. A prescription drop is reviewed on its own before it reaches a pharmacy. Most over-the-counter drops are never reviewed one brand at a time; they follow the rules written for their category instead.`,
       },
       { h: 'What an OTC monograph is' },
       {
-        p: `The FDA describes an OTC monograph as establishing conditions, such as active ingredients, uses (indications) and doses, under which a category of drugs is generally recognized as safe and effective. Think of it as a published recipe book for a whole category, rather than a review of one brand. A product that stays within the monograph’s conditions and meets the other legal requirements can be sold without its own approved application.`,
+        p: `Picture a published recipe book for a whole shelf of products. The monograph for eye drops lists the active ingredients that may be used, the strengths each one may appear in, the uses a box may claim and the warnings it must print. Any company can make a drop from that book, and none of them gets a certificate saying its particular brand was approved. The maker is the one responsible for staying within the rules.`,
       },
       {
-        p: `That’s why it isn’t accurate to describe an over-the-counter monograph eye drop as individually approved by the FDA. The FDA set the rules for the category; the maker is responsible for following them.`,
+        p: `That’s why the honest way to describe a nonprescription lubricating drop is “sold under the OTC rules for eye drops,” not “approved.” [What is the OTC monograph for eye drops?](/guides/what-is-the-otc-monograph-for-eye-drops) goes further into how the category works.`,
       },
-      { h: 'The ophthalmic monograph and its ingredient categories' },
+      { h: 'The ingredient groups you’ll see on a box' },
       {
-        p: `Eye drops fall under the monograph for ophthalmic drug products. For decades it lived in the Code of Federal Regulations as 21 CFR part 349; today the FDA publishes it as OTC Monograph M018. Part 349 sorted active ingredients into categories, each with its own allowed ingredients and label wording:`,
+        p: `The eye drop rules sort active ingredients by what they do, and the Purpose column on a Drug Facts panel uses the same plain words. The groups you’re most likely to meet in a pharmacy aisle are:`,
       },
       {
         list: [
-          `Astringents.`,
-          `Demulcents, which include liquid polyols such as glycerin and polysorbate 80, along with cellulose derivatives and others.`,
-          `Emollients, which include oily ingredients such as light mineral oil.`,
-          `Hypertonicity agents.`,
-          `Vasoconstrictors.`,
-          `Eyewashes.`,
+          `Lubricants (also called demulcents), such as glycerin and polysorbate 80, which coat and moisten the eye’s surface.`,
+          `Emollients, oily ingredients such as light mineral oil.`,
+          `Eyewashes, which rinse the eye rather than stay on it.`,
+          `A few other groups made for purposes other than dryness, which say so in their Uses line.`,
         ],
       },
       {
         p: `Quell’s active ingredients are {actives}. On the Drug Facts panel, glycerol and polysorbate 80 are listed as lubricants and light mineral oil as an emollient. [What is a demulcent in eye drops?](/guides/what-is-a-demulcent-in-eye-drops) explains the terms.`,
       },
-      { h: 'What the CARES Act changed in 2020' },
+      { h: 'The Drug Facts label is part of the rules' },
       {
-        p: `According to the FDA, the Coronavirus Aid, Relief, and Economic Security Act was signed on March 27, 2020, and added section 505G to the federal Food, Drug, and Cosmetic Act. Before that, changing a monograph meant a slow, multi-step rulemaking process. Section 505G replaced it with administrative orders, which the FDA can issue to add, revise or remove monograph conditions.`,
-      },
-      {
-        p: `Existing final monographs, including the ophthalmic one, became what the law calls deemed final orders on the day the act took effect. That’s how part 349 became Monograph M018. For shoppers, very little changed on the shelf; the change was in how quickly the FDA can update the rules.`,
-      },
-      {
-        p: `The same act also made over-the-counter medicines eligible for HSA and FSA funds without a prescription, a separate change covered in [why OTC eye drops count for HSA and FSA](/guides/why-otc-eye-drops-count-for-hsa-and-fsa).`,
-      },
-      { h: 'The Drug Facts label is regulated too' },
-      {
-        p: `Every OTC drug label follows the FDA’s Drug Facts format, set out in 21 CFR 201.66. It fixes the headings and their order, so every carton reads the same way: active ingredients with their purpose, uses, warnings, directions, other information and inactive ingredients. The monograph decides much of what goes under those headings, including the wording of the uses and certain required warnings.`,
+        p: `Every over-the-counter drug sold in the US carries a Drug Facts panel in the same order: active ingredients with their purpose, uses, warnings, directions, other information and inactive ingredients. The fixed order is the point. Once you’ve read one carton, you know where to find the warnings on the next one, whatever the brand. The category rules decide much of what goes under those headings, including the wording of the uses and certain warnings.`,
       },
       {
         p: `On Quell’s carton, for example, the Uses line reads: {uses}. The directions read: {directions}. You can read the whole panel on our [Drug Facts page](/drug-facts), or see [how to read an eye drop Drug Facts label](/guides/how-to-read-an-eye-drop-drug-facts-label).`,
       },
-      { h: 'Manufacturing, warning letters and recalls' },
+      { h: 'Manufacturing, lot numbers and recalls' },
       {
         list: [
-          `Manufacturing: OTC eye drops must be made under the FDA’s current good manufacturing practice requirements, the same quality rules that apply to other drugs.`,
-          `Warning letters: when the FDA finds an eye product making claims outside the monograph, or quality problems at a plant, it can issue a public warning letter.`,
-          `Recalls: when a problem is found after products ship, companies recall affected lots, and the FDA lists recalls publicly.`,
+          `Quality: eye drops are made under the same manufacturing quality rules as other medicines, and a drop meant for the eye has to be sterile when it’s sealed.`,
+          `Lot numbers: each batch carries a lot number and an expiration date, printed on the box and usually the bottle. Those two details are how a maker traces a batch if something goes wrong.`,
+          `Recalls: if a problem turns up after a batch ships, the maker recalls the affected lots. Check the lot on your box against the maker’s notice, or ask your pharmacist to look it up for you.`,
         ],
       },
       {
-        p: `[How to check if your eye drops were recalled](/guides/how-to-check-if-eye-drops-were-recalled) explains where to look and how to match a recall to the lot number on your bottle.`,
+        p: `[How to check if your eye drops were recalled](/guides/how-to-check-if-eye-drops-were-recalled) walks through matching a notice to the lot number on your bottle. If a drop you’ve used seems wrong, stop using it, keep the bottle and box, and see [how to report a problem with eye drops](/guides/how-to-report-a-problem-with-eye-drops). For Quell, you can reach us at {phone}, {hours}.`,
       },
-      { h: 'What regulation doesn’t tell you' },
+      { h: 'Where HSA and FSA rules fit in' },
       {
-        p: `Meeting the monograph means a product uses allowed ingredients and allowed claims. It doesn’t mean one brand works better than another, and it doesn’t mean a drop is right for every eye problem. Ongoing discomfort, pain or vision changes call for an eye doctor, not a different bottle. Quell’s label states: {stopUse}`,
+        p: `Tax rules are separate from the drug rules. Since the 2020 CARES Act, over-the-counter medicines can be bought with HSA and FSA funds without a prescription, and a lubricating eye drop is an over-the-counter medicine. Plans still differ in how they handle cards and receipts, so your plan administrator has the final word. [Why OTC eye drops count for HSA and FSA](/guides/why-otc-eye-drops-count-for-hsa-and-fsa) has the details.`,
+      },
+      { h: 'What the rules don’t tell you' },
+      {
+        p: `Following the rules means a product uses allowed ingredients and allowed claims. It doesn’t mean one brand works better than another, and it doesn’t mean a drop is right for every eye problem. Ongoing discomfort, pain or vision changes call for an eye doctor, not a different bottle. Quell’s label states: {stopUse}`,
       },
       { h: 'Reading claims with this in mind' },
       {
         list: [
-          `Be wary of any OTC eye drop described as “FDA-cleared” or as having special FDA status; monograph drops don’t get individual approval.`,
+          `Be wary of a nonprescription eye drop advertised as specially approved or certified; drops sold this way follow their category’s rules rather than getting individual approval.`,
           `Check that the uses on the website match the Uses line on the label.`,
           `Look for a complete Drug Facts panel, including the maker’s name and a way to contact them.`,
           `Compare active ingredients, not marketing names.`,
+          `If a claim on a site goes further than the label does, trust the label, and ask a pharmacist if you’re unsure.`,
         ],
       },
     ],
     faq: [
       {
-        q: 'Are eye drops regulated by the FDA?',
-        a: `Yes. Eye drops are drugs under federal law. Prescription drops need an approved FDA application, while most over-the-counter drops are sold under the FDA’s ophthalmic monograph, which sets allowed ingredients, uses and labeling.`,
+        q: 'Are eye drops considered a drug?',
+        a: `Yes. A drop that claims to relieve dryness or irritation is sold as a drug, which is why it carries a Drug Facts panel with active ingredients, uses, warnings and directions.`,
       },
       {
         q: 'What is an OTC monograph?',
-        a: `It’s an FDA standard for a category of over-the-counter drugs, setting conditions such as active ingredients, uses and doses. Products that meet it and other legal requirements can be sold without an individually approved application.`,
+        a: `It’s the standard set of rules for a category of over-the-counter drugs, covering which active ingredients, strengths, uses and label wording are allowed. Products that follow it can be sold without a prescription or a brand-by-brand approval.`,
       },
       {
-        q: 'What is OTC Monograph M018?',
-        a: `M018 is the FDA’s current monograph for ophthalmic drug products for over-the-counter use. It carries forward the rules that were in 21 CFR part 349 before the 2020 CARES Act reform.`,
+        q: 'What should an OTC eye drop label include?',
+        a: `A full Drug Facts panel in the standard order (active ingredients and purpose, uses, warnings, directions, other information, inactive ingredients), plus a lot number, an expiration date and the company’s name and address.`,
       },
       {
-        q: 'How did the CARES Act change OTC drug rules?',
-        a: `Signed on March 27, 2020, it added section 505G to the Food, Drug, and Cosmetic Act, replacing slow rulemaking with FDA administrative orders for creating and changing OTC monographs.`,
+        q: 'Do over-the-counter eye drops get approved one brand at a time?',
+        a: `Most don’t. Lubricating drops sold without a prescription follow the rules written for their whole category, and the maker is responsible for meeting them. Prescription drops are the ones reviewed individually.`,
       },
     ],
   },

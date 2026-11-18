@@ -912,6 +912,9 @@ export const DAILY_20261113_D: Guide[] = [
     ],
   },
 
+  /*
+   * FDA references removed 2026-11-18 at Phillip's request.
+   */
   {
     slug: 'how-many-drops-of-eye-drops-should-i-take',
     title: 'How many drops of eye drops should I take?',
@@ -974,7 +977,7 @@ export const DAILY_20261113_D: Guide[] = [
       },
       { h: 'Where the number comes from' },
       {
-        p: `Every over-the-counter drug sold in the US carries a Drug Facts panel in a format the FDA sets, and the Directions section is where the amount and frequency live. For Quell, you can read the full panel on the [Drug Facts page](/drug-facts) or on the carton. If the website and the carton ever seem to disagree, the carton in your hand is the one to follow.`,
+        p: `Every over-the-counter drug sold in the US carries a Drug Facts panel with its headings in the same order, and the Directions section is where the amount and frequency live. For Quell, you can read the full panel on the [Drug Facts page](/drug-facts) or on the carton. If the website and the carton ever seem to disagree, the carton in your hand is the one to follow.`,
       },
       {
         p: `At the labeled amount, a {size} bottle goes further than people expect. [How long does a bottle of eye drops last?](/guides/how-long-does-a-bottle-of-eye-drops-last) works through the numbers.`,
@@ -1086,6 +1089,7 @@ export const DAILY_20261113_D: Guide[] = [
   /*
    * Source: 21 CFR part 349 (FDA's monograph for OTC ophthalmic drug products), which requires
    * multi-use containers to carry a do-not-touch-the-tip warning and a replace-the-cap instruction.
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'single-use-vials-vs-multi-dose-bottles',
@@ -1108,7 +1112,7 @@ export const DAILY_20261113_D: Guide[] = [
       },
       { h: 'How a multi-dose bottle is kept clean' },
       {
-        p: `Every time a multi-dose bottle is opened, the tip is exposed to the air, your fingers and anything it might touch. FDA’s rules for over-the-counter eye products, 21 CFR part 349, require multi-use containers to warn against touching the tip to any surface and to tell you to replace the cap after each use. Quell’s label carries its version: {tip}.`,
+        p: `Every time a multi-dose bottle is opened, the tip is exposed to the air, your fingers and anything it might touch. That’s why the labels on multi-use eye drop bottles tell you to keep the tip off every surface and to put the cap back after each use. Quell’s label carries its version: {tip}.`,
       },
       {
         p: `That instruction does most of the work, so build a routine around it:`,
@@ -1179,7 +1183,7 @@ export const DAILY_20261113_D: Guide[] = [
       },
       {
         q: 'How do you keep a multi-dose eye drop bottle clean?',
-        a: `Wash your hands, keep the tip from touching your eye or any surface, recap right after use, and don’t share the bottle. FDA’s rules for OTC eye products require multi-use containers to carry the tip and cap instructions.`,
+        a: `Wash your hands, keep the tip from touching your eye or any surface, recap right after use, and don’t share the bottle. Those tip and cap steps are printed on the label of any multi-use eye drop bottle, so check yours.`,
       },
     ],
   },

@@ -2016,6 +2016,7 @@ export const DAILY_20261116_C: Guide[] = [
       },
     ],
   },
+  /* FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'mineral-oil-eye-drops-side-effects',
     title: 'Mineral oil eye drops: what the label warns',
@@ -2029,7 +2030,7 @@ export const DAILY_20261116_C: Guide[] = [
       },
       { h: 'Mineral oil eye drops side effects: where the label puts them' },
       {
-        p: `FDA’s format for over-the-counter Drug Facts uses set headings in a set order, among them Active ingredients, Purpose, Uses, Warnings, Directions, Other information and Inactive ingredients. There’s no “side effects” heading as you’d see on a prescription leaflet. Everything a buyer needs to watch for is under Warnings, which includes its own subheadings: Do not use, When using this product, Stop use and ask a doctor if, and Keep out of reach of children. Our guide to [the Warnings section](/guides/the-warnings-section) walks through each part.`,
+        p: `An over-the-counter Drug Facts panel uses set headings in a set order, among them Active ingredients, Purpose, Uses, Warnings, Directions, Other information and Inactive ingredients. There’s no “side effects” heading as you’d see on a prescription leaflet. Everything a buyer needs to watch for is under Warnings, which includes its own subheadings: Do not use, When using this product, Stop use and ask a doctor if, and Keep out of reach of children. Our guide to [the Warnings section](/guides/the-warnings-section) walks through each part.`,
       },
       { h: 'Quell’s warnings, line by line' },
       {

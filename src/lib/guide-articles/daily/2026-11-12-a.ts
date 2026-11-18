@@ -1213,17 +1213,18 @@ export const DAILY_20261112_A: Guide[] = [
    * active ingredient; 21 CFR 172.840 "Polysorbate 80" (food additive, made by
    * reacting oleic acid with sorbitol, then ethylene oxide; an emulsifier in ice
    * cream and frozen desserts).
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'what-does-polysorbate-80-do-in-eye-drops',
     title: 'What does polysorbate 80 do in eye drops?',
     description:
-      'Polysorbate 80 is a lubricant active ingredient in some eye drops. What that label role means, where FDA lists it, and what the warnings say instead.',
+      'Polysorbate 80 is a lubricant active ingredient in some eye drops. What that label role means, why an oil-and-water drop uses it, and what the warnings say.',
     category: 'formula',
     addedOn: '2026-11-12',
     body: [
       {
-        p: `In an over-the-counter eye drop, polysorbate 80 is a lubricant. FDA’s rules for nonprescription eye drops, 21 CFR 349.12, list it among the ophthalmic demulcents, ingredients that coat and lubricate the eye’s surface. Quell lists it as an active ingredient, {polysorbate}, with the purpose “lubricant.” Chemically it’s also an emulsifier, which helps oil and water mix, and that suits a formula that blends both.`,
+        p: `In an over-the-counter eye drop, polysorbate 80 is a lubricant. It belongs to the group of ingredients called demulcents, which coat and lubricate the eye’s surface. Quell lists it as an active ingredient, {polysorbate}, with the purpose “lubricant.” Chemically it’s also an emulsifier, which helps oil and water mix, and that suits a formula that blends both.`,
       },
       { h: 'Why is polysorbate 80 used in eye drops?' },
       {
@@ -1234,21 +1235,30 @@ export const DAILY_20261112_A: Guide[] = [
       },
       { h: 'What “active ingredient” and “purpose” mean' },
       {
-        p: `FDA’s labeling regulation for over-the-counter drugs, 21 CFR 201.66, defines an active ingredient as a component intended to furnish pharmacological activity or another direct effect in the body. Everything else is an inactive ingredient. On the Drug Facts panel, each active is listed with its strength and its purpose, a short word or phrase describing what it does.`,
+        p: `An active ingredient is the part of a medicine that does the job printed on the label. Everything else in the bottle is an inactive ingredient, there to carry, balance or hold the formula together. On the Drug Facts panel, each active is listed with its strength and its purpose, a short word or phrase describing what it does.`,
       },
       {
         p: `For polysorbate 80 in Quell, the purpose is “lubricant,” the same as {glycerol}. The third active, {mineralOil}, has the purpose “emollient.” Seeing polysorbate 80 listed as an active, with a strength and a purpose, tells you it’s one of the ingredients the product’s Uses depend on. Those Uses read: {uses}. [The active ingredients section](/guides/the-active-ingredients-section) covers how that part of the panel is laid out.`,
       },
-      { h: 'Polysorbate 80 in FDA’s eye drop rules' },
+      { h: 'Polysorbate 80 among the other lubricants' },
       {
-        p: `Over-the-counter lubricating eye drops follow a set of FDA rules in 21 CFR part 349, often called the ophthalmic monograph. Section 349.12 lists the demulcents a product can use, each “within the established concentrations” for that ingredient. Polysorbate 80 appears there in the group of liquid polyols, alongside glycerin, propylene glycol and two polyethylene glycols. Quell’s label strength, {polysorbate}, is within the range the regulation sets for it.`,
+        p: `Polysorbate 80 is one of a short list of lubricating ingredients you’ll see again and again on over-the-counter eye drop boxes. Glycerin (also written glycerol) and propylene glycol are its close relatives on that list; all of them are water-friendly liquids that thicken the drop slightly and help it cling to the eye’s surface. Some drops use one lubricant, and others, like Quell, pair two of them with an emollient.`,
       },
       {
-        p: `That listing is what lets a drop use polysorbate 80 as an active lubricant without a prescription. It’s a regulatory permission, not a statement about how any one person will respond. [What is a demulcent in eye drops?](/guides/what-is-a-demulcent-in-eye-drops) walks through the whole list and how demulcents differ from emollients.`,
+        p: `Spotting polysorbate 80 in the active ingredients section tells you a drop is a lubricating product, not one meant for itching or another purpose. It doesn’t tell you how any one person will respond to it. [What is a demulcent in eye drops?](/guides/what-is-a-demulcent-in-eye-drops) walks through the whole group and how demulcents differ from emollients.`,
+      },
+      { h: 'How to find it on a box' },
+      {
+        list: [
+          `Look in the top section of the Drug Facts panel, under Active ingredients. If it’s there, its strength and purpose sit on the same line.`,
+          `If it isn’t listed as an active, check the Inactive ingredients line at the bottom. Some products use a polysorbate only to keep the formula mixed.`,
+          `Watch the number. Polysorbate 80 and polysorbate 20 are different compounds, and a box may list either.`,
+          `On Quell’s panel, it appears as {polysorbate}, between {glycerol} and {mineralOil}.`,
+        ],
       },
       { h: 'Where else polysorbate 80 shows up' },
       {
-        p: `Polysorbate 80 isn’t unique to eye drops. FDA’s food additive regulations, at 21 CFR 172.840, describe it as a compound made by reacting oleic acid with sorbitol and then with ethylene oxide, and permit it as an emulsifier in ice cream and other frozen desserts, among other uses. It also appears in cosmetics and many medicines. Its chemical name, polyoxyethylene (20) sorbitan monooleate, is the one you may see on technical documents.`,
+        p: `Polysorbate 80 isn’t unique to eye drops. It’s made from sorbitol, a sugar alcohol, and oleic acid, a fatty acid, and it’s used as an emulsifier in some foods, in cosmetics and in many medicines. Its chemical name, polyoxyethylene (20) sorbitan monooleate, is the one you may see on technical documents.`,
       },
       {
         p: `Familiarity in food doesn’t tell you how it will feel in your eye; the eye and the stomach are different places. It does explain why the name turns up on so many ingredient lists.`,
@@ -1274,7 +1284,7 @@ export const DAILY_20261112_A: Guide[] = [
         list: [
           `Listed as: {polysorbate}.`,
           `Purpose on the label: lubricant.`,
-          `Listed in FDA’s ophthalmic demulcents at 21 CFR 349.12, within a set concentration range.`,
+          `Belongs to the demulcents, the lubricating group of eye drop ingredients.`,
           `Works alongside {glycerol} (lubricant) and {mineralOil} (emollient).`,
           `Part of a preservative-free, milky formula; the label notes it {milky}.`,
         ],
@@ -1286,7 +1296,7 @@ export const DAILY_20261112_A: Guide[] = [
     faq: [
       {
         q: 'Why is polysorbate 80 used in eye drops?',
-        a: `On the label it’s a lubricant: FDA lists it among the ophthalmic demulcents in 21 CFR 349.12. Chemically it’s also an emulsifier, which helps oil and water ingredients stay mixed.`,
+        a: `On the label it’s a lubricant, one of the demulcents that coat the eye’s surface. Chemically it’s also an emulsifier, which helps oil and water ingredients stay mixed.`,
       },
       {
         q: 'What are the side effects of polysorbate 80 eye drops?',
@@ -1298,7 +1308,7 @@ export const DAILY_20261112_A: Guide[] = [
       },
       {
         q: 'Is polysorbate 80 allowed in over-the-counter eye drops?',
-        a: `Yes. FDA’s ophthalmic monograph, 21 CFR 349.12, lists polysorbate 80 as a demulcent that nonprescription eye drops may use within an established concentration range.`,
+        a: `Yes. It’s one of the standard lubricating ingredients in nonprescription eye drops, and you’ll find it listed as an active, with a strength and the purpose “lubricant,” on boxes that use it that way.`,
       },
     ],
   },
@@ -1312,35 +1322,36 @@ export const DAILY_20261112_A: Guide[] = [
    * measure, U.S. gallon/quart/pint/fluid ounce at 68 F; distinct item in the bottom
    * 30 percent of the panel; panels of 5 square inches or less exempt from that
    * placement; metric statement may also appear); 201.66 Drug Facts format.
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'what-the-front-of-an-eye-drop-box-tells-you',
     title: 'What the front of an eye drop box tells you',
     description:
-      'The front of an eye drop box is its principal display panel. What FDA requires there, such as identity and net quantity, and what it leaves to the back.',
+      'The front of an eye drop box says what the product is and how much is inside. How to read it, and what it leaves to the Drug Facts panel on the back.',
     category: 'label',
     addedOn: '2026-11-12',
     body: [
       {
-        p: `The front of an eye drop box, which FDA calls the principal display panel, has to tell you two things: what the product is, in a bold statement of identity, and how much is inside, as a net quantity. Everything else on the front is the brand’s choice. The rules for using the drop, its ingredients and warnings, live in the Drug Facts panel, usually on the back or side.`,
+        p: `The front of an eye drop box, sometimes called the principal display panel, tells you two things that matter: what the product is, in a short bold phrase near the brand name, and how much is inside, as a net quantity. Everything else on the front is the brand’s choice. How to use the drop, its ingredients and its warnings live in the Drug Facts panel, usually on the back or side.`,
       },
       { h: 'The principal display panel' },
       {
-        p: `FDA’s labeling rules for over-the-counter drugs, at 21 CFR 201.60, define the principal display panel as the part of the label most likely to be displayed or examined when the product sits on a store shelf. For a box, that’s the front face. The rule says the panel must be big enough to carry the required information clearly, without crowding, and if a package has two equally prominent faces, the required information goes on both.`,
+        p: `“Principal display panel” is the labeling term for the face of a package you see first when it sits on a store shelf. For a box, that’s the front. It’s where a shopper decides in a second or two whether this is the kind of product they came for, so the brand name and the product type get the most room.`,
       },
       {
-        p: `Online, you rarely see the box on a shelf, so the product photo stands in for it. That’s one reason a clear photo of the actual carton is worth looking for when you shop online: it shows you the same panel the rules were written around.`,
+        p: `Online, you rarely see the box on a shelf, so the product photo stands in for it. That’s one reason a clear photo of the actual carton is worth looking for when you shop online: it shows you the same front panel you’d pick up in a store, not an artist’s rendering.`,
       },
-      { h: 'The statement of identity' },
+      { h: 'What the product is' },
       {
-        p: `Section 201.61 requires the front panel to carry a statement of identity as one of its main features. For a single-ingredient drug, that’s the drug’s established name plus its general category or main intended action. For a mixture with no single established name, like most lubricating eye drops, the rule allows a prominent statement of what the mixture does, in terms ordinary shoppers understand. The regulation’s own examples include “antacid,” “analgesic” and “decongestant.”`,
+        p: `Near the brand name you’ll find a plain phrase saying what’s in the box, printed large enough to read at a glance. For lubricating eye drops, that phrase usually names the product type rather than a single ingredient, because most of them blend several. It’s the line to check first, before any claim or color catches your eye.`,
       },
       {
         list: [
-          `It must be in bold type.`,
-          `Its size must be reasonably related to the most prominent text on the panel, so it can’t be tucked away in fine print.`,
-          `It runs parallel to the base of the package as it’s meant to stand on a shelf.`,
-          `It sits close to the brand name, so the brand and what the product is appear together.`,
+          `Look for words like “lubricating eye drops” or “lubricant eye drops,” which tell you the category.`,
+          `Make sure the phrase matches what you need. A box that says something other than lubricating drops is a different kind of product.`,
+          `Read it together with the brand name; the two usually sit side by side.`,
+          `If the phrase is hard to find, the Purpose column on the Drug Facts panel says the same thing in another way.`,
         ],
       },
       {
@@ -1348,10 +1359,10 @@ export const DAILY_20261112_A: Guide[] = [
       },
       { h: 'Net quantity: how much is in the box' },
       {
-        p: `Section 201.62 requires a declaration of net quantity of contents. For a liquid, it’s stated in fluid measure using US units, fluid ounces for a small bottle, measured at 68°F. A metric amount may appear alongside it. The declaration has to stand apart as a distinct item, with space around it, and on most packages it belongs in the bottom 30 percent of the front panel. Very small panels, five square inches or less, are exempt from that placement rule.`,
+        p: `The net quantity is the amount of liquid in the bottle. For eye drops it’s given in fluid ounces, and many boxes also show milliliters beside it. It usually sits near the bottom of the front panel, apart from the artwork, so it’s easy to compare one box with another.`,
       },
       {
-        p: `Quell’s net quantity is {size}. Knowing where to look for it makes comparison easier: the amount sits near the bottom of the front panel on most boxes, separate from the claims and the artwork. [What size is a bottle of Quell?](/guides/what-size-is-a-bottle-of-quell) goes into what that volume means in practice.`,
+        p: `Quell’s net quantity is {size}. Knowing where to look for it makes comparison easier, since two boxes that look the same size on a shelf can hold different amounts. [What size is a bottle of Quell?](/guides/what-size-is-a-bottle-of-quell) goes into what that volume means in practice.`,
       },
       { h: 'Everything else on the front' },
       {
@@ -1370,7 +1381,7 @@ export const DAILY_20261112_A: Guide[] = [
       },
       { h: 'The back of the box: the Drug Facts panel' },
       {
-        p: `A separate regulation, 21 CFR 201.66, sets the format for the Drug Facts panel. It uses a fixed order of headings: active ingredients with their purposes, uses, warnings, directions, other information and inactive ingredients. On Quell’s carton, that panel says the product’s Uses are {uses}, and its directions are {directions}. The panel also carries the caution {warnings}.`,
+        p: `Every over-the-counter drug sold in the US carries a Drug Facts panel in the same order of headings: active ingredients with their purposes, uses, warnings, directions, other information and inactive ingredients. On Quell’s carton, that panel says the product’s Uses are {uses}, and its directions are {directions}. The panel also carries the caution {warnings}.`,
       },
       {
         p: `That’s the part to read before you use any eye drop. The full Quell panel is reproduced on the [Drug Facts](/drug-facts) page, and [how to read an eye drop Drug Facts label](/guides/how-to-read-an-eye-drop-drug-facts-label) walks through each section.`,
@@ -1391,15 +1402,15 @@ export const DAILY_20261112_A: Guide[] = [
     faq: [
       {
         q: 'What is the principal display panel on a drug label?',
-        a: `It’s the part of the label most likely to be seen on a store shelf, usually the front of the box. FDA’s rules, at 21 CFR 201.60, require key information such as the statement of identity and net quantity there.`,
+        a: `It’s the face of the package you see first on a store shelf, usually the front of the box. That’s where you’ll find the brand name, what the product is and how much is inside.`,
       },
       {
         q: 'What is a statement of identity on an eye drop box?',
-        a: `It’s the bold phrase on the front that says what the product is, such as “lubricating eye drops.” Under 21 CFR 201.61 it must be prominent and sit with the brand name.`,
+        a: `It’s the bold phrase on the front that says what the product is, such as “lubricating eye drops.” It usually sits right beside the brand name, so you can tell the product type at a glance.`,
       },
       {
         q: 'Where is the net quantity on an eye drop box?',
-        a: `On the front panel, as a separate item, usually in the bottom 30 percent of the panel. For a liquid it’s in fluid ounces, often with milliliters as well. Quell’s is {size}.`,
+        a: `On the front panel, as a separate item, usually near the bottom. For a liquid it’s in fluid ounces, often with milliliters as well. Quell’s is {size}.`,
       },
       {
         q: 'Is the front or the back of an eye drop box more important?',

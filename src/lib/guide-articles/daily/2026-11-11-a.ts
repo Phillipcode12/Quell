@@ -542,45 +542,47 @@ export const DAILY_20261111_A: Guide[] = [
     ],
   },
 
+  /* FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'is-it-safe-to-buy-eye-drops-from-overseas-websites',
     title: 'Buying eye drops from overseas websites',
     description:
-      'Thinking of buying eye drops from a site abroad? The checks FDA’s BeSafeRx campaign points to, the label language to look for, and who to call.',
+      'Thinking of buying eye drops from a site abroad? What to check about the seller and the label before you pay, what to look for on arrival, and who to call.',
     category: 'ordering',
     addedOn: '2026-11-11',
     body: [
       {
-        p: `Buying eye drops from a website outside the United States carries more unknowns: who made the product, how it was stored, whether the label is in English and meets U.S. rules, and who answers if something goes wrong. FDA’s BeSafeRx campaign points buyers to sellers with a U.S. street address and phone number. Quell ships from Brentwood, Tennessee, to U.S. addresses only.`,
+        p: `Buying eye drops from a website outside the United States carries more unknowns: who made the product, how it was stored on the way, whether the label is in English, and who answers if something goes wrong. A seller worth trusting gives you a company name, a U.S. street address and a phone number someone picks up. Quell ships from Brentwood, Tennessee, to U.S. addresses only.`,
       },
-      { h: 'What BeSafeRx is' },
+      { h: 'What makes an overseas order different' },
       {
-        p: `BeSafeRx is a public awareness campaign run by the U.S. Food and Drug Administration to help consumers buy medicines online more safely. It is aimed mainly at prescription medicines, but the signs it teaches carry over to any drug product you put in your eye, because they’re about the seller, not the prescription.`,
+        p: `A drop bought from a store down the street has a short, traceable path: the maker, a distributor, the shelf. An order from a site abroad can pass through resellers you never see, wait in customs, and ride through cargo holds and sorting centers for weeks. None of that shows on the listing page. The photo on the site may show one carton while the package holds another, and when the two don’t match, you have little leverage with a seller in another country.`,
       },
-      { h: 'The signs FDA lists for a trustworthy online seller' },
       {
-        p: `FDA’s “Considering an Online Pharmacy?” page, part of BeSafeRx, lists signs of a legitimate online pharmacy. Several apply directly to buying eye drops:`,
+        p: `That doesn’t make every foreign shop dishonest. It means the checks you’d normally skip at a local pharmacy, because the store has already done them, fall to you.`,
       },
+      { h: 'Signs of a seller you can rely on' },
       {
         list: [
-          `A U.S. street address and a phone number you can call.`,
-          `A license from a state board of pharmacy, for sites that operate as pharmacies.`,
-          `A licensed pharmacist available to answer questions, again for pharmacies.`,
-          `A requirement for a valid prescription, for prescription drugs. Over-the-counter drops like Quell don’t need one, so that sign doesn’t apply to them.`,
+          `A company name you can look up, plus a U.S. street address and a phone number you can call.`,
+          `The complete label shown on the listing, not only a marketing photo of the front of the box.`,
+          `A written returns policy and a privacy policy you can read before checkout.`,
+          `For a site that calls itself a pharmacy, a license from a state board of pharmacy and a pharmacist you can reach with questions.`,
+          `A plain statement of where orders ship from. Quell’s is Brentwood, Tennessee.`,
         ],
       },
-      { h: 'Warning signs FDA lists' },
+      { h: 'Warning signs on an overseas listing' },
       {
-        p: `The same page lists warning signs, and several are exactly what can go wrong with a package from abroad:`,
+        p: `Several red flags are exactly what tends to go wrong with a package from abroad:`,
       },
       {
         list: [
-          `The seller isn’t licensed in the United States or by your state board of pharmacy.`,
-          `The product looks different from what you’d get locally, or arrives damaged or expired.`,
+          `No street address anywhere on the site, or contact only through an email form.`,
+          `The product looks different from what you’d find locally, or arrives damaged or expired.`,
           `There is no expiration date, or the packaging is in a foreign language.`,
           `Prices seem far too low to be real.`,
           `You’re charged for orders you didn’t place or never received.`,
-          `There is no clear privacy policy, or the site sells your personal and financial information.`,
+          `There is no clear privacy policy, or the checkout asks for more personal details than an order needs.`,
         ],
       },
       { h: 'Why the label language matters for eye drops' },
@@ -596,7 +598,7 @@ export const DAILY_20261111_A: Guide[] = [
       },
       { h: 'If something goes wrong' },
       {
-        p: `A seller abroad may be hard to reach and outside the reach of U.S. consumer protections. BeSafeRx points people to FDA’s MedWatch program to report unexpected side effects, and to FDA’s form for reporting websites that appear to sell medicine illegally.`,
+        p: `A seller abroad may be hard to reach and outside the reach of U.S. consumer protections. Whatever the source, if a drop stings, blurs your vision or leaves your eyes feeling worse, stop using it. Keep the bottle and the box, write down the lot number and expiration date printed on them, and call your eye doctor or a pharmacist. The details on the box tell them exactly what you used, which matters more when the label isn’t in English.`,
       },
       {
         p: `Quell, for comparison, is sold by {company}, {address}, with a phone line at {phone}, {hours}. Damaged, incorrect or broken-seal orders are replaced, and the refund policy is written down: {returns}.`,
@@ -618,15 +620,15 @@ export const DAILY_20261111_A: Guide[] = [
     faq: [
       {
         q: 'Is it safe to buy eye drops from overseas websites?',
-        a: `It carries more unknowns. FDA’s BeSafeRx campaign lists warning signs such as no U.S. license, packaging in a foreign language, missing expiration dates and prices that look too low.`,
+        a: `It carries more unknowns. Warning signs include no U.S. address or phone number, a carton in a foreign language, no expiration date and a price that looks too low to be real.`,
       },
       {
-        q: 'What is FDA BeSafeRx?',
-        a: `BeSafeRx is an FDA public awareness campaign that helps consumers buy medicines online more safely, with lists of signs of a legitimate online pharmacy and warning signs of an unsafe one.`,
+        q: 'What should I do if eye drops ordered from abroad bother my eyes?',
+        a: `Stop using them, keep the bottle and box, and note the lot number and expiration date. Then call your eye doctor or a pharmacist and show them the packaging.`,
       },
       {
         q: 'How can I tell if an eye drop website is in the US?',
-        a: `Look for a company name, a U.S. street address and a phone number that someone answers. FDA’s BeSafeRx materials list a U.S. street address and phone number among the signs of a legitimate seller.`,
+        a: `Look for a company name, a U.S. street address and a phone number someone answers. A site that lists only an email form, or won’t say where it ships from, is a reason to keep looking.`,
       },
       {
         q: 'Where does Quell ship from?',
@@ -1132,23 +1134,24 @@ export const DAILY_20261111_A: Guide[] = [
     ],
   },
 
+  /* FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'what-does-protectant-mean-on-eye-drops',
     title: 'What does “protectant” mean on eye drops?',
     description:
-      '“Protectant” comes from the FDA’s rules for over-the-counter eye drops. Where the word comes from, what Quell’s Uses line says, and what it doesn’t claim.',
+      '“Protectant” on an eye drop label is about shielding an already irritated eye. What Quell’s Uses line says, what the word covers, and what it doesn’t claim.',
     category: 'label',
     addedOn: '2026-11-11',
     body: [
       {
-        p: `On an eye drop label, “protectant” describes the drop’s role in shielding the surface of an eye that’s already irritated. The word comes from FDA’s rules for over-the-counter eye drops, 21 CFR part 349, which list approved Uses statements. Quell’s reads: {uses}. It describes a supportive role on the eye’s surface, not a fix for whatever caused the irritation.`,
+        p: `On an eye drop label, “protectant” describes the drop’s role in shielding the surface of an eye that’s already irritated. It’s a standard word on the Uses line of lubricating drops. Quell’s reads: {uses}. That describes a supportive role on the eye’s surface, not a fix for whatever caused the irritation.`,
       },
-      { h: 'Where the word comes from' },
+      { h: 'Where to find the word on the box' },
       {
-        p: `Over-the-counter drugs in the United States are mostly sold under monographs: rules that set out which active ingredients a category may use, in what amounts, and what the label may say. Eye drops fall under the ophthalmic monograph in Title 21 of the Code of Federal Regulations, part 349, “Ophthalmic Drug Products for Over-the-Counter Human Use.” Its definitions section, 349.3, describes an ophthalmic drug product as one applied to the eyelid or put into the eye, and says it should be sterile. Everything else in the part builds on that starting point.`,
+        p: `Every over-the-counter drug sold in the US carries a Drug Facts panel in the same order: active ingredients first, then uses, warnings, directions, other information and inactive ingredients. “Protectant” sits in the second section, Uses, which is the maker’s statement of what the drop is for. It isn’t in the active ingredients list and it isn’t the name of an ingredient. It describes a job.`,
       },
       {
-        p: `Part 349 lists the categories of active ingredient it covers: astringents, demulcents, emollients, a hypertonicity agent, vasoconstrictors and eyewashes. Each category gets its own labeling section. For demulcents, section 349.60, and for emollients, section 349.65, the regulation gives four permitted indication statements. One of them is, word for word, the Uses line on Quell’s carton.`,
+        p: `Lubricating eye drops sold over the counter follow a standard set of rules about which active ingredients they may contain and which wording may go on that Uses line. That’s why the same phrases turn up on box after box: the wording is shared, not invented fresh by each maker.`,
       },
       { h: 'Quell’s Uses line, read closely' },
       {
@@ -1161,7 +1164,7 @@ export const DAILY_20261111_A: Guide[] = [
         ],
       },
       {
-        p: `Those words were written into federal regulation, which is why they appear on more than one product. A drop using this wording is telling you it belongs to the demulcent and emollient categories of the monograph. [The Uses section on an eye drop label](/guides/the-uses-section) covers that part of the panel more broadly.`,
+        p: `Either half can apply on a given day. Someone whose eyes feel scratchy after hours at a screen is reading the first half; someone whose eyes feel parched in a heated office is reading the second. [The Uses section on an eye drop label](/guides/the-uses-section) covers that part of the panel more broadly.`,
       },
       { h: 'What “protectant” doesn’t mean' },
       {
@@ -1174,28 +1177,32 @@ export const DAILY_20261111_A: Guide[] = [
       },
       { h: 'How a lubricant can protect' },
       {
-        p: `Part 349 defines a demulcent as an agent applied to the eye “to protect and lubricate mucous membrane surfaces and relieve dryness and irritation.” It describes an emollient, usually a fat or oil, as an agent used “to protect or soften tissues.” In both definitions, protection comes from coating and lubricating: a layer between the eye’s surface and whatever is irritating it.`,
+        p: `A lubricating drop protects by coating. It lays a thin, slippery layer over the eye’s surface, so each blink glides instead of dragging across tissue that’s already sore. Oily ingredients add a film that slows the water underneath from evaporating. Protection, in this sense, is a cushion between the surface and whatever is irritating it, not a barrier that keeps irritants out.`,
       },
       {
         p: `That fits Quell’s design. It is designed to reinforce the tear film’s oil layer to help reduce moisture loss. Its actives are {actives}; the label lists the first two with the purpose “lubricant” and the mineral oil as an emollient. [What is a demulcent in eye drops?](/guides/what-is-a-demulcent-in-eye-drops) goes into the ingredient side.`,
       },
       { h: 'Other wordings you might see on eye drops' },
       {
-        p: `The same regulation allows a few other indication statements for these categories, such as relief of burning and irritation due to dryness, or of discomfort from minor irritations or exposure to wind or sun. Different products pick different ones. Comparing the Uses lines on two boxes tells you which permitted claim each maker chose, and nothing beyond it.`,
+        p: `Other lubricating drops word their Uses lines differently. Some mention burning and irritation due to dryness; others mention discomfort from minor irritations or from exposure to wind or sun. Comparing the Uses lines on two boxes tells you what each maker says its drop is for, and nothing beyond it.`,
       },
       { h: 'Why the exact wording matters' },
       {
-        p: `Because the Uses statement comes from federal regulation, it is the most reliable description of what an over-the-counter eye drop is for. Marketing copy can be broader; the Uses line can’t. When a website or ad seems to promise more than the Uses line, trust the label. Quell’s full panel is on the [Drug Facts](/drug-facts) page.`,
+        p: `Because the Uses statement is drawn from shared, standard wording, it is the most reliable description of what an over-the-counter eye drop is for. Marketing copy can be broader; the Uses line can’t. When a website or ad seems to promise more than the Uses line, trust the label. Quell’s full panel is on the [Drug Facts](/drug-facts) page.`,
+      },
+      { h: 'Reading “protectant” next to the warnings' },
+      {
+        p: `The Uses line tells you what the drop is for; the Warnings section tells you when it isn’t the answer. Read the two together. Quell’s warnings begin: {warnings}. Before the first drop, the label also says: {doNotUse}. A drop meant to protect an irritated eye still has limits, and the panel spells them out a few lines down from the word “protectant.”`,
       },
       { h: 'When protection isn’t enough' },
       {
-        p: `If irritation keeps coming back, or a drop doesn’t seem to be doing its job, the label says to stop and get help: {stopUse} The [eye symptoms that need a doctor](/guides/eye-symptoms-that-need-a-doctor) guide lists warning signs worth knowing.`,
+        p: `If irritation keeps coming back, or a drop doesn’t seem to be doing its job, the label says to stop and get help: {stopUse} The [eye symptoms that need a doctor](/guides/eye-symptoms-that-need-a-doctor) guide lists warning signs worth knowing. For questions about the wording itself, a pharmacist can read the panel with you, or you can call Quell at {phone}, {hours}.`,
       },
     ],
     faq: [
       {
         q: 'What does protectant mean on eye drops?',
-        a: `It means the drop is meant to shield the surface of an already irritated eye from further irritation. The wording comes from FDA’s over-the-counter ophthalmic rules in 21 CFR part 349.`,
+        a: `It means the drop is meant to shield the surface of an already irritated eye from further irritation. It describes a role on the eye’s surface and says nothing about the cause.`,
       },
       {
         q: 'What does “protectant against further irritation” mean?',
@@ -1203,41 +1210,42 @@ export const DAILY_20261111_A: Guide[] = [
       },
       {
         q: 'Where does the Uses wording on eye drops come from?',
-        a: `For lubricating eye drops, it comes from FDA’s ophthalmic monograph, 21 CFR part 349, which lists permitted indication statements for demulcents and emollients in sections 349.60 and 349.65.`,
+        a: `Over-the-counter lubricating drops follow a standard set of rules that sets which wording may go on the Uses line. That’s why several brands share the same phrases, “protectant” among them.`,
       },
       {
         q: 'Is a protectant eye drop the same as a lubricant?',
-        a: `They overlap. The regulation defines demulcents as agents that protect and lubricate the eye’s surface, so a lubricating drop can be labeled as a protectant against further irritation.`,
+        a: `They overlap. A lubricating drop protects by coating the eye’s surface, so the same drop can list its ingredients as lubricants and describe itself as a protectant against further irritation.`,
       },
     ],
   },
 
+  /* FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'what-is-a-demulcent-in-eye-drops',
     title: 'What is a demulcent in eye drops?',
     description:
-      'A demulcent is the regulatory term for a lubricating ingredient in eye drops. How FDA defines it, which ingredients qualify, and where Quell’s fit.',
+      'A demulcent is the lubricating ingredient in eye drops. What the word means, which ingredients count as demulcents, and where Quell’s two fit.',
     category: 'label',
     addedOn: '2026-11-11',
     body: [
       {
-        p: `A demulcent is a lubricating ingredient in an eye drop. FDA’s over-the-counter ophthalmic rules, 21 CFR 349.3, define it as an agent, usually a water-soluble polymer, applied to the eye to protect and lubricate its surface and relieve dryness and irritation. Section 349.12 lists the approved ones, including glycerin and polysorbate 80, two of Quell’s three actives.`,
+        p: `A demulcent is a lubricating ingredient in an eye drop: usually a water-soluble substance that coats the eye’s surface, keeping it slippery and easing dryness and irritation. Glycerin and polysorbate 80 are two common ones, and they are two of Quell’s three actives. On the Drug Facts panel, their purpose is listed as “lubricant.”`,
       },
-      { h: 'The definition in the regulation' },
+      { h: 'What the word means' },
       {
-        p: `The rules for over-the-counter eye drops are in Title 21 of the Code of Federal Regulations, part 349. Section 349.3 holds the definitions. It describes a demulcent as “an agent, usually a water-soluble polymer, which is applied topically to the eye” to “protect and lubricate mucous membrane surfaces and relieve dryness and irritation.”`,
+        p: `“Demulcent” comes from a Latin word for stroking or soothing, and that’s a fair picture of what it does. A demulcent dissolves or spreads in water and forms a smooth layer over a moist surface. In the eye, that layer lets the lid glide on each blink and holds water against the surface a little longer.`,
       },
       {
-        p: `In plain terms, a demulcent is a soothing, slippery ingredient that sits on the eye’s surface. On a Drug Facts panel, the purpose column usually says “lubricant” rather than “demulcent,” because that’s the word most people know.`,
+        p: `On a Drug Facts panel, the purpose column usually says “lubricant” rather than “demulcent,” because that’s the word most people know. You’re more likely to meet “demulcent” in an ingredient explainer or a pharmacist’s description than on the box itself.`,
       },
       { h: 'Which ingredients count as demulcents' },
       {
-        p: `Section 349.12, “Ophthalmic demulcents,” lists the active ingredients a lubricating eye drop may use under the monograph, each with its own allowed concentration range. They fall into a few groups:`,
+        p: `Over-the-counter lubricating eye drops follow a standard set of rules about which active ingredients they may use, and the demulcents on that list fall into a few groups:`,
       },
       {
         list: [
           `Cellulose derivatives: carboxymethylcellulose sodium, hydroxyethyl cellulose, hypromellose and methylcellulose.`,
-          `Dextran 70, allowed only together with another polymer demulcent.`,
+          `Dextran 70, used only together with another demulcent.`,
           `Gelatin.`,
           `Liquid polyols: glycerin, polyethylene glycol 300, polyethylene glycol 400, polysorbate 80 and propylene glycol.`,
           `Polyvinyl alcohol.`,
@@ -1249,11 +1257,11 @@ export const DAILY_20261111_A: Guide[] = [
       },
       { h: 'Quell’s demulcents' },
       {
-        p: `Two of Quell’s actives come from the liquid polyols group: {glycerol} and {polysorbate}. Glycerol is another name for glycerin, the name the regulation uses. Quell’s label gives both the purpose “lubricant.” [Glycerol in eye drops](/guides/glycerol-in-eye-drops) and [polysorbate 80 in eye drops](/guides/polysorbate-80-in-eye-drops) cover each one.`,
+        p: `Two of Quell’s actives come from the liquid polyols group: {glycerol} and {polysorbate}. Glycerol is another name for glycerin, the spelling you’ll see on many other boxes. Quell’s label gives both the purpose “lubricant.” [Glycerol in eye drops](/guides/glycerol-in-eye-drops) and [polysorbate 80 in eye drops](/guides/polysorbate-80-in-eye-drops) cover each one.`,
       },
       { h: 'Demulcent vs. emollient' },
       {
-        p: `The third active in Quell, {mineralOil}, isn’t a demulcent. It falls under a separate section, 349.14, “Ophthalmic emollients.” Section 349.3 describes an emollient as an agent, “usually a fat or oil,” used “to protect or soften tissues.” Light mineral oil appears in 349.14’s list of oleaginous, or oily, ingredients, alongside mineral oil, paraffin, petrolatum and waxes. Lanolin preparations make up the other emollient group.`,
+        p: `The third active in Quell, {mineralOil}, isn’t a demulcent. It’s an emollient: an oily ingredient, usually a fat or oil, that softens and coats rather than dissolving in water. Mineral oil, paraffin, petrolatum and lanolin are familiar examples from the same family. Quell’s label lists its mineral oil with the purpose “emollient.”`,
       },
       {
         p: `So a lubricating eye drop can carry two kinds of ingredient: water-friendly demulcents and oily emollients. Quell carries both, which suits its design: it is designed to reinforce the tear film’s oil layer to help reduce moisture loss, and the tear film itself has a watery layer under an oily one.`,
@@ -1264,7 +1272,7 @@ export const DAILY_20261111_A: Guide[] = [
       },
       { h: 'What the Uses line says demulcents are for' },
       {
-        p: `The monograph also sets the wording a demulcent product may use to describe its purpose, in section 349.60. Quell’s Uses line is one of those permitted statements: {uses}. [What does “protectant” mean on eye drops?](/guides/what-does-protectant-mean-on-eye-drops) unpacks that wording.`,
+        p: `The Uses section, the second box on the panel, says what the drop is for in a sentence. Quell’s reads: {uses}. Both halves describe what a coating, lubricating ingredient does on the eye’s surface. [What does “protectant” mean on eye drops?](/guides/what-does-protectant-mean-on-eye-drops) unpacks that wording.`,
       },
       { h: 'Questions worth asking a pharmacist' },
       {
@@ -1285,24 +1293,25 @@ export const DAILY_20261111_A: Guide[] = [
           `Compare concentrations only for the same ingredient; different demulcents work in different amounts.`,
           `Check whether the drop also lists an emollient, which tells you it includes an oily component.`,
           `Read the Inactive ingredients for preservatives if that matters to you. Quell has none.`,
+          `Check the Purpose column. “Lubricant” beside an ingredient is the label’s plain word for a demulcent.`,
         ],
       },
       {
-        p: `If you have questions about whether a particular demulcent suits you, or how it fits with other drops you use, ask your pharmacist or eye doctor. Quell’s full panel is on the [Drug Facts](/drug-facts) page.`,
+        p: `If you have questions about whether a particular demulcent suits you, or how it fits with other drops you use, ask your pharmacist or eye doctor. Quell’s full panel is on the [Drug Facts](/drug-facts) page, and Quell answers label questions at {phone}, {hours}.`,
       },
     ],
     faq: [
       {
         q: 'What is a demulcent in eye drops?',
-        a: `A lubricating active ingredient. FDA’s rules for over-the-counter eye drops, 21 CFR 349.3, define it as an agent, usually a water-soluble polymer, that protects and lubricates the eye’s surface and relieves dryness and irritation.`,
+        a: `A lubricating active ingredient, usually water-soluble, that coats the eye’s surface to keep it slippery and ease dryness and irritation. On a Drug Facts panel its purpose usually reads “lubricant.”`,
       },
       {
         q: 'Is glycerin a demulcent?',
-        a: `Yes. Glycerin is listed among the liquid polyol demulcents in 21 CFR 349.12. Quell lists it as glycerol, another name for the same substance, with the purpose “lubricant.”`,
+        a: `Yes. Glycerin is one of the liquid polyol demulcents used in lubricating eye drops. Quell lists it as glycerol, another name for the same substance, with the purpose “lubricant.”`,
       },
       {
         q: 'Is polysorbate 80 a demulcent?',
-        a: `Yes. Polysorbate 80 is one of the liquid polyols listed as ophthalmic demulcents in 21 CFR 349.12, alongside glycerin, propylene glycol and two polyethylene glycols.`,
+        a: `Yes. Polysorbate 80 is one of the liquid polyols used as a demulcent in eye drops, alongside glycerin, propylene glycol and two polyethylene glycols.`,
       },
       {
         q: 'What is the difference between a demulcent and an emollient?',

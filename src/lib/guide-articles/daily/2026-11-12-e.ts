@@ -1471,6 +1471,7 @@ export const DAILY_20261112_E: Guide[] = [
    * oil, mineral oil, paraffin, petrolatum, white ointment, white petrolatum, white and
    * yellow wax; 349.60 emollient labeling, dosage form "e.g., ointment", directions to apply
    * a small amount (one-fourth inch) of ointment to the inside of the eyelid.
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'eye-drops-vs-eye-ointment',
@@ -1481,7 +1482,7 @@ export const DAILY_20261112_E: Guide[] = [
     addedOn: '2026-11-12',
     body: [
       {
-        p: `Eye drops are liquids you place in the eye one drop at a time; they spread quickly and usually blur vision only briefly. Eye ointments are thicker, greasy preparations squeezed as a thin ribbon inside the lower lid; they stay longer but blur vision, so they’re often used at bedtime. Both can be sold over the counter under the same FDA rules. Quell is a drop, not an ointment.`,
+        p: `Eye drops are liquids you place in the eye one drop at a time; they spread quickly and usually blur vision only briefly. Eye ointments are thicker, greasy preparations squeezed as a thin ribbon inside the lower lid; they stay longer but blur vision, so they’re often used at bedtime. Both kinds are sold over the counter, and both carry a Drug Facts panel. Quell is a drop, not an ointment.`,
       },
       { h: 'Difference between eye drops and eye ointment' },
       {
@@ -1493,18 +1494,18 @@ export const DAILY_20261112_E: Guide[] = [
           `Timing: drops are easy to use during the day; ointments fit times when you won’t need sharp vision, like before sleep.`,
         ],
       },
-      { h: 'How the FDA groups them' },
+      { h: 'Two kinds of ingredient: lubricants and emollients' },
       {
-        p: `Over-the-counter eye products in the US follow the FDA’s monograph for ophthalmic drug products, 21 CFR part 349. It covers drops and ointments alike, and it sorts active ingredients by what they do. Two groups matter here:`,
+        p: `Over-the-counter eye products in the US, drops and ointments alike, sort their active ingredients by what they do, and the Purpose column on the Drug Facts panel names the group. Two groups matter here:`,
       },
       {
         list: [
-          `Demulcents, which the rule describes as agents, usually water-soluble polymers, that protect and lubricate the eye’s surface. Glycerin and polysorbate 80 are on that list.`,
-          `Emollients, which the rule describes as agents, usually a fat or oil, applied to the eyelids to protect or soften tissues. The list includes lanolin, mineral oil, light mineral oil, paraffin, petrolatum, white petrolatum and white or yellow wax.`,
+          `Lubricants, also called demulcents, are usually water-loving ingredients that coat and moisten the eye’s surface. Glycerin and polysorbate 80 are two you’ll see often.`,
+          `Emollients are usually fats or oils that protect and soften. Mineral oil, light mineral oil, petrolatum, white petrolatum and lanolin are common ones.`,
         ],
       },
       {
-        p: `The emollient labeling section of the same rule uses ointment as its example dosage form, and its directions describe applying a small amount, about one-fourth inch, of ointment to the inside of the eyelid. That’s the classic eye ointment: mostly petrolatum and mineral oil. Drops, by contrast, are mostly water.`,
+        p: `A classic eye ointment is built almost entirely from emollients, mostly petrolatum and mineral oil, which is why it’s so thick and why it smears. Drops, by contrast, are mostly water, with lubricants dissolved in it and sometimes an oil blended through. The tube or bottle you’re holding tells you which you have, and the Drug Facts panel gives its own directions for how much to use.`,
       },
       { h: 'Emollient eye ointment ingredients' },
       {
@@ -1554,7 +1555,7 @@ export const DAILY_20261112_E: Guide[] = [
       },
       {
         q: 'What is an emollient eye ointment?',
-        a: `It’s an ointment whose active ingredients are emollients, which the FDA’s rule for OTC eye products describes as agents, usually fats or oils, that protect or soften tissues. White petrolatum and mineral oil are common examples.`,
+        a: `It’s an ointment whose active ingredients are emollients, usually fats or oils that protect and soften. White petrolatum and mineral oil are common examples, and the Drug Facts panel on the tube lists them by name.`,
       },
       {
         q: 'Is Quell an eye drop or an ointment?',

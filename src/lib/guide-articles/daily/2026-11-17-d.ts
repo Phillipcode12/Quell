@@ -1728,66 +1728,62 @@ export const DAILY_20261117_D: Guide[] = [
     ],
   },
   /*
-   * Sources checked 2026-11-17 for light-mineral-oil-vs-mineral-oil:
-   * - https://www.ecfr.gov/api/versioner/v1/full/2026-11-01/title-21.xml?section=349.14
-   *   (§ 349.14 Ophthalmic emollients: (b) Oleaginous ingredients lists (1) light mineral
-   *   oil and (2) mineral oil, each in combination with one or more other emollient
-   *   agents included in the monograph; also paraffin, petrolatum, white ointment,
-   *   white petrolatum, white wax, yellow wax; (a) lanolin preparations)
-   * - https://www.ecfr.gov/api/versioner/v1/full/2026-11-01/title-21.xml?section=172.878
-   *   (White mineral oil: a mixture of liquid hydrocarbons, essentially paraffinic and
-   *   naphthenic, obtained from petroleum and refined to set specifications)
-   * - https://www.ecfr.gov/api/versioner/v1/full/2026-11-01/title-21.xml?section=200.50
-   *   (ophthalmic preparations should be sterile)
+   * light-mineral-oil-vs-mineral-oil: FDA references removed 2026-11-18 at
+   * Phillip's request (the 21 CFR 349.14, 172.878 and 200.50 citations are gone).
    * No monograph-conformance claim is made either way.
    */
   {
     slug: 'light-mineral-oil-vs-mineral-oil',
     title: 'Light mineral oil vs. mineral oil',
     description:
-      'Light mineral oil and mineral oil are separate entries in FDA’s eye drop rules. What “light” means, where each appears, and what Quell’s label lists.',
+      'Light mineral oil and mineral oil are two grades of the same refined oil. What “light” means, where each turns up, and what Quell’s eye drop label lists.',
     category: 'label',
     addedOn: '2026-11-17',
     body: [
       {
-        p: `Light mineral oil and mineral oil are both refined oils from petroleum; “light” names a lighter, thinner-flowing grade. FDA’s rules for over-the-counter eye products, 21 CFR 349.14, list them as two separate emollient ingredients. Quell’s Drug Facts panel lists light mineral oil among its active ingredients. Neither name tells you how much is in a product; the percentage on the label does.`,
+        p: `Light mineral oil and mineral oil are both refined oils from petroleum; “light” names a lighter, thinner-flowing grade, and the plain name a heavier one. Eye product labels list them as two separate ingredients, so the exact name matters. Quell’s Drug Facts panel lists light mineral oil among its active ingredients. Neither name tells you how much is in a product; the strength printed on the label does.`,
       },
       { h: 'What is mineral oil?' },
       {
-        p: `Mineral oil is a clear, odorless oil made of hydrocarbons refined from petroleum. A federal rule for food-grade white mineral oil, 21 CFR 172.878, describes it as a mixture of liquid hydrocarbons obtained from petroleum and refined to meet set specifications. The same basic material, refined to different standards and grades, turns up in skin products, kitchen and lab uses, and medicines.`,
+        p: `Mineral oil is a clear, odorless oil made of liquid hydrocarbons refined from petroleum. The same basic material, refined to different standards and grades, turns up in skin products, kitchen and lab uses, and medicines. What separates one bottle from another is the grade, how far it was refined, and whether it was made and packaged for the use on its label.`,
       },
       { h: 'What makes mineral oil “light”?' },
       {
         p: `“Light” describes the grade, not the amount. Light mineral oil is the lighter, thinner-flowing grade; the plain name refers to a heavier grade. In a drop, a lighter oil spreads more easily. The amount of oil in a product is a separate question, answered by the strength printed next to the ingredient name on the Drug Facts panel. Our guide to [light mineral oil in eye drops](/guides/light-mineral-oil-in-eye-drops) covers Quell’s use of it.`,
       },
-      { h: 'Where FDA’s eye drop rules list each one' },
+      { h: 'Where you’ll see each name on eye products' },
       {
-        p: `Federal rules for over-the-counter eye products have long been collected in 21 CFR Part 349. Section 349.14 covers ophthalmic emollients, and its list of oleaginous (oily) ingredients names both separately:`,
+        p: `A drop has to spread across the eye in a blink, so lighter oils suit it. Ointments and gels meant for bedtime lean on heavier oils and on petrolatum, which is why they feel thicker and blur vision for longer. On the shelf, you may see these oily names in the active ingredients:`,
       },
       {
         list: [
-          `Light mineral oil.`,
-          `Mineral oil.`,
-          `Paraffin, petrolatum, white ointment, white petrolatum, white wax and yellow wax, each with its own conditions.`,
+          `Light mineral oil, more often in drops.`,
+          `Mineral oil, often in ointments.`,
+          `White petrolatum or petrolatum, the base of many eye ointments.`,
+          `Lanolin, a wax from sheep’s wool, in some ointments.`,
         ],
       },
       {
-        p: `The same section also lists lanolin preparations. FDA now administers these over-the-counter rules as an administrative order, OTC Monograph M018; [what is the OTC monograph for eye drops?](/guides/what-is-the-otc-monograph-for-eye-drops) explains that change. The regulation’s definitions describe an emollient as an agent, usually a fat or oil, applied to the eyelids to protect or soften tissues. [Emollient eye drops](/guides/emollient-eye-drops) covers the word in more depth.`,
+        p: `Each of these shows up on a panel with the Purpose “Emollient,” a word for an oil or fat that softens and protects. [Emollient eye drops](/guides/emollient-eye-drops) covers the word in more depth, and [what is the OTC monograph for eye drops?](/guides/what-is-the-otc-monograph-for-eye-drops) explains why the names look so consistent across brands.`,
       },
       { h: 'Light mineral oil and white mineral oil' },
       {
-        p: `Some eye ointment and gel labels list “white mineral oil” or “light mineral oil and white mineral oil.” “White” refers to a highly refined, colorless grade, the kind described in 21 CFR 172.878. The label of any product is the authority on what it contains, so read the active ingredients section instead of guessing from the product’s name or type. Ointments built on heavier oils and petrolatum feel thicker than a drop.`,
+        p: `Some eye ointment and gel labels list “white mineral oil” or “light mineral oil and white mineral oil.” “White” refers to a highly refined, colorless grade. The label of any product is the authority on what it contains, so read the active ingredients section instead of guessing from the product’s name or type.`,
+      },
+      { h: 'Why an eye drop contains oil at all' },
+      {
+        p: `The tear film has three layers: mucus against the eye, water in the middle, and a thin layer of oil on top. Blinking spreads it, and dry, windy, heated or air-conditioned air speeds up how fast the water evaporates. An oil in a drop works on that top layer. That’s the idea behind Quell, which is designed to reinforce the tear film’s oil layer to help reduce moisture loss.`,
       },
       { h: 'What Quell’s label lists' },
       {
-        p: `Quell’s Drug Facts panel lists its active ingredients as {actives}. The light mineral oil entry reads {mineralOil}. Its purpose on the panel is “Emollient,” while glycerol and polysorbate 80 are listed as lubricants. Quell is designed to reinforce the tear film’s oil layer to help reduce moisture loss, and light mineral oil is the oily active in that design.`,
+        p: `Quell’s Drug Facts panel lists its active ingredients as {actives}. The light mineral oil entry reads {mineralOil}. Its purpose on the panel is “Emollient,” while glycerol and polysorbate 80 are listed as lubricants. Light mineral oil is the oily active in Quell’s formula.`,
       },
       {
         p: `The inactive ingredients are {inactives}. Some of these, such as emu oil, are natural oils, and together with the light mineral oil they give the drop its look: {milky}.`,
       },
       { h: 'Don’t use household mineral oil in your eyes' },
       {
-        p: `Mineral oil sold for the skin, the kitchen, or any other use isn’t made or packaged as an eye product. Federal rules at 21 CFR 200.50 say products meant for use in the eye should be sterile, and an eye drop bottle is sealed so it can’t be opened without breaking the seal. A bottle from the medicine cabinet or a hardware store meets neither standard for the eye. Only put products labeled for the eyes into your eyes, and follow their directions: Quell’s are {directions}.`,
+        p: `Mineral oil sold for the skin, the kitchen, or any other use isn’t made or packaged as an eye product. Eye drops are filled sterile and sealed, so the bottle can’t be opened without breaking the seal. A bottle from the medicine cabinet or a hardware store has neither protection. Only put products labeled for the eyes into your eyes, and follow their directions: Quell’s are {directions}.`,
       },
       { h: 'Reading the active ingredients section' },
       {
@@ -1806,7 +1802,7 @@ export const DAILY_20261117_D: Guide[] = [
     faq: [
       {
         q: 'Is light mineral oil the same as mineral oil?',
-        a: `They’re the same kind of refined petroleum oil in different grades. “Light” is the thinner-flowing grade, and FDA’s rules for over-the-counter eye products list light mineral oil and mineral oil as separate ingredients.`,
+        a: `They’re the same kind of refined petroleum oil in different grades. “Light” is the thinner-flowing grade, and eye product labels list light mineral oil and mineral oil as separate ingredients, so read the exact name.`,
       },
       {
         q: 'What is the difference between light and heavy mineral oil?',
@@ -1814,7 +1810,7 @@ export const DAILY_20261117_D: Guide[] = [
       },
       {
         q: 'What is white mineral oil?',
-        a: `A highly refined, colorless mineral oil. Federal rules for food uses, 21 CFR 172.878, describe it as a mixture of liquid hydrocarbons from petroleum refined to set specifications.`,
+        a: `A highly refined, colorless grade of mineral oil, used where purity matters. On an eye product it’s another grade name, so check the active ingredients for exactly what the product contains.`,
       },
       {
         q: 'Can I put regular mineral oil in my eyes?',
@@ -1823,34 +1819,26 @@ export const DAILY_20261117_D: Guide[] = [
     ],
   },
   /*
-   * Sources checked 2026-11-17 for how-to-report-a-problem-with-eye-drops:
-   * - https://www.fda.gov/safety/medwatch-fda-safety-information-and-adverse-event-reporting-program
-   *   (MedWatch: FDA's medical product safety reporting program for health professionals,
-   *   patients and consumers; receives reports from the public and publishes safety
-   *   alerts; covers prescription and over-the-counter medicines)
-   * - https://www.fda.gov/safety/medwatch-fda-safety-information-and-adverse-event-reporting-program/reporting-serious-problems-fda
-   *   (program for reporting serious reactions, product quality problems, therapeutic
-   *   inequivalence/failure and product use errors; consumers encouraged to take the
-   *   form to their doctor, but health care providers are not required to report and
-   *   consumers may complete the Online Reporting Form themselves; voluntary reporting;
-   *   Form FDA 3500B is the consumer-friendly version of Form 3500)
-   * - src/lib/guides.ts and /terms section 7 via the {returns} and {returnDays} tokens
-   *   (replacement for damaged, incorrect or broken-seal orders).
+   * how-to-report-a-problem-with-eye-drops: FDA references removed 2026-11-18 at
+   * Phillip's request. Rewritten from the shopper's side: stop, keep the bottle,
+   * note the lot, call a doctor or pharmacist, call the maker. Returns facts come
+   * from the {returns} and {returnDays} tokens (damaged, incorrect or broken-seal
+   * orders replaced).
    */
   {
     slug: 'how-to-report-a-problem-with-eye-drops',
     title: 'How to report a problem with eye drops',
     description:
-      'Stop using the drops if symptoms appear, keep the bottle and lot number, contact the seller, and report serious problems to FDA through MedWatch.',
+      'Stop using the drops if symptoms appear, keep the bottle and box, note the lot number, then call your doctor or pharmacist and the company on the label.',
     category: 'label',
     addedOn: '2026-11-17',
     body: [
       {
-        p: `To report a problem with eye drops, first stop using them if you have symptoms and get medical advice. Keep the bottle and carton, and write down the lot number and expiration date. Contact the company named on the label. For serious reactions or quality problems, you can also report to FDA through MedWatch, its safety reporting program, which accepts reports directly from consumers online or on a consumer form.`,
+        p: `To report a problem with eye drops, first stop using them if you have symptoms and get medical advice from your eye doctor or a pharmacist. Keep the bottle and carton, and write down the lot number and expiration date. Then call the company named on the label. For Quell, that’s {company} at {phone}, {hours}; keep the lot number handy for the call.`,
       },
       { h: 'What counts as a problem worth reporting?' },
       {
-        p: `Problems with eye drops fall into a few groups. FDA’s MedWatch program names several of them: serious reactions, product quality problems and product use errors. In everyday terms, that includes:`,
+        p: `Problems with eye drops fall into a few groups, and each one is worth a call:`,
       },
       {
         list: [
@@ -1866,7 +1854,7 @@ export const DAILY_20261117_D: Guide[] = [
       },
       { h: 'Step 1: Stop using the drops if you have symptoms' },
       {
-        p: `If your eyes hurt or your vision changes after using drops, stop and get medical advice before using them again. Quell’s label says: {stopUse} If drops are swallowed, the label says: {swallowed}. For a sudden or severe reaction, seek care right away rather than waiting to file a report.`,
+        p: `If your eyes hurt or your vision changes after using drops, stop and get medical advice before using them again. Quell’s label says: {stopUse} If drops are swallowed, the label says: {swallowed}. For a sudden or severe reaction, seek care right away; the phone calls to the company can wait until you’ve been seen.`,
       },
       { h: 'Step 2: Keep the bottle, carton and details' },
       {
@@ -1878,25 +1866,28 @@ export const DAILY_20261117_D: Guide[] = [
           `Save your order confirmation email or store receipt.`,
         ],
       },
-      { h: 'Step 3: Contact the company' },
+      { h: 'Step 3: Talk to your doctor or pharmacist' },
       {
-        p: `The company that makes or distributes a drug is the first place to report a problem with it. For Quell, that’s {company}. Call {phone} during {hours}, or find every contact option on our [contact page](/about#contact). Have the lot number, expiration date and your order number ready. If the problem involves a reaction, the company can record it, and you should still talk to your doctor.`,
+        p: `For anything that touched your eyes or your health, a professional comes before the company. Bring the bottle and carton, or clear photos of both, to your eye doctor, or show them to the pharmacist where you usually fill prescriptions. They can look at what happened, tell you whether to keep using the drop, and note it in your record. A pharmacist can also check whether anything else you use might be involved.`,
       },
-      { h: 'Step 4: Report serious problems to FDA MedWatch' },
       {
-        p: `MedWatch is FDA’s safety information and adverse event reporting program for medical products, including over-the-counter medicines like eye drops. It takes reports from health professionals, patients and consumers. FDA relies on these voluntary reports to watch for safety problems with products already on the market.`,
+        p: `Tell them exactly what you used and when. Mention any other drops, contact lenses or new medicines, since Quell’s label doesn’t cover combining it with those and the answer has to come from them.`,
+      },
+      { h: 'Step 4: Contact the company' },
+      {
+        p: `The company that makes or distributes a drug wants to hear about problems with it, because a report about one bottle can point to a whole lot. For Quell, call {phone} during {hours}, or find every contact option on our [contact page](/about#contact). Have these ready:`,
       },
       {
         list: [
-          `Consumers can file directly on FDA’s MedWatch Online Reporting Form; search FDA’s website for MedWatch to find it.`,
-          `Form FDA 3500B is a consumer-friendly version of the reporting form, if you prefer to fill one out.`,
-          `FDA encourages people with a serious reaction to take the form to their doctor, who can add medical details, but your doctor isn’t required to report, and you can file it yourself.`,
-          `Include the product name, lot number, expiration date, what happened and when.`,
+          `The lot number and expiration date from the carton or bottle.`,
+          `Your order number, if you bought from this site.`,
+          `What happened, when, and whether you’ve seen a doctor.`,
+          `The photos you took in step 2.`,
         ],
       },
       { h: 'Damaged, wrong or broken-seal orders' },
       {
-        p: `Not every problem needs a report to FDA. If your Quell order arrives damaged, with the wrong item, or with a broken seal, contact us within {returnDays} days of delivery and we’ll replace it. Don’t use a bottle whose seal was broken before you opened it; [why eye drops have a tamper-evident seal](/guides/why-eye-drops-have-a-tamper-evident-seal) explains why. Our guides to a [damaged order](/guides/damaged-order) and [a wrong order](/guides/if-your-order-is-wrong) walk through what to send. For unopened bottles you no longer want, the policy is: {returns}.`,
+        p: `Some problems are about the delivery rather than the drop. If your Quell order arrives damaged, with the wrong item, or with a broken seal, contact us within {returnDays} days of delivery and we’ll replace it. Don’t use a bottle whose seal was broken before you opened it; [why eye drops have a tamper-evident seal](/guides/why-eye-drops-have-a-tamper-evident-seal) explains why. Our guides to a [damaged order](/guides/damaged-order) and [a wrong order](/guides/if-your-order-is-wrong) walk through what to send. For unopened bottles you no longer want, the policy is: {returns}.`,
       },
       { h: 'Checking for recalls and counterfeits' },
       {
@@ -1904,17 +1895,17 @@ export const DAILY_20261117_D: Guide[] = [
       },
       { h: 'What the label covers, and what it leaves to your doctor' },
       {
-        p: `The Drug Facts panel tells you when to stop using a product and what to do in an emergency. It doesn’t tell you what caused a reaction or whether you can use the product again. Those are questions for your eye doctor or pharmacist. Bring the bottle and carton to the appointment. You can read Quell’s full panel on our [Drug Facts page](/drug-facts).`,
+        p: `The Drug Facts panel tells you when to stop using a product and what to do in an emergency. It doesn’t tell you what caused a reaction or whether you can use the product again. Those are questions for your eye doctor or pharmacist. You can read Quell’s full panel on our [Drug Facts page](/drug-facts).`,
       },
     ],
     faq: [
       {
-        q: 'What is FDA MedWatch?',
-        a: `MedWatch is FDA’s program for reporting serious reactions, product quality problems and product use errors with medical products, including over-the-counter medicines. Consumers can report directly online or on Form FDA 3500B.`,
+        q: 'Should I keep the bottle if eye drops gave me a reaction?',
+        a: `Yes. Keep the bottle and carton, even if the bottle is empty, because they carry the lot number and expiration date. Your doctor, your pharmacist and the company will all want those details.`,
       },
       {
-        q: 'Can a consumer report a reaction to eye drops to the FDA?',
-        a: `Yes. MedWatch accepts voluntary reports from patients and consumers as well as health professionals. FDA encourages sharing the form with your doctor, but you can file it yourself.`,
+        q: 'Who should I tell first about a reaction to eye drops?',
+        a: `Stop using the drops and talk to your eye doctor or a pharmacist first, or seek care right away if the reaction is severe. Then call the company named on the label.`,
       },
       {
         q: 'What information do I need to report a problem with eye drops?',

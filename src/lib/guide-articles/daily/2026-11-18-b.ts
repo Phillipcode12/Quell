@@ -904,21 +904,22 @@ export const DAILY_20261118_B: Guide[] = [
    *   material, air pollutants (smog or pollen), chlorinated water; warning
    *   "If solution changes color or becomes cloudy, do not use"; eyecup and
    *   nozzle directions.
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'eye-drops-vs-saline-solution',
     title: 'Eye drops vs. saline solution',
     description:
-      'Saline rinses and flushes; lubricating eye drops are made to coat and relieve dryness. How federal rules define each, and which one fits which job.',
+      'Saline rinses and flushes; lubricating eye drops are made to coat and relieve dryness. What each label says it’s for, and which one fits which job.',
     category: 'choosing',
     addedOn: '2026-11-18',
     body: [
       {
-        p: `Saline solution is salt water balanced to match tears, used to rinse or flush the eye or to care for contact lenses. Lubricating eye drops contain ingredients meant to coat the eye’s surface and relieve dryness. Federal rules in 21 CFR part 349 handle them differently: an eyewash is defined by what it washes out, while a lubricating drop is defined by its active ingredients. For dry eyes, saline rinses away rather than adding protection.`,
+        p: `Saline solution is salt water balanced to match tears, used to rinse or flush the eye or to care for contact lenses. Lubricating eye drops contain ingredients meant to coat the eye’s surface and relieve dryness. Their labels make the split plain: an eyewash is sold to wash something out, while a lubricating drop names active ingredients meant to stay on the surface. For dry eyes, saline rinses away rather than adding protection.`,
       },
       { h: 'What saline solution is' },
       {
-        p: `“Saline” just means a salt solution. In eye care, it usually means sterile water with salt and buffering added so it matches the eye closely enough not to sting. 21 CFR 349.3 defines isotonicity as a state in which the osmotic pressure in two fluids is equal, and an eye product made isotonic with tears feels neutral when it lands.`,
+        p: `“Saline” just means a salt solution. In eye care, it usually means sterile water with salt and buffering added so it matches the eye closely enough not to sting. A solution balanced to the same salt level as tears is called isotonic, and it feels neutral when it lands.`,
       },
       {
         p: `Saline turns up in three places on a store shelf, and they aren’t interchangeable:`,
@@ -930,16 +931,16 @@ export const DAILY_20261118_B: Guide[] = [
           `Saline for the nose, such as sprays and rinses, which are made for nasal use, not the eyes.`,
         ],
       },
-      { h: 'How federal rules define an eyewash' },
+      { h: 'What an eyewash box tells you' },
       {
-        p: `The FDA’s rule for over-the-counter eye products, 21 CFR part 349, defines an eyewash (also called an eye lotion or irrigating solution) as a sterile aqueous solution intended for washing, bathing or flushing the eye. Section 349.20 says the active ingredient is purified water, with tonicity agents to match tears, agents to match the pH of tears, and a preservative.`,
+        p: `An eyewash is a sterile, water-based solution for washing or flushing the eye. The box usually calls it an eyewash or an eye irrigating solution, and its Drug Facts panel typically lists purified water as the active ingredient, with salts and buffers among the inactives to bring it close to tears.`,
       },
       {
-        p: `Section 349.78 sets what an eyewash label may say it’s for: flushing, irrigating, cleansing, washing or bathing the eye to remove loose foreign material, air pollutants such as smog or pollen, or chlorinated water. It also lists the eyecup and nozzle directions and a warning not to use the solution if it changes color or becomes cloudy. In plain terms, an eyewash is a rinse. Its job is to remove something.`,
+        p: `Read its Uses line and you’ll see the job spelled out: rinsing or flushing the eye to remove loose material such as dust or pollen, or pool water. Many come with an eyecup or a nozzle and directions for each, plus a warning not to use the solution if it changes color or turns cloudy. In plain terms, an eyewash is a rinse. Its job is to remove something.`,
       },
       { h: 'How lubricating drops differ' },
       {
-        p: `A lubricating drop is built around active ingredients that stay on the eye for a while. Part 349 describes two such groups. A demulcent, in section 349.3, is usually a water-soluble polymer applied to protect and lubricate mucous membrane surfaces and relieve dryness and irritation. An emollient is usually a fat or oil. Section 349.12 lists demulcents that include glycerin and polysorbate 80, among others.`,
+        p: `A lubricating drop is built around active ingredients that stay on the eye for a while. Its Drug Facts panel names each one with its strength, and the Purpose column beside it uses words like Lubricant or Emollient rather than anything about washing. Water still carries the formula, but it isn’t the point of the product the way it is in an eyewash.`,
       },
       {
         p: `That’s the core difference. Saline brings water and salt, which wet the eye briefly and then drain away with the next blinks. A lubricating drop adds ingredients designed to coat the surface. Our guide on [artificial tears vs. lubricating eye drops](/guides/artificial-tears-vs-lubricating-eye-drops) explains how those labels are used.`,
@@ -958,7 +959,7 @@ export const DAILY_20261118_B: Guide[] = [
         p: `People often reach for the lens saline already in the bathroom. Saline sold for contact lenses is a lens-care product, labeled for rinsing or storing lenses, not as an eye drop for dryness. Using a lens product for something its label doesn’t cover is a question for an eye doctor or pharmacist, not something to settle at home. Quell’s label doesn’t give directions for contact lenses, either, so lens wearers should ask the same people about lubricating drops.`,
       },
       {
-        p: `Homemade salt water is a firm no. 21 CFR 349.3 says ophthalmic drug products should be sterile, and kitchen water and salt aren’t. Nasal saline isn’t made for the eye either.`,
+        p: `Homemade salt water is a firm no. Products made for the eye come sterile and sealed, and kitchen water and salt aren’t sterile. Nasal saline isn’t made for the eye either.`,
       },
       { h: 'Why saline can leave dry eyes feeling the same' },
       {
@@ -987,7 +988,7 @@ export const DAILY_20261118_B: Guide[] = [
       },
       {
         q: 'Can I make saline eye drops at home?',
-        a: `No. Federal rules in 21 CFR 349.3 say eye products should be sterile, and homemade salt water isn’t. Use a product made for the eyes and labeled for your use.`,
+        a: `No. Products made for the eye are sterile, and salt water mixed in a kitchen isn’t. Use a product made for the eyes and labeled for your use.`,
       },
     ],
   },

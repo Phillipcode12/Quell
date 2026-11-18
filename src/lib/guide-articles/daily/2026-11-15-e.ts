@@ -1552,6 +1552,7 @@ export const DAILY_20261115_E: Guide[] = [
    *   sterile at filling and closing.
    * - 21 CFR 201.66(c)(8), via the eCFR API: for an OTC drug that is not also
    *   a cosmetic, inactive ingredients are listed in alphabetical order.
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'sterile-water-in-eye-drops',
@@ -1562,7 +1563,7 @@ export const DAILY_20261115_E: Guide[] = [
     addedOn: '2026-11-15',
     body: [
       {
-        p: `Sterile water in eye drops is purified water that has been made free of living microorganisms, used as the base that carries the other ingredients. In Quell it’s listed as an inactive ingredient, “Sterile Water.” It isn’t there to add moisture on its own; it’s the liquid the formula is made in. Federal rules require any product for the eye to be sterile, and a sterile base is part of meeting that.`,
+        p: `Sterile water in eye drops is purified water that has been made free of living microorganisms, used as the base that carries the other ingredients. In Quell it’s listed as an inactive ingredient, “Sterile Water.” It isn’t there to add moisture on its own; it’s the liquid the formula is made in. Any product for the eye is made sterile, and a sterile base is part of that.`,
       },
       { h: 'What is sterile water in eye drops?' },
       {
@@ -1576,7 +1577,7 @@ export const DAILY_20261115_E: Guide[] = [
         p: `Quell’s Drug Facts panel lists three active ingredients, {actives}, and {inactiveCount} inactive ones: {inactives}. Sterile Water is one of the inactive ingredients.`,
       },
       {
-        p: `Its place in the list says nothing about how much is in the bottle. FDA’s labeling rule for over-the-counter drugs, 21 CFR 201.66, requires the inactive ingredients of an OTC drug that isn’t also a cosmetic to be listed in alphabetical order. That puts Sterile Water near the end simply because of the letter S. [The inactive ingredients on an eye drop label](/guides/the-inactive-ingredients-section) explains how that section works.`,
+        p: `Its place in the list says nothing about how much is in the bottle. On a Drug Facts panel like Quell’s, the inactive ingredients are listed in alphabetical order, not by amount. That puts Sterile Water near the end simply because of the letter S. [The inactive ingredients on an eye drop label](/guides/the-inactive-ingredients-section) explains how that section works.`,
       },
       { h: 'Why is sterile water an inactive ingredient?' },
       {
@@ -1585,12 +1586,12 @@ export const DAILY_20261115_E: Guide[] = [
       {
         p: `Inactive doesn’t mean unimportant. Without a base, there would be no drop to apply. It just means the water isn’t what the label’s Uses statement rests on.`,
       },
-      { h: 'What federal rules say about sterility' },
+      { h: 'Why the whole drop has to be sterile' },
       {
-        p: `FDA’s regulation on ophthalmic preparations, 21 CFR 200.50, opens by saying informed medical opinion agrees that all preparations for use in the eye, including eye-cleansing products, should be sterile. It records that in a statement of policy issued on September 1, 1964, FDA ruled that liquid eye preparations that aren’t sterile may be regarded as adulterated, and the regulation extends that ruling to all ophthalmic preparations regulated as drugs.`,
+        p: `Anything meant to go into the eye, from a lubricating drop to an eyewash, is made sterile and sealed that way. The eye’s surface is wet, warm and delicate, and it has no skin over it, so a drop is held to a stricter standard than a lotion or a face wash. That standard applies to the finished product in the sealed bottle, not to any one ingredient.`,
       },
       {
-        p: `That requirement covers the whole finished product, not one ingredient. A sterile water base is a natural starting point, but the regulation is about what ends up in the sealed bottle. Our guide [Are eye drops sterile?](/guides/are-eye-drops-sterile) covers what happens once you open it and how to keep the bottle clean.`,
+        p: `A sterile water base is a natural starting point, but every other ingredient, the bottle and the cap have to end up sterile too once the bottle is filled and closed. Our guide [Are eye drops sterile?](/guides/are-eye-drops-sterile) covers what happens once you open it and how to keep the bottle clean.`,
       },
       { h: 'Can I use sterile water as eye drops?' },
       {
@@ -1633,7 +1634,7 @@ export const DAILY_20261115_E: Guide[] = [
       },
       {
         q: 'Why are inactive ingredients listed in alphabetical order?',
-        a: `FDA’s labeling rule for OTC drugs, 21 CFR 201.66, requires inactive ingredients of an OTC drug that isn’t also a cosmetic to be listed alphabetically. Their order doesn’t show how much of each is in the product.`,
+        a: `That’s the standard order for the inactive ingredients on a Drug Facts panel like Quell’s. Because the list runs from A to Z, its order doesn’t show how much of each is in the product.`,
       },
     ],
   },

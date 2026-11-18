@@ -628,6 +628,7 @@ export const DAILY_20261113_A: Guide[] = [
       },
     ],
   },
+  /* is-it-safe-to-buy-eye-drops-from-a-social-media-ad: FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'is-it-safe-to-buy-eye-drops-from-a-social-media-ad',
     title: 'Is it safe to buy eye drops from a social media ad?',
@@ -657,7 +658,7 @@ export const DAILY_20261113_A: Guide[] = [
       },
       { h: 'Step 2: find the Drug Facts panel' },
       {
-        p: `Every over-the-counter drug sold in the US carries a Drug Facts label in a standard FDA format: active ingredients, purpose, uses, warnings, directions, other information and inactive ingredients. A real seller has no reason to hide it. Look for it on the product page or a linked page, and read it before buying.`,
+        p: `Every over-the-counter drug sold in the US carries a Drug Facts label with the same sections in the same order: active ingredients, purpose, uses, warnings, directions, other information and inactive ingredients. A real seller has no reason to hide it. Look for it on the product page or a linked page, and read it before buying.`,
       },
       {
         p: `As an example, Quell’s panel is posted in full on our [Drug Facts page](/drug-facts). The active ingredients are {actives}, and the Uses line reads {uses}. If an ad’s product page has no panel, or the panel is a blurry photo you can’t read, count that as a warning sign.`,
@@ -899,32 +900,33 @@ export const DAILY_20261113_A: Guide[] = [
       },
     ],
   },
+  /* lubricant-vs-lubricating-eye-drops: FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'lubricant-vs-lubricating-eye-drops',
     title: 'Lubricant eye drops vs. lubricating eye drops',
     description:
-      'Lubricant and lubricating eye drops are the same kind of product. Here’s where each word comes from, what the federal rules say, and how to read the label.',
+      'Lubricant and lubricating eye drops are the same kind of product. Where each word shows up, what the Purpose column says, and how to read the label.',
     category: 'label',
     addedOn: '2026-11-13',
     body: [
       {
-        p: `There’s no difference in kind. “Lubricant eye drops” is the wording the FDA’s over-the-counter rules use to identify the product on its label, and “lubricating eye drops” is the everyday adjective many brands and shoppers use for the same thing. What matters is the Drug Facts panel: the active ingredients, each one’s stated purpose, and the Uses line.`,
+        p: `There’s no difference in kind. “Lubricant” is the noun you’ll usually find on a Drug Facts panel, in the Purpose column beside an ingredient, and “lubricating” is the everyday adjective that brands, store shelves and shoppers use for the same products. What matters is the panel itself: the active ingredients, each one’s stated purpose, and the Uses line.`,
       },
-      { h: 'Where “lubricant” comes from: 21 CFR part 349' },
+      { h: 'Where “lubricant” shows up on a box' },
       {
-        p: `Over-the-counter eye drops in this category follow federal rules in Title 21 of the Code of Federal Regulations, part 349, titled “Ophthalmic drug products for over-the-counter human use.” Section 349.60 says the label identifies a demulcent product as a “lubricant” or a “demulcent (lubricant),” followed by “eye” or “ophthalmic” and the dosage form, such as drops. Section 349.65 does the same for emollient products.`,
+        p: `Every over-the-counter drug sold in the US carries a Drug Facts panel in the same order, and it opens with the active ingredients. Beside each one is its purpose, a word or two naming its job. On Quell, two of the three actives carry the purpose “Lubricant,” so that exact word is printed on the panel. The front of a carton often repeats it in the product’s name or description.`,
       },
       {
-        p: `So “lubricant eye drops” is a statement of identity, a phrase built from the rule. “Lubricating” isn’t in that list; it’s a descriptive word that shows up on websites, in store aisles and in search boxes. Both point to the same group of products.`,
+        p: `“Lubricating” rarely turns up in that Purpose column. It’s a descriptive word that lives on websites, in store aisles and in search boxes. Both words point to the same group of products, and neither tells you more than the panel does.`,
       },
       { h: 'Eye drops and lubricants: the ingredient categories' },
       {
-        p: `Part 349 also lists which active ingredients can be used and at what strengths. Two groups are relevant here:`,
+        p: `The active ingredients in these drops tend to fall into two groups, and the Purpose column tells you which is which:`,
       },
       {
         list: [
-          `Demulcents (section 349.12), defined in section 349.3 as agents, usually water-soluble polymers, applied to the eye to protect and lubricate mucous membrane surfaces and relieve dryness and irritation. Glycerin and polysorbate 80 are both on the list.`,
-          `Emollients (section 349.14), defined as agents, usually a fat or oil, applied locally to the eyelids. Light mineral oil is on that list.`,
+          `Demulcents: usually water-soluble ingredients that coat the eye’s surface and hold moisture there. Glycerin and polysorbate 80 are two common ones, and their purpose is usually printed as “Lubricant.”`,
+          `Emollients: usually a fat or oil, bringing an oily component to the formula. Light mineral oil is one, printed with the purpose “Emollient.”`,
         ],
       },
       {
@@ -932,14 +934,28 @@ export const DAILY_20261113_A: Guide[] = [
       },
       { h: 'What the Uses line tells you' },
       {
-        p: `Part 349 gives a short list of approved indications, and a label uses one or more of them. That’s the Uses line. Quell’s reads: {uses}. It’s the most important line to compare between products, because it says what the drop is labeled to do, whatever the front of the box calls it.`,
+        p: `Every Drug Facts panel carries a Uses line, a short statement of what the product is for. Quell’s reads: {uses}. It’s the most important line to compare between products, because it says what the drop is labeled to do, whatever the front of the box calls it.`,
       },
       {
-        p: `Words like “soothing,” “hydrating” or “moisturizing” on the front of a box are marketing, not part of the federal statement of identity. They aren’t necessarily wrong, but they don’t replace the Drug Facts panel.`,
+        p: `Words like “soothing,” “hydrating” or “moisturizing” on the front of a box are marketing, not part of the Drug Facts panel. They aren’t necessarily wrong, but they don’t replace it.`,
+      },
+      { h: 'Comparing two lubricant drops in the aisle' },
+      {
+        list: [
+          `Turn both boxes over and find the Drug Facts panels; ignore the front for now.`,
+          `Line up the active ingredients. Are they the same ones, or does one drop add an oil?`,
+          `Read each Purpose column. A drop with only “Lubricant” entries is water-based; an “Emollient” entry means an oily ingredient too.`,
+          `Compare the Uses lines word for word.`,
+          `Check the inactive ingredients for a preservative, and for anything you know you react to.`,
+          `Read the directions, since how often you’re told to use a drop can differ between products.`,
+        ],
+      },
+      {
+        p: `If two boxes still look interchangeable after that, a pharmacist can tell you whether the differences matter for you.`,
       },
       { h: 'Lubricant eye drops vs. artificial tears' },
       {
-        p: `“Artificial tears” is another everyday name for the same broad category. You won’t find it in the part 349 identity statement, but it’s widely used, and products called artificial tears, lubricant drops and lubricating drops all live in the same aisle. Our guide to [artificial tears vs. lubricating eye drops](/guides/artificial-tears-vs-lubricating-eye-drops) compares the terms in more detail.`,
+        p: `“Artificial tears” is another everyday name for the same broad category. You’re less likely to see it in a Purpose column, but it’s widely used, and products called artificial tears, lubricant drops and lubricating drops all live in the same aisle. Our guide to [artificial tears vs. lubricating eye drops](/guides/artificial-tears-vs-lubricating-eye-drops) compares the terms in more detail.`,
       },
       { h: 'Lubricant eye drops for dry eyes: reading the label' },
       {
@@ -967,7 +983,7 @@ export const DAILY_20261113_A: Guide[] = [
     faq: [
       {
         q: 'What is the difference between lubricant and lubricating eye drops?',
-        a: `There isn’t one in kind. “Lubricant” is the identity term in the FDA’s over-the-counter rules at 21 CFR part 349, and “lubricating” is the everyday adjective for the same products.`,
+        a: `There isn’t one in kind. “Lubricant” is the word printed in the Purpose column of a Drug Facts panel, and “lubricating” is the everyday adjective for the same products.`,
       },
       {
         q: 'What are lubricant eye drops used for?',
@@ -975,24 +991,25 @@ export const DAILY_20261113_A: Guide[] = [
       },
       {
         q: 'Are lubricant eye drops the same as artificial tears?',
-        a: `They’re the same broad category of over-the-counter drops. “Artificial tears” is a common name, while “lubricant” is the identity term used in the federal rules; compare products by their Drug Facts panels.`,
+        a: `They’re the same broad category of over-the-counter drops. “Artificial tears” is a common name, while “lubricant” is the purpose printed on the panel; compare products by their Drug Facts panels.`,
       },
       {
         q: 'What ingredients make an eye drop a lubricant?',
-        a: `The federal rules list approved demulcents, such as glycerin and polysorbate 80, and emollients, such as light mineral oil. The Drug Facts panel names each active ingredient and its purpose.`,
+        a: `Usually water-friendly demulcents such as glycerin and polysorbate 80, sometimes joined by an oil such as light mineral oil, which panels list as an emollient. The Drug Facts panel names each active ingredient and its purpose.`,
       },
     ],
   },
+  /* glycerin-vs-glycerol-in-eye-drops: FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'glycerin-vs-glycerol-in-eye-drops',
     title: 'Glycerin vs. glycerol in eye drops: same thing?',
     description:
-      'Glycerin and glycerol are two names for one compound. Why labels differ, what federal rules call it, and how to compare glycerin eye drops on a label.',
+      'Glycerin and glycerol are two names for one compound. Why labels differ, which name Quell prints, and how to compare glycerin eye drops on a label.',
     category: 'formula',
     addedOn: '2026-11-13',
     body: [
       {
-        p: `Yes, they’re the same thing. Glycerin and glycerol are two names for one compound, and NIH’s PubChem database lists glycerin and glycerine as synonyms of glycerol. The federal over-the-counter rule for eye drops calls it glycerin, while Quell’s Drug Facts panel uses glycerol. Either way, its purpose on an eye drop label is “lubricant,” and the Uses line tells you what the drop is for.`,
+        p: `Yes, they’re the same thing. Glycerin and glycerol are two names for one compound, and NIH’s PubChem database lists glycerin and glycerine as synonyms of glycerol. Many US eye drop labels print glycerin, while Quell’s Drug Facts panel uses glycerol. Either way, its purpose on an eye drop label is “lubricant,” and the Uses line tells you what the drop is for.`,
       },
       { h: 'One compound, three spellings' },
       {
@@ -1001,16 +1018,16 @@ export const DAILY_20261113_A: Guide[] = [
       {
         list: [
           `Glycerol: the name PubChem uses for the record, and the one on Quell’s carton.`,
-          `Glycerin: the name in the FDA’s over-the-counter eye drop rule, and common on US product labels.`,
+          `Glycerin: the name you’ll see most often on US eye drop and skin care labels.`,
           `Glycerine: an alternate spelling of glycerin, also listed by PubChem.`,
         ],
       },
       {
         p: `If you’re scanning ingredient lists, for example to compare two products, search for all three.`,
       },
-      { h: 'What the federal rule calls it' },
+      { h: 'Which group of ingredients it belongs to' },
       {
-        p: `Title 21 of the Code of Federal Regulations, part 349, covers over-the-counter ophthalmic drug products. Section 349.12 lists the approved demulcents, the ingredients that lubricate and protect the surface of the eye. Glycerin is on that list, along with polysorbate 80 and several others. The same section sets the allowed strength range for each.`,
+        p: `In eye drops, glycerin belongs to the demulcents, water-friendly ingredients that coat and lubricate the surface of the eye. Polysorbate 80 is another member of that group, and Quell uses both. Whichever name a carton prints, the strength appears beside it in the active ingredients section, so you can see how much is in each drop’s formula.`,
       },
       {
         p: `A label can use either name, and the substance is the same. Quell lists it as {glycerol}, one of three active ingredients alongside {polysorbate} and {mineralOil}. Our guide to [what a demulcent is](/guides/what-is-a-demulcent-in-eye-drops) explains that group of ingredients.`,
@@ -1020,7 +1037,7 @@ export const DAILY_20261113_A: Guide[] = [
         p: `Glycerin doesn’t have “uses” of its own on a label; the product does. The Uses section is where a Drug Facts panel states what the drop is for, and it applies to the whole formula. Quell’s reads: {uses}.`,
       },
       {
-        p: `Next to each active ingredient, the panel also names its purpose. Quell’s panel gives glycerol the purpose “Lubricant,” the same purpose it gives polysorbate 80. Light mineral oil is listed as an “Emollient,” which the federal rule defines as an agent, usually a fat or oil, applied locally to the eyelids. Quell is designed to reinforce the tear film’s oil layer to help reduce moisture loss, and that’s a job for the formula as a whole rather than any one ingredient.`,
+        p: `Next to each active ingredient, the panel also names its purpose. Quell’s panel gives glycerol the purpose “Lubricant,” the same purpose it gives polysorbate 80. Light mineral oil is listed as an “Emollient,” the word panels use for an oily ingredient, usually a fat or an oil. Quell is designed to reinforce the tear film’s oil layer to help reduce moisture loss, and that’s a job for the formula as a whole rather than any one ingredient.`,
       },
       { h: 'Glycerin eye drops preservative free: check the inactive list' },
       {
@@ -1062,7 +1079,7 @@ export const DAILY_20261113_A: Guide[] = [
       },
       {
         q: 'Why does Quell say glycerol instead of glycerin?',
-        a: `Both names are correct, and the federal eye drop rule uses glycerin while Quell’s carton uses glycerol. The substance is the same either way.`,
+        a: `Both names are correct and both are in everyday use; many US labels print glycerin, while Quell’s carton uses glycerol. The substance is the same either way.`,
       },
       {
         q: 'Are glycerin eye drops preservative-free?',

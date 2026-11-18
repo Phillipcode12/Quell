@@ -869,6 +869,7 @@ export const DAILY_20261114_A: Guide[] = [
       },
     ],
   },
+  /* FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'can-you-use-eye-drops-in-your-ears',
     title: 'Can you use eye drops in your ears?',
@@ -882,7 +883,7 @@ export const DAILY_20261114_A: Guide[] = [
       },
       { h: 'What the label says' },
       {
-        p: `The warnings line on Quell’s Drug Facts panel reads: {warnings}. That last phrase is not decoration. Over-the-counter labels follow FDA’s Drug Facts format, and the directions and warnings are written for one route, the way the product is meant to reach the body. For Quell, that route is the eye: {directions}.`,
+        p: `The warnings line on Quell’s Drug Facts panel reads: {warnings}. That last phrase is not decoration. A Drug Facts panel is written around one route, the way the product is meant to reach the body, and its directions and warnings all assume that route. For Quell, that route is the eye: {directions}.`,
       },
       {
         p: `Because the label only covers the eye, it says nothing about what happens when the drops are used anywhere else. That silence is the answer. Nobody has given you directions for ears, so there’s no dose, no warning set and no stop-use guidance that applies. Our guide on [what “for use in the eyes only” means](/guides/what-does-for-use-in-the-eyes-only-mean) goes into the phrase more fully.`,
@@ -1142,91 +1143,73 @@ export const DAILY_20261114_A: Guide[] = [
     ],
   },
   /*
-   * Sources fetched 2026-11-14 for what-is-the-otc-monograph-for-eye-drops:
-   * - https://www.govinfo.gov/content/pkg/CFR-2019-title21-vol5/xml/CFR-2019-title21-vol5-part349.xml
-   *   (21 CFR Part 349, Ophthalmic Drug Products for Over-the-Counter Human Use;
-   *   subparts A general, B active ingredients, C labeling; 349.10 astringent,
-   *   349.12 demulcents incl. glycerin and polysorbate 80 under liquid polyols,
-   *   349.14 emollients incl. light mineral oil under oleaginous ingredients,
-   *   349.16 hypertonicity, 349.18 vasoconstrictors, 349.20 eyewashes,
-   *   349.30 combinations; 349.60(b) indication "For use as a protectant against
-   *   further irritation or to relieve dryness of the eye"; 349.50 tip warning;
-   *   349.60(c) 72-hour stop-use and color-change warnings)
-   * - https://www.accessdata.fda.gov/drugsatfda_docs/omuf/Order/Final%20Administrative%20Order%20OTC000023_M018-Ophthalmic%20Drug%20Products%20for%20OTC%20Human%20Use.pdf
-   *   (Final administrative order OTC000023, OTC Monograph M018, deemed final under
-   *   FD&C Act section 505G(b)(8), effective on CARES Act enactment March 27, 2020)
+   * what-is-the-otc-monograph-for-eye-drops: FDA references removed 2026-11-18
+   * at Phillip's request. Rewritten in plain terms with no agency name, part or
+   * section numbers, or order designation, and no claim that Quell conforms.
    */
   {
     slug: 'what-is-the-otc-monograph-for-eye-drops',
     title: 'What is the OTC monograph for eye drops?',
     description:
-      'FDA’s OTC monograph for eye drops sets allowed active ingredients, label wording and warnings. What it says, how the CARES Act changed it, and where Quell fits.',
+      'The OTC eye drop monograph is the shared rulebook for ingredients and label wording. What it covers, why labels sound alike, and what it leaves to you.',
     category: 'label',
     addedOn: '2026-11-14',
     body: [
       {
-        p: `The OTC monograph for eye drops is FDA’s rulebook for over-the-counter ophthalmic products. Originally codified as 21 CFR Part 349, “Ophthalmic Drug Products for Over-the-Counter Human Use,” it lists permitted active ingredients by category, their concentration ranges, and required label wording. Under the 2020 CARES Act it became a final administrative order, now called OTC Monograph M018. Products that follow it don’t need individual FDA approval.`,
+        p: `The OTC monograph for eye drops is the standard set of rules that says which active ingredients an over-the-counter eye drop may use, in what amounts, for which uses, and with what label wording. Think of it as a shared recipe and script that every maker of a nonprescription eye drop works from, rather than a permission handed to one brand. It’s the reason lubricating drop labels read so much alike.`,
       },
       { h: 'What a monograph is' },
       {
-        p: `Most new drugs reach the market through an application that FDA reviews product by product. Many over-the-counter medicines work differently. For categories of OTC drugs, FDA publishes a monograph: a set of conditions covering which active ingredients may be used, in what amounts, for what uses, and with what label statements. A product that meets every condition can be marketed without its own approval. One that strays outside them, by adding an ingredient that isn’t listed or making a claim the monograph doesn’t allow, can’t rely on the monograph.`,
+        p: `A monograph covers a whole category of medicine instead of a single product. For eye drops, it sorts active ingredients by what they do, sets the strength each may be used at, and gives the statements a label may make about them. A product that stays inside those lines can be sold over the counter on that basis. One that adds an active ingredient outside the lists, or claims a use the monograph doesn’t include, can’t lean on it.`,
       },
       {
-        p: `That’s why a monograph eye drop’s label doesn’t claim an individual FDA approval, and why the claims on these labels look so similar from brand to brand. Our guide to [how over-the-counter eye drops are regulated](/guides/how-are-otc-eye-drops-regulated) covers the bigger picture, including manufacturing rules.`,
+        p: `For a shopper, the practical upshot is that the Drug Facts panel on a lubricating drop isn’t ad copy. Its Uses, warnings and stop-use lines follow a common pattern, so you can set two boxes side by side, compare them line by line, and expect the same words to mean the same thing. Our guide to [how over-the-counter eye drops are regulated](/guides/how-are-otc-eye-drops-regulated) covers the wider picture.`,
       },
-      { h: '21 CFR Part 349: the ophthalmic monograph' },
-      {
-        p: `The eye drop monograph was published in the Code of Federal Regulations as Part 349. The government’s own archive at govinfo.gov still carries the text. It’s organized into three parts:`,
-      },
+      { h: 'The kinds of eye drops it covers' },
       {
         list: [
-          `Subpart A, general provisions, including definitions of terms like demulcent and emollient.`,
-          `Subpart B, active ingredients, grouped by category.`,
-          `Subpart C, labeling, with required wording for each category.`,
+          `Demulcents: lubricants, usually water-soluble, that form a slippery, soothing layer over the surface of the eye.`,
+          `Emollients: oils and fats that soften and protect.`,
+          `Eyewashes: larger bottles of rinse meant for flushing the eye.`,
+          `A few smaller groups of drops for minor irritation.`,
+          `Combinations, since a single formula often pairs more than one active ingredient.`,
         ],
       },
       {
-        p: `Subpart B lists these categories: an ophthalmic astringent, ophthalmic demulcents, ophthalmic emollients, an ophthalmic hypertonicity agent, ophthalmic vasoconstrictors, and eyewashes, followed by a section on which active ingredients may be combined.`,
+        p: `Drops sold for dryness draw on the first two groups, and many blend a water-soluble lubricant with an oil. Our guides on [what a demulcent is](/guides/what-is-a-demulcent-in-eye-drops) and [emollient eye drops](/guides/emollient-eye-drops) take each group in turn.`,
       },
-      { h: 'How the CARES Act changed it' },
+      { h: 'How to read the active ingredients on a box' },
       {
-        p: `For decades, changing an OTC monograph meant a slow, multi-step rulemaking process. The Coronavirus Aid, Relief, and Economic Security Act, enacted March 27, 2020, added section 505G to the Federal Food, Drug, and Cosmetic Act and reformed that system. Final monographs were deemed final administrative orders on the day the law took effect.`,
+        p: `The top of the panel lists each active ingredient with its amount and a Purpose beside it. Quell’s actives are {actives}. Glycerol and glycerin are two names for the same thing, which [glycerin vs. glycerol](/guides/glycerin-vs-glycerol-in-eye-drops) sorts out. Quell is designed to reinforce the tear film’s oil layer to help reduce moisture loss, which is why an oil sits among its actives alongside two water-friendly lubricants. [The active ingredients section](/guides/the-active-ingredients-section) explains how that part of any label reads.`,
       },
       {
-        p: `FDA now publishes the ophthalmic order as OTC Monograph M018, “Ophthalmic Drug Products for OTC Human Use,” on its website. The content carried over, and FDA can now amend it by administrative order instead of full rulemaking. The section numbers changed format too: what was 349.12 for demulcents corresponds to M018.12.`,
+        p: `Ingredients that don’t carry a labeled purpose go further down, in the Inactive ingredients list. The rules for actives don’t reach them in the same way, and that list is where a formula’s character tends to show. Quell’s reads {inactives}.`,
       },
-      { h: 'Where Quell’s active ingredients fit' },
+      { h: 'Why lubricating drop labels sound alike' },
       {
-        p: `Quell’s active ingredients are {actives}. Each appears in the monograph’s lists:`,
+        p: `Shared wording is the monograph doing its job. Uses lines on lubricants talk about dryness and the discomfort that goes with it; Quell’s reads {uses}. Most multi-dose bottles carry a tip warning in similar words, and Quell’s is {tip}. Most also tell you when to stop and see a doctor. Our guide on [why the label mentions 72 hours](/guides/why-the-label-mentions-72-hours) looks closely at one of those lines.`,
       },
+      {
+        p: `What the labels leave out is just as consistent. You won’t find promises about how long relief continues, and you won’t find uses beyond the short list a lubricant is labeled for. If a box seems to promise more than its Uses line, the Uses line is the part to trust.`,
+      },
+      { h: 'What the monograph doesn’t tell you' },
       {
         list: [
-          `Glycerin, the name the monograph uses for glycerol, is listed among the ophthalmic demulcents as a liquid polyol. Quell’s label shows it as {glycerol}.`,
-          `Polysorbate 80 is listed in the same group of liquid polyol demulcents. On the label: {polysorbate}.`,
-          `Light mineral oil is listed among the ophthalmic emollients as an oleaginous ingredient. On the label: {mineralOil}.`,
+          `Whether a given drop suits your eyes. That depends on your history, and your eye doctor or pharmacist is the one to ask.`,
+          `How a formula feels in use: how thick it is, or whether vision blurs for a moment after a drop.`,
+          `Anything about contact lenses, children or using one drop with another, unless the label itself says so. Quell’s label doesn’t cover those, so they go to your eye doctor or pharmacist.`,
+          `How a seller handles orders. Here that’s spelled out on its own: {returns}.`,
         ],
-      },
-      {
-        p: `The monograph defines a demulcent as an agent, usually a water-soluble polymer, that protects and lubricates mucous membrane surfaces and relieves dryness and irritation, and an emollient as an agent, usually a fat or oil, that protects or softens tissues. Our guides on [what a demulcent is](/guides/what-is-a-demulcent-in-eye-drops) and [emollient eye drops](/guides/emollient-eye-drops) go into each, and [the active ingredients section](/guides/the-active-ingredients-section) explains how they appear on the label. If the glycerin and glycerol names confuse you, see [glycerin vs. glycerol](/guides/glycerin-vs-glycerol-in-eye-drops).`,
-      },
-      {
-        p: `The inactive ingredients, such as emu oil and manuka honey, aren’t active ingredients and so aren’t in the monograph’s active-ingredient lists. They’re listed separately on the label: {inactives}.`,
-      },
-      { h: 'The label wording comes from the monograph too' },
-      {
-        p: `Monograph labeling isn’t freeform. Subpart C gives the statements a product may use for its indications and the warnings it must carry. Quell’s Uses line, {uses}, matches one of the indication statements the monograph lists for demulcent and emollient products. The tip warning, {tip}, follows the general labeling section, and the 72-hour stop-use statement and the color-change warning come from the demulcent labeling section.`,
-      },
-      {
-        p: `That shared source is why lubricating drops tend to say almost the same things. It also explains what the labels don’t say: no promises about how long relief continues, and no claims outside the listed uses. Our guide on [why the label mentions 72 hours](/guides/why-the-label-mentions-72-hours) looks at one of those warnings closely.`,
       },
       { h: 'Reading a monograph eye drop label' },
       {
         list: [
-          `Active ingredients appear first, each with its amount and its category, such as “lubricant” or “protectant.”`,
-          `Uses repeat a monograph indication word for word or nearly so.`,
+          `Active ingredients appear first, each with its amount and its purpose, such as “lubricant.”`,
+          `Uses are short and plain, and often close to word for word from brand to brand.`,
           `Warnings include the tip warning, a stop-use statement and a do-not-use line.`,
           `Directions give the dose and how often. Quell’s: {directions}.`,
           `Inactive ingredients and storage come last. Quell’s storage line: {storage}.`,
+          `Questions gives a number to call. Quell’s is {phone}, {hours}.`,
         ],
       },
       {
@@ -1236,19 +1219,19 @@ export const DAILY_20261114_A: Guide[] = [
     faq: [
       {
         q: 'What is the OTC monograph for eye drops?',
-        a: `It’s FDA’s set of conditions for over-the-counter ophthalmic products, originally 21 CFR Part 349 and now OTC Monograph M018. It lists permitted active ingredients, concentrations, label statements and warnings.`,
+        a: `It’s the standard set of rules for over-the-counter eye drops: which active ingredients they may use, in what amounts, for which uses, and with what label wording and warnings.`,
       },
       {
-        q: 'What does M018 mean on FDA’s eye drop monograph?',
-        a: `M018 is FDA’s current designation for the ophthalmic monograph, “Ophthalmic Drug Products for OTC Human Use.” The CARES Act turned the old final monograph into a final administrative order in 2020.`,
+        q: 'Why do lubricating eye drop labels sound so alike?',
+        a: `Their Uses, warnings and stop-use lines follow the same shared script, so wording repeats from brand to brand. That makes it easy to compare two boxes line by line.`,
       },
       {
-        q: 'Do OTC eye drops need FDA approval before they’re sold?',
-        a: `Not if they follow a monograph. Products that meet every condition of the ophthalmic monograph can be marketed without their own FDA application and approval, which is why their labels make no approval claim.`,
+        q: 'Does the monograph mean an eye drop is right for me?',
+        a: `No. It sets what ingredients and label wording a product may use, not how your eyes will respond. Your eye doctor or pharmacist can look at the whole label with your history in mind.`,
       },
       {
         q: 'Is light mineral oil allowed in OTC eye drops?',
-        a: `Yes. The ophthalmic monograph lists light mineral oil among its emollient active ingredients, as an oleaginous ingredient. Quell lists it on its label as one of three active ingredients.`,
+        a: `Yes. Light mineral oil is a familiar oil ingredient in over-the-counter lubricant drops. Quell lists it as one of three active ingredients, and the Purpose column on any panel shows what it’s there to do.`,
       },
     ],
   },

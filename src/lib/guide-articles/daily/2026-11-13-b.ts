@@ -666,6 +666,7 @@ export const DAILY_20261113_B: Guide[] = [
       },
     ],
   },
+  /* FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'how-to-tell-if-eye-drops-are-counterfeit',
     title: 'How to tell if eye drops are counterfeit',
@@ -675,7 +676,7 @@ export const DAILY_20261113_B: Guide[] = [
     addedOn: '2026-11-13',
     body: [
       {
-        p: `Start with the package before you open anything. A genuine over-the-counter eye drop has an intact tamper seal, a complete Drug Facts panel in the FDA’s standard format, a printed lot number and expiration date, and contents that match the label. Misspellings, missing sections, a broken seal or drops that look wrong are reasons not to use the bottle. If you suspect a fake, keep it and report it to the FDA’s MedWatch program.`,
+        p: `Start with the package before you open anything. A genuine over-the-counter eye drop has an intact tamper seal, a complete Drug Facts panel in the standard order, a printed lot number and expiration date, and contents that match the label. Misspellings, missing sections, a broken seal or drops that look wrong are reasons not to use the bottle. If you suspect a fake, keep it, stop using it, and call the maker named on the carton.`,
       },
       { h: 'Check the tamper seal first' },
       {
@@ -694,7 +695,7 @@ export const DAILY_20261113_B: Guide[] = [
       },
       { h: 'Read the Drug Facts panel' },
       {
-        p: `Federal rules at 21 CFR 201.66 set the format for the Drug Facts panel on over-the-counter drugs: the title “Drug Facts,” then Active ingredient(s), Purpose(s), Use(s), Warnings, Directions, Other information and Inactive ingredients, in that order, often followed by Questions. Counterfeiters tend to get this part wrong. Signs worth noticing:`,
+        p: `Every over-the-counter drug sold in the US carries a Drug Facts panel laid out the same way: the title “Drug Facts,” then Active ingredient(s), Purpose(s), Use(s), Warnings, Directions, Other information and Inactive ingredients, in that order, often followed by Questions. Counterfeiters tend to get this part wrong. Signs worth noticing:`,
       },
       {
         list: [
@@ -731,14 +732,14 @@ export const DAILY_20261113_B: Guide[] = [
       },
       { h: 'How to report a suspected counterfeit' },
       {
-        p: `The FDA’s MedWatch program accepts reports from consumers about suspected counterfeit medical products. You can report online, on the consumer form FDA 3500B, or by phone at 1-800-FDA-1088. The FDA notes that photos of all sides of the product help it review a report.`,
+        p: `Start with the people closest to the product. Call the maker whose name and address are printed on the carton; for Quell, that’s {company} at {phone}, {hours}. Tell the store or website that sold it to you, and if you bought through a marketplace, report the seller through the marketplace itself. A pharmacist can hold the package next to a genuine one and point out what doesn’t match.`,
       },
       {
         list: [
           `Don’t throw the bottle or the carton away.`,
           `Photograph every side of the carton and bottle, including the seal and the printed codes.`,
           `Note where and when you bought it, and keep the receipt or order confirmation.`,
-          `If you used the drops and your eyes hurt or your vision changed, see a doctor first, then report.`,
+          `If you used the drops and your eyes hurt or your vision changed, see a doctor first, then call the maker.`,
         ],
       },
     ],
@@ -753,7 +754,7 @@ export const DAILY_20261113_B: Guide[] = [
       },
       {
         q: 'How do I report counterfeit eye drops?',
-        a: `Report it to the FDA’s MedWatch program online, on consumer form FDA 3500B, or by calling 1-800-FDA-1088. Keep the bottle and carton, and include photos of every side.`,
+        a: `Call the maker named on the carton and tell the seller or marketplace where you bought it. Keep the bottle and carton, photograph every side, and for a suspect Quell bottle call {phone}, {hours}.`,
       },
       {
         q: 'Should I use eye drops if the seal is broken?',
@@ -957,29 +958,24 @@ export const DAILY_20261113_B: Guide[] = [
       },
     ],
   },
+  /* FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'what-temporary-relief-means-on-eye-drops',
     title: 'What “temporary relief” means on eye drop labels',
     description:
-      'Why so many eye drop labels say “temporary relief,” where the wording comes from in FDA rules, and how Quell’s Uses statement differs.',
+      'Why so many eye drop labels say “temporary relief,” what the phrase tells you about a drop, and how Quell’s Uses statement is worded differently.',
     category: 'label',
     addedOn: '2026-11-13',
     body: [
       {
-        p: `“Temporary relief” on an eye drop label means the drop eases symptoms for a while and is not meant to fix whatever is causing them. The phrase comes from FDA rules: for lubricating eye drops, 21 CFR 349.60 lists the exact statements a label may use, and two of them begin “For the temporary relief of.” Quell’s label uses a different permitted statement from the same list, which doesn’t include the word “temporary.”`,
+        p: `“Temporary relief” on an eye drop label means the drop eases symptoms for a while and is not meant to fix whatever is causing them. Over-the-counter lubricating drops share standard wording on their Uses lines, and two of the most common versions begin “For the temporary relief of.” Quell’s label uses a different statement, one without the word “temporary.”`,
       },
       { h: 'Where the wording comes from' },
       {
-        p: `Most over-the-counter eye drops in the United States are sold under an FDA rule rather than an individual approval. For lubricating drops, called demulcents in the rule, 21 CFR 349.60 sets the labeling. Its section on indications lists four statements and requires the label to use one or more of them. A maker can’t write its own promise about what the drop does; it picks from the approved wording.`,
+        p: `Over-the-counter lubricating eye drops follow a standard set of rules that says which active ingredients they may use and which wording may go on the Uses line. A maker doesn’t write its own promise about what the drop does; it chooses from shared, fixed phrases.`,
       },
       {
-        p: `Two of the four permitted statements read:`,
-      },
-      {
-        list: [
-          `“For the temporary relief of burning and irritation due to dryness of the eye.”`,
-          `“For the temporary relief of discomfort due to minor irritations of the eye or to exposure to wind or sun.”`,
-        ],
+        p: `Stand in a pharmacy aisle and turn over a few boxes, and you’ll see Uses lines that open with “For the temporary relief of” and then name what’s being relieved: burning and irritation due to dryness on one carton, discomfort from minor irritations or from wind or sun on another.`,
       },
       {
         p: `That’s why the phrase appears on so many boxes, often word for word. [How are over-the-counter eye drops regulated](/guides/how-are-otc-eye-drops-regulated) explains how the rule system works.`,
@@ -993,7 +989,7 @@ export const DAILY_20261113_B: Guide[] = [
       },
       { h: 'What Quell’s Uses section says instead' },
       {
-        p: `Quell’s Drug Facts panel uses the third permitted statement. Its Uses line reads: {uses}. There’s no “temporary” in it, but it’s from the same FDA list, so it carries the same limits. It describes protecting the eye against further irritation and relieving dryness; it doesn’t promise to fix a cause or to work for a set number of hours.`,
+        p: `Quell’s Drug Facts panel words its Uses line differently: {uses}. There’s no “temporary” in it, but it carries the same kind of limits. It describes protecting the eye against further irritation and relieving dryness; it doesn’t promise to fix a cause or to work for a set number of hours.`,
       },
       {
         p: `The formula is designed to reinforce the tear film’s oil layer to help reduce moisture loss. That’s the mechanism, not a duration. [The Uses section on an eye drop label](/guides/the-uses-section) goes through how to read any Uses line.`,
@@ -1012,29 +1008,29 @@ export const DAILY_20261113_B: Guide[] = [
       },
       { h: 'How the Uses line fits the rest of the panel' },
       {
-        p: `Under 21 CFR 201.66, every over-the-counter Drug Facts panel follows the same order: Active ingredient(s), Purpose(s), Use(s), Warnings, Directions, Other information and Inactive ingredients. The Uses section tells you what the product is for. The Warnings section tells you when that purpose has been exceeded. Read them together: the Uses line describes temporary or limited help, and the warnings tell you when to stop relying on it.`,
+        p: `Every over-the-counter Drug Facts panel follows the same order: Active ingredient(s), Purpose(s), Use(s), Warnings, Directions, Other information and Inactive ingredients. The Uses section tells you what the product is for. The Warnings section tells you when that purpose has been exceeded. Read them together: the Uses line describes temporary or limited help, and the warnings tell you when to stop relying on it.`,
       },
       { h: 'When temporary relief isn’t enough' },
       {
-        p: `The same FDA rule that supplies the Uses wording also requires stop-use warnings, and Quell’s label carries them. In plain terms: {stopUse} If you’re reaching that point, the drop has done what a lubricating drop can do, and the next step is an optometrist or ophthalmologist. [When to stop using eye drops](/guides/when-to-stop-using-eye-drops) and [why the label mentions 72 hours](/guides/why-the-label-mentions-72-hours) go through those warnings.`,
+        p: `A Uses line never stands alone: Quell’s label pairs it with stop-use warnings. In plain terms: {stopUse} If you’re reaching that point, the drop has done what a lubricating drop can do, and the next step is an optometrist or ophthalmologist. [When to stop using eye drops](/guides/when-to-stop-using-eye-drops) and [why the label mentions 72 hours](/guides/why-the-label-mentions-72-hours) go through those warnings.`,
       },
       { h: 'Reading other labels side by side' },
       {
-        p: `Because the permitted wording is fixed, Uses lines on different lubricating drops often look nearly identical. That makes the Uses line a poor way to compare products. The active ingredients, the inactive ingredients, the directions and whether there’s a preservative tell you much more. The full Quell panel is on the [Drug Facts page](/drug-facts).`,
+        p: `Because the wording is shared, Uses lines on different lubricating drops often look nearly identical. That makes the Uses line a poor way to compare products. The active ingredients, the inactive ingredients, the directions and whether there’s a preservative tell you much more. The full Quell panel is on the [Drug Facts page](/drug-facts).`,
       },
     ],
     faq: [
       {
         q: 'What does temporary relief mean on eye drops?',
-        a: `It means the drop eases symptoms for a while rather than fixing their cause. The phrase comes from FDA labeling rules for lubricating eye drops, which list the exact statements a label may use.`,
+        a: `It means the drop eases symptoms for a while rather than fixing their cause. Lubricating drops share standard Uses wording, and this phrase opens two of the most common versions.`,
       },
       {
         q: 'Why do eye drop labels say temporary relief?',
-        a: `Federal rule 21 CFR 349.60 lists the permitted indication statements for lubricating eye drops, and two begin “For the temporary relief of.” The wording keeps labels from promising more than a drop can do.`,
+        a: `Over-the-counter lubricating drops use shared, standard wording on the Uses line, and two of the most common versions begin “For the temporary relief of.” The word keeps a label from promising more than a drop can do.`,
       },
       {
         q: 'Does Quell’s label say temporary relief?',
-        a: `No. Quell’s Uses line is a different statement from the same FDA list: {uses}. It carries the same limits and stop-use warnings.`,
+        a: `No. Quell’s Uses line is worded differently: {uses}. It carries the same kind of limits, and its stop-use warnings still apply.`,
       },
       {
         q: 'If relief is temporary, can I use eye drops more often?',
@@ -1052,6 +1048,7 @@ export const DAILY_20261113_B: Guide[] = [
    *   oleic acid CID 445639, C18H34O2, (Z)-octadec-9-enoic acid
    * - https://www.govinfo.gov/content/pkg/CFR-2024-title21-vol5/xml/CFR-2024-title21-vol5-sec349-12.xml
    *   (21 CFR 349.12(d): liquid polyols include polysorbate 80; polysorbate 20 not listed)
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'polysorbate-80-vs-polysorbate-20',
@@ -1093,7 +1090,7 @@ export const DAILY_20261113_B: Guide[] = [
         p: `PubChem’s synonym lists for both run long, full of trade names from different makers, which reflects how many kinds of products use them. Because each has its own fatty acid and its own properties, one can’t be swapped for the other just because the names look alike. Seeing either one on an unrelated product tells you nothing about an eye drop.`,
       },
       {
-        p: `For eye drops sold over the counter in the United States, the rule that matters is FDA’s list of permitted lubricant ingredients. Under 21 CFR 349.12, the “liquid polyols” allowed as active demulcent ingredients are glycerin, polyethylene glycol 300, polyethylene glycol 400, polysorbate 80 and propylene glycol. Polysorbate 20 isn’t on that list of active ingredients. This guide doesn’t go further than that, since Quell’s label is the only eye drop label it can speak for.`,
+        p: `For eye drops sold over the counter in the United States, the list that matters is the short set of lubricant ingredients the standard rules allow as actives. The “liquid polyols” on it are glycerin, polyethylene glycol 300, polyethylene glycol 400, polysorbate 80 and propylene glycol. Polysorbate 20 isn’t on that list of active ingredients. This guide doesn’t go further than that, since Quell’s label is the only eye drop label it can speak for.`,
       },
       { h: 'Polysorbate 80 on Quell’s label' },
       {
@@ -1130,10 +1127,11 @@ export const DAILY_20261113_B: Guide[] = [
       },
       {
         q: 'Is polysorbate 20 an approved eye drop lubricant?',
-        a: `It isn’t on the list. FDA’s rule at 21 CFR 349.12 names polysorbate 80, along with glycerin, polyethylene glycol 300 and 400, and propylene glycol, as liquid polyols permitted as active demulcent ingredients.`,
+        a: `It isn’t on the list. The standard rules for over-the-counter eye drops name polysorbate 80, along with glycerin, polyethylene glycol 300 and 400, and propylene glycol, as the liquid polyols that may serve as active lubricant ingredients.`,
       },
     ],
   },
+  /* FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'are-oil-based-eye-drops-better-for-dry-eyes',
     title: 'Are oil-based eye drops better for dry eyes?',
@@ -1150,7 +1148,7 @@ export const DAILY_20261113_B: Guide[] = [
         p: `There isn’t a regulatory category called “oil-based eye drops.” The phrase usually describes a lubricating drop that includes oils, often as an emulsion where tiny oil droplets are spread through a watery base. That usually makes the liquid look cloudy or milky rather than clear. Drops without oils rely on water-loving ingredients that add moisture and thickness to the watery layer.`,
       },
       {
-        p: `Federal rules for over-the-counter eye drops group lubricant ingredients into types. Demulcents, such as glycerin and polysorbate 80, are listed in 21 CFR 349.12. Emollients, oily ingredients such as light mineral oil, are listed in 21 CFR 349.14. A drop can include both, which is what Quell does.`,
+        p: `Lubricant ingredients in over-the-counter eye drops come in two broad types. Demulcents, such as glycerin and polysorbate 80, are water-friendly. Emollients are oily, and light mineral oil is one. A drop can include both, which is what Quell does.`,
       },
       { h: 'Why the oil layer matters' },
       {
@@ -1168,7 +1166,7 @@ export const DAILY_20261113_B: Guide[] = [
       },
       { h: 'Mineral oil based eye drops' },
       {
-        p: `Mineral oil is the oily ingredient people most often see on eye drop labels in the United States, because light mineral oil and mineral oil are both on FDA’s list of emollient ingredients for over-the-counter eye products. [Light mineral oil in eye drops](/guides/light-mineral-oil-in-eye-drops) covers what “light” means and why it’s used.`,
+        p: `Mineral oil is the oily ingredient people most often see on eye drop labels in the United States, and both light mineral oil and mineral oil are standard emollient ingredients in over-the-counter eye products. [Light mineral oil in eye drops](/guides/light-mineral-oil-in-eye-drops) covers what “light” means and why it’s used.`,
       },
       { h: 'So, are they better?' },
       {
@@ -1203,7 +1201,7 @@ export const DAILY_20261113_B: Guide[] = [
       },
       {
         q: 'What are mineral oil based eye drops?',
-        a: `They’re lubricating drops that include mineral oil or light mineral oil, which FDA’s rules list as emollient ingredients for over-the-counter eye products. Quell lists {mineralOil} as one of its three active ingredients.`,
+        a: `They’re lubricating drops that include mineral oil or light mineral oil, both standard emollient ingredients in over-the-counter eye products. Quell lists {mineralOil} as one of its three active ingredients.`,
       },
       {
         q: 'Why are oil-based eye drops milky?',

@@ -1144,40 +1144,43 @@ export const DAILY_20261112_B: Guide[] = [
     ],
   },
 
+  /* emollient-eye-drops: FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'emollient-eye-drops',
     title: 'Emollient eye drops: what the word means',
     description:
-      'An emollient is an oily eye drop ingredient. How FDA’s rules define it, which ingredients qualify, and how emollient and lubricant drops differ.',
+      'An emollient is the oily ingredient in an eye drop. What the word means on a Drug Facts panel, how it differs from a lubricant, and where Quell lists one.',
     category: 'label',
     addedOn: '2026-11-12',
     body: [
       {
-        p: `In eye drops, an emollient is an oily active ingredient. FDA’s rules for over-the-counter eye products define it, in 21 CFR 349.3, as an agent that’s “usually a fat or oil,” applied to protect or soften tissues. Section 349.14 lists the emollients those rules allow, and light mineral oil is one of them. It’s the emollient among Quell’s three active ingredients.`,
+        p: `In eye drops, an emollient is an oily active ingredient, usually a fat or an oil, there to soften and protect. You’ll see the word in the Purpose column of the Drug Facts panel, printed beside the ingredient it describes. On Quell’s panel it sits next to light mineral oil, one of three active ingredients; the other two carry the purpose “lubricant.”`,
       },
       { h: 'Where the word comes from on a label' },
       {
-        p: `Over-the-counter eye drops in the United States are governed by part 349 of Title 21 of the Code of Federal Regulations, titled “Ophthalmic Drug Products for Over-the-Counter Human Use.” It works by category: it names kinds of active ingredient, lists the ingredients allowed in each, and sets what the label may say. Emollients are one of those categories, and when a Drug Facts panel lists an ingredient’s purpose as “emollient,” that’s the category it’s pointing to.`,
+        p: `Every over-the-counter drug sold in the US carries a Drug Facts panel in the same order, and its first section names each active ingredient with its strength and a short job title called the purpose. On eye drops, the two job titles you’ll meet most often are “lubricant” and “emollient.” When the panel says “emollient,” it’s pointing at the oily part of the formula.`,
       },
       {
-        p: `The definition in section 349.3 describes an emollient as usually a fat or oil applied locally to protect or soften tissues and keep them from drying and cracking. Notice that its wording speaks of the eyelids. Oily ingredients aren’t limited to ointments, though; Quell is a drop, and its Drug Facts panel lists one.`,
+        p: `The word itself is far older than any carton. It comes from the Latin for softening, and in skin care it has long meant a rich, oily substance that keeps a surface from drying out and cracking. On an eye drop the sense is the same, applied to a much more delicate surface.`,
       },
-      { h: 'Which ingredients count as emollients' },
+      { h: 'Oily ingredients you may see listed as emollients' },
       {
-        p: `Section 349.14, “Ophthalmic emollients,” lists the allowed ingredients in two groups, each with its own conditions on strength and combination:`,
+        p: `A handful of oily ingredients tend to carry the emollient purpose on eye products. They range from thin, pourable oils to thick, greasy bases:`,
       },
       {
         list: [
-          `Lanolin preparations: anhydrous lanolin and lanolin, which the rule allows only in combination with one or more of the oily emollients below.`,
-          `Oleaginous, meaning oily, ingredients: light mineral oil, mineral oil, paraffin, petrolatum, white ointment, white petrolatum, white wax and yellow wax.`,
+          `Light mineral oil: a thinner grade of mineral oil, light enough to be carried in a drop.`,
+          `Mineral oil: the same family, heavier in feel.`,
+          `Petrolatum and white petrolatum: the familiar greasy bases of many eye ointments.`,
+          `Lanolin: a wool-derived fat that shows up in some ointments.`,
         ],
       },
       {
-        p: `Several names on that list, such as petrolatum and white petrolatum, are the familiar greasy bases of eye ointments. Light mineral oil is a thinner oil than those. The label shows how much of each active is in a given product; Quell’s panel lists {mineralOil}.`,
+        p: `Which one a product uses, and how much, is printed beside it on the panel. Quell’s panel lists {mineralOil}. You don’t need to memorize the rest; you only need to know where to look on the box in your hand.`,
       },
       { h: 'Emollient vs. lubricant eye drops' },
       {
-        p: `“Lubricant eye drops” is a description, not a separate legal category. On a Drug Facts panel, “lubricant” is the purpose given to water-friendly ingredients like glycerin and polysorbate 80, which part 349 groups as demulcents. So a drop sold as a lubricant eye drop may contain only demulcents, or demulcents plus an emollient. The way to tell is to read the Purpose column beside each active ingredient.`,
+        p: `“Lubricant eye drops” describes what a drop does rather than naming a separate kind of product. On a Drug Facts panel, “lubricant” is the purpose usually given to water-friendly ingredients like glycerin and polysorbate 80, often called demulcents. So a drop sold as a lubricant eye drop may contain only those, or those plus an emollient. The Purpose column beside each active ingredient settles it.`,
       },
       {
         list: [
@@ -1195,6 +1198,10 @@ export const DAILY_20261112_B: Guide[] = [
       {
         p: `[Light mineral oil in eye drops](/guides/light-mineral-oil-in-eye-drops) looks at that one ingredient on its own.`,
       },
+      { h: 'Why a drop would carry an oil at all' },
+      {
+        p: `The thin oily layer on top of your tears slows the watery layer underneath from evaporating. Anything that speeds evaporation puts more strain on it: dry, windy, heated or air-conditioned air, or long stretches at a screen, where people blink less often. A drop with an emollient brings an oily component of its own instead of only adding water-friendly moisture. Whether that suits your eyes is a question for your eye doctor, who can look at the surface directly.`,
+      },
       { h: 'Emollient eye drops: side effects and warnings' },
       {
         p: `The place to look for warnings is the Drug Facts panel of the specific product, not a general article about a category. Quell’s warnings read: {warnings}. The emu oil among its inactive ingredients is the reason for the egg and bird caution. Its stop-use section reads: {stopUse}`,
@@ -1207,23 +1214,24 @@ export const DAILY_20261112_B: Guide[] = [
         list: [
           `Find the Active ingredients section at the top of the panel.`,
           `Read the Purpose column next to each ingredient.`,
-          `“Emollient” there means an oily ingredient from the part 349 list; “lubricant” usually means a demulcent.`,
-          `Check the strength printed beside each one, since the rule limits how much may be used.`,
-          `Compare the inactive ingredients too, since they can add oils of their own that aren’t counted as actives.`,
+          `“Emollient” there means the ingredient is an oil or fat; “lubricant” usually means a water-friendly demulcent.`,
+          `Note the strength printed beside each one, so you can compare like with like.`,
+          `Scan the inactive ingredients too, since they can add oils of their own that aren’t counted as actives.`,
+          `Look at the drop itself: an oily formula may look cloudy rather than clear.`,
         ],
       },
       {
-        p: `The full panel for Quell is on the [Drug Facts page](/drug-facts), and [the active ingredients section](/guides/the-active-ingredients-section) explains how that part of any label is laid out.`,
+        p: `The full panel for Quell is on the [Drug Facts page](/drug-facts), and [the active ingredients section](/guides/the-active-ingredients-section) explains how that part of any label is laid out. If a word on the panel still doesn’t make sense, a pharmacist can walk you through it in a minute, or you can call Quell at {phone}, {hours}.`,
       },
     ],
     faq: [
       {
         q: 'What is an emollient in eye drops?',
-        a: 'An oily active ingredient. FDA’s rules for over-the-counter eye products, 21 CFR 349.3, describe an emollient as usually a fat or oil used to protect or soften tissues, and section 349.14 lists the ones allowed.',
+        a: 'An oily active ingredient, usually a fat or an oil, meant to soften and protect. On a Drug Facts panel the word appears in the Purpose column beside the ingredient it describes.',
       },
       {
         q: 'Is mineral oil an emollient?',
-        a: 'Yes. Both mineral oil and light mineral oil appear in 21 CFR 349.14’s list of oleaginous emollients for over-the-counter eye products. Quell’s label lists light mineral oil with the purpose “emollient.”',
+        a: 'Yes. Mineral oil and its thinner grade, light mineral oil, are oily ingredients that eye products list as emollients. Quell’s label gives light mineral oil the purpose “emollient.”',
       },
       {
         q: 'What is the difference between emollient and lubricant eye drops?',
@@ -1246,31 +1254,33 @@ export const DAILY_20261112_B: Guide[] = [
    *   (labeler code assigned by FDA; product and package codes by the firm; 4-4-2, 5-3-2,
    *   5-4-1 configurations)
    * Quell's own NDC is not in the site's code, so it isn't stated.
+   * FDA references removed 2026-11-18 at Phillip's request (agency, directory,
+   * approval wording, MedWatch and the 12-digit rule dropped).
    */
   {
     slug: 'what-is-the-ndc-number-on-eye-drops',
     title: 'What is the NDC number on eye drops?',
     description:
-      'The NDC is FDA’s three-part identifier for a drug: who labels it, what it is and how it’s packaged. How to read one, find it and look it up.',
+      'The NDC is a three-part code on a drug’s box: who labels it, what the product is and how it’s packaged. How to read one, find it and use it.',
     category: 'label',
     addedOn: '2026-11-12',
     body: [
       {
-        p: `The NDC, or National Drug Code, is the FDA’s identifier for a drug product. It’s a 10-digit number in three segments: the labeler (the company), the product (its strength, form and formulation) and the package (size and type). When a company prints it on a box or bottle, it usually appears with the letters “NDC” in front. It identifies a product; it isn’t a sign of FDA approval.`,
+        p: `The NDC, or National Drug Code, is a 10-digit number that identifies a specific drug product. It comes in three segments: the labeler (the company), the product (its strength, form and formulation) and the package (size and type). When a company prints it on a box or bottle, it usually appears with the letters “NDC” in front. It tells you which product you have, not how good it is.`,
       },
       { h: 'What NDC stands for' },
       {
-        p: `National Drug Code. The FDA describes it as a unique, three-segment number that serves as the agency’s identifier for drugs. Companies that make, repackage or distribute drugs under their own name list their products with the FDA using these numbers, and the FDA publishes them in its NDC Directory.`,
+        p: `National Drug Code. Think of it as a product’s catalog number in the drug world: one string of digits that points to one company’s product in one package. Pharmacies, insurers and makers all use it so that everyone talking about a medicine means exactly the same box.`,
       },
       { h: 'How to read the three segments' },
       {
-        p: `According to the FDA’s background page on the NDC, each segment has a job, and they aren’t all assigned by the same party:`,
+        p: `Each segment has its own job, and reading them left to right narrows things down:`,
       },
       {
         list: [
-          `Labeler code: the first segment, assigned by the FDA. It identifies the firm that makes, repackages or distributes the drug under its own name.`,
-          `Product code: the second segment, assigned by the firm. It identifies a specific strength, dosage form and formulation from that firm.`,
-          `Package code: the third segment, also assigned by the firm. It identifies package sizes and types.`,
+          `Labeler code: the first segment. It identifies the firm that makes, repackages or distributes the drug under its own name.`,
+          `Product code: the second segment. It identifies a specific strength, dosage form and formulation from that firm.`,
+          `Package code: the third segment. It identifies package sizes and types.`,
         ],
       },
       {
@@ -1283,18 +1293,25 @@ export const DAILY_20261112_B: Guide[] = [
       {
         p: `This site doesn’t publish an NDC for Quell. If you need one for a form or a question, check the carton you have, or call Quell at {phone}, {hours}.`,
       },
-      { h: 'How to look up an NDC' },
+      { h: 'How to use an NDC to confirm a product' },
       {
         list: [
-          `Search “FDA NDC Directory” and open the FDA’s own search page.`,
-          `Enter the number with or without dashes, or search by product or company name.`,
-          `Check the listing’s proprietary name, labeler, dosage form and package description against the box in your hand.`,
-          `Keep in mind that the directory is updated daily, and a very new or recently changed listing may differ from an older box.`,
+          `Copy the number exactly as printed on the carton, dashes included.`,
+          `Note the product name, the company line and the package size from the same box.`,
+          `Hand all of it to your pharmacist, who can match the number to a product.`,
+          `For a question only the maker can answer, call the company listed on the carton; for Quell, that’s {phone}, {hours}.`,
         ],
       },
-      { h: 'Does an NDC number mean a drug has FDA approval?' },
+      { h: 'What an NDC number doesn’t tell you' },
       {
-        p: `No. The FDA says plainly that assigning an NDC doesn’t in any way denote approval of the product, and that inclusion in the NDC Directory doesn’t mean the FDA has verified the information. The directory covers prescription and over-the-counter drugs, approved and unapproved, along with repackaged and relabeled products. Over-the-counter eye drops like Quell are marketed under FDA’s monograph rules for that category rather than individual approval, and an NDC doesn’t change that.`,
+        p: `An NDC is an identifier, nothing more. It won’t tell you whether a drop suits your eyes, what it’s for or how to use it, and it says nothing about quality. Those answers are on the Drug Facts panel: the Uses line, the warnings and the directions. For Quell, the uses read {uses}, and the directions read: {directions}.`,
+      },
+      {
+        p: `It also can’t tell you whether a bottle in your hand is genuine or fresh. The lot number and expiration date do more of that work, along with an intact seal and a carton that matches the product. [How to tell if eye drops are counterfeit](/guides/how-to-tell-if-eye-drops-are-counterfeit) goes through those checks.`,
+      },
+      { h: 'Why one product can carry more than one NDC' },
+      {
+        p: `Because the last segment describes the package, the same drop sold in two bottle sizes, or in a single bottle and a multipack, can carry two different NDCs that share their first two segments. A different strength or formulation from the same company changes the middle segment. And if another company repackages a product under its own name, the first segment changes too. When two numbers look almost alike, compare them segment by segment rather than assuming they’re the same thing.`,
       },
       { h: 'NDC vs. lot number, expiration date and barcode' },
       {
@@ -1307,25 +1324,24 @@ export const DAILY_20261112_B: Guide[] = [
       },
       { h: 'When you might need the NDC' },
       {
-        p: `Most people never do. It comes up when a pharmacist is checking exactly which product you used, when you report a problem to the FDA through MedWatch, or when a form asks for it. In each case, read it straight from the box, dashes included, rather than from memory.`,
+        p: `Most people never do. It comes up when a pharmacist is checking exactly which product you used, when you call a maker about a problem with a bottle, or when a form asks for it. In each case, read it straight from the box, dashes included, rather than from memory.`,
       },
-      { h: 'The coming change to 12 digits' },
       {
-        p: `The FDA has adopted a uniform 12-digit format for the NDC through a final rule, effective March 7, 2033. Until then, boxes on shelves and in medicine cabinets will carry the 10-digit form described above. [How to read an eye drop Drug Facts label](/guides/how-to-read-an-eye-drop-drug-facts-label) covers the rest of what’s printed on the carton.`,
+        p: `That’s one more reason to keep the carton until the bottle is finished. The NDC, lot number, expiration date and company details all live on it, and the bottle alone may not carry every one. [How to read an eye drop Drug Facts label](/guides/how-to-read-an-eye-drop-drug-facts-label) covers the rest of what’s printed there.`,
       },
     ],
     faq: [
       {
         q: 'What does NDC stand for on medicine?',
-        a: 'National Drug Code. It’s the FDA’s three-segment identifier for a drug product, made up of a labeler code, a product code and a package code.',
+        a: 'National Drug Code. It’s a three-segment number that identifies a drug product, made up of a labeler code, a product code and a package code.',
       },
       {
-        q: 'Does an NDC number mean a drug has FDA approval?',
-        a: 'No. The FDA states that assigning an NDC doesn’t denote approval, and that being listed in the NDC Directory doesn’t mean the FDA has verified the information.',
+        q: 'What does an NDC number not tell you about a drug?',
+        a: 'It identifies the product and package, but says nothing about what the drug is for, how to use it or whether it suits you. Read the Drug Facts panel for that, and ask a pharmacist if anything is unclear.',
       },
       {
         q: 'How many digits is an NDC number?',
-        a: 'Ten, split into three segments in a 4-4-2, 5-3-2 or 5-4-1 pattern. The FDA has adopted a uniform 12-digit format that takes effect on March 7, 2033.',
+        a: 'Ten, split into three segments in a 4-4-2, 5-3-2 or 5-4-1 pattern. Written with dashes, the segment lengths show which pattern a given number uses.',
       },
       {
         q: 'Is the NDC the same as the lot number?',
@@ -1340,6 +1356,7 @@ export const DAILY_20261112_B: Guide[] = [
    *   systemic absorption carry "If pregnant or breast-feeding, ask a health professional
    *   before use.")
    * DRUG_FACTS in product-content.ts has no pregnancy or breast-feeding line.
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'can-you-use-eye-drops-while-pregnant',
@@ -1371,10 +1388,10 @@ export const DAILY_20261112_B: Guide[] = [
       },
       { h: 'The pregnancy line on other medicine labels' },
       {
-        p: `Many over-the-counter medicines carry the sentence “If pregnant or breast-feeding, ask a health professional before use.” That comes from a federal rule, 21 CFR 201.63, which requires it on over-the-counter drugs intended for systemic absorption, meaning drugs meant to work through the bloodstream. Quell’s panel doesn’t carry it.`,
+        p: `Flip over a box of pain relievers or cold tablets and you’ll often find a line telling people who are pregnant or nursing to ask a health professional before use. It shows up mostly on medicines that are swallowed or otherwise travel through the body. Quell’s panel doesn’t carry it.`,
       },
       {
-        p: `Don’t read the missing sentence as an all-clear. The rule decides which labels must print the warning; it doesn’t tell you how a particular product fits your pregnancy, your other medicines or your health history. Your own clinician is the person who can weigh that, and asking them first is the right move whatever a label says.`,
+        p: `Don’t read the missing sentence as an all-clear. A general caution on one box, or the lack of one on another, can’t tell you how a particular product fits your pregnancy, your other medicines or your health history. Your own clinician is the person who can weigh that, and asking them first is the right move whatever a label says.`,
       },
       { h: 'Are eye drops okay to use while breastfeeding?' },
       {
@@ -1432,7 +1449,7 @@ export const DAILY_20261112_B: Guide[] = [
       },
       {
         q: 'Why do some medicine labels say ask a health professional if pregnant?',
-        a: 'A federal rule, 21 CFR 201.63, requires that sentence on over-the-counter drugs intended for systemic absorption. A label without it still isn’t telling you a product is fine during pregnancy.',
+        a: 'It’s a general caution printed on many medicines, mostly ones that are swallowed or travel through the body. A label without it still isn’t telling you a product is fine during pregnancy, so ask anyway.',
       },
       {
         q: 'What should I ask my doctor about eye drops during pregnancy?',

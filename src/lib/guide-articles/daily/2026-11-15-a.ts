@@ -705,6 +705,7 @@ export const DAILY_20261115_A: Guide[] = [
       },
     ],
   },
+  /* FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'can-you-buy-eye-drops-at-a-gas-station',
     title: 'Can you buy eye drops at a gas station?',
@@ -729,7 +730,7 @@ export const DAILY_20261115_A: Guide[] = [
       },
       {
         list: [
-          `A Drug Facts panel. FDA’s format for over-the-counter labels, set out in 21 CFR 201.66, lists the active ingredients, uses, warnings, directions and other information in a standard order. If it’s missing, put the bottle back.`,
+          `A Drug Facts panel. Every over-the-counter drug sold in the US carries one, listing the active ingredients, uses, warnings, directions and other information in a standard order. If it’s missing, put the bottle back.`,
           `An unbroken seal. The box or cap should show no sign of being opened. A torn band or a loose cap is a reason to choose another bottle.`,
           `The expiration date, printed on the box and usually the bottle. Shelves near the register don’t always turn over quickly.`,
           `The storage line under Other information. Quell’s, for example, reads: {storage}.`,
@@ -1199,6 +1200,7 @@ export const DAILY_20261115_A: Guide[] = [
       },
     ],
   },
+  /* FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'other-information-section-eye-drop-label',
     title: 'The Other information section on an eye drop label',
@@ -1208,11 +1210,11 @@ export const DAILY_20261115_A: Guide[] = [
     addedOn: '2026-11-15',
     body: [
       {
-        p: `“Other information” is a standard heading on the Drug Facts panel of an over-the-counter eye drop. FDA’s labeling rule, 21 CFR 201.66, places it after Directions and before Inactive ingredients, and reserves it for required or permitted details that don’t belong in the other sections, most often storage. Quell’s section has two lines: {milky}, and {storage}.`,
+        p: `“Other information” is a standard heading on the Drug Facts panel of an over-the-counter eye drop. It sits after Directions and before Inactive ingredients, and it holds the practical details that don’t belong in the other sections, most often storage. Quell’s section has two lines: {milky}, and {storage}.`,
       },
       { h: 'Where the section sits on the panel' },
       {
-        p: `FDA’s rule for over-the-counter labels, 21 CFR 201.66, sets out the headings of a Drug Facts panel in a fixed order, so you can find the same information in the same place on any product. The order is:`,
+        p: `Every over-the-counter drug sold in the US carries a Drug Facts panel with the same headings in the same order, so you can find the same information in the same place on any product. The order is:`,
       },
       {
         list: [
@@ -1232,7 +1234,7 @@ export const DAILY_20261115_A: Guide[] = [
       },
       { h: 'What goes under Other information' },
       {
-        p: `The regulation describes this section as the place for additional information that isn’t covered under the other headings but is required or made optional by an applicable OTC monograph, another OTC drug regulation, or an approved drug application. In practice, on eye drop labels it often holds:`,
+        p: `Think of it as the panel’s catch-all for facts about the product itself rather than about how to use it or when to stop. On eye drop labels it often holds:`,
       },
       {
         list: [
@@ -1281,7 +1283,7 @@ export const DAILY_20261115_A: Guide[] = [
     faq: [
       {
         q: 'What does Other information mean on a drug label?',
-        a: `It’s a standard Drug Facts heading set by FDA in 21 CFR 201.66. It holds required or permitted details not covered under the other headings, often storage conditions.`,
+        a: `It’s a standard Drug Facts heading that sits between Directions and Inactive ingredients. It holds practical details not covered under the other headings, most often storage conditions.`,
       },
       {
         q: 'Where is the storage information on eye drops?',
@@ -1289,7 +1291,7 @@ export const DAILY_20261115_A: Guide[] = [
       },
       {
         q: 'What order are the sections on a Drug Facts label?',
-        a: `Drug Facts, Active ingredients, Purpose, Uses, Warnings, Directions, Other information, Inactive ingredients, and an optional Questions section, in that order, under 21 CFR 201.66.`,
+        a: `Drug Facts, Active ingredients, Purpose, Uses, Warnings, Directions, Other information, Inactive ingredients, and an optional Questions section, in that order, on every over-the-counter drug sold in the US.`,
       },
       {
         q: 'Why does my eye drop label say milky brown?',

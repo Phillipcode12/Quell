@@ -1845,6 +1845,7 @@ export const DAILY_20261116_B: Guide[] = [
       },
     ],
   },
+  /* FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'can-you-get-addicted-to-eye-drops',
     title: 'Can you get addicted to eye drops?',
@@ -1858,7 +1859,7 @@ export const DAILY_20261116_B: Guide[] = [
       },
       { h: 'What the label actually says' },
       {
-        p: `Quell is a lubricating eye drop designed to reinforce the tear film’s oil layer to help reduce moisture loss. Every OTC drug sold in the US carries a Drug Facts panel in the format the FDA requires, and that panel is where you should look first. For Quell:`,
+        p: `Quell is a lubricating eye drop designed to reinforce the tear film’s oil layer to help reduce moisture loss. Every OTC drug sold in the US carries a Drug Facts panel with the same headings in the same order, and that panel is where you should look first. For Quell:`,
       },
       {
         list: [

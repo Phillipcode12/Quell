@@ -1232,6 +1232,7 @@ export const DAILY_20261115_D: Guide[] = [
    * The split between company prefix and item reference for Quell is not stated
    * because it was not verified.
    */
+  /* eye-drop-box-barcode: FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'eye-drop-box-barcode',
     title: 'What the barcode on an eye drop box means',
@@ -1290,7 +1291,7 @@ export const DAILY_20261115_D: Guide[] = [
       },
       { h: 'Barcode vs. NDC number' },
       {
-        p: `The NDC, or National Drug Code, is a separate identifier for drugs in the United States, used in FDA listings. It’s a different system from the GS1 barcode, even though on some medicine boxes the two share digits. This site doesn’t publish an NDC for Quell, and the barcode number shouldn’t be read as one. Our guide to [the NDC number on eye drops](/guides/what-is-the-ndc-number-on-eye-drops) explains how that code is structured and where to find it.`,
+        p: `The NDC, or National Drug Code, is a separate identifier for drugs in the United States, a code that names the maker, the product and the package size. It’s a different system from the GS1 barcode, even though on some medicine boxes the two share digits. This site doesn’t publish an NDC for Quell, and the barcode number shouldn’t be read as one. Our guide to [the NDC number on eye drops](/guides/what-is-the-ndc-number-on-eye-drops) explains how that code is structured and where to find it.`,
       },
       { h: 'Barcode vs. lot number and expiration date' },
       {

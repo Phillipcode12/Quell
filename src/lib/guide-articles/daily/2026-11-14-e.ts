@@ -1399,57 +1399,47 @@ export const DAILY_20261114_E: Guide[] = [
     ],
   },
   /*
-   * Sources fetched 2026-11-14 for how-eye-drop-expiration-dates-are-set:
-   * - https://www.govinfo.gov/content/pkg/CFR-2024-title21-vol4/xml/CFR-2024-title21-vol4-sec211-137.xml
-   *   (21 CFR 211.137(a): expiration date determined by appropriate stability testing
-   *   described in 211.166, to assure identity, strength, quality and purity at time
-   *   of use; (b): related to storage conditions stated on labeling; (h): not enforced
-   *   for some OTC products without dosage limitations that are stable at least 3 years)
-   * - https://www.govinfo.gov/content/pkg/CFR-2024-title21-vol4/xml/CFR-2024-title21-vol4-sec211-166.xml
-   *   (211.166(a): written stability testing program; statistically based sample sizes and
-   *   test intervals; specified storage conditions; reliable, meaningful, specific test
-   *   methods; testing in the same container-closure system as marketed)
+   * how-eye-drop-expiration-dates-are-set: FDA references removed 2026-11-18 at
+   * Phillip's request (the 21 CFR 211.137 and 211.166 citations and the OTC
+   * exemption detail are gone; the plain account of stability testing stays).
    */
   {
     slug: 'how-eye-drop-expiration-dates-are-set',
     title: 'How are eye drop expiration dates set?',
     description:
-      'Federal drug rules tie the expiration date to stability testing in the same container under set storage conditions. How it works and what it means for you.',
+      'An eye drop’s expiration date comes from testing the product in its own bottle under set storage conditions. How that works and what it means for you.',
     category: 'label',
     addedOn: '2026-11-14',
     body: [
       {
-        p: `Eye drop expiration dates come from stability testing. Under the FDA’s drug manufacturing rules in 21 CFR 211.137, a drug’s expiration date must be determined by appropriate stability testing, described in 21 CFR 211.166, so the product meets its standards at the time of use. The date also assumes the storage conditions on the label, which is why storage matters.`,
+        p: `Eye drop expiration dates come from stability testing. The maker stores samples of the finished product, in the same bottle it’s sold in, under set conditions, and checks them at intervals to see how long they keep meeting their specifications. The printed date marks the end of that tested period, and it assumes you keep the bottle the way the label’s storage line says.`,
       },
-      { h: 'What the federal rule says' },
+      { h: 'What an expiration date actually promises' },
       {
-        p: `The rules for manufacturing finished drugs in the United States are in Title 21 of the Code of Federal Regulations, Part 211. Section 211.137 covers expiration dating. As published on govinfo.gov, it says a drug product should bear an expiration date determined by appropriate stability testing, so that it meets applicable standards of identity, strength, quality and purity at the time of use.`,
+        p: `The date is about the product at the moment you use it, not the day it left the factory. Up to that date, the maker’s testing supports the drop still being what the label says it is, at the strength it says. After it, nobody has checked.`,
       },
       {
-        p: `Two details in that section matter for anyone holding a bottle. First, the date is tied to the product meeting its standards when you use it, not just when it leaves the factory. Second, section 211.137 says expiration dates must be related to the storage conditions stated on the labeling. The date assumes the product has been kept the way the label says.`,
+        p: `There’s a condition attached, though. The testing was done under particular storage conditions, and those are the ones printed on the label. A bottle kept somewhere much hotter or colder than that has stepped outside what the date describes, even if the calendar says it has months left.`,
       },
       { h: 'How stability testing works' },
       {
-        p: `Section 211.166 describes the stability testing program that sets the date. According to the regulation, a manufacturer needs a written program that includes:`,
+        p: `Stripped down, a stability study looks like this:`,
       },
       {
         list: [
-          `Sample sizes and test intervals based on statistical criteria for each attribute being measured.`,
-          `Specified storage conditions for the samples being tested.`,
-          `Test methods that are reliable, meaningful and specific.`,
-          `Testing of the drug in the same container-closure system it’s sold in.`,
+          `Samples from production batches are sealed in the real bottle, tip and cap.`,
+          `They’re stored under defined temperature and humidity conditions.`,
+          `At set points over months or years, samples are pulled and tested.`,
+          `The tests check that the product still looks, measures and performs the way its specifications require.`,
+          `The expiration period is set from how long the results hold up.`,
         ],
       },
       {
-        p: `In plain terms, the product is stored under defined conditions and checked at intervals to see how long it keeps meeting its specifications in its actual bottle. The expiration date reflects those results.`,
+        p: `The date on your bottle reflects those results for that product in that package. It isn’t a guess, and it isn’t a marketing choice.`,
       },
       { h: 'Why the container is part of the test' },
       {
-        p: `The requirement to test in the marketed container-closure system is easy to skim past, but it explains a lot. The bottle, its tip and its cap are part of what keeps the product stable. A drug that holds up well in one kind of container might not in another, so the date on your bottle reflects that specific package. It’s also one reason not to pour drops into a different container for travel or to refill a bottle. Once the product leaves the package it was tested in, the date no longer describes it. Putting the cap back on after each use keeps the bottle closed the way it’s sold.`,
-      },
-      { h: 'A note on over-the-counter products' },
-      {
-        p: `Section 211.137 includes a narrow provision for some over-the-counter drugs: its expiration dating requirements aren’t enforced for OTC products whose labeling has no dosage limitations and that are stable for at least three years, supported by stability data. That provision doesn’t mean an OTC product lacks a date. Many, including Quell, carry one. Check your own carton and bottle.`,
+        p: `Testing in the bottle the product is actually sold in is easy to skim past, but it explains a lot. The bottle, its tip and its cap are part of what keeps the product stable. A drug that holds up well in one kind of container might not in another, so the date on your bottle reflects that specific package. It’s also one reason not to pour drops into a different container for travel or to refill a bottle. Once the product leaves the package it was tested in, the date no longer describes it. Putting the cap back on after each use keeps the bottle closed the way it’s sold.`,
       },
       { h: 'Where to find the date on your bottle' },
       {
@@ -1470,31 +1460,43 @@ export const DAILY_20261114_E: Guide[] = [
           `Know what normal looks like: {appearance}`,
         ],
       },
+      { h: 'If you keep spare bottles' },
+      {
+        p: `Ordering several bottles at once is common here, since {freeBottles} bottles ship free. A little bookkeeping keeps the spares useful:`,
+      },
+      {
+        list: [
+          `Read the date on each carton when the order arrives, before the boxes go into a cupboard.`,
+          `Open the bottle with the earliest date first.`,
+          `Store the unopened ones where the storage line is easy to meet, not in a car or a garage.`,
+          `If an unopened bottle turns out to be more than you need, the return terms are {returns}.`,
+        ],
+      },
       { h: 'Expiration date vs. after opening' },
       {
         p: `The expiration date applies to the product as packaged. Quell’s label doesn’t set a separate discard period after opening, such as a number of days. That’s a different question from expiration, and our guide on [how long eye drops last after opening](/guides/how-long-do-eye-drops-last-after-opening) covers it. Whatever the dates say, handle the bottle as the label directs: {tip}.`,
       },
       { h: 'What to do with an expired bottle' },
       {
-        p: `Once the date has passed, the stability testing no longer supports the product meeting its standards. Don’t use it. Throw it away according to local guidance for medicines, and start a new bottle. If you’re unsure, a pharmacist can help. The full Quell label is on our [Drug Facts page](/drug-facts).`,
+        p: `Once the date has passed, the testing no longer supports the product meeting its standards. Don’t use it. Throw it away according to local guidance for medicines, and start a new bottle. If you’re unsure, a pharmacist can help. The full Quell label is on our [Drug Facts page](/drug-facts).`,
       },
     ],
     faq: [
       {
         q: 'How are expiration dates on eye drops determined?',
-        a: `Through stability testing. Under 21 CFR 211.137, a drug’s expiration date must be set by appropriate stability testing, described in 21 CFR 211.166, so the product meets its standards at the time of use.`,
+        a: `Through stability testing. The maker stores the product in its real bottle under set conditions, tests it at intervals, and sets the date from how long it keeps meeting its specifications.`,
       },
       {
-        q: 'Does the FDA require expiration dates on eye drops?',
-        a: `The FDA’s manufacturing rule in 21 CFR 211.137 requires expiration dates set by stability testing, with a narrow provision for some OTC products stable for at least three years. Check your carton and bottle for the date.`,
+        q: 'Do all eye drops have an expiration date?',
+        a: `Look on both the carton and the bottle, often near the lot number; most eye drops print one there, and Quell carries one. If you can’t find it on a Quell bottle, call {phone}, {hours}.`,
       },
       {
         q: 'Does storage affect the expiration date of eye drops?',
-        a: `The regulation ties expiration dates to the storage conditions on the label, so the date assumes the product was kept that way. Quell’s storage line reads “{storage}.”`,
+        a: `Yes. The date assumes the product was kept within the storage conditions on its label, because that’s how it was tested. Quell’s storage line reads “{storage}.”`,
       },
       {
         q: 'Should I throw out eye drops after the expiration date?',
-        a: `Once the date passes, the stability testing no longer supports the product meeting its standards, so don’t use it. Replace the bottle and dispose of the old one according to local guidance.`,
+        a: `Once the date passes, the testing no longer supports the product meeting its standards, so don’t use it. Replace the bottle and dispose of the old one according to local guidance.`,
       },
     ],
   },

@@ -1343,20 +1343,21 @@ export const DAILY_20261115_B: Guide[] = [
    * populations; (c)(9): Questions? is followed by a phone number, days and times
    * recommended.
    */
+  /* directions-section-eye-drop-label: FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'directions-section-eye-drop-label',
     title: 'The Directions section on an eye drop label',
     description:
-      'What the Directions section of an OTC eye drop’s Drug Facts label tells you, where FDA rules place it, how to read Quell’s, and what it leaves to your doctor.',
+      'What the Directions section of an OTC eye drop’s Drug Facts label tells you, where it sits on the panel, how to read Quell’s, and what it leaves to a doctor.',
     category: 'label',
     addedOn: '2026-11-15',
     body: [
       {
-        p: `The Directions section of an eye drop’s Drug Facts label tells you how much to use, how often, and in which eyes. Under FDA’s labeling rule, 21 CFR 201.66, it comes right after Warnings and repeats the directions from the product’s OTC monograph or approved application. Quell’s reads: {directions}. Anything it doesn’t cover, such as contact lenses, children or other drops, is a question for your eye doctor or pharmacist.`,
+        p: `The Directions section of an eye drop’s Drug Facts label tells you how much to use, how often, and in which eyes. It comes right after Warnings on every Drug Facts panel, and it’s the part of the box to follow as written. Quell’s reads: {directions}. Anything it doesn’t cover, such as contact lenses, children or other drops, is a question for your eye doctor or pharmacist.`,
       },
       { h: 'Where Directions sits on the Drug Facts panel' },
       {
-        p: `Every over-the-counter drug in the United States uses the same Drug Facts layout, set by the FDA in 21 CFR 201.66. The headings always appear in the same order, so you can find the same information on any box:`,
+        p: `Every over-the-counter drug in the United States uses the same Drug Facts layout. The headings always appear in the same order, so you can find the same information on any box:`,
       },
       {
         list: [
@@ -1373,12 +1374,12 @@ export const DAILY_20261115_B: Guide[] = [
       {
         p: `Directions coming after Warnings is deliberate: you’re meant to know who shouldn’t use the product and what to watch for before you read how to use it. Our guide on [how to read a Drug Facts label](/guides/how-to-read-an-eye-drop-drug-facts-label) walks through the whole panel.`,
       },
-      { h: 'What the FDA rule says goes in it' },
+      { h: 'Why directions look alike from brand to brand' },
       {
-        p: `The regulation’s wording for this section is short. Under the heading “Directions,” a label gives the directions for use described in the applicable OTC monograph or in the product’s approved drug application. In other words, the directions on a monograph product aren’t invented by the brand; they follow the standard that product is made under. Our guide to [the OTC monograph for eye drops](/guides/what-is-the-otc-monograph-for-eye-drops) explains what that standard is.`,
+        p: `The Directions on a lubricating drop aren’t a brand’s creative writing. They follow the same shared standard as the product’s ingredients and its other label lines, which is why two lubricants often give nearly the same instruction. Our guide to [the OTC monograph for eye drops](/guides/what-is-the-otc-monograph-for-eye-drops) explains that standard in plain terms.`,
       },
       {
-        p: `The same rule sets some formatting. When a section has more than one statement, each gets its own bullet. When directions differ for three or more age groups or populations, they go into a table. That’s why some products show a grid of ages and doses, while a single-line instruction, like Quell’s, appears as one statement.`,
+        p: `Layout varies a little more. Some boxes show a grid of ages and doses, because their directions change with age and a grid is the clearest way to show that. Others break a section into bullets. A single instruction, like Quell’s, appears as one statement.`,
       },
       { h: 'Eye drop directions: reading Quell’s' },
       {
@@ -1436,7 +1437,7 @@ export const DAILY_20261115_B: Guide[] = [
     faq: [
       {
         q: 'What does the Directions section on a drug label mean?',
-        a: `It tells you how to use the product: how much, how often and where. On an OTC Drug Facts label, FDA’s rule places it after Warnings and requires it to follow the product’s monograph or approved application.`,
+        a: `It tells you how to use the product: how much, how often and where. On an OTC Drug Facts label it comes after Warnings, and it’s an instruction to follow rather than adjust.`,
       },
       {
         q: 'Where are the directions on an eye drop box?',
@@ -1444,7 +1445,7 @@ export const DAILY_20261115_B: Guide[] = [
       },
       {
         q: 'Why do some labels have a table of directions?',
-        a: `FDA’s Drug Facts rule calls for a table when directions differ for three or more age groups or populations. A product with a single direction, like Quell, shows it as one statement.`,
+        a: `When a product’s directions differ by age group, a table is the clearest way to show several ages and doses at once. A product with a single direction, like Quell, shows it as one statement.`,
       },
       {
         q: 'What if the directions don’t mention contact lenses?',

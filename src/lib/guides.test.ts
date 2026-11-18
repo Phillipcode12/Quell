@@ -228,6 +228,15 @@ describe('guides: what they may not say', () => {
     }
   })
 
+  it('never talks about the FDA or cites its regulations', () => {
+    // Phillip, 2026-11-18: "I don't necessarily want to be talking about the
+    // FDA in our articles." Covers the agency, its programs and 21 CFR. IRS
+    // rules (26 CFR) are a different matter and stay allowed.
+    const FDA = /\bFDA\b|Food and Drug Administration|\b21 CFR\b|\bC\.?F\.?R\.? part 3\d\d\b|MedWatch|BeSafeRx|Orange Book|DailyMed/i
+    const offenders = guides.filter((g) => FDA.test(raw(g))).map((g) => g.slug)
+    expect(offenders).toEqual([])
+  })
+
   it('takes every dollar amount from a token, never typed in', () => {
     // Prices live in the database and shipping in lib/shipping.ts. A figure
     // typed into a guide is a figure that goes stale on its own.

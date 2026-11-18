@@ -1059,44 +1059,49 @@ export const DAILY_20261113_C: Guide[] = [
   },
 
   /*
-   * Sources fetched 2026-11-13 for is-polysorbate-80-in-eye-drops-safe:
-   * - https://www.govinfo.gov/content/pkg/CFR-2024-title21-vol5/xml/CFR-2024-title21-vol5-sec349-12.xml
-   *   (21 CFR 349.12 Ophthalmic demulcents: glycerin and polysorbate 80 listed)
-   * - https://www.govinfo.gov/content/pkg/CFR-2024-title21-vol3/xml/CFR-2024-title21-vol3-sec172-840.xml
-   *   (21 CFR 172.840 Polysorbate 80 as a food additive: emulsifier in ice cream and
-   *   frozen desserts; solubilizing and dispersing agent in pickles)
+   * is-polysorbate-80-in-eye-drops-safe: FDA references removed 2026-11-18 at
+   * Phillip's request (the 21 CFR 349.12 and 172.840 citations are gone).
    */
   {
     slug: 'is-polysorbate-80-in-eye-drops-safe',
     title: 'Is polysorbate 80 in eye drops safe?',
     description:
-      'Polysorbate 80 is a listed OTC eye drop lubricant. What FDA’s rules cover, why food headlines are a different context, and what Quell’s label warns.',
+      'Polysorbate 80 is a common lubricant in OTC eye drops. Where it shows up on the label, why food headlines are a different context, and what Quell warns.',
     category: 'formula',
     addedOn: '2026-11-13',
     body: [
       {
-        p: `Polysorbate 80 is one of the lubricant ingredients FDA lists for nonprescription eye drops, in 21 CFR 349.12, within set concentration limits. That makes it a standard, permitted eye drop ingredient, but no ingredient is right for every person. Whether a particular drop suits you comes down to its full label, its warnings and your own history, which is a question for your eye doctor or pharmacist.`,
+        p: `Polysorbate 80 is a common lubricant ingredient in nonprescription eye drops, and on Quell’s label it’s one of three actives with the purpose “lubricant.” Being common doesn’t make an ingredient right for every person, though. Whether a particular drop suits you comes down to its full label, its warnings and your own history, which is a question for your eye doctor or pharmacist.`,
       },
-      { h: 'Is polysorbate 80 safe in eye drops? What the rules say' },
+      { h: 'Is polysorbate 80 safe in eye drops? What the label can and can’t tell you' },
       {
-        p: `FDA regulates nonprescription eye drops through a monograph, a rulebook that sets which active ingredients a product may use, at what strengths, and what the label must say. Part 349 of Title 21 of the Code of Federal Regulations covers ophthalmic drugs. Section 349.12, “Ophthalmic demulcents,” lists the lubricating ingredients allowed, and polysorbate 80 is on that list, next to glycerin.`,
+        p: `A Drug Facts panel tells you what a product contains, what each active ingredient is there to do, and the cautions that apply to the whole bottle. It can’t tell you how your own eyes will respond. That gap is the honest answer to “is it safe?”: polysorbate 80 is an ordinary eye drop ingredient that many lubricants use, and your own situation decides whether a given bottle is right for you.`,
       },
       {
-        p: `Being on the list means the ingredient may be used in an OTC eye drop within the stated range and with the required labeling. It doesn’t mean every person will tolerate every product that contains it, and it isn’t a personal recommendation. That distinction is the honest answer to “is it safe?”: the rules permit it, and your own situation decides whether a given bottle is right for you.`,
+        p: `So the useful questions are narrower. Have you used a drop with polysorbate 80 before without trouble? Have you ever reacted to an eye drop, a lotion or a medicine and never found out why? Does anything else on the label, such as the allergy warning, apply to you? Those are the things a pharmacist will ask, too.`,
       },
       { h: 'How Quell lists polysorbate 80' },
       {
-        p: `Quell’s Drug Facts panel lists three active ingredients: {actives}. Polysorbate 80 appears as {polysorbate}, with the purpose “lubricant.” The label’s Uses line reads: {uses}. Together, the actives are part of a formula designed to reinforce the tear film’s oil layer to help reduce moisture loss. The strength printed on the label falls inside the range Section 349.12 allows for polysorbate 80. The whole panel, including the {inactiveCount} inactive ingredients, is on the [Drug Facts page](/drug-facts).`,
+        p: `Quell’s Drug Facts panel lists three active ingredients: {actives}. Polysorbate 80 appears as {polysorbate}, with the purpose “lubricant.” The label’s Uses line reads: {uses}. Together, the actives are part of a formula designed to reinforce the tear film’s oil layer to help reduce moisture loss. The whole panel, including the {inactiveCount} inactive ingredients, is on the [Drug Facts page](/drug-facts).`,
       },
       {
         p: `If you’d like the background on what the ingredient does chemically, [What does polysorbate 80 do in eye drops?](/guides/what-does-polysorbate-80-do-in-eye-drops) covers its role as a lubricant and emulsifier.`,
       },
+      { h: 'Spotting polysorbate 80 on any eye drop box' },
+      {
+        list: [
+          `Check the Active ingredients line first. When polysorbate 80 is listed there, the Purpose column beside it says what it’s for.`,
+          `Then check the Inactive ingredients. Some formulas use a polysorbate to help other ingredients mix rather than as an active, and it shows up in that list instead.`,
+          `Look for close relatives. Products for skin and hair sometimes list other polysorbates with different numbers, which are separate ingredients.`,
+          `If you’ve been told to avoid polysorbates, read both lists on every box, not only the front.`,
+        ],
+      },
       { h: 'Why food headlines about polysorbate 80 aren’t about eye drops' },
       {
-        p: `Many people first meet polysorbate 80 in articles about processed food. FDA does allow it as a food additive, under a different rule, 21 CFR 172.840, which names uses such as an emulsifier in ice cream and frozen desserts and a dispersing agent in pickles. Concerns raised about food additives are about eating them, often in daily amounts, and they travel through the digestive system.`,
+        p: `Many people first meet polysorbate 80 in articles about processed food, where it’s used to keep things like ice cream smooth. Concerns raised about food additives are about eating them, often in daily amounts, and they travel through the digestive system.`,
       },
       {
-        p: `An eye drop is a different situation: a single drop placed on the surface of the eye, a few times a day, under a separate set of rules written for eye products. One context doesn’t answer questions about the other. If something you read about polysorbate 80 in food worries you, bring it to a pharmacist, who can tell you whether it has any bearing on an eye drop.`,
+        p: `An eye drop is a different situation: a single drop placed on the surface of the eye, a few times a day. One context doesn’t answer questions about the other. If something you read about polysorbate 80 in food worries you, bring it to a pharmacist, who can tell you whether it has any bearing on an eye drop.`,
       },
       { h: 'Polysorbate 80 eye drops side effects: what the label tells you' },
       {
@@ -1142,11 +1147,11 @@ export const DAILY_20261113_C: Guide[] = [
     faq: [
       {
         q: 'Is polysorbate 80 approved for use in eye drops?',
-        a: `It’s one of the ophthalmic demulcents listed in FDA’s rules for over-the-counter eye drops, 21 CFR 349.12, which set the strengths and labeling such products must follow.`,
+        a: `It’s a common lubricant ingredient in over-the-counter eye drops, and Quell’s label lists it as an active with the purpose “lubricant.” Whether a particular drop suits you is a question for your pharmacist or eye doctor, who can look at the whole label.`,
       },
       {
         q: 'Is polysorbate 80 in eye drops the same as in food?',
-        a: `It’s the same ingredient used in a different way. Food use falls under a separate FDA rule, 21 CFR 172.840, and concerns about eating additives don’t automatically apply to a drop on the eye.`,
+        a: `It’s the same ingredient used in a very different way. Concerns about eating food additives are about swallowing them over time, and they don’t automatically apply to a drop placed on the eye.`,
       },
       {
         q: 'Can you be allergic to polysorbate 80 in eye drops?',

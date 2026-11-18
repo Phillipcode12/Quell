@@ -1300,6 +1300,7 @@ export const DAILY_20261118_A: Guide[] = [
    *   experience" and substances or activities to avoid.
    * - Quell's panel via tokens only. Temporary blur only as the existing guide
    *   is-it-normal-for-vision-to-blur-after-eye-drops states it.
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'side-effects-of-lubricating-eye-drops',
@@ -1310,11 +1311,11 @@ export const DAILY_20261118_A: Guide[] = [
     addedOn: '2026-11-18',
     body: [
       {
-        p: `Quell’s Drug Facts panel doesn’t list any side effects. Under FDA’s format, side effects go under “When using this product,” and Quell’s line there is a handling instruction about the bottle tip. The label does carry a caution for people with egg or bird allergies, a do-not-use rule if the product changes color, and a list of reasons to stop and ask a doctor, including eye pain and vision changes.`,
+        p: `Quell’s Drug Facts panel doesn’t list any side effects. On any Drug Facts panel, side effects go under “When using this product,” and Quell’s line there is a handling instruction about the bottle tip. The label does carry a caution for people with egg or bird allergies, a do-not-use rule if the product changes color, and a list of reasons to stop and ask a doctor, including eye pain and vision changes.`,
       },
       { h: 'Where side effects appear on an OTC label' },
       {
-        p: `Every over-the-counter drug in the US uses the same Drug Facts layout, set by FDA in 21 CFR 201.66. That rule says the “When using this product” heading is followed by the side effects a consumer may experience, plus any substances or activities to avoid while using the product. So if a drug has expected side effects worth printing, that’s where to look.`,
+        p: `Every over-the-counter drug in the US uses the same Drug Facts layout, with the same headings in the same order. Under “When using this product,” a panel prints the effects you may notice and anything to avoid while you use it. So if a drug has expected side effects worth printing, that’s where to look, a little below the Warnings heading.`,
       },
       {
         p: `On Quell’s panel, the “When using this product” section has a single line: {tip}. It’s about keeping the bottle clean, not about an effect on the eye. No side effect is listed there or anywhere else on the panel.`,
@@ -1378,11 +1379,11 @@ export const DAILY_20261118_A: Guide[] = [
     faq: [
       {
         q: 'Do lubricating eye drops have side effects?',
-        a: `Quell’s Drug Facts panel lists none. FDA’s label format puts side effects under “When using this product,” and Quell’s only line there is an instruction not to touch the bottle tip to any surface.`,
+        a: `Quell’s Drug Facts panel lists none. Side effects belong under “When using this product,” and Quell’s only line there is an instruction not to touch the bottle tip to any surface.`,
       },
       {
         q: 'Where are side effects listed on a Drug Facts label?',
-        a: `Under the “When using this product” heading, according to FDA’s rule at 21 CFR 201.66. That section lists effects you may notice and things to avoid while using the product.`,
+        a: `Under the “When using this product” heading, which sits within the Warnings section. It lists effects you may notice and things to avoid while using the product.`,
       },
       {
         q: 'Can lubricating eye drops cause an allergic reaction?',

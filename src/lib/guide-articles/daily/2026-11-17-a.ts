@@ -1959,7 +1959,8 @@ export const DAILY_20261117_A: Guide[] = [
   },
   /*
    * Label via tokens; site facts (Quell is preservative-free, multi-dose bottle).
-   * FDA OTC Drug Facts format: inactive ingredients listed on the panel.
+   * Drug Facts format: inactive ingredients listed on the panel.
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'how-do-i-know-if-my-eye-drops-are-preservative-free',
@@ -1978,7 +1979,7 @@ export const DAILY_20261117_A: Guide[] = [
       },
       { h: 'Step 2: Read the inactive ingredients' },
       {
-        p: `Over-the-counter drugs in the US carry a Drug Facts panel in a standard format set by the FDA. One section is Inactive ingredients, which lists the components that aren’t the active drug: things like water, salts, buffers and, in drops that use one, the preservative.`,
+        p: `Over-the-counter drugs in the US carry a Drug Facts panel with the same sections in the same order. One section is Inactive ingredients, which lists the components that aren’t the active drug: things like water, salts, buffers and, in drops that use one, the preservative.`,
       },
       {
         list: [

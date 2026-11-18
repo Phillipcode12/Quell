@@ -1097,6 +1097,7 @@ export const DAILY_20261114_C: Guide[] = [
       },
     ],
   },
+  /* can-you-use-eye-drops-while-breastfeeding: FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'can-you-use-eye-drops-while-breastfeeding',
     title: 'Can you use eye drops while breastfeeding?',
@@ -1117,7 +1118,7 @@ export const DAILY_20261114_C: Guide[] = [
       },
       { h: 'Why some medicine boxes mention breastfeeding' },
       {
-        p: `If you’ve noticed a pregnancy and breastfeeding line on some OTC packages, that comes from an FDA regulation, 21 CFR 201.63. It requires a general warning telling people who are pregnant or breast-feeding to ask a health professional before use, and it applies to OTC drugs intended for systemic absorption, meaning drugs meant to be absorbed into the body. Products that don’t fall under that rule may not carry the line.`,
+        p: `Plenty of OTC packages, especially for tablets and liquids taken by mouth, carry a general caution asking people who are pregnant or breast-feeding to check with a health professional first. Whether a box prints that line depends on the kind of product, and many eye drop cartons, Quell’s among them, don’t.`,
       },
       {
         p: `So a box without that sentence hasn’t told you anything about nursing. It’s one more reason to ask, rather than to assume.`,
@@ -1179,7 +1180,7 @@ export const DAILY_20261114_C: Guide[] = [
       },
       {
         q: 'Why don’t some eye drop labels mention breastfeeding?',
-        a: `The FDA’s general pregnancy and breast-feeding warning, in 21 CFR 201.63, applies to OTC drugs intended to be absorbed into the body. A label without that line hasn’t said anything either way, so it’s still worth asking.`,
+        a: `That general caution tends to appear on medicines taken by mouth, and many eye drop labels simply don’t carry it. A label without that line hasn’t said anything either way, so it’s still worth asking.`,
       },
       {
         q: 'What should I ask a pharmacist about eye drops when breastfeeding?',
@@ -1187,6 +1188,7 @@ export const DAILY_20261114_C: Guide[] = [
       },
     ],
   },
+  /* what-are-eye-drops-used-for: FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'what-are-eye-drops-used-for',
     title: 'What are eye drops used for?',
@@ -1231,7 +1233,7 @@ export const DAILY_20261114_C: Guide[] = [
       },
       { h: 'How to tell what any eye drop is for' },
       {
-        p: `Every OTC drug sold in the US carries a Drug Facts panel in a standard FDA format. Reading it takes a minute and answers most questions:`,
+        p: `Every OTC drug sold in the US carries a Drug Facts panel with the same sections in the same order. Reading it takes a minute and answers most questions:`,
       },
       {
         list: [
@@ -1270,45 +1272,48 @@ export const DAILY_20261114_C: Guide[] = [
       },
       {
         q: 'How do I know what an eye drop is used for?',
-        a: `Read the Uses line on the Drug Facts label, which every OTC drug carries in a standard FDA format. For prescription drops, the prescribing doctor and the pharmacy label explain what they’re for.`,
+        a: `Read the Uses line on the Drug Facts label, which every OTC drug carries in the same layout. For prescription drops, the prescribing doctor and the pharmacy label explain what they’re for.`,
       },
     ],
   },
+  /* why-eye-drops-have-a-tamper-evident-seal: FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'why-eye-drops-have-a-tamper-evident-seal',
     title: 'Why eye drops have a tamper-evident seal',
     description:
-      'FDA rule 21 CFR 211.132 requires tamper-evident packaging on most retail OTC drugs, eye drops included. What it means and what to do if a seal is broken.',
+      'A tamper-evident seal shows whether a bottle was opened before it reached you. What the seals look like, how to check one, and what to do if it’s broken.',
     category: 'label',
     addedOn: '2026-11-14',
     body: [
       {
-        p: `Eye drops have a tamper-evident seal because an FDA regulation, 21 CFR 211.132, requires most over-the-counter drugs sold at retail to come in packaging that shows visible evidence if someone has opened it. The rule exempts only a short list of product types, and eye drops aren’t on it. If the seal on your bottle is broken or missing when it arrives, don’t use it; Quell replaces broken-seal orders.`,
+        p: `Eye drops have a tamper-evident seal so you can see, before the first drop, that nobody has opened the bottle since it was packed. A band, ring or sealed carton that’s torn, loose or missing is the warning sign, and it can’t be put back to look untouched. If the seal on your bottle is broken or missing when it arrives, don’t use it; Quell replaces broken-seal orders.`,
       },
-      { h: 'What the FDA rule requires' },
+      { h: 'What a tamper-evident seal is' },
       {
-        p: `The regulation sits in the FDA’s current good manufacturing practice rules for finished drugs. It covers OTC drug products for retail sale and requires manufacturers and packers to use tamper-evident packaging when the product is accessible to the public while held for sale. A retail OTC drug that isn’t packaged and labeled as the rule requires is considered adulterated, misbranded or both under federal law.`,
+        p: `It’s a part of the packaging that can’t be opened without leaving a mark. Twist the cap and a ring snaps; peel the carton and a glued flap tears. The seal doesn’t stop anyone from getting in. Its job is to make sure that if someone did, you’d be able to tell.`,
       },
       {
-        p: `The rule lists the product types it doesn’t cover: dermatological products, dentifrices, insulin and lozenges. Eye drops aren’t among those exceptions, so an OTC eye drop sold at retail falls under it.`,
+        p: `That’s a different promise from a locked or childproof cap. A childproof cap slows small hands down every time you use it. A tamper-evident seal works exactly once, the first time the package is opened, and after that it has done its job.`,
       },
-      { h: 'What counts as tamper-evident' },
+      { h: 'What the seals look like' },
       {
-        p: `Under 21 CFR 211.132, a tamper-evident package has one or more indicators or barriers to entry that, if breached or missing, can reasonably be expected to give consumers visible evidence that tampering occurred. The rule adds a few conditions:`,
+        p: `Eye drop makers choose their own designs, which is why bottles from different companies look different. The common ones:`,
       },
       {
         list: [
-          `The feature has to be distinctive by design, or carry an identifying characteristic such as a pattern, name, logo or picture, so it can’t easily be faked with common materials.`,
-          `It has to stay intact through normal handling during manufacturing, shipping and retail display.`,
-          `Capsules have extra sealing requirements, which don’t apply to eye drops.`,
+          `A shrink band: a thin plastic sleeve around the cap and neck, often perforated so it tears away.`,
+          `A breakaway ring: a ring molded to the bottom of the cap that separates from it on the first twist.`,
+          `An inner seal: a foil or film covering the opening under the cap.`,
+          `A sealed carton: glued flaps or a sticker across the box opening that tears when you lift it.`,
+          `A printed pattern or logo on the band or sticker, which makes a homemade replacement easy to spot.`,
         ],
       },
       {
-        p: `In practice, eye drop makers use features like shrink bands around the cap, breakaway rings, sealed cartons or seals over the opening. The rule allows different designs, which is why bottles from different companies look different.`,
+        p: `Some products use more than one. Get to know what a new bottle of your usual drop looks like, so a missing band or a plain sticker where a printed one should be catches your eye.`,
       },
-      { h: 'The statement on the package' },
+      { h: 'Reading the carton' },
       {
-        p: `The regulation also requires a labeling statement. Each retail package has to identify its tamper-evident features, the statement has to be placed prominently on the package, and it has to be positioned so it’s still readable if the feature itself is broken or missing. That way you can check what you should be seeing even when the seal is gone. Look for that statement on the carton when you open a new bottle.`,
+        p: `Some cartons print a short line describing the seal you should find and telling you not to use the product if it’s broken. If yours has one, read it before you tear anything, so you know what you’re checking for. If there’s no such line, check every opening of the carton and the bottle anyway.`,
       },
       { h: 'Why it matters so much for eye drops' },
       {
@@ -1317,8 +1322,8 @@ export const DAILY_20261114_C: Guide[] = [
       { h: 'What to check when you open a new bottle' },
       {
         list: [
-          `Read the carton for the statement describing the tamper-evident features.`,
-          `Confirm each listed feature is present and unbroken before you remove it.`,
+          `Read the carton for any line describing its seal.`,
+          `Confirm each seal is present and unbroken before you remove it.`,
           `Check the bottle itself for cracks or leaks.`,
           `Look at the contents. The label notes: {milky}. Its “Do not use” line reads: {doNotUse}.`,
           `Check the expiration date and lot number printed on the package.`,
@@ -1332,13 +1337,17 @@ export const DAILY_20261114_C: Guide[] = [
         p: `Don’t use the bottle, even if it looks fine. Keep it and the packaging, take a photo, and contact the seller. For Quell orders, damaged, incorrect and broken-seal orders are replaced. Reach us through the [contact page](/about#contact) or at {phone}, {hours}, with your order number. Our [broken tamper seal guide](/guides/broken-tamper-seal) covers the steps in detail.`,
       },
       {
-        p: `A broken seal can have an innocent explanation, like rough handling in shipping, but you can’t tell the difference by looking. Handling every broken seal the same way is the point of the rule.`,
+        p: `A broken seal can have an innocent explanation, like rough handling in shipping, but you can’t tell the difference by looking. Handling every broken seal the same way is the whole point of having one.`,
+      },
+      { h: 'If you aren’t sure whether it’s broken' },
+      {
+        p: `Sometimes a band looks stretched, or a ring seems to have shifted, and you can’t tell whether it was opened. Handle any doubt as if the seal were broken. Set the bottle aside unopened, take a clear photo of the cap and carton in good light, and get in touch before you use it. A pharmacist can also look at it with you and tell you what an intact seal on that product should look like.`,
       },
       { h: 'Common mix-ups about seals' },
       {
         list: [
           `A seal you broke yourself when opening the bottle isn’t a problem; the check matters before first use, not after.`,
-          `A loose outer carton flap isn’t always the tamper-evident feature. Read the package statement to see which features count.`,
+          `A loose outer carton flap isn’t always the tamper-evident feature. If the carton describes its seal, that line tells you which part counts.`,
           `A seal shows whether the package was opened. It doesn’t tell you about storage temperature or expiration, so check those separately.`,
           `If you bought several bottles, check each one. One intact seal says nothing about the others.`,
           `Don’t try to reseal or tape a broken band and keep using the bottle; that defeats the check for anyone else in your home too.`,
@@ -1351,12 +1360,12 @@ export const DAILY_20261114_C: Guide[] = [
     ],
     faq: [
       {
-        q: 'Are eye drops required to have a tamper seal?',
-        a: `Most retail OTC drugs are. FDA regulation 21 CFR 211.132 requires tamper-evident packaging on OTC drug products held for retail sale, and its listed exceptions (dermatological products, dentifrices, insulin and lozenges) don’t include eye drops.`,
+        q: 'Why does my eye drop bottle have a plastic band around the cap?',
+        a: `That band is a tamper-evident seal. It tears or splits the first time the cap is opened, so an intact band tells you nobody opened the bottle before you. If it’s already broken when the bottle arrives, don’t use it.`,
       },
       {
         q: 'What does tamper-evident mean on eye drops?',
-        a: `It means the package has a seal, band or other barrier that shows visible evidence if it’s been opened. The FDA rule also requires a statement on the package describing those features.`,
+        a: `It means the package has a seal, band or other barrier that shows visible evidence if it’s been opened. Once broken, it can’t be restored to look untouched, which is what makes it a useful check.`,
       },
       {
         q: 'What do I do if my eye drop seal is missing?',

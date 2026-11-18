@@ -287,8 +287,7 @@ export const DAILY_20261111_B: Guide[] = [
   },
 
   /*
-   * Checked 2026-11-11: https://www.fda.gov/drugs/buying-using-medicine-safely/besaferx-your-source-online-pharmacy-information
-   * (BeSafeRx "helps consumers learn about how to safely buy prescription medicines online").
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'how-to-spot-a-fake-eye-drop-website',
@@ -307,7 +306,7 @@ export const DAILY_20261111_B: Guide[] = [
       },
       { h: 'Check 1: is the Drug Facts panel on the page?' },
       {
-        p: `Over-the-counter drugs sold in the US carry a Drug Facts panel in a standard format set by the FDA: active ingredients, uses, warnings, directions, other information and inactive ingredients, in that order. A legitimate seller has no reason to hide it. If a product page shows only marketing copy and a photo, or shows a panel that’s blurry, cropped or in a different order, take that as a warning.`,
+        p: `Every over-the-counter drug sold in the US carries a Drug Facts panel with the same headings in the same order: active ingredients, uses, warnings, directions, other information and inactive ingredients, in that order. A legitimate seller has no reason to hide it. If a product page shows only marketing copy and a photo, or shows a panel that’s blurry, cropped or in a different order, take that as a warning.`,
       },
       {
         p: `Compare what you see against the box itself if you’ve bought the product before. For Quell, the full panel is on our [Drug Facts page](/drug-facts): the Uses line reads “{uses},” and the inactive list is {inactives}. A copycat page that lists different ingredients, a different bottle size than {size}, or different directions is not selling the same thing.`,
@@ -341,9 +340,9 @@ export const DAILY_20261111_B: Guide[] = [
       {
         p: `An over-the-counter lubricating drop has a set list of uses on its label. A page that promises to fix any eye problem, end your need for glasses, or replace what a doctor has prescribed is selling something other than an OTC drop, or describing one dishonestly. Reviews that all use the same few phrases, posted on the same dates, are another sign of a page assembled quickly.`,
       },
-      { h: 'What about FDA’s BeSafeRx?' },
+      { h: 'Still unsure? Ask before you pay' },
       {
-        p: `The FDA runs a campaign called BeSafeRx that helps consumers learn how to buy prescription medicines safely online. Its focus is online pharmacies that fill prescriptions, so it doesn’t list every store that sells an over-the-counter product. The habits it teaches carry over, though: buy from sellers that identify themselves, and be skeptical of prices and promises that seem off.`,
+        p: `Two quick calls settle most doubts. The first is to the manufacturer named on the label: ask whether the site you found actually sells its product, and whether the bottle size and ingredients on that page match what it makes. The second is to a pharmacist you already use, who can look at the product page on your phone and tell you whether the panel reads like a real one. If you’ve seen Quell offered somewhere and want to check, {company} answers at {phone}, {hours}.`,
       },
       { h: 'If you think you already used a fake site' },
       {
@@ -372,68 +371,60 @@ export const DAILY_20261111_B: Guide[] = [
         a: `No. The padlock means the connection between you and the site is encrypted. Scam sites can have one too, so check the domain spelling and the company details as well.`,
       },
       {
-        q: 'Is BeSafeRx for over-the-counter eye drops?',
-        a: `BeSafeRx is an FDA campaign about buying prescription medicines safely online. It isn’t a directory of stores selling over-the-counter products, though its basic advice about checking who a seller is applies to any purchase.`,
+        q: 'How do I check if a site really sells a brand of eye drops?',
+        a: `Call the manufacturer named on the label and ask whether that site sells its product, then compare the ingredients, bottle size and directions on the page with the real carton. A seller that won’t say where its stock comes from is one to skip.`,
       },
     ],
   },
-
   /*
-   * Checked 2026-11-11:
-   * - https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts
-   * - https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts/additional-information-about-recalls
-   * - https://www.fda.gov/safety/industry-guidance-recalls/recalls-background-and-definitions
-   * - https://www.fda.gov/drugs/drug-safety-and-availability/drug-safety-communications
-   * - https://www.fda.gov/safety/medwatch-fda-safety-information-and-adverse-event-reporting-program
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'how-to-check-if-eye-drops-were-recalled',
     title: 'How to check if your eye drops were recalled',
     description:
-      'Find the lot number on your bottle, then search the FDA’s recalls page and weekly Enforcement Report. A step-by-step check and what to do on a match.',
+      'Copy the lot number and expiration date off your bottle, then check them with the maker and your pharmacist. Step-by-step, plus what to do on a match.',
     category: 'choosing',
     addedOn: '2026-11-11',
     body: [
       {
-        p: `Write down the product name, lot number and expiration date from your bottle or carton, then search the FDA’s Recalls, Market Withdrawals, & Safety Alerts page for the product, filtering by drugs. Because not every recall gets a notice there, also search the FDA’s weekly Enforcement Report. A recall usually covers specific lots, so it only applies to you if your lot number matches.`,
+        p: `Start with the bottle and the carton: write down the exact product name, size, lot number and expiration date. Then look for a recall notice from the company that makes it, either on its website or by calling the phone number on the label, and ask the pharmacist or store that sold it to you. A recall usually covers specific lots, so it applies to you only if your lot number matches.`,
       },
       { h: 'Step by step: checking a bottle you own' },
       {
         list: [
           'Get the box and the bottle. Note the exact product name, the size, the lot number and the expiration date.',
-          'Go to fda.gov and open the page called Recalls, Market Withdrawals, & Safety Alerts.',
-          'Type the brand or product name in the search box, and use the Product Type filter to show drugs.',
-          'Open any notice that matches and read which lot numbers and dates it lists.',
-          'If nothing shows up, search the FDA’s Enforcement Report for the same name.',
-          'Check the manufacturer’s own website or call its listed phone number to confirm.',
+          'Take a clear photo of the carton end and the bottle label, so you still have the codes if the box goes in the recycling.',
+          'Visit the manufacturer’s own website and look for a news, safety or recall notice that names the product.',
+          'Call the phone number printed on the label and read them your lot number. On a Drug Facts panel it often sits under a heading that reads Questions?',
+          'Ask the pharmacy or store where you bought it whether that product has been pulled from its shelves.',
+          'If a notice turns up, compare every code on it with the codes on your bottle and carton.',
         ],
       },
-      { h: 'Why the FDA recalls page may not list everything' },
+      { h: 'Where recall news usually shows up' },
       {
-        p: `The FDA describes that page as information gathered from press releases and other public notices about certain recalls. It says plainly that not all recalls have press releases or appear there. The complete list is the weekly Enforcement Report, which the FDA says includes every recall once it has been classified. The recalls page also archives notices after about three years, so an older recall may only be in the archive or the Enforcement Report.`,
+        p: `A company recalling a drug normally puts out a public notice naming the product, the affected lots and what buyers should do. That notice tends to land on the company’s own website and with the stores that stocked the product, and a large recall may also make the news. A headline alone isn’t enough to act on, because it rarely lists lot numbers. Find the notice itself and read the details before deciding whether your bottle is involved.`,
       },
-      { h: 'What the recall classes mean' },
+      { h: 'Your pharmacist and the store can help' },
       {
-        p: `When you read a notice or a report entry, you’ll often see a class number. The FDA defines them this way:`,
+        p: `If you bought a bottle in person, the pharmacy counter is a sensible place to ask. Staff can tell you whether a product has been taken off the shelf and what they’ve been told to do with returns. Bring the bottle, or your photo of the codes, so they’re working from the same lot number you are. If you bought online, use the seller’s contact details from your order confirmation and ask the same question in writing, so you have the answer on record.`,
       },
+      { h: 'What a recall notice usually tells you' },
       {
         list: [
-          'Class I: there’s a reasonable chance that using the product could cause serious health problems or death.',
-          'Class II: the product may cause temporary or medically reversible problems, or the chance of serious harm is remote.',
-          'Class III: using the product is not likely to cause adverse health effects.',
-          'Market withdrawal: a minor issue the FDA wouldn’t take legal action over, which the company corrects or removes on its own.',
+          'The product name and size, sometimes with a photo of the carton so you can match the packaging.',
+          'The lot numbers covered, and often the expiration dates that go with them.',
+          'The reason for the recall, in a sentence or two.',
+          'What to do with the bottle: stop using it, send it back, or throw it away.',
+          'How to get a refund or replacement, plus a phone number or email for questions.',
         ],
       },
       {
-        p: `A recall can start with the company itself, at the FDA’s request, or by FDA order. The class tells you how serious the agency considers the problem, which helps you decide how quickly to act.`,
+        p: `Read the whole notice rather than a summary of it. Some recalls cover a single lot of one size; others cover every lot of a product. Only the notice says which, and it’s the company running the recall that decides how refunds and returns work.`,
       },
       { h: 'Matching the lot number exactly' },
       {
         p: `Recalls are usually tied to particular lots, not to every bottle with that name. Read your lot code character by character against the notice, including letters, dashes and leading zeros. If the notice also lists expiration dates or package sizes, those should match too. If you’ve already thrown away the carton and the bottle label is worn, the company may be able to help if you give them the order date and where you bought it. Our guide to [what the lot number on eye drops means](/guides/what-the-lot-number-on-eye-drops-means) shows where to look.`,
-      },
-      { h: 'Drug safety communications are different' },
-      {
-        p: `The FDA also publishes Drug Safety Communications, which share new information about risks of medicines with patients and health care professionals. They aren’t recalls and don’t pull lots off shelves, but they can tell you about a concern with an ingredient or a type of product. If you take several medicines, it’s worth knowing the page exists.`,
       },
       { h: 'If your lot is on a recall' },
       {
@@ -441,12 +432,16 @@ export const DAILY_20261111_B: Guide[] = [
           'Stop using the bottle and keep it, with the carton, until you know what the notice asks you to do.',
           'Follow the instructions in the notice for refunds or returns; they come from the company running the recall.',
           'If you’ve been using it and your eyes hurt, your vision changed, or you feel unwell, contact your doctor.',
-          'Report a problem you think the product caused through the FDA’s MedWatch program, which takes reports from the public about over-the-counter medicines.',
+          'Tell the company that made it about any problem you had, and give it the lot number. [How to report a problem with eye drops](/guides/how-to-report-a-problem-with-eye-drops) lists what to have ready.',
         ],
+      },
+      { h: 'If you can’t find any notice' },
+      {
+        p: `No notice from the maker and nothing from the pharmacy is a good sign for that lot. It isn’t the same as a bottle being fine to use, though. A bottle past its date, one with a broken seal, or one whose drops look different from the last bottle you used should be set aside whatever its recall status. [How do I know if my eye drops have gone bad](/guides/how-do-i-know-if-my-eye-drops-have-gone-bad) walks through those checks one at a time.`,
       },
       { h: 'Checking Quell' },
       {
-        p: `The same steps apply to Quell. Search the FDA’s recalls page and the Enforcement Report for it by name and compare your lot number with anything you find. If you have a question about a specific bottle, call {company} at {phone} ({hours}) with the lot number in hand. The rest of the label, including its warnings, is on our [Drug Facts page](/drug-facts).`,
+        p: `For Quell, start with the codes on the carton and bottle, then call {company} at {phone} ({hours}) with the lot number in hand and ask whether anything applies to it. The rest of the label, including its warnings, is on our [Drug Facts page](/drug-facts). An order that arrives damaged, incorrect or with a broken seal is replaced; that’s separate from any recall and is set out in our [terms](/terms).`,
       },
       {
         p: `Separately from any recall, the label lists checks that apply every time you use a bottle. Its Do not use line reads: {doNotUse}. Its stop-use line: {stopUse} Those apply to any bottle, recalled or not, and they’re worth keeping in mind alongside the date. [Eye symptoms that need a doctor](/guides/eye-symptoms-that-need-a-doctor) covers when a drop isn’t the answer.`,
@@ -455,15 +450,15 @@ export const DAILY_20261111_B: Guide[] = [
     faq: [
       {
         q: 'Where do I find eye drop recalls?',
-        a: `Start with the FDA’s Recalls, Market Withdrawals, & Safety Alerts page on fda.gov and filter to drugs. Because not every recall is posted there, also search the FDA’s weekly Enforcement Report, which lists recalls after they’re classified.`,
+        a: `Check the manufacturer’s website for a notice naming the product, call the phone number on the label with your lot number ready, and ask the pharmacy or store that sold it. A recall notice lists the lots it covers, so compare those codes with your bottle.`,
       },
       {
         q: 'Does a recall mean every bottle of that brand is affected?',
         a: `Usually not. Recalls generally name specific lot numbers, and sometimes expiration dates or sizes. Compare the codes on your bottle and carton exactly with the notice.`,
       },
       {
-        q: 'What is a Class I recall?',
-        a: `It’s the FDA’s most serious category. The agency uses it when there’s a reasonable chance that using the product could cause serious health problems or death.`,
+        q: 'Do I need the box to check an eye drop recall?',
+        a: `It helps. The lot number and expiration date are printed on the carton and usually on the bottle too, but a bottle label can wear off in a pocket. If the box is gone, a photo of the codes or your order details give the company something to work with.`,
       },
       {
         q: 'What should I do if my eye drops were recalled?',
@@ -473,27 +468,25 @@ export const DAILY_20261111_B: Guide[] = [
   },
 
   /*
-   * Checked 2026-11-11 on ecfr.gov (versioner API, current text):
-   * 21 CFR 201.18 "Drugs; significance of control numbers"; 21 CFR 201.17
-   * "Drugs; location of expiration date".
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'what-the-lot-number-on-eye-drops-means',
     title: 'What the lot number on eye drops means',
     description:
-      'The lot number links your bottle to the batch it was made in. Where to find it, what federal rules say about it, and when you’ll need to quote it.',
+      'The lot number links your bottle to the batch it was made in. Where to find it, what it lets the maker look up, and when you’ll need to quote it.',
     category: 'label',
     addedOn: '2026-11-11',
     body: [
       {
-        p: `A lot number is a code that identifies the production batch your bottle came from. Federal regulations describe it as the key to a drug package’s complete manufacturing history, so a company can trace when and how that batch was made. You’ll find it printed or stamped on the carton and usually on the bottle, often next to the expiration date. You need it to check recalls or report a problem.`,
+        p: `A lot number is a code that identifies the production batch your bottle came from. It’s the maker’s key to that package’s manufacturing history, so the company can trace when and how that batch was made. You’ll find it printed or stamped on the carton and usually on the bottle, often next to the expiration date. You need it to check recalls or report a problem.`,
       },
-      { h: 'What the regulation says' },
+      { h: 'What the code connects to' },
       {
-        p: `The rule is 21 CFR 201.18, titled “Drugs; significance of control numbers.” It says the lot or control number on a drug’s label should make it possible to trace the complete manufacturing history of the package. It goes further: a wrong lot number can make the product misbranded under federal law. A neighboring rule, 21 CFR 201.17, deals with where the expiration date goes, and the two codes are usually printed together.`,
+        p: `The lot number connects the bottle in your hand to the factory’s records: which raw materials went into that batch, which equipment made it, what testing it passed and when it was released. You can’t read any of that from the code yourself. The point is that the manufacturer can, which is why it’s the first thing a company asks for when you call about a bottle.`,
       },
       {
-        p: `In plain terms, the lot number connects the bottle in your hand to the factory’s records: which raw materials went into that batch, which equipment made it, what testing it passed and when it was released. You can’t read any of that from the code yourself. The point is that the manufacturer can.`,
+        p: `It also works in the other direction. If a maker finds a problem with one batch, the lot number is how it tells buyers which bottles are involved and which aren’t. A bottle with a different lot code from the one named is, in most cases, outside the problem. The lot code and the expiration date are usually printed side by side, so once you’ve found one you’ve found both.`,
       },
       { h: 'Where to find it on an eye drop carton and bottle' },
       {
@@ -516,7 +509,7 @@ export const DAILY_20261111_B: Guide[] = [
         list: [
           'Checking whether a recall applies to your bottle, since recalls usually name specific lots.',
           'Calling the manufacturer about something that seems wrong with a bottle.',
-          'Reporting a problem to the FDA’s MedWatch program.',
+          'Asking the store or pharmacy that sold it whether a particular batch has been pulled.',
           'Telling a pharmacist or doctor exactly which product you used, if they ask.',
         ],
       },
@@ -533,7 +526,7 @@ export const DAILY_20261111_B: Guide[] = [
       },
       { h: 'If you can’t find a lot number at all' },
       {
-        p: `Because the federal rule expects a drug’s label to carry a lot or control number, a carton and bottle with none anywhere is unusual. First rule out the obvious: faint ink, an embossed code with no ink, or print hidden under a price sticker or a fold in the carton. If there’s truly nothing, ask the seller where the bottle came from before you use it, and be wary of buying that product from the same place again. A missing code is also one of the signs worth weighing in [how to spot a fake eye drop website](/guides/how-to-spot-a-fake-eye-drop-website).`,
+        p: `Drug packaging is normally coded with a lot number, so a carton and bottle with none anywhere is unusual. First rule out the obvious: faint ink, an embossed code with no ink, or print hidden under a price sticker or a fold in the carton. If there’s truly nothing, ask the seller where the bottle came from before you use it, and be wary of buying that product from the same place again. A missing code is also one of the signs worth weighing in [how to spot a fake eye drop website](/guides/how-to-spot-a-fake-eye-drop-website).`,
       },
       { h: 'What a lot number doesn’t tell you' },
       {
@@ -551,15 +544,13 @@ export const DAILY_20261111_B: Guide[] = [
       },
       {
         q: 'Why do drug companies ask for the lot number?',
-        a: `Under 21 CFR 201.18, the lot or control number should let the manufacturer trace the package’s complete manufacturing history. With it, they can look up exactly which batch your bottle came from.`,
+        a: `The lot number ties your package to its batch records. With it, the maker can look up exactly which batch your bottle came from, when it was made and what testing it passed before release.`,
       },
     ],
   },
 
   /*
-   * Checked 2026-11-11 on ecfr.gov: 21 CFR 201.17 "Drugs; location of
-   * expiration date" (immediate container and outer package, unless legible
-   * through the outer package).
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'where-is-the-expiration-date-on-eye-drops',
@@ -570,7 +561,7 @@ export const DAILY_20261111_B: Guide[] = [
     addedOn: '2026-11-11',
     body: [
       {
-        p: `On both the bottle and the carton. A federal rule, 21 CFR 201.17, says that when a drug carries an expiration date it has to appear on the immediate container and on the outer package too, unless it can be read through that packaging. Look for “EXP” followed by a month and year, usually printed beside the lot number on a carton flap and along the edge of the bottle label.`,
+        p: `On both the bottle and the carton. Look for “EXP” followed by a month and year, usually printed beside the lot number on a carton flap and along the edge of the bottle label. The print is small and sometimes pressed into the cardboard without ink, so good light helps. Having the date in two places means you can still check it after one piece is gone.`,
       },
       { h: 'On the carton' },
       {
@@ -594,7 +585,7 @@ export const DAILY_20261111_B: Guide[] = [
       },
       { h: 'Why the date is on both pieces' },
       {
-        p: `The rule exists because the two pieces get separated. Cartons go in the recycling and bottles travel in bags, desks and car consoles. Having the date on each means you can still check it on whichever piece you’ve kept. There’s a related federal rule, 21 CFR 211.137, saying expiration dates come from stability testing, so the date reflects how long the product was shown to hold up under the storage conditions on its label.`,
+        p: `Printing it twice makes sense because the two pieces get separated. Cartons go in the recycling and bottles travel in bags, desks and car consoles. Having the date on each means you can still check it on whichever piece you’ve kept. The date also assumes the bottle has been kept the way its label asks; for Quell, the storage line reads: {storage}.`,
       },
       { h: 'If your bottle is past its date' },
       {
@@ -650,7 +641,7 @@ export const DAILY_20261111_B: Guide[] = [
       },
       { h: 'How to tell if eye drops are expired' },
       {
-        p: `The date is printed on the bottle label and on the carton, usually as “EXP” with a month and year. Federal rules require it in both places, so if one has worn off, check the other. A bottle past that date shouldn’t be used, even if it’s still sealed and looks perfect. Our guide to [where the expiration date is on eye drops](/guides/where-is-the-expiration-date-on-eye-drops) shows where to look and how to read the formats.`,
+        p: `The date is printed on the bottle label and on the carton, usually as “EXP” with a month and year. It usually appears in both places, so if one has worn off, check the other. A bottle past that date shouldn’t be used, even if it’s still sealed and looks perfect. Our guide to [where the expiration date is on eye drops](/guides/where-is-the-expiration-date-on-eye-drops) shows where to look and how to read the formats.`,
       },
       { h: 'Color: what’s normal for Quell and what isn’t' },
       {
@@ -677,7 +668,7 @@ export const DAILY_20261111_B: Guide[] = [
       },
       { h: 'What happens if you use expired eye drops?' },
       {
-        p: `The label can’t answer that, and neither can we. What federal rules do say is that a drug’s expiration date comes from stability testing showing the product still meets its standards up to that date when stored as the label says. Past it, nobody has shown that it does. If you’ve already used a few drops from an expired bottle, stop, switch to a fresh one and watch how your eyes feel. The label’s stop-use line applies here as anywhere: {stopUse}`,
+        p: `The label can’t answer that, and neither can we. What the date does tell you is how long the maker’s stability testing showed the product still meets its standards when stored as the label says. Past it, nobody has shown that it does. If you’ve already used a few drops from an expired bottle, stop, switch to a fresh one and watch how your eyes feel. The label’s stop-use line applies here as anywhere: {stopUse}`,
       },
       { h: 'Do unopened eye drops expire?' },
       {
@@ -724,7 +715,7 @@ export const DAILY_20261111_B: Guide[] = [
    * scoparium, which grows throughout New Zealand; the definition combines
    * five attributes (four nectar chemicals, one pollen DNA marker); honey
    * labeled mānuka for export must be tested by an MPI-recognized laboratory.
-   * 21 CFR 201.66(c)(8) checked on ecfr.gov: inactives listed alphabetically.
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'manuka-honey-in-eye-drops',
@@ -750,14 +741,14 @@ export const DAILY_20261111_B: Guide[] = [
       },
       { h: 'Why is manuka honey in eye drops?' },
       {
-        p: `The honest answer from the label is limited. Drug Facts panels follow an FDA format with separate sections for active and inactive ingredients. Active ingredients are the ones that carry the product’s stated uses; for Quell those are {actives}, and the Uses line reads: {uses}. Inactive ingredients make up the rest of the formula. The panel names them but doesn’t explain what each one is there for, and it makes no claim for any of them individually.`,
+        p: `The honest answer from the label is limited. A Drug Facts panel has separate sections for active and inactive ingredients. Active ingredients are the ones that carry the product’s stated uses; for Quell those are {actives}, and the Uses line reads: {uses}. Inactive ingredients make up the rest of the formula. The panel names them but doesn’t explain what each one is there for, and it makes no claim for any of them individually.`,
       },
       {
         p: `Quell’s makers describe the formula as one that’s designed to reinforce the tear film’s oil layer to help reduce moisture loss, and they include several natural ingredients alongside the actives. Manuka honey is one. We don’t attribute any particular effect on the eye to it, because the label doesn’t. If you want to know more about how the overall formula is meant to work, [the tear film’s oil layer](/guides/the-tear-films-oil-layer) is the place to start.`,
       },
       { h: 'Where it sits in the ingredient list' },
       {
-        p: `Here is Quell’s full inactive list as printed: {inactives}. Federal labeling rules, in 21 CFR 201.66, say inactive ingredients on an OTC drug that isn’t also a cosmetic are listed in alphabetical order. That’s why manuka honey falls after emu oil and the glyceryl esters and before the poloxamer. Its position says nothing about how much is in the bottle, and the label doesn’t give amounts for any inactive ingredient.`,
+        p: `Here is Quell’s full inactive list as printed: {inactives}. The panel lists those inactive ingredients in alphabetical order. That’s why manuka honey falls after emu oil and the glyceryl esters and before the poloxamer. Its position says nothing about how much is in the bottle, and the label doesn’t give amounts for any inactive ingredient.`,
       },
       { h: 'Is it the same as the honey in my kitchen?' },
       {
@@ -803,6 +794,9 @@ export const DAILY_20261111_B: Guide[] = [
     ],
   },
 
+  /*
+   * FDA references removed 2026-11-18 at Phillip's request.
+   */
   {
     slug: 'dead-sea-salt-in-eye-drops',
     title: 'Dead Sea salt in eye drops',
@@ -832,7 +826,7 @@ export const DAILY_20261111_B: Guide[] = [
       },
       { h: 'Why there’s no percentage' },
       {
-        p: `Active ingredients on an OTC Drug Facts panel are shown with their strength. Quell’s three are listed as {glycerol}, {polysorbate} and {mineralOil}. Inactive ingredients don’t carry amounts. Federal labeling rules, at 21 CFR 201.66, list them by name in alphabetical order, so Dead Sea salt sits second simply because of the letter D. It tells you nothing about how much of the bottle it makes up.`,
+        p: `Active ingredients on an OTC Drug Facts panel are shown with their strength. Quell’s three are listed as {glycerol}, {polysorbate} and {mineralOil}. Inactive ingredients don’t carry amounts. The panel names them in alphabetical order instead, so Dead Sea salt sits second simply because of the letter D. It tells you nothing about how much of the bottle it makes up.`,
       },
       { h: 'Is salt the same as a preservative?' },
       {
@@ -875,6 +869,7 @@ export const DAILY_20261111_B: Guide[] = [
    * Checked 2026-11-11: USDA ARS GRIN-Global taxonomy record 36335,
    * https://npgsweb.ars-grin.gov/gringlobal/taxon/taxonomydetail?id=36335
    * (Terminalia chebula Retz., Combretaceae; common names; native range).
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'terminalia-chebula-in-eye-drops',
@@ -912,7 +907,7 @@ export const DAILY_20261111_B: Guide[] = [
       },
       { h: 'What it does in Quell, according to the label' },
       {
-        p: `Nothing specific is stated. Drug Facts panels follow a fixed FDA format. The active ingredients are the ones tied to the product’s uses; in Quell’s case, {actives}, and the Uses line reads: {uses}. Inactive ingredients are named but not explained, and they’re listed alphabetically under 21 CFR 201.66, which is why Terminalia sits near the end, after sterile water and before tromethamine.`,
+        p: `Nothing specific is stated. Every Drug Facts panel uses the same fixed headings. The active ingredients are the ones tied to the product’s uses; in Quell’s case, {actives}, and the Uses line reads: {uses}. Inactive ingredients are named but not explained, and Quell’s panel lists them alphabetically, which is why Terminalia sits near the end, after sterile water and before tromethamine.`,
       },
       {
         p: `More broadly, Quell is designed to reinforce the tear film’s oil layer to help reduce moisture loss, and its makers include several natural ingredients alongside the actives. Terminalia chebula is the one from a tree fruit; others come from a bird, bees and the sea. [The natural ingredients in Quell](/guides/natural-ingredients-in-quell) walks through them together.`,
@@ -963,6 +958,7 @@ export const DAILY_20261111_B: Guide[] = [
    * CID 3893 Lauric acid (12-carbon saturated fatty acid; coconut and palm
    * kernel oils); CID 9921382 Glyceryl 1-undecylenate (no description);
    * CID 5634 Undecylenic acid (10-undecenoic acid; derived from castor oil).
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'glyceryl-laurate-in-eye-drops',
@@ -977,7 +973,7 @@ export const DAILY_20261111_B: Guide[] = [
       },
       { h: 'Where they appear on the label' },
       {
-        p: `Quell’s inactive list reads: {inactives}. The two glyceryl ingredients sit next to each other because inactive ingredients on an OTC drug are listed alphabetically under federal labeling rules, 21 CFR 201.66. Laurate comes before undecylenate for that reason alone. No amounts are given for either, which is normal for inactive ingredients.`,
+        p: `Quell’s inactive list reads: {inactives}. The two glyceryl ingredients sit next to each other because the panel puts its inactive ingredients in alphabetical order. Laurate comes before undecylenate for that reason alone. No amounts are given for either, which is normal for inactive ingredients.`,
       },
       { h: 'Glycerin, glycerol and “glyceryl”' },
       {
@@ -1048,6 +1044,7 @@ export const DAILY_20261111_B: Guide[] = [
    * NLM MeSH D014325 Tromethamine (scope note; entry terms Trometamol, Tris),
    * https://meshb.nlm.nih.gov/record/ui?ui=D014325; PubChem CID 6503
    * Tris(hydroxymethyl)aminomethane (ChEBI: widely used biological buffer).
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'poloxamer-188-and-tromethamine-in-eye-drops',
@@ -1062,7 +1059,7 @@ export const DAILY_20261111_B: Guide[] = [
       },
       { h: 'Where they appear on Quell’s label' },
       {
-        p: `The full inactive list reads: {inactives}. Under federal labeling rules for OTC drugs, 21 CFR 201.66, inactive ingredients go in alphabetical order without amounts. That puts the poloxamer in the middle of the list and tromethamine at the very end. Their places tell you the first letter of each name and nothing about quantity.`,
+        p: `The full inactive list reads: {inactives}. On the panel, inactive ingredients go in alphabetical order without amounts. That puts the poloxamer in the middle of the list and tromethamine at the very end. Their places tell you the first letter of each name and nothing about quantity.`,
       },
       { h: 'What is poloxamer 188?' },
       {
@@ -1133,6 +1130,7 @@ export const DAILY_20261111_B: Guide[] = [
   /*
    * Checked 2026-11-11: PubChem CID 14231, 1,2-Octanediol (ChEBI:
    * "Octane-1,2-diol is an octanediol"), via PUG REST description endpoint.
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'caprylyl-glycol-in-eye-drops',
@@ -1154,7 +1152,7 @@ export const DAILY_20261111_B: Guide[] = [
       },
       { h: 'Where it sits on Quell’s label' },
       {
-        p: `Here’s the complete inactive list as printed: {inactives}. Federal rules for OTC drug labels, in 21 CFR 201.66, have inactive ingredients listed alphabetically, so a name starting with C goes first. Its place says nothing about how much is in the bottle; the label doesn’t list amounts for any inactive ingredient. Only the actives carry their strengths: {glycerol}, {polysorbate} and {mineralOil}.`,
+        p: `Here’s the complete inactive list as printed: {inactives}. The panel lists inactive ingredients alphabetically, so a name starting with C goes first. Its place says nothing about how much is in the bottle; the label doesn’t list amounts for any inactive ingredient. Only the actives carry their strengths: {glycerol}, {polysorbate} and {mineralOil}.`,
       },
       { h: 'Is caprylyl glycol a preservative?' },
       {
@@ -1199,7 +1197,7 @@ export const DAILY_20261111_B: Guide[] = [
       },
       {
         q: 'Why is caprylyl glycol listed first on the label?',
-        a: `Inactive ingredients on an OTC drug label are listed in alphabetical order under 21 CFR 201.66, so a name beginning with C comes first. Its position doesn’t reflect how much is in the bottle.`,
+        a: `Quell’s Drug Facts panel lists its inactive ingredients in alphabetical order, so a name beginning with C comes first. Its position doesn’t reflect how much is in the bottle.`,
       },
     ],
   },

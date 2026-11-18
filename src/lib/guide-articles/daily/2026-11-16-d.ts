@@ -1857,38 +1857,23 @@ export const DAILY_20261116_D: Guide[] = [
     ],
   },
   /*
-   * Sources checked 2026-11-16 for what-does-ophthalmic-mean:
-   * - eCFR, 21 CFR 200.50 "Ophthalmic preparations and dispensers", fetched via
-   *   https://www.ecfr.gov/api/versioner/v1/full/2026-11-12/title-21.xml?part=200&section=200.50
-   *   (title 21 up to date as of 2026-11-12): (a)(1) preparations for ophthalmic
-   *   use, including for cleansing the eyes, should be sterile; (a)(2) FDA's
-   *   September 1, 1964 policy statement: non-sterile liquid ophthalmic
-   *   preparations may be regarded as adulterated (501(c)) and misbranded (502(j));
-   *   applies to drugs, and via 800.10 to devices; (a)(3) containers sterile at
-   *   filling and closing, sealed so contents can't be used without destroying the
-   *   seal, OTC packaging must also follow 211.132; (b) multiple-dose liquid
-   *   preparations should contain a substance that inhibits microorganisms, or be
-   *   packaged and labeled (volume, container, duration of use, warnings) to
-   *   minimize contamination hazard; (c) eye cups, droppers and dispensers should
-   *   be sterile. [40 FR 13996, Mar. 27, 1975, as amended at 47 FR 50455,
-   *   Nov. 5, 1982]
-   * - Quell's own wording via {emuOil} ("This ophthalmic formula ...") and
-   *   {warnings} ("For use in the eyes only").
+   * what-does-ophthalmic-mean: FDA references removed 2026-11-18 at Phillip's
+   * request (the 21 CFR 200.50 and 211.132 sections are gone).
    */
   {
     slug: 'what-does-ophthalmic-mean',
     title: 'What does ophthalmic mean on eye drops?',
     description:
-      'Ophthalmic means “of or for the eye.” What the word signals on an eye drop label, the federal sterility rule it triggers, and why not to mix it up with otic.',
+      'Ophthalmic means “of or for the eye.” What the word signals on an eye drop label, what it says about how the drop is made, and why not to confuse it with otic.',
     category: 'label',
     addedOn: '2026-11-16',
     body: [
       {
-        p: `Ophthalmic means “of or relating to the eye.” On a label, it tells you the product is made to go in the eye, as in “ophthalmic solution.” That word carries weight: FDA’s rule at 21 CFR 200.50 says preparations for ophthalmic use should be sterile and their containers sterile when filled and sealed. Never put a product labeled otic (for the ear) or one without ophthalmic directions into your eyes.`,
+        p: `Ophthalmic means “of or relating to the eye.” On a label, it tells you the product is made to go in the eye, as in “ophthalmic solution.” That word carries weight: a product made for the eye is made sterile and sealed so it stays that way until you open it. Never put a product labeled otic (for the ear) or one without directions for the eye into your eyes.`,
       },
       { h: 'Where the word comes from' },
       {
-        p: `Ophthalmic comes from the Greek word for eye, ophthalmos. You’ll see the same root in ophthalmologist, a medical doctor who specializes in the eye, and ophthalmology, the field itself. Pronounced “off-THAL-mik,” it’s a technical word that turns up mostly on pharmacy labels, prescriptions and regulations. If you’re choosing between eye-care professionals, our guide on [optometrist or ophthalmologist](/guides/optometrist-or-ophthalmologist) explains the difference.`,
+        p: `Ophthalmic comes from the Greek word for eye, ophthalmos. You’ll see the same root in ophthalmologist, a medical doctor who specializes in the eye, and ophthalmology, the field itself. Pronounced “off-THAL-mik,” it’s a technical word that turns up mostly on pharmacy labels, prescriptions and package inserts. If you’re choosing between eye-care professionals, our guide on [optometrist or ophthalmologist](/guides/optometrist-or-ophthalmologist) explains the difference.`,
       },
       { h: 'How it shows up on labels' },
       {
@@ -1905,31 +1890,42 @@ export const DAILY_20261116_D: Guide[] = [
       {
         p: `Quell’s own carton uses the word in its emu oil panel, which reads: {emuOil} Its Drug Facts warning makes the same point in plain language: {warnings}.`,
       },
+      { h: 'Other eye words you may see on a box or prescription' },
+      {
+        list: [
+          `Ocular: another word for “of the eye,” common on package inserts.`,
+          `OU, OD and OS: shorthand on prescriptions for both eyes, the right eye and the left eye.`,
+          `Lubricant: the Purpose word printed beside each of Quell’s active ingredients.`,
+          `Emulsion: a liquid with tiny droplets of oil spread through water, which is why some drops look milky.`,
+        ],
+      },
+      {
+        p: `None of these words tells you what a particular drop is for. That’s the job of the Uses line, covered below.`,
+      },
       { h: 'Ophthalmic vs otic: don’t mix them up' },
       {
         p: `Otic means “of the ear.” Otic drops come in small bottles that can look a lot like eye drops, and both may sit in the same medicine cabinet. They aren’t made to the same standard for use in the eye. Before any drop goes in your eye, check that the label says it’s for the eyes. If you’ve put an ear drop or any other wrong product in your eye, contact a doctor, pharmacist or Poison Control.`,
       },
-      { h: 'What 21 CFR 200.50 requires' },
+      { h: 'What “made for the eye” means for the bottle' },
       {
-        p: `The federal rule on ophthalmic preparations, 21 CFR 200.50, is short. As published on eCFR (up to date as of November 12, 2026), it covers three things. Our guide [are eye drops sterile?](/guides/are-eye-drops-sterile) covers the sterility part from a user’s point of view; here is what the regulation itself sets out.`,
+        p: `An eye drop goes onto one of the most sensitive surfaces of the body, so it’s filled sterile and sealed before it leaves the maker. Our guide [are eye drops sterile?](/guides/are-eye-drops-sterile) covers that from a user’s point of view. The seal is your sign that nothing has reached the drop since. If a seal is broken or missing when the bottle arrives, don’t use it; call {phone} and we’ll replace it.`,
       },
+      {
+        p: `Once you open a multi-dose bottle, keeping it clean becomes your job, and that matters more for a drop without a preservative. Quell’s label carries this line: {tip}. Our guide on [what preservative-free means](/guides/what-does-preservative-free-mean) explains the trade-off.`,
+      },
+      { h: 'Handling an ophthalmic bottle after it’s open' },
       {
         list: [
-          `Paragraph (a): all preparations for ophthalmic use, including eye-cleansing products, should be sterile. Under a 1964 FDA policy statement it cites, liquid ophthalmic products that aren’t sterile may be regarded as adulterated and misbranded under the Federal Food, Drug, and Cosmetic Act. Containers must be sterile when filled and closed, and sealed so the contents can’t be used without breaking the seal.`,
-          `Paragraph (b): liquid ophthalmic products in multiple-dose containers should either contain a substance that inhibits the growth of microorganisms, or be packaged and labeled (by container volume and type, duration of use, and warnings) to minimize the hazard of contamination during use.`,
-          `Paragraph (c): eye cups, eye droppers and other dispensers meant for the eye should be sterile and packaged to stay sterile until opened.`,
+          `Wash and dry your hands before you pick up the bottle.`,
+          `Keep the tip from touching your eye, lashes, fingers or the counter.`,
+          `Recap the bottle as soon as you’ve finished.`,
+          `Keep it to yourself; a bottle that touches someone else’s eye is no longer clean for yours.`,
+          `Store it as the label says: {storage}.`,
         ],
-      },
-      {
-        p: `The rule also points over-the-counter ophthalmic products to FDA’s tamper-resistant packaging requirements in 21 CFR 211.132.`,
-      },
-      { h: 'Why paragraph (b) matters for preservative-free drops' },
-      {
-        p: `Paragraph (b) gives multiple-dose eye drops two routes: a preservative, or careful packaging and labeling. A preservative-free drop in a multiple-dose bottle relies on the second route, which puts more weight on how you handle the bottle once it’s open. That’s why Quell’s label carries this line: {tip}. Our guide on [what preservative-free means](/guides/what-does-preservative-free-mean) explains the trade-off.`,
       },
       { h: 'What ophthalmic doesn’t tell you' },
       {
-        p: `The word describes where a product goes and the standard it’s made to, not what it does. Ophthalmic products range from lubricating drops to prescription medicines. To learn what a particular over-the-counter drop is for, read the Drug Facts panel. Quell’s Uses line reads: {uses}. Its directions: {directions}. Its storage line: {storage}. Our [guide to the Drug Facts label](/guides/how-to-read-an-eye-drop-drug-facts-label) walks through each section.`,
+        p: `The word describes where a product goes and the standard it’s made to, not what it does. Ophthalmic products range from lubricating drops to prescription medicines. To learn what a particular over-the-counter drop is for, read the Drug Facts panel. Quell’s Uses line reads: {uses}. Its directions: {directions}. Our [guide to the Drug Facts label](/guides/how-to-read-an-eye-drop-drug-facts-label) walks through each section.`,
       },
       { h: 'What Quell is' },
       {
@@ -1951,7 +1947,7 @@ export const DAILY_20261116_D: Guide[] = [
       },
       {
         q: 'Do ophthalmic products have to be sterile?',
-        a: `FDA’s rule at 21 CFR 200.50 says preparations for ophthalmic use should be sterile, with containers sterile when filled and closed and sealed so they can’t be used without breaking the seal.`,
+        a: `Eye drops are made sterile and sealed so they stay that way until you open them, which is why a bottle with a broken seal shouldn’t be used. After opening, clean handling keeps the drop in good shape.`,
       },
       {
         q: 'How do you pronounce ophthalmic?',

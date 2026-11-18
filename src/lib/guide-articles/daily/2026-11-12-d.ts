@@ -1097,6 +1097,7 @@ export const DAILY_20261112_D: Guide[] = [
     ],
   },
 
+  /* FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'what-are-eye-drops-made-of',
     title: 'What are eye drops made of?',
@@ -1106,14 +1107,14 @@ export const DAILY_20261112_D: Guide[] = [
     addedOn: '2026-11-12',
     body: [
       {
-        p: `Most eye drops are made of purified water plus two kinds of ingredients: active ingredients, which do the product’s job, and inactive ingredients, which make the solution comfortable, stable and the right consistency. On an over-the-counter drop, FDA’s Drug Facts format lists both. Quell’s actives are {actives}; its inactives include sterile water, salt and natural oils.`,
+        p: `Most eye drops are made of purified water plus two kinds of ingredients: active ingredients, which do the product’s job, and inactive ingredients, which make the solution comfortable, stable and the right consistency. On an over-the-counter drop, the Drug Facts panel lists both. Quell’s actives are {actives}; its inactives include sterile water, salt and natural oils.`,
       },
       { h: 'Active and inactive ingredients, in general' },
       {
-        p: `Every over-the-counter drug sold in the US carries a Drug Facts panel in a standard order, under FDA’s labeling rule at 21 CFR 201.66. The panel opens with the active ingredients, each with its strength and its purpose, and closes with a list of inactive ingredients. The active ingredients are the ones responsible for the drug’s stated use. Inactive ingredients don’t carry that job, but they make up most of the bottle and shape how a drop feels.`,
+        p: `Every over-the-counter drug sold in the US carries a Drug Facts panel in the same standard order. The panel opens with the active ingredients, each with its strength and its purpose, and closes with a list of inactive ingredients. The active ingredients are the ones responsible for the drug’s stated use. Inactive ingredients don’t carry that job, but they make up most of the bottle and shape how a drop feels.`,
       },
       {
-        p: `For lubricating eye drops, the active ingredients come from a short list FDA allows for over-the-counter eye products in its ophthalmic monograph, 21 CFR part 349. That list sorts them into groups such as demulcents, which are water-soluble lubricants, and emollients, which are oily ones. Glycerin, polysorbate 80 and light mineral oil all appear there.`,
+        p: `For lubricating eye drops, the active ingredients come from a short list set by the standard rules for over-the-counter eye products. That list sorts them into groups such as demulcents, which are water-soluble lubricants, and emollients, which are oily ones. Glycerin, polysorbate 80 and light mineral oil all appear there.`,
       },
       { h: 'What lubricating eye drops are made of' },
       {

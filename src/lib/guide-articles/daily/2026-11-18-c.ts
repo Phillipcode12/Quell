@@ -1349,17 +1349,19 @@ export const DAILY_20261118_C: Guide[] = [
    * - TSA liquids rule (3.4 oz / 100 mL containers; medically necessary
    *   liquids allowed in larger amounts when declared) as already stated on
    *   the site in eye-drops-vs-eye-ointment.
+   * FDA references removed 2026-11-18 at Phillip's request (the part 349
+   * section and its definitions dropped; common ingredient names kept).
    */
   {
     slug: 'eye-drops-vs-eye-gel',
     title: 'Eye drops vs. eye gel: what’s the difference?',
     description:
-      'Eye gels are thicker lubricants than drops, often used when blurring won’t matter. How they compare, what the FDA rule says, and what to ask a pharmacist.',
+      'Eye gels are thicker lubricants than drops, often used when blurring won’t matter. How they compare, how to read the label, and what to ask a pharmacist.',
     category: 'choosing',
     addedOn: '2026-11-18',
     body: [
       {
-        p: `Eye drops and eye gels are both lubricants for dry eyes; the difference is thickness. Drops are thin liquids that spread fast and usually blur vision only for a moment. Gels are thickened to sit on the eye longer, so they tend to blur vision longer too, which is why many people save them for bedtime or quiet hours. Both are sold over the counter under the same FDA rule for eye products. Quell is a drop.`,
+        p: `Eye drops and eye gels are both lubricants for dry eyes; the difference is thickness. Drops are thin liquids that spread fast and usually blur vision only for a moment. Gels are thickened to sit on the eye longer, so they tend to blur vision longer too, which is why many people save them for bedtime or quiet hours. Both are sold over the counter, often in the same aisle. Quell is a drop.`,
       },
       { h: 'The short version' },
       {
@@ -1378,24 +1380,19 @@ export const DAILY_20261118_C: Guide[] = [
       {
         p: `Gels get their body from ingredients that thicken water. Many of the lubricating ingredients in OTC eye products are water-soluble polymers, which can be used at different strengths. More polymer, or a heavier one, makes a thicker product. The manufacturer then names the product by its form: “lubricant eye drops” or “lubricant eye gel.” The name on the front of the box is the quickest clue.`,
       },
-      { h: 'How the FDA rule groups them' },
+      { h: 'The same ingredients, a different thickness' },
       {
-        p: `Over-the-counter eye products in the US are covered by 21 CFR part 349, the FDA rule for ophthalmic drug products. It doesn’t sort products into drops and gels. Instead, it sorts active ingredients by what they do. The one that matters most here is the demulcent, which the rule defines as an agent, usually a water-soluble polymer, applied to the eye to protect and lubricate its surfaces and relieve dryness and irritation.`,
-      },
-      {
-        p: `The rule’s demulcent list includes:`,
+        p: `Look at the Active ingredients line on a gel and a drop side by side and you may find the same names. The difference is mostly in how much thickener is in the finished product, not in a separate set of actives. The lubricating ingredients, often called demulcents, that you’re likely to see on either include:`,
       },
       {
         list: [
-          `Cellulose derivatives: carboxymethylcellulose sodium, hydroxyethyl cellulose, hypromellose and methylcellulose.`,
-          `Dextran 70, when used with another polymeric demulcent.`,
-          `Gelatin.`,
-          `Liquid polyols: glycerin, polyethylene glycol 300 and 400, polysorbate 80 and propylene glycol.`,
+          `Cellulose-based thickeners such as carboxymethylcellulose sodium and hypromellose.`,
+          `Glycerin, polysorbate 80 and propylene glycol.`,
           `Polyvinyl alcohol and povidone.`,
         ],
       },
       {
-        p: `The same part lists emollients separately, defined as agents, usually a fat or oil, that protect or soften tissues. A drop and a gel can share an active ingredient and differ mainly in how thick the finished product is.`,
+        p: `Some products also carry an oily ingredient, listed with the purpose “emollient,” such as light mineral oil. Quell has one. Whatever the form, the Purpose column beside each active tells you what that ingredient is there to do.`,
       },
       { h: 'Reading the label to tell them apart' },
       {

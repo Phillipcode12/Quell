@@ -1873,34 +1873,35 @@ export const DAILY_20261117_C: Guide[] = [
    * - https://www.ecfr.gov/api/versioner/v1/full/2026-11-01/title-21.xml?part=701&section=701.3
    *   21 CFR 701.3(a): cosmetic labels list each ingredient "in descending order of
    *   predominance".
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'why-are-inactive-ingredients-listed-alphabetically',
     title: 'Why are inactive ingredients listed alphabetically?',
     description:
-      'Because FDA’s Drug Facts rule, 21 CFR 201.66(c)(8), says so for OTC drugs that aren’t also cosmetics. What that order tells you, and what it doesn’t.',
+      'Drug-only OTC labels list inactive ingredients A to Z, not by amount. Why the order works that way, what it tells you, and what it leaves out.',
     category: 'label',
     addedOn: '2026-11-17',
     body: [
       {
-        p: `Inactive ingredients are listed alphabetically because federal labeling rules require it. Under 21 CFR 201.66(c)(8), the FDA regulation that sets the Drug Facts format, an over-the-counter drug that isn’t also a cosmetic must list its inactive ingredients in alphabetical order by their established names. The order tells you nothing about amounts: the first name isn’t the largest share, and the last isn’t the smallest.`,
+        p: `Inactive ingredients are listed alphabetically because that’s the standard layout for an over-the-counter drug that isn’t also a cosmetic: its Drug Facts panel names every inactive ingredient from A to Z. The order tells you nothing about amounts. The first name isn’t the largest share of the bottle, and the last isn’t the smallest.`,
       },
-      { h: 'What the regulation actually says' },
+      { h: 'Two kinds of products, two kinds of lists' },
       {
-        p: `Section 201.66 of Title 21 of the Code of Federal Regulations lays out the Drug Facts panel heading by heading. Paragraph (c)(8) covers the “Inactive ingredients” heading, which is followed by the established name of each inactive ingredient. It then splits products into two groups:`,
+        p: `The Inactive ingredients heading is followed by the name of each inactive ingredient, and how those names are ordered depends on what kind of product it is:`,
       },
       {
         list: [
-          `An OTC drug that is not also a cosmetic: inactive ingredients are listed in alphabetical order.`,
-          `An OTC drug that is also a cosmetic, such as some products sold for both purposes: inactive ingredients follow the cosmetic labeling rules in 21 CFR 701.3 instead.`,
+          `An OTC drug that is not also a cosmetic, like a lubricating eye drop: inactive ingredients are listed in alphabetical order.`,
+          `An OTC drug that is also a cosmetic, such as some products sold for both purposes: the inactive list follows the cosmetic style instead.`,
         ],
       },
       {
-        p: `The same section defines an inactive ingredient simply as any component other than an active ingredient. So everything in the bottle that isn’t listed under “Active ingredients” belongs under this heading.`,
+        p: `An inactive ingredient is simply any component other than an active ingredient. So everything in the bottle that isn’t listed under “Active ingredients” belongs under this heading, from the water that carries the formula to the smallest helper ingredient.`,
       },
       { h: 'Why cosmetics use a different order' },
       {
-        p: `Cosmetic labels work differently. Under 21 CFR 701.3(a), a cosmetic lists each ingredient in descending order of predominance, meaning the ingredient present in the largest amount comes first. A drug-only product, like a lubricating eye drop, doesn’t follow that rule for its inactives. If you’re used to reading cosmetic labels, it’s easy to assume the first inactive is the main one, and on a drug label that assumption doesn’t hold.`,
+        p: `Cosmetic labels work differently. A cosmetic lists each ingredient in descending order of predominance, meaning the ingredient present in the largest amount comes first. A drug-only product, like a lubricating eye drop, doesn’t follow that order for its inactives. If you’re used to reading lotion or shampoo labels, it’s easy to assume the first inactive is the main one, and on a drug label that assumption doesn’t hold.`,
       },
       { h: 'How the active ingredients differ' },
       {
@@ -1923,11 +1924,11 @@ export const DAILY_20261117_C: Guide[] = [
       },
       { h: 'Where the inactive list sits on the panel' },
       {
-        p: `Section 201.66(c) also sets the order of the headings themselves, and says they appear in the order listed. The sequence is: the “Drug Facts” title, Active ingredient(s), Purpose(s), Use(s), Warnings, Directions, Other information, Inactive ingredients, and an optional “Questions?” heading with a phone number. So on any OTC drug box, the inactive list is near the bottom, just after Other information. On Quell’s panel, the Other information section includes this line: {milky}. And the questions line gives a number you can call, {phone}, during {hours}. You can see the panel in that order on our [Drug Facts page](/drug-facts).`,
+        p: `The headings on a Drug Facts panel come in a fixed sequence: the “Drug Facts” title, Active ingredient(s), Purpose(s), Use(s), Warnings, Directions, Other information, Inactive ingredients, and an optional “Questions?” heading with a phone number. So on any OTC drug box, the inactive list is near the bottom, just after Other information. On Quell’s panel, the Other information section includes this line: {milky}. And the questions line gives a number you can call, {phone}, during {hours}. You can see the panel in that order on our [Drug Facts page](/drug-facts).`,
       },
       { h: 'Why alphabetical order is useful to you' },
       {
-        p: `The rule isn’t just bureaucratic tidiness. An alphabetical list is fast to scan if you’re checking for one ingredient you’ve been told to avoid. You can find it, or confirm it isn’t there, the same way you’d look up a word in an index. It also makes two products easier to compare side by side, since shared ingredients land in roughly the same part of each list. If you have a known sensitivity, read the warnings too. Quell’s panel includes this caution: {warnings}.`,
+        p: `The order isn’t just tidiness. An alphabetical list is fast to scan if you’re checking for one ingredient you’ve been told to avoid. You can find it, or confirm it isn’t there, the same way you’d look up a word in an index. It also makes two products easier to compare side by side, since shared ingredients land in roughly the same part of each list. If you have a known sensitivity, read the warnings too. Quell’s panel includes this caution: {warnings}.`,
       },
       { h: 'What the list can’t tell you' },
       {
@@ -1938,25 +1939,25 @@ export const DAILY_20261117_C: Guide[] = [
         ],
       },
       {
-        p: `For the last one, an eye doctor or pharmacist is the person to ask, especially if you’ve had a reaction to an ingredient before or use other drops. [How to read an eye drop Drug Facts label](/guides/how-to-read-an-eye-drop-drug-facts-label) walks through every heading, and the label’s own advice for when to stop is: {stopUse}`,
+        p: `For the last one, an eye doctor or pharmacist is the person to ask, especially if you’ve had a reaction to an ingredient before or use other drops. Bring the carton or a photo of the panel so they can read the same list you are. [How to read an eye drop Drug Facts label](/guides/how-to-read-an-eye-drop-drug-facts-label) walks through every heading, and the label’s own advice for when to stop is: {stopUse}`,
       },
     ],
     faq: [
       {
         q: 'Does the order of inactive ingredients matter?',
-        a: 'Not for amounts. On an OTC drug that isn’t also a cosmetic, 21 CFR 201.66(c)(8) requires inactive ingredients in alphabetical order, so their position reflects the alphabet, not how much of each is in the product.',
+        a: 'Not for amounts. On an OTC drug that isn’t also a cosmetic, inactive ingredients are listed in alphabetical order, so their position reflects the alphabet, not how much of each is in the product.',
       },
       {
         q: 'Are inactive ingredients listed by amount?',
-        a: 'No, not on a drug-only OTC product like a lubricating eye drop. They are listed alphabetically without amounts. Cosmetics are different: 21 CFR 701.3(a) lists their ingredients in descending order of predominance.',
+        a: 'No, not on a drug-only OTC product like a lubricating eye drop. They are listed alphabetically without amounts. Cosmetics are different: they list ingredients in descending order of predominance, largest amount first.',
       },
       {
         q: 'Where are the inactive ingredients on a Drug Facts label?',
-        a: 'Near the bottom. FDA’s Drug Facts rule puts the Inactive ingredients heading after Other information and before the optional Questions? heading with a phone number.',
+        a: 'Near the bottom. The Inactive ingredients heading comes after Other information and before the optional Questions? heading with a phone number.',
       },
       {
         q: 'What counts as an inactive ingredient?',
-        a: 'Under 21 CFR 201.66, any component of the product other than an active ingredient. Everything not named under Active ingredients is listed under Inactive ingredients.',
+        a: 'Any component of the product other than an active ingredient. Everything not named under Active ingredients on the panel is listed under Inactive ingredients.',
       },
     ],
   },

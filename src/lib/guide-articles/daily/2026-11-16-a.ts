@@ -1812,6 +1812,7 @@ export const DAILY_20261116_A: Guide[] = [
       },
     ],
   },
+  /* are-eye-drops-bad-for-you: FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'are-eye-drops-bad-for-you',
     title: 'Are eye drops bad for you?',
@@ -1825,7 +1826,7 @@ export const DAILY_20261116_A: Guide[] = [
       },
       { h: 'Are eye drops safe? What a label can and can’t tell you' },
       {
-        p: `FDA rules give over-the-counter drugs a standard Drug Facts format, with the same sections in the same order on every box: active ingredients, purpose, uses, warnings, directions, other information and inactive ingredients. The point is that you can find the limits on any OTC drop in seconds. What a label can’t do is know your history: your allergies, the other drops and medicines you use, or what’s actually causing your symptoms. That part belongs with your eye doctor or pharmacist.`,
+        p: `Every over-the-counter drug sold in the US carries a Drug Facts panel, with the same sections in the same order on every box: active ingredients, purpose, uses, warnings, directions, other information and inactive ingredients. The point is that you can find the limits on any OTC drop in seconds. What a label can’t do is know your history: your allergies, the other drops and medicines you use, or what’s actually causing your symptoms. That part belongs with your eye doctor or pharmacist.`,
       },
       {
         p: `Quell is an OTC lubricating eye drop designed to reinforce the tear film’s oil layer to help reduce moisture loss. Its label gives this use: {uses}. Here’s what the rest of its panel says, section by section. Everything is also on our [Drug Facts page](/drug-facts).`,

@@ -1657,6 +1657,7 @@ export const DAILY_20261116_E: Guide[] = [
    * Also 21 CFR 211.132(a)-(b), same API: OTC drugs for retail sale (except
    * dermatological, dentifrice, insulin or lozenge products) need tamper-evident
    * packaging; it may use the container and closure, a carton, or both.
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'parts-of-an-eye-drop-bottle',
@@ -1689,7 +1690,7 @@ export const DAILY_20261116_E: Guide[] = [
       },
       { h: 'The tamper-evident seal' },
       {
-        p: `Under an FDA rule, 21 CFR 211.132, most over-the-counter drugs sold at retail, eye drops included, come in tamper-evident packaging: a seal, band, wrap or sealed carton that shows visible evidence if someone has already opened it. On eye drops, it’s often a band around the neck of the bottle or a ring that breaks away when you first twist the cap, and sometimes a sealed carton as well.`,
+        p: `Most over-the-counter drugs sold at retail, eye drops included, come in tamper-evident packaging: a seal, band, wrap or sealed carton that shows visible evidence if someone has already opened it. On eye drops, it’s often a band around the neck of the bottle or a ring that breaks away when you first twist the cap, and sometimes a sealed carton as well.`,
       },
       {
         list: [
@@ -1699,11 +1700,11 @@ export const DAILY_20261116_E: Guide[] = [
         ],
       },
       {
-        p: `Our guide on [why eye drops have a tamper-evident seal](/guides/why-eye-drops-have-a-tamper-evident-seal) covers the federal rule behind it.`,
+        p: `Our guide on [why eye drops have a tamper-evident seal](/guides/why-eye-drops-have-a-tamper-evident-seal) covers what the seal is for and what to do if yours looks wrong.`,
       },
       { h: 'The label and the carton' },
       {
-        p: `Small bottles don’t have much room for print. Federal labeling rules for over-the-counter drugs, at 21 CFR 201.66, place the Drug Facts content on the outside container or wrapper of the retail package, or on the bottle’s own label if there’s no outer package. For most eye drops, that means the carton carries the full panel. Keep the carton, at least until you’ve read it and noted the lot and expiration.`,
+        p: `Small bottles don’t have much room for print. When a drug comes in an outer box or wrapper, that’s where the Drug Facts panel goes; only a product sold without one carries the panel on the bottle itself. For most eye drops, that means the carton carries the full panel and the bottle has a shorter label. Keep the carton, at least until you’ve read it and noted the lot and expiration.`,
       },
       {
         p: `On Quell’s panel, the Uses line reads: {uses}. The directions say: {directions}. The caution: {warnings}. Storage: {storage}. Everything on it is reproduced on our [Drug Facts page](/drug-facts), so you can check it even after the carton is gone.`,
@@ -1740,7 +1741,7 @@ export const DAILY_20261116_E: Guide[] = [
       },
       {
         q: 'Where is the Drug Facts label on eye drops?',
-        a: `Usually on the carton. Under 21 CFR 201.66, the Drug Facts content goes on the outside package, or on the bottle’s own label if there’s no outer package. Quell’s full panel is also on our Drug Facts page.`,
+        a: `Usually on the carton. The full panel goes on the outer package, and only drops sold without a box carry it on the bottle’s own label. Quell’s full panel is also on our Drug Facts page.`,
       },
       {
         q: 'Should I keep the box my eye drops came in?',
@@ -1770,26 +1771,31 @@ export const DAILY_20261116_E: Guide[] = [
    * - https://www.fda.gov/drugs/information-consumers-and-patients-drugs/otc-drug-facts-label
    *   (FDA requires a standard label for all OTC drug products; read the label
    *   each time you use the product)
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'history-of-the-drug-facts-label',
     title: 'Why OTC drugs all have a Drug Facts label',
     description:
-      'An FDA rule published in 1999, 21 CFR 201.66, gave every over-the-counter drug the same Drug Facts box. What it requires, down to type size and layout.',
+      'Every over-the-counter drug in the US carries the same Drug Facts box, in the same order. Why the format exists, when it began and how to use it on a box.',
     category: 'label',
     addedOn: '2026-11-16',
     body: [
       {
-        p: `Every over-the-counter drug in the US carries a Drug Facts label because of an FDA regulation, 21 CFR 201.66, first published as a final rule in the Federal Register on March 17, 1999. It sets the content and format for the labeling of all OTC drugs: the same title, the same headings in the same order, and minimum type sizes, so a buyer can find the same information in the same place on any box.`,
+        p: `Every over-the-counter drug sold in the US carries a Drug Facts panel so you can find the same information in the same place on any box. The format, introduced in 1999, fixes the title, the headings and their order: active ingredients, purpose, uses, warnings, directions, other information and inactive ingredients. Learn it once, and you can read a pain reliever, an antacid or an eye drop the same way.`,
       },
-      { h: 'What the 1999 rule did' },
+      { h: 'Why one format for every box' },
       {
-        p: `The regulation, titled “Format and content requirements for over-the-counter (OTC) drug product labeling,” applies to every OTC drug product. Its scope section says so plainly. Where a specific OTC monograph or regulation has conflicting format rules, 201.66 generally wins unless the other rule specifically provides otherwise. The eCFR’s source note dates the rule to the March 17, 1999 Federal Register, with amendments in 2000, 2004, 2007, 2008, 2009 and 2011.`,
+        p: `Picture a pharmacy aisle where every brand put its warnings in a different spot, in its own type and its own words. Comparing two boxes would mean reading both from top to bottom, and a key warning could hide under the marketing. The Drug Facts panel solves that by making the layout the same everywhere. The brand still owns the front of the box; the panel on the back follows the common pattern.`,
       },
       {
-        p: `The FDA’s consumer page on the label puts the purpose simply: the agency requires a standard label of important drug information for all OTC drug products. The idea is that you shouldn’t have to learn a new layout for every product on the shelf.`,
+        p: `That sameness is the whole value. A shopper who knows that warnings always come before directions, and that inactive ingredients always sit at the bottom, can scan a new product in seconds. It also helps a pharmacist or a family member reading the box on your behalf.`,
       },
-      { h: 'The headings, in the order the rule sets' },
+      { h: 'When the Drug Facts label started' },
+      {
+        p: `The standard format was introduced in 1999, and over-the-counter packages switched over to it during the years that followed. Older boxes from before then printed directions, warnings and ingredients in whatever order and style the maker chose. Today you’d be hard pressed to find a nonprescription medicine on a store shelf without the familiar boxed panel on its back or side.`,
+      },
+      { h: 'The headings, in order' },
       {
         list: [
           `Drug Facts (the title)`,
@@ -1804,70 +1810,77 @@ export const DAILY_20261116_E: Guide[] = [
         ],
       },
       {
-        p: `The first eight are required. The last is allowed but not required, and if it’s used, it must give a phone number for questions about the product. Our guide on [how to read an eye drop Drug Facts label](/guides/how-to-read-an-eye-drop-drug-facts-label) walks through what each section tells you on an eye drop carton.`,
+        p: `The first eight appear on every panel. The last is optional, and when a label includes it, it gives a phone number for questions about the product. Our guide on [how to read an eye drop Drug Facts label](/guides/how-to-read-an-eye-drop-drug-facts-label) walks through what each section tells you on an eye drop carton.`,
       },
-      { h: 'How the rule controls the look of the box' },
+      { h: 'Why every Drug Facts box looks alike' },
       {
-        p: `What’s less well known is how much of the design the rule fixes. Paragraph (d) of 201.66 sets out format requirements in unusual detail:`,
+        p: `Set two boxes from different brands side by side and you’ll notice how much of the design matches, not just the headings. The common features are easy to spot:`,
       },
       {
         list: [
-          `The title “Drug Facts” must be in a type size larger than any other type in the panel.`,
-          `Headings must be at least 8-point, or 2 points larger than the text, whichever is bigger.`,
-          `Text must be at least 6-point.`,
-          `There must be at least 0.5-point leading (space between lines), letters may not touch, and type may not exceed 39 characters per inch.`,
-          `The title and headings are in bold italic.`,
-          `Type is black or one color on a white or other contrasting background.`,
-          `The panel sits in a box, with barlines separating the headings.`,
-          `Graphics such as the UPC barcode may not appear in or interrupt the panel, and hyphens are allowed only in compound words.`,
+          `The words “Drug Facts” are the largest type in the panel.`,
+          `Headings are in bold, so the eye can jump from one section to the next.`,
+          `The panel sits inside a box, with lines separating the sections.`,
+          `Type is plain, dark and printed on a light or contrasting background.`,
+          `Barcodes, logos and pictures stay outside the box.`,
         ],
       },
       {
-        p: `Those rules explain why Drug Facts boxes look so much alike from one brand to the next, even on very different products. The layout itself is the regulation at work. For more on barcodes, see [the barcode on an eye drop box](/guides/eye-drop-box-barcode).`,
+        p: `Those shared traits are why the panel is easy to find even on a crowded carton. For more on what sits outside it, see [the barcode on an eye drop box](/guides/eye-drop-box-barcode).`,
       },
       { h: 'Small boxes, extra panels and tables' },
       {
-        p: `Not every package has room for a full panel on one side. The rule handles that in several ways:`,
+        p: `Not every package has room for the whole panel on one side. You’ll see a few common solutions:`,
       },
       {
         list: [
-          `If the panel runs onto another side of the box, each later panel is titled “Drug Facts (continued),” and a graphic such as an arrow signals the continuation.`,
-          `Directions for three or more age groups or populations must be set out in a table.`,
-          `If the full format would take more than 60 percent of the package’s available labeling surface, a modified format is allowed for small packages.`,
+          `The panel continues onto another side of the box, under the title “Drug Facts (continued),” often with an arrow pointing the way.`,
+          `Directions that differ by age are set out in a small table, which is common on pain relievers and cough medicines.`,
+          `Very small packages use a condensed version of the panel, or a label that folds or peels open.`,
         ],
       },
       { h: 'The Questions? line and the phone number' },
       {
-        p: `When a label uses the optional Questions section, the phone number must appear in at least 6-point bold type, and the rule recommends listing the days and hours someone is available to answer. That line gives buyers a direct route to the company behind the product. For Quell, the number is {phone}, and our hours are {hours}.`,
+        p: `When a label uses the optional Questions section, it prints a phone number in bold, often with the days and hours someone is available to answer. That line gives you a direct route to the company behind the product, which is handy when the panel doesn’t answer something. For Quell, the number is {phone}, and our hours are {hours}.`,
       },
       { h: 'What the format doesn’t mean' },
       {
-        p: `A Drug Facts box shows that a product is labeled as an OTC drug in the required format. It doesn’t mean the FDA reviewed and approved that particular product, and it isn’t a quality seal. Many OTC drugs are marketed under monographs, which set conditions such as allowed ingredients and labeling. [How OTC eye drops are regulated](/guides/how-are-otc-eye-drops-regulated) explains the bigger picture.`,
+        p: `A Drug Facts box shows that a product is sold as an over-the-counter drug, laid out in the standard way. It isn’t a seal of quality, and it doesn’t mean that particular brand was singled out for approval. Most nonprescription drugs follow the rules written for their category, which decide what can go under the headings. [How OTC eye drops are regulated](/guides/how-are-otc-eye-drops-regulated) explains the bigger picture.`,
       },
       {
         p: `The format also can’t answer every personal question. A label can’t know whether you wear contact lenses, take other medicines or are buying for a child. Where it’s silent, a pharmacist or doctor is the right person to ask.`,
       },
+      { h: 'Using the panel to compare two boxes' },
+      {
+        list: [
+          `Start with Active ingredients and Purpose: they tell you what each product actually is, whatever the front says.`,
+          `Read Uses next, to check the product is meant for what you have in mind.`,
+          `Compare Warnings line by line; this is where products that look alike can differ most.`,
+          `Check Directions for how often you’d use it.`,
+          `Scan Inactive ingredients for anything you know you react to.`,
+        ],
+      },
       { h: 'Reading Quell’s panel' },
       {
-        p: `Quell’s carton follows the same structure. Its active ingredients are {actives}. The Uses section reads: {uses}. The Warnings include: {warnings}. The Directions say: {directions}. Other information has two lines. The first: {milky}. The second: {storage}. Its inactive ingredients are {inactives}. You can see the whole panel on our [Drug Facts page](/drug-facts), and the FDA’s advice applies here too: read the label each time you use the product.`,
+        p: `Quell’s carton follows the same structure. Its active ingredients are {actives}. The Uses section reads: {uses}. The Warnings include: {warnings}. The Directions say: {directions}. Other information has two lines. The first: {milky}. The second: {storage}. Its inactive ingredients are {inactives}. You can see the whole panel on our [Drug Facts page](/drug-facts). Read it again each time you open a new bottle, since it’s the quickest way to catch anything you’ve forgotten.`,
       },
     ],
     faq: [
       {
         q: 'When did the Drug Facts label start?',
-        a: `The FDA’s final rule setting the Drug Facts format, now 21 CFR 201.66, was published in the Federal Register on March 17, 1999. It has been amended several times since, most recently in 2011.`,
+        a: `The standard Drug Facts format was introduced in 1999, and over-the-counter packages moved to it over the next several years. Before then, each maker laid out its own label.`,
       },
       {
         q: 'Do all over-the-counter drugs need a Drug Facts label?',
-        a: `Yes. The scope of 21 CFR 201.66 covers the labeling of all OTC drug products, with a modified format allowed for very small packages.`,
+        a: `Yes. Every over-the-counter drug sold in the US carries one, with the same headings in the same order. Very small packages may use a condensed version.`,
       },
       {
-        q: 'What is the minimum font size on a Drug Facts label?',
-        a: `Under 21 CFR 201.66, text must be at least 6-point type and headings at least 8-point or 2 points larger than the text. The title must be larger than any other type in the panel.`,
+        q: 'Why do Drug Facts labels all look the same?',
+        a: `Because the format is shared by every over-the-counter drug: the same title, bold headings in a fixed order, a box with dividing lines and plain type. That way you can find the warnings or directions on any box without hunting.`,
       },
       {
         q: 'Is the Questions section required on Drug Facts?',
-        a: `No, it’s optional. If a label includes it, the rule requires a phone number in at least 6-point bold type and recommends listing the days and times someone is available.`,
+        a: `No, it’s optional. When a label includes it, it gives a phone number for questions about the product, often with the days and hours someone is there to answer.`,
       },
     ],
   },
@@ -1887,28 +1900,29 @@ export const DAILY_20261116_E: Guide[] = [
    * directory; (j) principal place of business allowed unless misleading.
    * Quell's seller and manufacturer names follow the existing who-makes-quell
    * guide and lib/product-content.ts (COMPANY, MANUFACTURER).
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'what-does-distributed-by-mean-on-a-label',
     title: 'What does “distributed by” mean on a drug label?',
     description:
-      '“Distributed by” names the company that sells a drug, not necessarily the one that made it. What federal labeling rule 21 CFR 201.1 requires and why.',
+      '“Distributed by” names the company that sells a drug, not necessarily the one that made it. What the phrase tells you, and how to use that name and address.',
     category: 'label',
     addedOn: '2026-11-16',
     body: [
       {
-        p: `“Distributed by” on a drug label means the company named is the distributor, the business that sells or markets the product, rather than the one that physically made it. A federal rule, 21 CFR 201.1, requires a drug label to name the manufacturer, packer or distributor and its place of business, and when a distributor is named, the name must carry a qualifying phrase such as “Distributed by.”`,
+        p: `“Distributed by” on a drug label means the company named is the distributor, the business that sells or markets the product, rather than the one that physically made it. Every over-the-counter drug label names a responsible company and its place of business, and the phrase in front of that name tells you which role the company plays: maker, packer or seller.`,
       },
-      { h: 'What the federal rule requires' },
+      { h: 'Why every label names a company' },
       {
-        p: `The regulation is 21 CFR 201.1, titled “Drugs; name and place of business of manufacturer, packer, or distributor.” Its first paragraph says a drug in finished package form is misbranded if its label doesn’t conspicuously bear the name and place of business of the manufacturer, packer or distributor. Prescription drugs dispensed by a pharmacy are handled differently, but for an over-the-counter product on a store shelf or bought online, that name and address must be on the label.`,
+        p: `A drug on a store shelf or bought online comes with the name and address of a business that stands behind it. That’s the company you can call with a question, the one that would announce a recall, and the one to contact if something seems wrong with a bottle. Prescription drugs handed over by a pharmacy work a little differently, since the pharmacy label adds its own details, but an over-the-counter box carries the company’s name itself.`,
       },
       {
-        p: `The rule also limits who can be named. Apart from what the section allows, no one other than the manufacturer, packer or distributor may be identified on the label. A label may also identify the holder or licensee of a trademark, and when more than one company is named, it may say which one to contact for information.`,
+        p: `Sometimes more than one company appears: a maker and a seller, or a brand owner and a licensee. When that happens, the label may say which one to contact for information, which saves you a call to the wrong place.`,
       },
       { h: 'The phrases you’ll see on a label' },
       {
-        p: `When the company named is a distributor, 201.1 requires its name to be qualified with one of these phrases, which may be abbreviated:`,
+        p: `When the company named is a distributor, its name is paired with one of a handful of phrases, often in abbreviated form:`,
       },
       {
         list: [
@@ -1923,24 +1937,33 @@ export const DAILY_20261116_E: Guide[] = [
       {
         p: `A packer gets its own wording: “Packed by” or “Packaged by.” Abbreviations such as “Dist. by” or “Mfd. for” are the same statements in shorter form.`,
       },
-      { h: 'A name with no phrase means “we made it”' },
+      { h: 'A name with no phrase usually means “we made it”' },
       {
-        p: `Here’s the part many people don’t know. Under 201.1, a company name on a drug label with no qualifying phrase is a representation that the company is the sole manufacturer. If that isn’t true, the rule calls the label false and misleading. So a bare name tells you something too: the company is claiming to have made the product itself.`,
+        p: `Here’s the part many people don’t know. When a company’s name stands on a drug label with no qualifying phrase in front of it, the label is presenting that company as the maker. So a bare name tells you something too: the company is saying it produced the product itself, not just sold it.`,
       },
       { h: 'Why the address might be an office' },
       {
-        p: `The place of business must include the street address, city, state and ZIP code. The street address can be left out if it’s listed in a current city or telephone directory. And a company that manufactures, packs or distributes somewhere other than its principal place of business may list that principal address instead, unless doing so would be misleading. That’s why the address on a label is often a headquarters or office rather than a factory.`,
+        p: `The place of business on a label gives the city, state and ZIP code, usually with a street address. It doesn’t have to be the factory. Many companies list their headquarters or main office, which is why the address on a box often points to an office building rather than a plant. If you want to reach the company, the address and any phone number printed nearby are the place to start.`,
       },
       {
-        p: `The name itself has rules too. For a corporation, it must be the actual corporate name, though it can be the name of a parent, subsidiary or affiliate under common ownership and control.`,
+        p: `For a corporation, the name is its actual corporate name, though it can be a parent, subsidiary or sister company under the same ownership. That’s why the name on a label sometimes differs from the brand name on the front of the box.`,
       },
       { h: 'Is a distributed drug different from a manufactured one?' },
       {
         p: `The phrase tells you about roles, not about quality. Plenty of drug companies design, own and sell a product while another company handles manufacturing, and the label simply has to say which is which. What matters for you is that the label tells you who is responsible for the product reaching the market and where to find them. That’s the name to use for questions, to check recalls, or to report a problem, along with the lot number from the package; see [what the lot number on eye drops means](/guides/what-the-lot-number-on-eye-drops-means).`,
       },
+      { h: 'When to use the name on the label' },
+      {
+        list: [
+          `A question about how to use the product that the Drug Facts panel doesn’t answer.`,
+          `A bottle that arrived damaged, looks different from the label’s description, or has a broken seal.`,
+          `A recall notice you want to match against the lot number on your box.`,
+          `A reaction you want to report. Stop using the drop, keep the bottle and box, and call your doctor or pharmacist as well as the company.`,
+        ],
+      },
       { h: 'Where to find it on an eye drop package' },
       {
-        p: `On eye drops, the company name and address usually sit outside the Drug Facts box, often on a side or bottom panel of the carton, and sometimes in small print on the bottle label. The Drug Facts box itself follows a separate format rule and holds the ingredients, uses, warnings and directions; our guide on [how to read an eye drop Drug Facts label](/guides/how-to-read-an-eye-drop-drug-facts-label) covers that panel. If a box has no company name or address anywhere, that’s a reason for caution; see [how to tell if eye drops are counterfeit](/guides/how-to-tell-if-eye-drops-are-counterfeit).`,
+        p: `On eye drops, the company name and address usually sit outside the Drug Facts box, often on a side or bottom panel of the carton, and sometimes in small print on the bottle label. The Drug Facts box itself holds the ingredients, uses, warnings and directions; our guide on [how to read an eye drop Drug Facts label](/guides/how-to-read-an-eye-drop-drug-facts-label) covers that panel. If a box has no company name or address anywhere, that’s a reason for caution; see [how to tell if eye drops are counterfeit](/guides/how-to-tell-if-eye-drops-are-counterfeit).`,
       },
       { h: 'Who’s behind Quell' },
       {
@@ -1953,19 +1976,19 @@ export const DAILY_20261116_E: Guide[] = [
     faq: [
       {
         q: 'Does distributed by mean the company didn’t make the product?',
-        a: `Usually, yes. Under 21 CFR 201.1, a company named only as a distributor must be labeled with a phrase like “Distributed by,” while a name with no phrase represents the company as the sole manufacturer.`,
+        a: `Usually, yes. A company named with a phrase like “Distributed by” sold or marketed the product, and another firm may have made it. A name with no phrase in front of it presents the company as the maker.`,
       },
       {
         q: 'What is the difference between manufactured by and distributed by?',
-        a: `“Manufactured by” names the company that made the product. “Distributed by” names a company that sells or markets it, which may have had another company make it. Federal rules require labels to say which role the named company plays.`,
+        a: `“Manufactured by” names the company that made the product. “Distributed by” names a company that sells or markets it, which may have had another company make it. The phrase on the label tells you which role the named company plays.`,
       },
       {
         q: 'Why is there an address on a drug label?',
-        a: `21 CFR 201.1 requires the name and place of business of the manufacturer, packer or distributor, including street address, city, state and ZIP code, so you know who is responsible and how to reach them.`,
+        a: `So you know which company is responsible for the product and how to reach it. The label gives the business’s city, state and ZIP code, usually with a street address, which is often a main office rather than a factory.`,
       },
       {
         q: 'What does Mfd. for mean on a label?',
-        a: `It’s short for “Manufactured for.” The named company had the product made for it by another firm. Federal labeling rules allow these qualifying phrases to be abbreviated.`,
+        a: `It’s short for “Manufactured for.” The named company had the product made for it by another firm. Labels often shorten these phrases, so “Dist. by” and “Mfd. by” are common too.`,
       },
     ],
   },

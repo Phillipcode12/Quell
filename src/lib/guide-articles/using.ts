@@ -438,15 +438,16 @@ export const USING_GUIDES: Guide[] = [
     ],
   },
 
+  /* FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'how-to-dispose-of-eye-drops',
     title: 'How to dispose of eye drops',
     description:
-      'Getting rid of eye drops you no longer need: take-back sites, the household-trash method the FDA describes, and what to do with an empty bottle.',
+      'Getting rid of eye drops you no longer need: take-back sites, a simple household-trash method for most medicines, and what to do with an empty bottle.',
     category: 'using',
     body: [
       {
-        p: `Check the label first for disposal instructions; Quell’s carton doesn’t give any. After that, the simplest safe options are a drug take-back site or the household-trash method the FDA describes for most medicines.`,
+        p: `Check the label first for disposal instructions; Quell’s carton doesn’t give any. After that, the simplest safe options are a drug take-back site or a household-trash method that works for most medicines.`,
       },
       { h: 'Take-back sites' },
       {

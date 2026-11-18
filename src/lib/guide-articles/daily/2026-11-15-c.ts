@@ -1300,17 +1300,18 @@ export const DAILY_20261115_C: Guide[] = [
    *   oleaginous ingredients incl. light mineral oil, mineral oil, paraffin, petrolatum,
    *   white ointment, white petrolatum, white wax, yellow wax)
    * Combination rules (349.14, 349.30) deliberately not discussed.
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'demulcent-vs-emollient-eye-drops',
     title: 'Demulcent vs. emollient eye drops',
     description:
-      'Demulcents are water-friendly lubricants; emollients are oils. How FDA’s eye drop rules sort the two, where each fits in the tear film, and what Quell uses.',
+      'Demulcents are water-friendly lubricants; emollients are oils. How to tell them apart on a label, where each fits in the tear film, and what Quell uses.',
     category: 'formula',
     addedOn: '2026-11-15',
     body: [
       {
-        p: `A demulcent is a water-friendly lubricant, usually a polymer, that coats and soothes the eye’s surface; an emollient is a fat or oil that protects and softens. FDA’s over-the-counter eye drop rules, 21 CFR Part 349 (now published as OTC Monograph M018), list glycerin and polysorbate 80 as demulcents and light mineral oil as an emollient. Quell contains all three.`,
+        p: `A demulcent is a water-friendly lubricant, usually a polymer or a liquid like glycerin, that coats and soothes the eye’s surface; an emollient is a fat or oil that protects and softens. On a Drug Facts panel, a demulcent’s purpose is usually printed as “lubricant” and an emollient’s as “emollient.” Quell contains both kinds: two demulcents and one emollient.`,
       },
       { h: 'The short version, side by side' },
       {
@@ -1319,19 +1320,25 @@ export const DAILY_20261115_C: Guide[] = [
           `On the label: a demulcent’s purpose is usually printed as “lubricant,” an emollient’s as “emollient.”`,
           `In the tear film: demulcents mix into the watery part of tears; emollients belong with the oil.`,
           `In products: thick eye ointments are built mainly on emollients such as petrolatum, many drops rely on demulcents alone, and some drops combine the two.`,
-          `In the regulation: demulcents are listed in 21 CFR 349.12, emollients in 349.14.`,
+          `In the bottle: a demulcent-only drop is usually clear, while one with an emollient often looks cloudy or milky.`,
         ],
       },
-      { h: 'How the regulation defines each' },
+      { h: 'What each word means' },
       {
-        p: `Section 349.3 of the federal rules gives both definitions. A demulcent, in its words, is usually a water-soluble polymer, applied topically to the eye, that protects and lubricates mucous membrane surfaces and relieves dryness and irritation. An emollient is usually a fat or oil, applied locally to the eyelids, that protects or softens tissues and keeps them from drying and cracking.`,
+        p: `“Demulcent” comes from a Latin word for stroking or soothing. In an eye drop, it means an ingredient that dissolves in water, thickens the drop a little and forms a slippery coat over the eye’s surface, so the lids glide more easily and the surface feels less dry and scratchy.`,
       },
       {
-        p: `Notice the difference in target. The demulcent definition is about the surface of the eye; the emollient definition is written around the eyelids, which reflects how many emollient products are thick ointments. Light mineral oil is a thinner oil than petrolatum, and in Quell it’s part of a drop rather than an ointment.`,
+        p: `“Emollient” shares a root with “mollify,” to soften. An emollient is an oil or fat that sits on a surface, softens it and slows water from leaving it. In skin creams it’s the part that keeps hands from cracking. In eye products, emollients are the backbone of thick ointments, and a lighter one, light mineral oil, can be blended into a drop instead.`,
       },
-      { h: 'The two lists, by group' },
+      { h: 'Common examples of each' },
       {
-        p: `Glycerin and polysorbate 80 both sit in 349.12’s liquid polyols group, next to propylene glycol and two polyethylene glycols. The same section also covers the cellulose derivatives, such as hypromellose, along with polyvinyl alcohol, povidone, gelatin and dextran 70. Light mineral oil sits in 349.14’s oleaginous, or oily, group with mineral oil, petrolatum, paraffin and waxes; the only other emollient group is lanolin.`,
+        p: `Glycerin and polysorbate 80 are among the most common demulcents on eye drop boxes, along with propylene glycol and the polyethylene glycols. Other demulcents you may spot belong to the cellulose family, such as hypromellose, or are polymers like polyvinyl alcohol and povidone. On the emollient side, light mineral oil, mineral oil, petrolatum and white petrolatum turn up most often, with lanolin and waxes in some ointments.`,
+      },
+      {
+        list: [
+          `Demulcents: glycerin (also written glycerol), polysorbate 80, propylene glycol, hypromellose, polyvinyl alcohol, povidone.`,
+          `Emollients: light mineral oil, mineral oil, petrolatum, white petrolatum, lanolin.`,
+        ],
       },
       { h: 'Where each one works in the tear film' },
       {
@@ -1346,10 +1353,11 @@ export const DAILY_20261115_C: Guide[] = [
       },
       {
         list: [
-          `“Lubricant” beside an ingredient usually means a demulcent from 349.12.`,
-          `“Emollient” means an ingredient from 349.14.`,
+          `“Lubricant” beside an ingredient usually means a demulcent.`,
+          `“Emollient” means an oil or fat.`,
           `If every active is a lubricant, the drop is demulcent-only.`,
           `If there’s at least one emollient, the drop contains an oil and may look cloudy or milky instead of clear.`,
+          `Oils listed under inactive ingredients, like emu oil in Quell, are part of the formula but aren’t counted as actives.`,
         ],
       },
       {
@@ -1371,11 +1379,11 @@ export const DAILY_20261115_C: Guide[] = [
     faq: [
       {
         q: 'Is glycerin an emollient or a demulcent?',
-        a: `FDA’s over-the-counter eye drop rules list glycerin as a demulcent, in the liquid polyols group of 21 CFR 349.12. Quell’s label calls it glycerol and gives its purpose as lubricant.`,
+        a: `Glycerin is a demulcent, a water-friendly lubricant from the liquid polyol family. Quell’s label calls it glycerol and gives its purpose as lubricant.`,
       },
       {
         q: 'What does demulcent and emollient mean?',
-        a: `A demulcent is a soothing lubricant, usually water-soluble, that coats a surface. An emollient is an oil or fat that softens and protects. In eye products, FDA’s rules list each category separately.`,
+        a: `A demulcent is a soothing lubricant, usually water-soluble, that coats a surface. An emollient is an oil or fat that softens and protects. On an eye drop label, the purpose column tells you which one each active is.`,
       },
       {
         q: 'Can an eye drop contain both a demulcent and an emollient?',
@@ -1383,7 +1391,7 @@ export const DAILY_20261115_C: Guide[] = [
       },
       {
         q: 'Is mineral oil a demulcent?',
-        a: `No. FDA’s rules list light mineral oil and mineral oil as emollients, in the oleaginous group of 21 CFR 349.14, not among the demulcents in 349.12.`,
+        a: `No. Mineral oil and light mineral oil are emollients: oils that soften and protect rather than dissolve in tears. On Quell’s label, light mineral oil’s purpose is printed as “emollient.”`,
       },
     ],
   },

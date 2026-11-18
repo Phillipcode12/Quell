@@ -333,6 +333,9 @@ export const DAILY_20261114_B: Guide[] = [
       },
     ],
   },
+  /*
+   * FDA references removed 2026-11-18 at Phillip's request.
+   */
   {
     slug: 'can-you-buy-eye-drops-with-an-hra',
     title: 'Can you buy eye drops with an HRA?',
@@ -360,7 +363,7 @@ export const DAILY_20261114_B: Guide[] = [
       },
       { h: 'Do lubricating eye drops count?' },
       {
-        p: `Quell is sold over the counter with a standard Drug Facts panel, the format FDA requires for nonprescription drugs. Its Uses line reads: {uses}. That makes it a medicine, not a cosmetic or a general wellness product, which is the distinction most plan administrators look for. You can see the whole panel on our [Drug Facts page](/drug-facts).`,
+        p: `Quell is sold over the counter with a standard Drug Facts panel, the same panel every nonprescription drug in the US carries. Its Uses line reads: {uses}. That makes it a medicine, not a cosmetic or a general wellness product, which is the distinction most plan administrators look for. You can see the whole panel on our [Drug Facts page](/drug-facts).`,
       },
       {
         p: `What we can’t tell you is how your administrator will code a specific purchase. Some plans keep a list of eligible product categories; others review each claim. If you’re unsure, ask the administrator before you order, or submit one claim and see how it’s handled before buying more.`,
@@ -1327,23 +1330,26 @@ export const DAILY_20261114_B: Guide[] = [
       },
     ],
   },
+  /*
+   * FDA references removed 2026-11-18 at Phillip's request.
+   */
   {
     slug: 'are-eye-drops-sterile',
     title: 'Are eye drops sterile?',
     description:
-      'Yes. Federal rules require eye drops to be sterile when packaged. What that means for a preservative-free bottle like Quell, and how to keep it clean.',
+      'Yes. Eye drops are sterile when they’re sealed. What that means for a preservative-free bottle like Quell, and how to keep it clean once it’s open.',
     category: 'label',
     addedOn: '2026-11-14',
     body: [
       {
-        p: `Yes. Federal regulations require eye drops to be sterile. FDA’s rule for ophthalmic preparations, 21 CFR 200.50, says products for use in the eye should be sterile and that containers must be sterile when filled and closed. Once you open the bottle, keeping it clean is up to you: don’t touch the tip to anything, and use only an intact, sealed bottle.`,
+        p: `Yes. Eye drops are made sterile, and the bottle is sterile when it’s filled and sealed, because anything going into the eye has to be free of germs. That holds until you break the seal. Once you open the bottle, keeping it clean is up to you: don’t touch the tip to anything, and use only an intact, sealed bottle.`,
       },
-      { h: 'What federal rules say' },
+      { h: 'What sterile means for an eye drop' },
       {
-        p: `The regulation on ophthalmic preparations, published in Title 21 of the Code of Federal Regulations at section 200.50 and available on govinfo.gov, covers drugs meant for the eye, including cleansing products. It says these preparations should be sterile, and that their containers must be sterile at the time of filling and closing.`,
+        p: `Sterile means free of living germs, not just clean. An eye drop is filled and capped in conditions built to keep it that way, and the sealed bottle holds it in that state on the shelf. The eye’s surface is delicate and wet, which is exactly why drops are held to a higher standard than a lotion or a face wash.`,
       },
       {
-        p: `The same section requires over-the-counter eye products to be sealed so they can’t be opened without breaking the seal, and to follow federal tamper-resistant packaging rules. That’s why bottles come with a seal you break the first time you use them.`,
+        p: `Over-the-counter eye products also come sealed so they can’t be opened without breaking the seal. That’s why bottles come with a band or seal you break the first time you use them, and why an unbroken seal is your first check on a new bottle.`,
       },
       { h: 'Sterile in the box, clean in your hand' },
       {
@@ -1367,7 +1373,7 @@ export const DAILY_20261114_B: Guide[] = [
         p: `Many eye drops contain preservatives, which help limit contamination after a bottle is opened. Quell is preservative-free, so careful handling matters even more. Our guide on [what preservative-free means](/guides/what-does-preservative-free-mean) explains the difference.`,
       },
       {
-        p: `Preservative-free doesn’t mean less sterile. Both kinds of eye drops have to meet the same federal sterility requirement when they’re packaged. The difference is what happens after opening, which is why the handling line and clean hands matter.`,
+        p: `Preservative-free doesn’t mean less sterile. Both kinds of eye drops are sterile when they’re sealed. The difference is what happens after opening, which is why the handling line and clean hands matter.`,
       },
       { h: 'What’s in Quell' },
       {
@@ -1403,7 +1409,7 @@ export const DAILY_20261114_B: Guide[] = [
     faq: [
       {
         q: 'Are all eye drops sterile?',
-        a: `Federal rules require eye drops to be sterile, with containers sterile when filled and closed. That applies to both preserved and preservative-free products.`,
+        a: `Eye drops are made sterile, and the bottle is sterile when it’s filled and sealed. That’s true of preserved and preservative-free products alike; what differs is how they hold up once opened.`,
       },
       {
         q: 'Do eye drops stay sterile after opening?',
@@ -1415,7 +1421,7 @@ export const DAILY_20261114_B: Guide[] = [
       },
       {
         q: 'Why do eye drops have a tamper seal?',
-        a: `Federal rules require over-the-counter eye products to be sealed so they can’t be opened without breaking the seal. If yours is broken on arrival, don’t use it; contact us for a replacement.`,
+        a: `The seal shows you the bottle hasn’t been opened since it was filled, so the drops inside are still sterile. If yours is broken on arrival, don’t use it; contact us for a replacement.`,
       },
     ],
   },

@@ -1201,6 +1201,7 @@ export const DAILY_20261117_B: Guide[] = [
    * - https://www.fda.gov/drugs/quick-tips-buying-medicines-over-internet/besaferx-your-source-online-pharmacy-information
    *   (BeSafeRx "helps consumers learn about how to safely buy prescription
    *   medicines online")
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'is-it-legal-to-buy-eye-drops-online',
@@ -1215,37 +1216,37 @@ export const DAILY_20261117_B: Guide[] = [
       },
       { h: 'Over-the-counter vs. prescription eye drops' },
       {
-        p: `In the United States, eye drops fall into two groups. Over-the-counter (OTC) drops are sold without a prescription, and every one carries a Drug Facts panel on the box in a format the FDA sets out, listing the active ingredients, uses, warnings and directions. Lubricating eye drops, including Quell, are in this group. Prescription eye drops require a prescriber’s order and are dispensed by a pharmacy with the pharmacy’s own label.`,
+        p: `In the United States, eye drops fall into two groups. Over-the-counter (OTC) drops are sold without a prescription, and every one carries a Drug Facts panel on the box listing the active ingredients, uses, warnings and directions in the same order. Lubricating eye drops, including Quell, are in this group. Prescription eye drops require a prescriber’s order and are dispensed by a pharmacy with the pharmacy’s own label.`,
       },
       {
         p: `If you’re not sure which kind you have, look for the Drug Facts heading on the carton. Our guide to [what eye drops you can buy without a prescription](/guides/what-eye-drops-can-i-buy-without-a-prescription) goes further.`,
       },
       { h: 'Can you buy prescription eye drops online?' },
       {
-        p: `You can fill a prescription through a licensed online pharmacy, but the FDA warns about websites that sell prescription drugs without one. Its consumer guidance lists “do not require a doctor’s prescription” as the first warning sign of an unsafe online pharmacy. The FDA’s BeSafeRx campaign exists specifically for buying prescription medicine online, and it includes a tool for checking a pharmacy’s license with your state board of pharmacy.`,
+        p: `You can fill a prescription through a licensed online pharmacy. A legitimate one asks for your prescription and holds a license from a state board of pharmacy, and you can call that board, or ask the pharmacist you already use, to check a pharmacy you haven’t tried before. A website that offers prescription eye drops without asking for a prescription is a warning sign on its own.`,
       },
       {
-        p: `BeSafeRx is about prescription drugs, so you won’t find OTC eye drop sellers listed there. That doesn’t make an OTC seller suspicious; it just means you check them a different way.`,
+        p: `Over-the-counter drops are a separate case: no prescription is involved, and ordinary drugstores and makers sell them online every day. That doesn’t make an OTC seller suspicious; it just means you check the seller itself rather than a prescription step.`,
       },
       { h: 'How to tell a legitimate eye drop seller' },
       {
-        p: `Several of the FDA’s warning signs for unsafe online pharmacies apply to any website selling medicine. Before you order, check for these:`,
+        p: `A few checks apply to any website selling medicine, prescription or not. Before you order, look for these:`,
       },
       {
         list: [
           `A physical US address and a phone number you can call.`,
-          `Prices that make sense; the FDA flags “deep discounts or prices that seem too good to be true.”`,
+          `Prices that make sense; a deep discount on something that costs more everywhere else is a reason to pause.`,
           `A clear privacy policy explaining how your payment and personal information are protected.`,
           `A full Drug Facts panel for the product, with the active ingredients and directions shown before you buy.`,
           `Terms of sale that explain shipping and refunds in plain language.`,
         ],
       },
       {
-        p: `And after delivery, the FDA says to be wary of packaging that is broken, damaged or in a foreign language, or that has no expiration date or an expired one. Our guides to [spotting a fake eye drop website](/guides/how-to-spot-a-fake-eye-drop-website) and [telling if eye drops are counterfeit](/guides/how-to-tell-if-eye-drops-are-counterfeit) go through each sign with examples.`,
+        p: `And after delivery, be wary of packaging that is broken, damaged or in a foreign language, or that has no expiration date or an expired one. Our guides to [spotting a fake eye drop website](/guides/how-to-spot-a-fake-eye-drop-website) and [telling if eye drops are counterfeit](/guides/how-to-tell-if-eye-drops-are-counterfeit) go through each sign with examples.`,
       },
       { h: 'Buying from overseas websites' },
       {
-        p: `Eye drops made for another country’s market may have a different label, different ingredients or none of the US Drug Facts format. That makes it hard to know what you’re putting in your eye. The FDA’s list of warning signs includes packaging in a foreign language. Buying from a US seller that ships from inside the country avoids that problem; we cover the rest in [buying eye drops from overseas websites](/guides/is-it-safe-to-buy-eye-drops-from-overseas-websites).`,
+        p: `Eye drops made for another country’s market may have a different label, different ingredients or none of the US Drug Facts format. That makes it hard to know what you’re putting in your eye. A carton you can’t read is a reason to set the bottle aside. Buying from a US seller that ships from inside the country avoids that problem; we cover the rest in [buying eye drops from overseas websites](/guides/is-it-safe-to-buy-eye-drops-from-overseas-websites).`,
       },
       { h: 'Do you need ID or an account?' },
       {
@@ -1275,7 +1276,7 @@ export const DAILY_20261117_B: Guide[] = [
       },
       {
         q: 'Is it safe to buy prescription eye drops online?',
-        a: `The FDA says to use a state-licensed pharmacy that requires a prescription, and its BeSafeRx site can check a pharmacy’s license. A site that skips the prescription is a warning sign.`,
+        a: `Use a state-licensed pharmacy that asks for your prescription; your state board of pharmacy can confirm its license. A site that skips the prescription is a warning sign.`,
       },
       {
         q: 'How do I know if an online eye drop store is legitimate?',
@@ -1963,28 +1964,29 @@ export const DAILY_20261117_B: Guide[] = [
    *   dot leaders or other graphics tie each active to it.)
    * Quell's purposes (Lubricant, Lubricant, Emollient) are from DRUG_FACTS in
    * src/lib/product-content.ts.
+   * FDA references removed 2026-11-18 at Phillip's request.
    */
   {
     slug: 'what-does-purpose-mean-on-a-drug-facts-label',
     title: 'What does Purpose mean on a Drug Facts label?',
     description:
-      'Purpose is the column beside each active ingredient that says what job it does, in a word or two. What FDA rules require there, and how to read it on Quell.',
+      'Purpose is the column beside each active ingredient that says what job it does, in a word or two. What it tells you, and how to read it on Quell’s panel.',
     category: 'label',
     addedOn: '2026-11-17',
     body: [
       {
-        p: `On a Drug Facts label, Purpose is the heading to the right of Active ingredients. Beside each active ingredient it names that ingredient’s job in a word or two: its general drug category or main intended action. FDA rules at 21 CFR 201.66 require it on every over-the-counter drug. On Quell, the panel lists a purpose beside each active: lubricant for two of them and emollient for the third.`,
+        p: `On a Drug Facts label, Purpose is the heading to the right of Active ingredients. Beside each active ingredient it names that ingredient’s job in a word or two: its general drug category or main intended action. Every over-the-counter drug sold in the US carries it in the same spot. On Quell, the panel lists a purpose beside each active: lubricant for two of them and emollient for the third.`,
       },
-      { h: 'What the FDA rule says' },
+      { h: 'What the Purpose column tells you' },
       {
-        p: `The format of the Drug Facts panel is set by a federal regulation, 21 CFR 201.66. Paragraph (c)(3) of that rule calls for the heading “Purpose” or “Purposes,” followed by the general pharmacological category, or the principal intended action, of the drug. When a product has more than one active ingredient, the purpose is given for each one.`,
+        p: `The heading reads “Purpose” or “Purposes,” and under it sits a short label for the job each active does: a general drug category or a main intended action, such as lubricant, emollient or pain reliever. When a product has more than one active ingredient, each gets its own purpose, even if the words end up the same.`,
       },
       {
         p: `In plain terms, Purpose answers “what is this ingredient here to do?” It doesn’t say how much of it there is (that’s in the Active ingredients column), and it doesn’t say what symptoms the product is for (that’s the Uses section, further down).`,
       },
       { h: 'Where Purpose sits on the panel' },
       {
-        p: `The same rule fixes the order of the panel’s sections. In order, they are:`,
+        p: `Every Drug Facts panel runs its sections in the same order:`,
       },
       {
         list: [
@@ -2000,11 +2002,11 @@ export const DAILY_20261117_B: Guide[] = [
         ],
       },
       {
-        p: `Active ingredients and Purpose share the top rows of the panel. Under the rule, the actives are aligned to the left and their purposes to the right, so you can read straight across from each ingredient to its job. If there’s more than one active ingredient, they’re listed in alphabetical order.`,
+        p: `Active ingredients and Purpose share the top rows of the panel. The actives sit on the left and their purposes on the right, so you can read straight across from each ingredient to its job.`,
       },
       { h: 'Why one purpose can cover two ingredients' },
       {
-        p: `The rule allows a shortcut. If two or more active ingredients have the same purpose, the label doesn’t have to repeat the word for each one, as long as brackets, dot leaders or another graphic make it clear which ingredients share it. So on some panels you’ll see one purpose word set beside a bracket that spans two lines. Both ingredients have that purpose.`,
+        p: `Some labels take a shortcut. If two or more active ingredients have the same purpose, the panel may print the word once, with brackets, dot leaders or another mark showing which ingredients share it. So on some panels you’ll see one purpose word set beside a bracket that spans two lines. Both ingredients have that purpose.`,
       },
       { h: 'Purpose vs. Uses' },
       {
@@ -2046,7 +2048,7 @@ export const DAILY_20261117_B: Guide[] = [
     faq: [
       {
         q: 'What is the purpose section on a Drug Facts label?',
-        a: `It’s the column beside Active ingredients that names each active ingredient’s general drug category or main intended action. FDA rule 21 CFR 201.66 requires it on over-the-counter drug labels.`,
+        a: `It’s the column beside Active ingredients that names each active ingredient’s general drug category or main intended action. Every over-the-counter drug label in the US has one.`,
       },
       {
         q: 'What is the difference between purpose and uses on a drug label?',
@@ -2054,7 +2056,7 @@ export const DAILY_20261117_B: Guide[] = [
       },
       {
         q: 'Why does one purpose cover two ingredients on some labels?',
-        a: `The FDA rule lets a label list a shared purpose once, as long as brackets, dot leaders or a similar graphic show which active ingredients it applies to.`,
+        a: `When two actives do the same job, some labels print the purpose once and tie it to both with a bracket, dot leaders or a similar mark. Read it as applying to every ingredient the mark reaches.`,
       },
       {
         q: 'What are the purposes of Quell’s active ingredients?',

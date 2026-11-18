@@ -825,41 +825,38 @@ export const DAILY_20261111_E: Guide[] = [
     ],
   },
 
+  /* FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'what-eye-drops-can-i-buy-without-a-prescription',
     title: 'What eye drops can you buy without a prescription?',
     description:
-      'Which eye drops are sold over the counter in the US, the FDA rule they follow, how to spot one by its Drug Facts panel, and what still needs a prescription.',
+      'Which kinds of eye drops are sold over the counter in the US, how to spot one by its Drug Facts panel, and when an eye medicine needs a prescription.',
     category: 'choosing',
     addedOn: '2026-11-11',
     body: [
       {
-        p: `In the US, you can buy eye drops without a prescription when their active ingredients and labeling fit the FDA’s rule for over-the-counter ophthalmic products, 21 CFR part 349. That covers lubricant and protectant drops (demulcents and emollients), plus astringents, hypertonicity agents, vasoconstrictors and eyewashes. You can recognize one by its Drug Facts panel. Eye medicines outside that rule generally need a prescription.`,
+        p: `In the US, you can buy lubricating drops for dryness and minor irritation without a prescription, along with eyewashes for rinsing and a few other drops for minor irritation. You can recognize any of them by the Drug Facts panel on the box. Eye medicines meant for a specific medical condition usually need a prescription from an eye doctor, and a pharmacist can tell you which side of that line a product sits on.`,
       },
-      { h: 'The rule behind over-the-counter eye drops' },
+      { h: 'Over-the-counter vs prescription eye drops' },
       {
-        p: `The FDA sets the conditions for nonprescription eye products in Title 21 of the Code of Federal Regulations, part 349, titled “Ophthalmic Drug Products for Over-the-Counter Human Use.” It works like a recipe book rather than an approval for each brand. It lists which active ingredients are allowed in each category, what combinations are permitted, and what the label must say. A product that meets those conditions can be sold without a prescription.`,
+        p: `An over-the-counter drop is sold so you can choose it and use it on your own, which means its box has to carry everything you need: what it’s for, how to use it, when not to, and when to stop. Its ingredients come from a standard set that has been sold this way for years, and the label wording follows the same pattern from one brand to the next. A prescription drop works differently. Your eye doctor picks it for you, and the pharmacy label carries their instructions for your eyes in particular.`,
       },
-      { h: 'The categories in part 349' },
-      {
-        p: `Part 349’s active ingredient sections cover:`,
-      },
+      { h: 'The kinds you’ll find on a drugstore shelf' },
       {
         list: [
-          `Ophthalmic demulcents, which include glycerin, polysorbate 80, several cellulose derivatives, polyethylene glycols, propylene glycol, polyvinyl alcohol and povidone.`,
-          `Ophthalmic emollients, which include lanolin, light mineral oil, mineral oil, paraffin, petrolatum and certain waxes.`,
-          `An ophthalmic astringent.`,
-          `An ophthalmic hypertonicity agent.`,
-          `Ophthalmic vasoconstrictors.`,
-          `Eyewashes.`,
+          `Lubricant drops, often sold as artificial tears, for the feeling of dryness and the discomfort that comes with it.`,
+          `Oil-containing lubricants, which add an oil to the formula to sit on the surface of the tear film.`,
+          `Gels and ointments, thicker versions that many people keep for bedtime.`,
+          `Eyewashes, a larger bottle of rinse for flushing out loose debris.`,
+          `Drops labeled for minor irritation from things like smoke or swimming.`,
         ],
       },
       {
-        p: `Lubricating drops, the kind most people mean by “eye drops for dryness,” fall into the first two groups. Quell is an example: its active ingredients are {actives}. Glycerol is another name for glycerin, and polysorbate 80 sits in the demulcent list, while light mineral oil appears among the emollients.`,
+        p: `Lubricating drops, the kind most people mean by “eye drops for dryness,” are the biggest group. Quell is one: its active ingredients are {actives}, and the Purpose column next to each names its job. Quell is designed to reinforce the tear film’s oil layer to help reduce moisture loss, which places it with the oil-containing lubricants. Glycerol is another name for glycerin.`,
       },
       { h: 'How to recognize an OTC eye drop on the shelf' },
       {
-        p: `A separate FDA regulation, 21 CFR 201.66, sets the format for over-the-counter drug labels. It requires a box headed Drug Facts with sections in a fixed order:`,
+        p: `Every over-the-counter drug sold in the US carries a box headed Drug Facts, with its sections in the same order:`,
       },
       {
         list: [
@@ -878,14 +875,23 @@ export const DAILY_20261111_E: Guide[] = [
       },
       { h: 'Read the Uses line to know what kind of drop it is' },
       {
-        p: `Part 349 also limits what a demulcent or emollient product may say it’s for. The allowed indications talk about relieving dryness, discomfort from minor irritation, or exposure to wind or sun, and protecting against further irritation. Quell’s Uses line is one of those: {uses}. If a drop’s Uses line is about something else, it’s a different kind of product, and comparing it to a lubricant isn’t like-for-like. [The Uses section on an eye drop label](/guides/the-uses-section) goes deeper.`,
+        p: `Two drops can share a shelf and do quite different jobs. The Uses line settles which job a drop is labeled for. Lubricants talk about dryness and the discomfort around it; Quell’s Uses line reads {uses}. If a drop’s Uses line describes something else, it’s a different kind of product, and comparing it with a lubricant isn’t like-for-like. [The Uses section on an eye drop label](/guides/the-uses-section) goes deeper.`,
       },
       { h: 'What kinds of eye products need a prescription' },
       {
-        p: `Broadly, anything whose active ingredient isn’t in part 349, or whose intended use goes beyond what the monograph allows, has to reach the market another way, typically through an FDA application for that specific drug, and many of those are prescription-only. That includes eye medicines meant to address a specific medical condition rather than temporary dryness or minor irritation. Only an eye doctor can decide whether you need one, and they’ll write the prescription if so.`,
+        p: `Broadly, eye medicines aimed at a specific medical condition, rather than temporary dryness or minor irritation, are prescription products. Your eye doctor looks at your eyes, decides whether you need one, and writes it if so. A pharmacist can’t write that prescription, but they can tell you whether a product you’ve heard about is sold over the counter at all.`,
       },
       {
         p: `If you aren’t sure which you need, the [dry eye self-check](/self-check) is a starting point for a conversation with your doctor. It’s not a diagnosis.`,
+      },
+      { h: 'Questions worth asking at the pharmacy counter' },
+      {
+        list: [
+          `Is this sold over the counter, or would I need a prescription for it?`,
+          `Which of these drops is a lubricant, and which is for something else?`,
+          `Is there anything on this ingredient list I should avoid, given what I already take?`,
+          `I wear contact lenses. Does this label cover them? (Quell’s label doesn’t, so that one goes to your eye doctor.)`,
+        ],
       },
       { h: 'Buying OTC drops online' },
       {
@@ -904,19 +910,20 @@ export const DAILY_20261111_E: Guide[] = [
     faq: [
       {
         q: 'What eye drops can I buy without a prescription?',
-        a: `Drops whose active ingredients and labels meet the FDA’s OTC ophthalmic rule, 21 CFR part 349. That includes lubricant and protectant drops made with demulcents or emollients, plus a few other categories such as eyewashes.`,
+        a: `Lubricating drops for dryness and minor irritation, eyewashes and a few other drops for minor irritation. Each one carries a Drug Facts panel on the box; eye medicines for a specific condition usually need an eye doctor’s prescription.`,
       },
       {
         q: 'How can I tell if eye drops are over the counter?',
-        a: `Look for a Drug Facts box on the carton. FDA rules require it on OTC drugs, with sections from Active ingredients through Questions in a set order.`,
+        a: `Look for a Drug Facts box on the carton. Every OTC drug carries one, with sections from Active ingredients through Questions in the same order, while a prescription drop comes with a pharmacy label instead.`,
       },
       {
         q: 'Is glycerin an OTC eye drop ingredient?',
-        a: `Yes. 21 CFR 349.12 lists glycerin among the ophthalmic demulcents allowed in nonprescription eye drops. Quell’s label lists {glycerol} as one of its actives.`,
+        a: `Yes. Glycerin, also written glycerol, is a familiar lubricant in drops sold over the counter. Quell’s label lists {glycerol} as one of its actives.`,
       },
     ],
   },
 
+  /* FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'are-preservative-free-eye-drops-worth-it',
     title: 'Are preservative-free eye drops worth it?',
@@ -962,7 +969,7 @@ export const DAILY_20261111_E: Guide[] = [
       },
       { h: 'What preservative-free means in a multi-dose bottle' },
       {
-        p: `A multi-dose bottle is opened, used and recapped many times. FDA’s rule for over-the-counter eye products, 21 CFR part 349, requires multi-use containers to carry a warning against touching the tip to any surface and to tell you to replace the cap after use. Quell’s version of the tip warning reads: {tip}. With no preservative in the formula, that instruction is the main line of defense, so it’s worth building a routine around it:`,
+        p: `A multi-dose bottle is opened, used and recapped many times, so its label carries a warning about the tip and the cap. Quell’s version reads: {tip}. With no preservative in the formula, that instruction is the main line of defense, so it’s worth building a routine around it:`,
       },
       {
         list: [
@@ -1015,6 +1022,7 @@ export const DAILY_20261111_E: Guide[] = [
     ],
   },
 
+  /* FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'are-natural-eye-drops-better',
     title: 'Are natural eye drops better than regular ones?',
@@ -1024,18 +1032,18 @@ export const DAILY_20261111_E: Guide[] = [
     addedOn: '2026-11-11',
     body: [
       {
-        p: `Not automatically. “Natural” isn’t a regulatory category for over-the-counter eye drops, so the word on a box doesn’t tell you how a drop works or whether it suits you. What the label’s Uses rest on are the active ingredients, which follow FDA’s rule for OTC eye products. Natural inactive ingredients can be a reason to prefer a drop, but they come with their own cautions.`,
+        p: `Not automatically. “Natural” has no set meaning on an over-the-counter eye drop, so the word on a box doesn’t tell you how a drop works or whether it suits you. What the label’s Uses rest on are the active ingredients listed at the top of the Drug Facts panel. Natural inactive ingredients can be a reason to prefer a drop, but they come with their own cautions.`,
       },
       { h: 'What “natural” means on an eye drop box' },
       {
-        p: `There’s no FDA definition of “natural” for eye drops. The federal rule that governs over-the-counter eye products, 21 CFR part 349, sorts drops by their active ingredients, such as demulcents and emollients, and spells out the allowed label claims for each. It says nothing about natural versus synthetic. So when a maker calls a drop natural, it’s a description of some of its ingredients, not a separate class of product with its own standard.`,
+        p: `No shared definition of “natural” applies to eye drops. A Drug Facts panel sorts a drop by what its active ingredients do, with a Purpose such as Lubricant beside each one, and its Uses line states what those actives are labeled for. Nowhere does the panel ask whether an ingredient came from a plant, an animal or a lab. So when a maker calls a drop natural, it’s a description of some of its ingredients, not a separate class of product with its own standard.`,
       },
       { h: 'Where the label’s Uses come from' },
       {
         p: `The Drug Facts panel separates active ingredients, which carry the drop’s labeled purpose, from inactive ones, which make up the rest of the formula. In Quell, the actives are {actives}. Those are the ingredients the Uses line stands on: {uses}.`,
       },
       {
-        p: `None of the three actives is what most people picture when they hear “natural,” and that’s typical. A lubricating drop sold over the counter relies on actives named in FDA’s rule, whatever else it contains. See [the active ingredients section](/guides/the-active-ingredients-section) for how that part of a label reads.`,
+        p: `None of the three actives is what most people picture when they hear “natural,” and that’s typical. A lubricating drop sold over the counter leans on a short, familiar set of actives, whatever else it contains. See [the active ingredients section](/guides/the-active-ingredients-section) for how that part of a label reads.`,
       },
       { h: 'What natural ingredients are in Quell' },
       {
@@ -1090,7 +1098,7 @@ export const DAILY_20261111_E: Guide[] = [
       },
       {
         q: 'Is natural a regulated term for eye drops?',
-        a: `No. FDA’s rule for over-the-counter eye drops, 21 CFR part 349, sorts them by active ingredients and allowed label claims, not by whether they’re natural.`,
+        a: `No. An over-the-counter eye drop is described by its active ingredients and the Uses printed on its Drug Facts panel, not by whether those ingredients are natural. Read the word as the maker’s description, then check the panel.`,
       },
       {
         q: 'Can I make my own natural eye drops at home?',
@@ -1099,6 +1107,7 @@ export const DAILY_20261111_E: Guide[] = [
     ],
   },
 
+  /* FDA references removed 2026-11-18 at Phillip's request. */
   {
     slug: 'what-does-for-use-in-the-eyes-only-mean',
     title: 'What does “for use in the eyes only” mean?',
@@ -1116,7 +1125,7 @@ export const DAILY_20261111_E: Guide[] = [
       },
       { h: 'Why labels state a route of use' },
       {
-        p: `The FDA’s regulation on over-the-counter label format, 21 CFR 201.66, lays out the Drug Facts panel and what the Warnings section must contain. For topical products that aren’t meant to be swallowed, it requires the bold statement “For external use only.” The idea behind it is simple: a label should tell you plainly which part of the body a product is for. An eye drop’s eyes-only line does that job for the eye.`,
+        p: `A label has to work for someone reading it at the sink with nobody to ask. Naming the route of use in plain words is how it does that: this product goes here, and nowhere else. Products for the skin or the ears usually carry their own version of the same idea, and an eye drop’s eyes-only line does that job for the eye.`,
       },
       {
         p: `A drug is designed around where it goes. An eye drop’s ingredients, strength, bottle and directions all assume the surface of the eye. Directions written as {directions} make sense for an eye and nowhere else. Putting the same liquid somewhere else means using it in a way nobody has labeled.`,
@@ -1172,7 +1181,7 @@ export const DAILY_20261111_E: Guide[] = [
       },
       {
         q: 'Why do eye drop labels say for the eyes only?',
-        a: `FDA’s Drug Facts rules expect a label to say plainly which route a product is for. An eye drop is formulated and directed for the surface of the eye, so any other use falls outside its label.`,
+        a: `A label names its route of use so there’s no doubt where the product goes. An eye drop is formulated and directed for the surface of the eye, so any other use falls outside its label.`,
       },
     ],
   },
