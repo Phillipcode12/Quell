@@ -1188,72 +1188,47 @@ export const DAILY_20261118_A: Guide[] = [
   },
 
   /*
-   * Sources fetched 2026-11-18 for eye-drops-vs-eye-wash (eCFR versioner API,
-   * title 21 as of 2026-11-01; saved in .daily-job/1118/a/ecfr-*.xml):
-   * - 21 CFR 349.3(f): eyewash, eye lotion, irrigating solution = "A sterile
-   *   aqueous solution intended for washing, bathing, or flushing the eye."
-   *   349.3(d) demulcent, usually a water-soluble polymer, applied to protect
-   *   and lubricate mucous membrane surfaces and relieve dryness and
-   *   irritation; 349.3(e) emollient, usually a fat or oil, applied to eyelids
-   *   to protect or soften tissues and to prevent drying and cracking.
-   * - 21 CFR 349.20: eyewash active ingredient is purified water, plus tonicity
-   *   agents (isotonic with tears), pH/buffering agents (same pH as tears) and
-   *   a suitable preservative agent.
-   * - 21 CFR 349.78: identity terms "eyewash," "eye irrigation," "eye
-   *   irrigating solution"; indications: flushing/irrigating/cleansing/washing/
-   *   bathing the eye to remove loose foreign material, air pollutants (smog or
-   *   pollen) or chlorinated water; warnings include consulting a doctor for
-   *   pain or vision changes, immediate medical care for open wounds in or near
-   *   the eyes, do not use if solution changes color or becomes cloudy;
-   *   directions for eyecup (rinse cup, fill half full, press to the eye, tilt
-   *   head back, open lids, rotate eyeball, rinse cup) or nozzle (flush the
-   *   affected eye as needed, controlling flow by pressure on the bottle).
-   * Paraphrased: the regulation's warning wording includes words the guide
-   * rules keep out of prose. No claim that Quell conforms to any monograph.
+   * eye-drops-vs-eye-wash: rewritten 2026-11-18 at Phillip’s request to drop
+   * FDA and federal-regulation citations. What an eyewash is for is described
+   * from what eyewash labels themselves say (flushing loose material, smog or
+   * pollen, chlorinated water). No claim about eyewash preservatives, and no
+   * claim that Quell conforms to any rule.
    */
   {
     slug: 'eye-drops-vs-eye-wash',
     title: 'Eye drops vs. eye wash: what’s the difference?',
     description:
-      'Eye wash flushes something out of the eye; lubricating drops add moisture a drop at a time. What FDA rules say each one is for, and which one you need.',
+      'Eye wash flushes something out of the eye; lubricating drops add moisture a drop at a time. What each one is for, and which one you need.',
     category: 'choosing',
     addedOn: '2026-11-18',
     body: [
       {
-        p: `Eye wash and eye drops do different jobs. Under FDA’s rules in 21 CFR part 349, an eyewash is a sterile water-based solution for flushing out loose debris, smog, pollen or pool water, used in a generous stream or an eyecup. A lubricating eye drop like Quell is applied one drop at a time to relieve dryness and irritation. Use eye wash to rinse something out, and a lubricating drop for dry eyes.`,
+        p: `Eye wash and eye drops do different jobs. An eyewash is a sterile, water-based solution for flushing out loose debris, smog, pollen or pool water, used in a generous stream or an eyecup. A lubricating eye drop like Quell is applied one drop at a time to relieve dryness and irritation. Use eye wash to rinse something out, and a lubricating drop for dry eyes.`,
       },
-      { h: 'What the FDA rules call an eyewash' },
+      { h: 'What an eyewash is' },
       {
-        p: `The federal rules for over-the-counter eye products sit in Title 21 of the Code of Federal Regulations, part 349. Section 349.3 defines an eyewash (also called an eye lotion or irrigating solution) as a sterile aqueous solution intended for washing, bathing or flushing the eye. Section 349.20 spells out what’s in one:`,
-      },
-      {
-        list: [
-          `The active ingredient is purified water.`,
-          `Tonicity agents make it isotonic with tears.`,
-          `Buffering agents bring it to the same pH as tears.`,
-          `It contains a suitable preservative agent.`,
-        ],
+        p: `An eyewash, sometimes sold as an eye irrigating solution, is mostly purified water, balanced so it feels close to your own tears when it runs across the eye. It comes in a squeeze bottle with a nozzle or with a small eyecup, and you use far more of it at once than you would of any drop. The whole idea is volume: enough liquid to carry something off the surface of the eye and out past the lids.`,
       },
       {
-        p: `That last point matters if you’re comparing labels. Eyewash under that section includes a preservative; Quell is labeled preservative-free.`,
+        p: `That makes an eyewash closer to a rinse than a medicine you dose. You reach for it when something got in, use it until the eye feels clear, and put it away.`,
       },
       { h: 'What an eyewash label says it’s for' },
       {
-        p: `Section 349.78 sets the wording an eyewash label uses. The product must be identified as an “eyewash,” “eye irrigation” or “eye irrigating solution,” and its stated purpose is flushing, irrigating, cleansing, washing or bathing the eye to remove one or more of three things:`,
+        p: `Eyewash bottles describe their purpose in plain terms: flushing, cleansing or bathing the eye to remove one of three kinds of things.`,
       },
       {
         list: [
           `Loose foreign material, such as dust or a stray eyelash.`,
-          `Air pollutants, which the rule names as smog or pollen.`,
+          `Air pollutants, which the labels name as smog or pollen.`,
           `Chlorinated water, after swimming.`,
         ],
       },
       {
-        p: `The directions are about volume. With an eyecup, the rule describes filling the cup halfway, pressing it to the eye, tilting the head back and opening the lids wide so the solution bathes the eye. With a nozzle bottle, you flush the eye as needed, squeezing to control the flow. The labeling must also tell you to get medical care right away for open wounds in or near the eyes, and not to use the solution if it changes color or turns cloudy.`,
+        p: `The directions are about volume, too. With an eyecup, you fill the cup partway, press it to the eye, tilt your head back and open your lids wide so the solution bathes the eye. With a nozzle bottle, you flush the eye as needed, squeezing to control the flow. Eyewash labels also tell you to get medical care right away for an open wound in or near the eye, and not to use the solution if it changes color or turns cloudy.`,
       },
       { h: 'What a lubricating eye drop is for' },
       {
-        p: `A lubricating drop works on a different scale: one drop, placed in the eye, meant to stay and add to the tear film rather than rinse it away. Part 349 defines two kinds of ingredients common in these drops. A demulcent is usually a water-soluble polymer that protects and lubricates the eye’s surface and relieves dryness and irritation. An emollient is usually a fat or oil applied to protect or soften tissue and keep it from drying.`,
+        p: `A lubricating drop works on a different scale: one drop, placed in the eye, meant to stay and add to the tear film rather than rinse it away. Its ingredients are chosen to coat and hold moisture on the eye’s surface, not to wash across it. Our guide to [demulcent vs. emollient eye drops](/guides/demulcent-vs-emollient-eye-drops) explains the two ingredient types you’ll see named on these labels.`,
       },
       {
         p: `Quell’s Drug Facts panel lists its active ingredients as {actives}, and its Uses read: {uses}. The directions are a measured dose, not a flush: {directions}. Quell is designed to reinforce the tear film’s oil layer to help reduce moisture loss, which is a different goal from washing the eye out.`,
@@ -1267,8 +1242,8 @@ export const DAILY_20261118_A: Guide[] = [
           `Amount: an eyewash is used generously, in a stream or a cupful. A lubricating drop is a single drop per eye.`,
           `Purpose: eyewash removes something. A lubricating drop adds moisture and protection.`,
           `What stays behind: an eyewash is mostly water and runs off. A lubricating drop is formulated to remain on the eye’s surface.`,
-          `Ingredients: eyewash is purified water with salts and buffers. Lubricating drops carry active ingredients such as demulcents and emollients.`,
-          `Look: Quell’s label notes: {milky}. The eyewash rule says not to use a wash that changes color or turns cloudy.`,
+          `Ingredients: eyewash is mostly purified water. Lubricating drops carry active ingredients chosen to stay on the eye.`,
+          `Look: Quell’s label notes: {milky}. Eyewash labels say not to use a wash that changes color or turns cloudy.`,
         ],
       },
       { h: 'Can eye wash be used as eye drops?' },
@@ -1286,7 +1261,7 @@ export const DAILY_20261118_A: Guide[] = [
         ],
       },
       {
-        p: `If you wear contact lenses, neither the eyewash rules discussed here nor Quell’s label tells you how to use the product with lenses. Ask your eye doctor or pharmacist before using either one with lenses in. The same goes for using a wash and a drop together.`,
+        p: `If you wear contact lenses, neither a typical eyewash label nor Quell’s label tells you how to use the product with lenses. Ask your eye doctor or pharmacist before using either one with lenses in. The same goes for using a wash and a drop together.`,
       },
       { h: 'Keeping both on hand' },
       {
@@ -1300,19 +1275,19 @@ export const DAILY_20261118_A: Guide[] = [
     faq: [
       {
         q: 'Can you use eye wash for dry eyes?',
-        a: `An eyewash is designed to flush the eye and run off, not to stay on its surface, so it isn’t made for dryness. FDA’s rules describe eyewash as a product for removing loose material, smog, pollen or chlorinated water.`,
+        a: `An eyewash is designed to flush the eye and run off, not to stay on its surface, so it isn’t made for dryness. Eyewash labels describe it as a product for removing loose material, smog, pollen or chlorinated water.`,
       },
       {
         q: 'What is the active ingredient in eye wash?',
-        a: `Purified water. Under 21 CFR 349.20, an eyewash also contains agents to match the tonicity and pH of tears and a suitable preservative.`,
+        a: `Purified water. An eyewash is mostly water, balanced to feel close to your own tears, and it’s meant to be used in a stream or an eyecup rather than a single drop.`,
       },
       {
         q: 'Is eye wash or eye drops better for something in your eye?',
         a: `For loose debris like dust or an eyelash, an eyewash or clean-water rinse is the tool designed for it. If the eye still hurts or feels like something is stuck after rinsing, see a doctor.`,
       },
       {
-        q: 'Does eye wash have preservatives?',
-        a: `Eyewash made under FDA’s 21 CFR 349.20 includes a suitable preservative agent along with purified water and buffering agents. Quell, a lubricating drop, is labeled preservative-free.`,
+        q: 'Can I use eye drops instead of eye wash?',
+        a: `Not for flushing something out. A single drop doesn’t carry enough liquid to rinse debris off the eye, and Quell’s directions describe a measured dose, not a flush. Use an eyewash or a clean-water rinse for that, and see a doctor if it still hurts.`,
       },
     ],
   },
