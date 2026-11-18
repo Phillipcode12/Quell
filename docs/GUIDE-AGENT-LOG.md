@@ -482,3 +482,83 @@ build time and deployment count.
     `npx vercel remove https://quell-l3nabllmr-quell1.vercel.app https://quell-7ogflht08-quell1.vercel.app --safe --confirm-name https://quell-l3nabllmr-quell1.vercel.app --confirm-name https://quell-7ogflht08-quell1.vercel.app`
   - *(This entry was written after the push and is committed with the next
     run.)*
+
+---
+
+## 2026-11-17 — seventh daily run
+
+- **Published: 100 guides + 0 city pages = 100.**
+  - By category: local 48, using 27, seasonal 13, ordering 7, label 5.
+  - Totals after this run: 716 guides (577 from the daily job).
+- **City pages:** ramp finished 11-15 (1,923 of 1,923); nothing to add.
+- **Local guides (48, each linked to its city and state page):** Montgomery,
+  Fort Smith, Bakersfield, Long Beach, Redding, San Francisco (downtown
+  station, not SFO), Santa Barbara, Stockton, Bridgeport (Sikorsky, Stratford),
+  Wilmington DE, Daytona Beach, Fort Myers (Page Field), Gainesville, Key West,
+  Pensacola, Tallahassee, West Palm Beach, Athens GA, Augusta GA, Columbus GA,
+  Lewiston ID, Moline (Quad City Intl), Waterloo, Paducah (Barkley Regional),
+  Baton Rouge, Lake Charles, Worcester, Flint, Rochester MN, Columbia MO,
+  Kalispell (normals from USC00244558; USW00024146 has no normals file),
+  Grand Island, Atlantic City (airport in Egg Harbor Twp), Binghamton,
+  Asheville, Wilmington NC, Grand Forks, Dayton, Salem OR (no snowfall normal),
+  Erie, Chattanooga, Brownsville, Wichita Falls, Roanoke, Olympia, La Crosse,
+  Meridian, Galveston (humidity table covers 1948–1962 only; said so).
+  - Picked with `.daily-job/pick-local.cjs`: NOAA relhum23 stations whose city
+    page is live and has no local guide yet.
+  - **Next local candidates (live, with NOAA rows):** Tupelo, Muskegon,
+    Norfolk NE, Newark NJ, Williston ND, Akron, Mansfield, Youngstown,
+    Allentown, Williamsport, Aberdeen SD, Del Rio, Port Arthur, Victoria TX,
+    Norfolk VA, Walla Walla, Huntington WV, Santa Maria CA. After those the
+    relhum23 list is used up; next runs need another source of place facts
+    (e.g. NCEI normals without humidity) or fewer local guides.
+- **Other guides:** ordering (HSA for an adult child, buying a gift with HSA
+  money, FSA for a partner, is it legal to buy eye drops online, HSA after 65,
+  keeping HSA receipts, FSA after leaving a job); seasonal (winter symptoms,
+  forced-air heat, radiator heat, after flying, what humidity is good, cold
+  wind, dark early, winter bonfire, holiday light show, gifts for a knitter,
+  angler, gardener, new parents); using (miners, electricians, roofers, cold
+  storage, jewelers, rock climbing, surfing, movie theater, new parent, VR
+  headset, phone in bed, data entry, lab workers, evening, driving at night,
+  video calls, long bus ride, trade show, data center, software developers,
+  airport screeners, TSA, lying down, driving after drops, drops running down
+  the face, blinking after, remembering doses); label (how to tell if drops are
+  preservative-free, the Purpose column, why inactives are alphabetical, light
+  vs. regular mineral oil, how to report a problem / MedWatch).
+  - Official sources fetched: IRS Pubs 969, 501, 502 (2025) and the IRS
+    domestic-partner Q&A; 26 CFR 54.4980B-2 (COBRA and FSAs); 21 CFR 201.66,
+    349.14, 172.878, 200.50, 701.3 via the eCFR API (needs `curl
+    --compressed`); tsa.gov liquids rule; FDA BeSafeRx and MedWatch pages;
+    EPA "Care for Your Air" and mold pages (30 to 50 percent); NIST DST page;
+    NWS wind chill FAQ and glossary (Santa Ana, tule fog).
+- **10 strongest search phrases used:** dry eye relief <city> (48 cities), can
+  i use my hsa for my adult child, can i use my fsa for my girlfriend, can i
+  use my hsa after 65, how do i know if my eye drops are preservative free,
+  are eye drops tsa compliant, what humidity is good for dry eyes, light
+  mineral oil vs mineral oil, dry eyes driving at night, should you blink after
+  eye drops.
+- **Skipped, and why:** "dry eyes thanksgiving" (no completions); "red-eye
+  flight" (banned phrase); "store at room temperature" meaning (USP
+  definition not verifiable for free); "Questions?" section of the label
+  (not known whether Quell's carton has one); expired/contaminated drops,
+  gift-card-with-HSA (already answered or thin); brand, pet, contact-lens,
+  allergy and condition completions as always.
+- **Fixed in review (10 read end to end):** gift-card FAQ overstated what
+  Pub 969 says (now "doesn't list gift cards… would likely be taxable"); the
+  mineral-oil guide quoted 349.14's "in combination with one or more other
+  emollient agents" for light mineral oil, which invites the monograph
+  question flagged on 11-15, so it was removed; a dangling {doNotUse}
+  sentence in rock climbing.
+- **For a human look:** writers used some general-knowledge local color
+  (Masters week, Bike Week, Azalea Festival, Nebraska State Fair, Dayton Air
+  Show, Platte crane season). Low risk, not sourced. The "light = thinner
+  grade" wording in the mineral-oil guide comes from existing site copy.
+- **Checks:** full vitest 637 passed; `npm run build` passed in 64 s
+  locally; `tsc --noEmit` clean.
+- **Deploy:**
+  - Commit d39e768 built on Vercel in about 2 minutes (Ready).
+  - `guides-verify-live`: 100/100 OK.
+  - Pruning: removed quell-ff9ady2kk (1 day old) with `--safe
+    --confirm-name`, leaving 3 (live quell-nv7nsuxo2 + quell-5feur11q2 +
+    quell-4ly0rvfqe). quelldrop.com 200.
+  - *(This entry was written after the push and is committed with the next
+    run.)*
