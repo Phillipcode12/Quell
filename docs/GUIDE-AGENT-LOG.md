@@ -562,3 +562,99 @@ build time and deployment count.
     quell-4ly0rvfqe). quelldrop.com 200.
   - *(This entry was written after the push and is committed with the next
     run.)*
+
+---
+
+## 2026-11-18 — eighth daily run
+
+- **Published: 100 guides + 0 city pages = 100.**
+  - By category: local 47, seasonal 21, using 13, ordering 10, choosing 8, label 1.
+  - Totals after this run: 816 guides (677 from the daily job).
+- **City pages:** ramp finished 11-15 (1,923 of 1,923); nothing to add.
+- **NOAA's NCEI file server was down** (normals CSVs 404, ghcnd 503). Used
+  NOAA's Regional Climate Centers ACIS service instead
+  (`data.rcc-acis.org/StnData` with `"normal":"1"`; the data behind NWS
+  NOWData), via `.daily-job/acis.sh <SID>`. Elevation comes back in feet;
+  "M" = missing. ACIS returned 0/1 flags instead of day counts for days
+  ≥90°F / ≤32°F, so none were used. Snowfall is missing for most non-snowy
+  stations.
+- **Local guides (47, each linked to its city and state page):**
+  - From the relhum23 list (now used up): Santa Maria, Muskegon, Tupelo,
+    Norfolk NE, Newark NJ, Williston, Akron, Mansfield, Youngstown,
+    Allentown, Williamsport, Aberdeen SD, Del Rio, Port Arthur, Victoria,
+    Norfolk VA, Walla Walla, Huntington WV.
+  - New source: city pages no guide links to (`.daily-job/pick-1118.cjs`
+    writes `uncovered-1118.json`, 1,712 cities, in population order), each
+    with its own airport station in ACIS: Fort Worth (FTW), San Jose (SJC),
+    Oakland (OAK), Riverside (RAL), Greensboro (GSO), Laredo (LRD),
+    Winston-Salem (INT), Fayetteville NC (FAY), Fort Lauderdale (FLL),
+    Lancaster CA (WJF), Charleston SC (CHS), Macon (MCN), McAllen (MFE),
+    Cedar Rapids (CID), New Haven (HVN), College Station (CLL), Clarksville
+    (CKV), Everett (PAE), St. Paul (STP), St. Petersburg (SPG), Scottsdale
+    (SDL), Virginia Beach (NTU), Melbourne FL (MLB), Santa Rosa (STS),
+    Olathe (OJC), Sunnyvale (NUQ), Arlington TX (GKY), Tacoma (TIW),
+    Ontario CA (ONT).
+  - Skipped as too close to an existing guide's station or landscape:
+    Oxnard (Camarillo guide covers the Oxnard Plain), Santa Ana (John Wayne
+    already used), Palmdale (next to Lancaster), Hampton and Hayward (third
+    city in Hampton Roads / Bay Area today).
+  - **Next local candidates (checked in ACIS today):** Henderson NV,
+    Chandler AZ, Norman OK, Victorville, Springfield MA (Chicopee), Hampton
+    VA, Hayward, Palmdale. Henderson/Chandler/Norman/Victorville/Chicopee
+    returned no max-temp normals; try other elements or COOP stations.
+    Beyond those, walk `uncovered-1118.json` and check each city's airport
+    code in ACIS.
+- **Other guides:** ordering (FSA vs HSA, FSAFEDS, limited-purpose FSA,
+  reimbursing yourself from an HSA, FSA amount at open enrollment, FSA for
+  last year's purchase, HSA for vision care, does HSA roll over, buying for
+  employees, FSA receipt request); seasonal (gifts for a hairstylist, hiker,
+  mail carrier, firefighter, dental hygienist, veterinarian, RV owners, adult
+  children, coach, police officer, accountant, lawyer, professor,
+  electrician, practical gifts for adults; hot tub in winter, wood stove, RV
+  in winter, snowshoeing, winter commute, heated garage); using (nail techs,
+  grad students, sales reps, train crews, cap left off, e-bike/scooter,
+  shooting range, e-reader, surgeons, dry in the car, public speakers, power
+  line workers, hospital stay); choosing (gritty eyes, watery but dry, eye
+  wash vs drops, saline vs drops, gel vs drops, dry for two weeks, dry when I
+  focus, dry when it's humid); label (side effects).
+  - Official sources fetched: IRS Pubs 969 and 502, IR-2020-122;
+    fsafeds.gov eligible-expense lists, claim and key-dates pages (curl gets
+    a Cloudflare 403; read in the browser pane); 21 CFR 349.3/.12/.20/.78 and
+    201.66 via eCFR; TSA liquids page; one NWS San Diego forecast discussion
+    (Oct 2023 Santa Ana event, via the Iowa Mesonet text archive).
+- **10 strongest search phrases used:** dry eye relief <city> (47 cities),
+  fsa vs hsa, fsafeds, limited purpose fsa, can hsa be used for vision,
+  gritty eyes, watery eyes but dry, eye wash vs eye drops, eye drops vs
+  saline solution, christmas gifts for adult children.
+- **Skipped, and why:** "dry eyes when sick", "after crying", "dehydration",
+  "on accutane/adderall", "eye drops and blood pressure" (conditions,
+  medicines or no official source); "fsa store" (a brand); PO box, APO and
+  territory shipping, billing-vs-shipping address, prepaid cards, refund
+  timing (site behavior not verified); "rewetting drops" (contact lenses);
+  explainers (every label ingredient and term already has a guide). Topic
+  space outside local is getting thin: ordering/shipping/returns/label/
+  formula are close to saturated.
+- **Writer notes for the brief:** the claims scan bans the stem "treat", so
+  "diagnosis and treatment belong to an eye doctor" fails; "preventive"
+  fails on "prevent"; "lasts for" and "all day" fail. Update the brief.
+- **Reviewed end to end (10):** FSAFEDS, side effects, limited-purpose FSA,
+  Newark, eye wash, two weeks, adult-children gifts, Riverside, Virginia
+  Beach, hospital stay. No changes needed. Verified the confirmation-email
+  contents claim (items, totals, company footer) in `src/lib/email.ts` and
+  the no-gift-wrap claim against seasonal.ts. Phrase scan over all 100
+  clean.
+- **For a human look:** writers named well-known local places without a
+  fetched source (Fort Bragg, Branch Brook Park, Mount Rubidoux, Mission Inn
+  Festival of Lights, Austin Peay, NAS Oceana as master jet base, Cape
+  Canaveral launches). The Victoria guide cites NOAA's June 1 to November 30
+  hurricane season.
+- **Checks:** full vitest 637 passed; `npm run build` passed in 96 s
+  locally; `tsc --noEmit` clean.
+- **Deploy:**
+  - Commit 3824f76 built on Vercel in about 2 minutes (Ready).
+  - `guides-verify-live`: 100/100 OK.
+  - Pruning: removed quell-4ly0rvfqe with `--safe --confirm-name`, leaving
+    3 (live quell-r1z9br44c + quell-nv7nsuxo2 + quell-5feur11q2).
+    quelldrop.com 200.
+  - *(This entry was written after the push and is committed with the next
+    run.)*
