@@ -658,3 +658,83 @@ build time and deployment count.
     quelldrop.com 200.
   - *(This entry was written after the push and is committed with the next
     run.)*
+
+---
+
+## 2026-11-19 — ninth daily run
+
+- **Started late** (17:12 local, not 11 a.m.); no lock was present.
+- **Published: 100 guides + 0 city pages = 100.**
+  - By category: local 46, choosing 24, seasonal 15, using 15.
+  - Totals after this run: 916 guides (777 from the daily job).
+- **City pages:** ramp finished 11-15 (1,923 of 1,923); nothing to add.
+- **Local guides (46, each linked to its city and state page).** Source:
+  `.daily-job/pick-1119.cjs` → `uncovered-1119.json` (1,665 cities no guide
+  links yet), skipping suburbs of metros that already have a guide. Each
+  station checked in NOAA ACIS first; raw JSON in `.daily-job/acis1119/`.
+  Aurora IL (ARR), Modesto (MOD), Denton (DTO), Albany GA (ABY), Ann Arbor
+  (ARB), Bellingham (BLI), Lafayette LA (LFT), Manchester NH (MHT), St. Cloud
+  (STC), Indio (TRM), Warren MI (MTC/Selfridge), Merced (MCE), McKinney (TKI),
+  Ames (AMW), Bloomington IN (BMG), Gulfport (GPT), Ogden (OGD), Danbury
+  (DXR), Kenosha (ENW), Napa (APC), Champaign (CMI), Conroe (CXO), Scranton
+  (AVP), Bowling Green (BWG), Greenville SC (GSP), Lawrence KS (LWC),
+  Tuscaloosa (TCL), Kennewick (PSC), Yuba City (MYV), Longview (GGG), Tyler
+  (TYR), Iowa City (IOW), Kalamazoo (AZO), Dothan (DHN), Jackson TN (MKL),
+  Reading (RDG), Oshkosh (OSH), Hillsboro OR (HIO), Gastonia (AKH), Lawton
+  (LAW), Salinas (SNS), Jonesboro (JBR), Fayetteville AR (FYV), St. Joseph
+  (STJ), Lafayette IN (LAF), Decatur IL (DEC).
+  - **Next local candidates:** keep walking `uncovered-1119.json`. Springdale/Rogers AR (XNA) returned data today but sits next to Fayetteville. These returned no normals in ACIS today; retry or try COOP stations: Mesa (FFZ), Chandler (CHD), Henderson (HND), Fort Collins (FNL; try COOP 053005), Greeley (GXY), Joliet (JOT), Victorville (VCV), Norman (OUN), Lakeland (LAL), Las Cruces (LRU), Waterbury (OXC), Killeen (GRK), Springfield MA (CEF). Also no data today: Hemet (HMT), Frederick MD (FDK), Greenville NC (PGV), Warner Robins (WRB), Ocala (OCF), Casa Grande (CGZ), Janesville (JVL), Jacksonville NC (OAJ).
+- **Other guides:** using (welders, flight attendants, barbers, plumbers,
+  vets and vet techs, translators, home inspectors, potters, glassblowers,
+  fly fishing, rowers, chess players, social media managers, parking
+  attendants, print shop workers); seasonal (Christmas gifts for a barista,
+  pastor, grandpa, bus driver, real estate agent, night shift worker, social
+  worker, boss, neighbor, mother-in-law, sister, brother, new homeowner;
+  white elephant; sledding); choosing (why do my eyes feel heavy/hot/sore,
+  feel like rubbing my eyes, which eye drops to use, screen breaks, dry or
+  tired, eyesight getting worse, how often to see an eye doctor, how
+  lubricating drops work, types of lubricating drops, should I switch,
+  store brand vs name brand, all dry eye drops the same, what to avoid,
+  what makes it worse, go away on their own, dry vs normal eyes, drops when
+  you don't need them, after crying, sunglasses indoors, sleeping in
+  mascara, dry after a nap, sitting close to the TV).
+- **10 strongest search phrases used:** dry eye relief <city> (46 cities),
+  why do my eyes feel hot, why do my eyes feel sore, what makes dry eyes
+  worse, can dry eyes go away on their own, how do lubricating eye drops
+  work, types of lubricating eye drops, are all dry eye drops the same,
+  is it bad to sit too close to the tv, christmas gifts for grandpa.
+- **Replaced in review:** "Rewetting drops vs. lubricating eye drops"
+  (a contact-lens product topic) and "Should I use eye drops if I got soap in
+  my eye?" (first aid and a Poison Control number beyond the label). Both
+  were rewritten as the nap and TV guides.
+- **Skipped, and why:** "are eye drops ..." completions (all answered
+  already), "dry eyes vs tired eyes" (covered), "how often should I blink"
+  (needs a study figure), "how often to get eyes checked" (no allowed
+  source), eye pain, blurry vision, headaches (conditions). The people and
+  gift space is close to saturated: grep `.daily-job/titles-1119.txt`
+  before picking.
+- **Fixed in review:** Dothan guide named the Army post "Fort Novosel"
+  (renamed back to Fort Rucker in 2025); now unnamed ("the Army's aviation
+  center").
+- **Writer notes:** "tiredness" fails the "redness" scan (no word
+  boundary); "next day's" fails the delivery-time scan.
+- **For a human look:** local landmarks stated from general knowledge
+  without a fetched source (Dothan "Peanut Capital of the World", Decatur
+  "Soybean Capital of the World", Tyler "Rose Capital", Iowa City "UNESCO
+  City of Literature", Hanford Site in Richland, BMW in Greer, Mercedes in
+  Vance, Corvette plant in Bowling Green, Lake Monroe/Candlewood Lake as
+  state's largest). One choosing guide's FAQ says Quell has no store-brand
+  version.
+- **Reviewed end to end or in full skim (12):** rewetting, soap (both
+  replaced), mascara, sunglasses indoors, eyesight getting worse, store
+  brand, go away on their own, how often to see an eye doctor, eyes feel
+  hot, eyes feel sore, Dothan, Kennewick.
+- **Checks:** full vitest 638 passed; `npm run build` passed (99 s first,
+  64 s final); `tsc --noEmit` clean.
+- **Deploy:**
+  - Commit 3f81293 built on Vercel in about 1 minute (Ready).
+  - `guides-verify-live`: 100/100 OK.
+  - Deployments: 3 total (live quell-6pwb13h1h + quell-466dyjqhh +
+    quell-2p9uow6v0); nothing removed. quelldrop.com 200.
+  - *(This entry was written after the push and is committed with the next
+    run.)*
