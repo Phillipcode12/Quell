@@ -660,7 +660,16 @@ export async function sendAbandonedCartEmail(order: {
   const total = `$${(order.totalCents / 100).toFixed(2)}`
   // Restores the order into the cart, which is what makes "waiting for you"
   // true on any device rather than only the one they shopped on.
-  const resumeUrl = `${base}/cart/resume?o=${encodeURIComponent(order.orderNumber)}`
+  //
+  // Tagged from 2026-11-21 (Phillip: "Yes, you can add the tag"), after the
+  // first sale this email recovered (Q-RX4K7PP7) could only be traced to it by
+  // matching visit times. The tags are captured on /cart/resume before it
+  // forwards to /cart, carried in sessionStorage, and written onto the order
+  // at checkout, so a recovered sale reads "email / abandoned-cart" in the
+  // admin and the campaign export. They label our own email, not the person.
+  const resumeUrl =
+    `${base}/cart/resume?o=${encodeURIComponent(order.orderNumber)}` +
+    '&utm_source=quell&utm_medium=email&utm_campaign=abandoned-cart'
 
   const html = layout(
     'Your cart is waiting for you',

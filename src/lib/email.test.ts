@@ -1,8 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
+  sendAbandonedCartEmail,
   sendNewOrderNotificationEmail,
   sendShippingNoticeEmail,
 } from './email'
+import { campaignFromSearch } from './campaign'
 
 /**
  * The two emails that make hand-fulfilment work: one telling the office to
@@ -226,5 +228,32 @@ describe('the reply-to address', () => {
     await sendNewOrderNotificationEmail(ORDER, ['warehouse@example.com'])
 
     expect(sent()[0].reply_to).toBe('Phillip.moore@meibum.com')
+  })
+})
+
+describe('the abandoned-cart email link', () => {
+  /**
+   * Tagged from 2026-11-21, after the first sale this email recovered could
+   * only be traced to it by matching visit times. The tags have to survive the
+   * site's own parser, or the order is recorded with no campaign at all.
+   */
+  it('tags the resume link so a recovered sale is labeled on the order', async () => {
+    await sendAbandonedCartEmail({
+      email: 'ada@example.com',
+      orderNumber: 'Q-7F3K9M2A',
+      shippingName: 'Ada Lovelace',
+      totalCents: 3999,
+    })
+    const text: string = sent()[0].text
+    const link = text.match(/https:\/\/quelldrop\.com\/cart\/resume\?\S+/)?.[0]
+    expect(link).toBeDefined()
+    const url = new URL(link!)
+    expect(url.searchParams.get('o')).toBe('Q-7F3K9M2A')
+    expect(campaignFromSearch(url.search)).toEqual({
+      utmSource: 'quell',
+      utmMedium: 'email',
+      utmCampaign: 'abandoned-cart',
+      utmContent: null,
+    })
   })
 })
