@@ -81,6 +81,9 @@ export const metadata: Metadata = {
    */
   verification: {
     google: 'DwaOWhNA6YcSvkyFzr-XcKcYmwYndFCV3M2mNuvl0FU',
+    // Bing Webmaster Tools, added 2026-11-21 (the GSC import's Google popup
+    // could not be driven from here). Bing says to keep it after verifying.
+    other: { 'msvalidate.01': 'B8E2D10F616ABFD6A881C02C560F7343' },
   },
 }
 

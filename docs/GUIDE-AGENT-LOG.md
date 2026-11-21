@@ -738,3 +738,107 @@ build time and deployment count.
     quell-2p9uow6v0); nothing removed. quelldrop.com 200.
   - *(This entry was written after the push and is committed with the next
     run.)*
+
+---
+
+## 2026-11-20 — tenth daily run
+
+- **Started 11:50 local**; no lock was present.
+- **Published: 100 guides + 0 city pages = 100.**
+  - By category: local 45, using 20, seasonal 14, choosing 11, ordering 6, label 4.
+  - Totals after this run: 1,016 guides (877 from the daily job).
+- **City pages:** ramp finished 11-15 (1,923 of 1,923); nothing to add.
+- **Local guides (45, each linked to its city and state page).** Picked from
+  `.daily-job/uncovered-1120.json` (1,619 cities no guide links yet), skipping
+  metros that already have a guide; each station checked in NOAA ACIS first
+  (raw JSON in `.daily-job/acis1120/`). Killeen (ILE), Terre Haute (HUF),
+  Bozeman (BZN), Sarasota (SRQ), Logan (LGU), Valdosta (VLD), Twin Falls
+  (TWF), Manhattan KS (MHK), Joplin (JLN), Utica (RME), Santa Cruz (WVI),
+  Monroe LA (MLU), Florence SC (FLO), Florence AL (MSL), Elmira (ELM), Bangor
+  (BGR), Charlottesville (CHO), Naples (APF), Wausau (AUW), Prescott (PRC),
+  Eureka (ACV), Wenatchee (EAT), Farmington NM (FMN), Stillwater (SWO),
+  Sheboygan (SBM), Minot (MOT), Salina (SLN), York PA (THV), El Centro (IPL),
+  Alexandria LA (AEX), Saginaw (MBS), Jefferson City (JEF), Cedar City (CDC),
+  Quincy IL (UIN), Rome GA (RMG), Hot Springs (HOT), Panama City (ECP), Butte
+  (BTM), Kingman (IGM), Lima (AOH), Lufkin (LFK), Gillette (GCC), Pullman
+  (PUW), Poughkeepsie (POU), Carlsbad NM (CNM).
+  - **Next local candidates (returned normals today, not yet written):**
+    Battle Creek (BTL, next to Kalamazoo), Findlay (FDY), Elyria (LPR), Vineland
+    (MIV Millville), Texarkana (TXK), Cape Girardeau (CGI), Rocky Mount (RWI),
+    Hickory (HKY), Altoona (AOO), Hutchinson (HUT, near Wichita), Pine Bluff
+    (PBF, near Little Rock), Odessa (ODO, next to Midland), Davenport (DVN,
+    Quad Cities guide exists), Harlingen (HRL, Valley guides exist), Canton
+    (CAK used by Akron), Racine (RAC, next to Kenosha).
+  - **No max-temp normals in ACIS today:** Chico (CIC), Temple (TPL), Appleton
+    (ATW), Conway AR (CXW), Owensboro (OWB), Kokomo (OKK), Lake Havasu (HII),
+    Coeur d'Alene (COE), Elkhart (EKM), Bentonville (VBT), Gary (GYY),
+    Schenectady (SCH), Bossier City (BAD), Ithaca (ITH), Mankato (MKT), Hobbs
+    (HOB), Columbus IN (BAK), Harrisonburg (SHD), Enid (WDG), Hattiesburg
+    (PIB), Blacksburg (BCB), Bremerton (PWT), Sierra Vista (FHU), State College
+    (UNV), Myrtle Beach (MYR), Lewiston ME (LEW), Clovis NM (CVN), Kearney
+    (EAR), Aiken (AIK), Houma (HUM), Alamogordo (ALM).
+- **Other guides:** seasonal (Christmas gifts for dad, mom, husband, wife,
+  birdwatcher, college students, stargazer; Friendsgiving, Thanksgiving
+  football, Cyber Monday shopping, Thanksgiving houseguests; cross-country
+  skiing, curling, holiday baking); using (radiology techs, dental
+  assistants, OR staff, home health aides, forklift operators, ferry crews,
+  tow truck drivers, sanitation workers, data analysts, proofreaders, IT help
+  desk, cybersecurity analysts, hotel front desk, laundry and dry cleaning,
+  food trucks, dishwashers, archery, bowling, darts or pool, esports);
+  choosing (closest to natural tears, same drops as my friend, buying for the
+  first time, dry when wearing glasses, dehumidifier, dry after a shower, dry
+  out so fast, are eye drops worth it, vs reading glasses, humidifier or
+  drops, drops vs glasses); ordering (unfinished checkout, checkout error
+  messages, bottle limit, split HSA payment, family members on your HSA card,
+  refunds on HSA/FSA purchases; all checked against the site's code, terms
+  and IRS Pubs 969/502); label (fl oz, "When using this product", do not use
+  vs stop use, both eyes).
+- **10 strongest search phrases used:** dry eye relief <city> (45 cities),
+  christmas gifts for dad, christmas gifts for mom, friendsgiving, can a
+  dehumidifier cause dry eyes, why do my eyes feel dry after a shower, are
+  eye drops worth it, eye drops vs reading glasses, can family members use
+  your hsa card, which eye drops are closest to natural tears.
+- **Skipped, and why:** "christmas gifts for best friend" ("best" is banned
+  by the claims scan, so the title can't pass); ice fishing, ice skating,
+  hockey, court reporters, video editors, stock traders, call centers, data
+  centers, crane operators, miners, air traffic controllers, 911
+  dispatchers, warehouse, casino dealers, bartenders, line cooks, bakers,
+  housekeepers, retail, lifeguards, climbing gyms, pickleball/tennis, hotel
+  rooms, blurry after drops, "how many bottles a month" (all already have
+  guides); "drive home after dark" (night-driving guide covers it); winter
+  birdwatching (too close to the birdwatching guide); stepchild HSA rules
+  (needs IRS Pub 501 and touches children); account sign-up topics
+  (registration is switched off). People, gift and winter-activity space is
+  close to saturated; Google autocomplete returned nothing for curling,
+  holiday baking and the office-job seeds.
+- **Fixed in review:** cut a section on prescription eye drops that change
+  focus (reading-glasses guide; prescription products are off limits);
+  removed "Apple Capital of the World" from Wenatchee (city page 403, not
+  verified); removed "among the driest places in California" from El Centro
+  (unsourced comparison); removed "written for adults" from the both-eyes
+  label guide (not on the label). Verified the refund guide's damaged/broken
+  seal 30-day replacement against /terms.
+- **Writer notes:** "best friend" fails on "best"; "tiredness" fails the
+  "redness" scan; the five-word distinctness test sometimes times out at 5 s
+  when five writers run tests at once (passes alone; writers used
+  `--testTimeout=60000`).
+- **For a human look:** neighbor towns in shipping paragraphs and some local
+  color stated from general knowledge (e.g. Harker Heights, Copperas Cove,
+  Hahira, Belgrade, Webb City, Wappingers Falls; Lufkin's timber history;
+  Saginaw lake-effect storms; ranch land west of Killeen); Wenatchee
+  Confluence State Park from a search summary; the refund guide says card
+  refunds "normally" return to the card charged (general practice, hedged).
+- **Reviewed end to end (12):** same drops as my friend, vs reading glasses,
+  Killeen, Wenatchee, family members on HSA card, unfinished checkout, both
+  eyes, HSA/FSA refunds, Christmas gifts for dad, Friendsgiving,
+  dehumidifier, El Centro.
+- **Checks:** full vitest 638 passed; `npm run build` passed in 74 s
+  locally; `tsc --noEmit` clean.
+- **Deploy:**
+  - Commit e79d941 built on Vercel in about 2 minutes (Ready).
+  - `guides-verify-live`: 100/100 OK.
+  - Pruning: removed quell-2p9uow6v0 with `--safe --confirm-name`, leaving 3
+    (live quell-bzps9f6i8 + quell-6pwb13h1h + quell-466dyjqhh).
+    quelldrop.com 200.
+  - *(This entry was written after the push and is committed with the next
+    run.)*

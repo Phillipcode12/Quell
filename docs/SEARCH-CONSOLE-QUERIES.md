@@ -65,6 +65,36 @@ prescription options and treatment are for an eye doctor, and link
    impressions per query with this one and note in the run log which pages
    gained.
 
+## What converted (lean into these when choosing topics)
+
+**Sale 2, order Q-RX4K7PP7 (2026-11-21):** 1 bottle to San Antonio, TX.
+Phillip matched visits to the order by time (nothing links a visit to a
+buyer, by design), so read the first two points as likely, not proven:
+
+- **Found through DuckDuckGo**, landing on a daily guide, "Can you share eye
+  drops?" (`/guides/can-you-share-eye-drops`, written 2026-11-13). It was the
+  only search visit that afternoon. DuckDuckGo results lean heavily on Bing's
+  index, so Bing matters as much as Google for these pages (Bing Webmaster
+  Tools is still the open SEO item in PROJECT_STATE).
+- **Possibly a gift:** "Christmas gifts for grandpa" was opened the same
+  evening, minutes after the checkout attempts.
+- **Certain:** they left checkout twice on Nov 19, got the automatic
+  abandoned-cart email on Nov 20, clicked "Return to your cart" and paid on
+  Nov 21.
+
+What the daily job does with it:
+
+1. **Practical household questions** like "can you share eye drops" (who
+   can use a bottle, couples, giving a bottle away, buying for a parent)
+   reached a buyer. Write more real, plainly answered questions of that kind
+   from the label and the site; check the inventory so each one is new.
+2. **Gifts for older relatives** (grandparents, parents, in-laws) are worth
+   continuing through the holidays, written as genuinely useful gift pages,
+   not sales copy.
+3. **Texas:** San Antonio already has a local guide; nearby Texas cities
+   without one are good local picks.
+4. Note in the run log if a future sale points at a page, and add it here.
+
 ---
 
 ## Export 1 — pasted 2026-11-11 (query · clicks · impressions)
