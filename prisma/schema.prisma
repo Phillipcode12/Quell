@@ -151,6 +151,11 @@ model Order {
   /// tell what it has already done.
   abandonedEmailSentAt DateTime?
 
+  /// When the second (and last) abandoned-cart reminder was sent. Added
+  /// 2026-11-21 at Phillip's request: a second email about three days after
+  /// the first, two in total. Same idempotency reasoning as above.
+  abandonedFollowUpSentAt DateTime?
+
   /// When the reorder reminder was sent, so it is sent once.
   ///
   /// Same idempotency reasoning as abandonedEmailSentAt: cron delivery is best

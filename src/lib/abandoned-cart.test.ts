@@ -2,8 +2,11 @@ import { describe, expect, it } from 'vitest'
 import {
   ABANDON_AFTER_MS,
   ABANDON_WINDOW_MS,
+  FOLLOW_UP_AFTER_MS,
+  FOLLOW_UP_WINDOW_MS,
   isAbandoned,
   shouldEmailAbandoned,
+  shouldSendFollowUp,
 } from './abandoned-cart'
 
 const NOW = new Date('2026-09-30T12:00:00Z')
@@ -105,5 +108,36 @@ describe('the windows themselves', () => {
     expect(ABANDON_AFTER_MS).toBe(2 * 60 * 60_000)
     expect(ABANDON_WINDOW_MS).toBe(7 * 24 * 60 * 60_000)
     expect(ABANDON_AFTER_MS).toBeLessThan(ABANDON_WINDOW_MS)
+  })
+})
+
+describe('the second reminder (2026-11-21)', () => {
+  const DAY = 24 * 60 * 60_000
+  const base = (over: Partial<Parameters<typeof shouldSendFollowUp>[0]> = {}) => ({
+    status: 'pending',
+    paymentTransactionId: null,
+    abandonedEmailSentAt: ago(3.5 * DAY),
+    abandonedFollowUpSentAt: null,
+    hasLaterOrder: false,
+    now: NOW,
+    ...over,
+  })
+
+  it('goes three to five days after the first', () => {
+    expect(shouldSendFollowUp(base())).toEqual({ email: true })
+    expect(shouldSendFollowUp(base({ abandonedEmailSentAt: ago(FOLLOW_UP_AFTER_MS - 60_000) }))).toMatchObject({ reason: 'too-soon' })
+    expect(shouldSendFollowUp(base({ abandonedEmailSentAt: ago(FOLLOW_UP_WINDOW_MS + 60_000) }))).toMatchObject({ reason: 'too-old' })
+  })
+
+  it('never without a first reminder, and never twice', () => {
+    expect(shouldSendFollowUp(base({ abandonedEmailSentAt: null }))).toMatchObject({ reason: 'no-first-email' })
+    expect(shouldSendFollowUp(base({ abandonedFollowUpSentAt: ago(DAY) }))).toMatchObject({ reason: 'already-followed-up' })
+  })
+
+  it('stops once they have paid or started another order', () => {
+    // Q-SQCJ9YKY and Q-5R997H9N: two unpaid checkouts, then a paid one.
+    expect(shouldSendFollowUp(base({ hasLaterOrder: true }))).toMatchObject({ reason: 'later-order' })
+    expect(shouldSendFollowUp(base({ status: 'paid' }))).toMatchObject({ reason: 'not-pending' })
+    expect(shouldSendFollowUp(base({ paymentTransactionId: 't' }))).toMatchObject({ reason: 'already-paid' })
   })
 })

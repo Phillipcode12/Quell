@@ -15,8 +15,13 @@
  * ### Why the rules below are as conservative as they are
  *
  * These people did not ask for email. They gave an address to complete a
- * purchase, and a single follow-up about that purchase is defensible; anything
- * more is not. So: one email, ever, per order, and only inside a narrow window.
+ * purchase, so the follow-ups stay about that purchase and stay few.
+ *
+ * **Two reminders, ever, per order (from 2026-11-21).** Until then it was one.
+ * Phillip asked for more after the first recovered sale (Q-RX4K7PP7: the
+ * buyer's card was declined, the reminder brought them back), and chose a
+ * second reminder about three days after the first. The first email now says
+ * one more is coming, so neither promises anything untrue.
  */
 
 /**
@@ -90,6 +95,61 @@ export function shouldEmailAbandoned(input: AbandonInput): AbandonVerdict {
   const age = now.getTime() - input.createdAt.getTime()
   if (age < ABANDON_AFTER_MS) return { email: false, reason: 'too-soon' }
   if (age > ABANDON_WINDOW_MS) return { email: false, reason: 'too-old' }
+
+  return { email: true }
+}
+
+/** The second reminder goes no sooner than this after the first. */
+export const FOLLOW_UP_AFTER_MS = 3 * 24 * 60 * 60_000
+
+/**
+ * …and no later than this after the first. Two days of slack so a missed
+ * daily cron run still catches it, and an upper bound so the day this shipped
+ * it couldn't sweep up every order emailed weeks earlier.
+ */
+export const FOLLOW_UP_WINDOW_MS = 5 * 24 * 60 * 60_000
+
+export type FollowUpInput = {
+  status: string
+  paymentTransactionId: string | null
+  abandonedEmailSentAt: Date | null
+  abandonedFollowUpSentAt: Date | null
+  /**
+   * Whether the same email address has started any order after this one,
+   * paid or not. Someone who came back and bought, or is mid-way through a
+   * fresh checkout, shouldn't be reminded about the old cart.
+   */
+  hasLaterOrder: boolean
+  now?: Date
+}
+
+export type FollowUpVerdict =
+  | { email: true }
+  | {
+      email: false
+      reason:
+        | 'not-pending'
+        | 'already-paid'
+        | 'no-first-email'
+        | 'already-followed-up'
+        | 'later-order'
+        | 'too-soon'
+        | 'too-old'
+    }
+
+/** Whether this order should get the second (last) reminder. Pure, like the first. */
+export function shouldSendFollowUp(input: FollowUpInput): FollowUpVerdict {
+  const now = input.now ?? new Date()
+
+  if (input.status !== 'pending') return { email: false, reason: 'not-pending' }
+  if (input.paymentTransactionId) return { email: false, reason: 'already-paid' }
+  if (!input.abandonedEmailSentAt) return { email: false, reason: 'no-first-email' }
+  if (input.abandonedFollowUpSentAt) return { email: false, reason: 'already-followed-up' }
+  if (input.hasLaterOrder) return { email: false, reason: 'later-order' }
+
+  const sinceFirst = now.getTime() - input.abandonedEmailSentAt.getTime()
+  if (sinceFirst < FOLLOW_UP_AFTER_MS) return { email: false, reason: 'too-soon' }
+  if (sinceFirst > FOLLOW_UP_WINDOW_MS) return { email: false, reason: 'too-old' }
 
   return { email: true }
 }

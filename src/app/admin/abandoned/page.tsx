@@ -152,7 +152,11 @@ export default async function AdminAbandonedPage() {
                     </td>
                     <td className="px-4 py-3 text-muted">
                       <span className="flex flex-wrap items-center gap-2">
-                        {o.abandonedEmailSentAt ? (
+                        {o.abandonedFollowUpSentAt ? (
+                          <span className="text-brand-light">
+                            both sent (2nd {age(o.abandonedFollowUpSentAt, now)})
+                          </span>
+                        ) : o.abandonedEmailSentAt ? (
                           <span className="text-brand-light">
                             sent {age(o.abandonedEmailSentAt, now)}
                           </span>

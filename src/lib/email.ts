@@ -669,7 +669,7 @@ export async function sendAbandonedCartEmail(order: {
   // admin and the campaign export. They label our own email, not the person.
   const resumeUrl =
     `${base}/cart/resume?o=${encodeURIComponent(order.orderNumber)}` +
-    '&utm_source=quell&utm_medium=email&utm_campaign=abandoned-cart'
+    '&utm_source=quell&utm_medium=email&utm_campaign=abandoned-cart&utm_content=reminder-1'
 
   const html = layout(
     'Your cart is waiting for you',
@@ -689,7 +689,7 @@ export async function sendAbandonedCartEmail(order: {
         <a href="${resumeUrl}" style="background:#00a7b5;color:#000000;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:bold;display:inline-block;">Return to your cart (${total})</a>
       </p>
       <p style="margin:0;line-height:1.6;color:#5a6b83;font-size:13px;">
-        Order ${order.orderNumber}. This is the only email we’ll send about it.
+        Order ${order.orderNumber}. We’ll send one more reminder in a few days, and that’s all.
       </p>
     `,
   )
@@ -703,12 +703,77 @@ export async function sendAbandonedCartEmail(order: {
     '',
     `Return to your cart (${total}): ${resumeUrl}`,
     '',
-    `Order ${order.orderNumber}. This is the only email we'll send about it.`,
+    `Order ${order.orderNumber}. We'll send one more reminder in a few days, and that's all.`,
   ].join('\n')
 
   return deliver({
     to: order.email,
     subject: `Your ${BRAND.name} cart is waiting for you`,
+    html,
+    text,
+  })
+}
+
+/**
+ * The second and last abandoned-cart reminder, about three days after the
+ * first (Phillip, 2026-11-21). The rules for who gets it are in
+ * `shouldSendFollowUp`.
+ *
+ * Same constraints as the first: no discount, no urgency, nothing about the
+ * product or the reader's eyes. Shorter, and it says it is the last one, which
+ * is true: the rules allow two per order and no more.
+ */
+export async function sendAbandonedCartFollowUpEmail(order: {
+  email: string
+  orderNumber: string
+  shippingName: string | null
+  totalCents: number
+}) {
+  const base = appUrl()
+  const firstName = (order.shippingName ?? '').trim().split(/\s+/)[0] || null
+  const greeting = firstName ? `Hi ${firstName},` : 'Hi,'
+  const total = `$${(order.totalCents / 100).toFixed(2)}`
+  const resumeUrl =
+    `${base}/cart/resume?o=${encodeURIComponent(order.orderNumber)}` +
+    '&utm_source=quell&utm_medium=email&utm_campaign=abandoned-cart&utm_content=reminder-2'
+
+  const html = layout(
+    'Your cart is still saved',
+    `
+      <p style="margin:0 0 16px;line-height:1.6;">${greeting}</p>
+      <p style="margin:0 0 16px;line-height:1.6;">
+        A quick note that your ${BRAND.trademark} cart from a few days ago is
+        still saved. Nothing has been charged.
+      </p>
+      <p style="margin:0 0 20px;line-height:1.6;">
+        If you’ve decided against it, there’s nothing you need to do. If
+        something got in the way, reply to this email and let us know. We’re
+        glad to help.
+      </p>
+      <p style="margin:0 0 22px;">
+        <a href="${resumeUrl}" style="background:#00a7b5;color:#000000;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:bold;display:inline-block;">Return to your cart (${total})</a>
+      </p>
+      <p style="margin:0;line-height:1.6;color:#5a6b83;font-size:13px;">
+        Order ${order.orderNumber}. This is our last reminder about it.
+      </p>
+    `,
+  )
+
+  const text = [
+    greeting,
+    '',
+    `A quick note that your ${BRAND.trademark} cart from a few days ago is still saved. Nothing has been charged.`,
+    '',
+    "If you've decided against it, there's nothing you need to do. If something got in the way, reply to this email and let us know. We're glad to help.",
+    '',
+    `Return to your cart (${total}): ${resumeUrl}`,
+    '',
+    `Order ${order.orderNumber}. This is our last reminder about it.`,
+  ].join('\n')
+
+  return deliver({
+    to: order.email,
+    subject: `Your ${BRAND.name} cart is still saved`,
     html,
     text,
   })

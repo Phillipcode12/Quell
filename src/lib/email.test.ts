@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   sendAbandonedCartEmail,
+  sendAbandonedCartFollowUpEmail,
   sendNewOrderNotificationEmail,
   sendShippingNoticeEmail,
 } from './email'
@@ -253,7 +254,31 @@ describe('the abandoned-cart email link', () => {
       utmSource: 'quell',
       utmMedium: 'email',
       utmCampaign: 'abandoned-cart',
-      utmContent: null,
+      utmContent: 'reminder-1',
     })
+    // Since 2026-11-21 a second reminder exists, so the first must not
+    // promise it is the only one.
+    expect(text).not.toMatch(/only email/i)
+    expect(text).toMatch(/one more reminder/i)
+  })
+
+  it('sends a second reminder that is tagged as such and says it is the last', async () => {
+    await sendAbandonedCartFollowUpEmail({
+      email: 'ada@example.com',
+      orderNumber: 'Q-7F3K9M2A',
+      shippingName: 'Ada Lovelace',
+      totalCents: 3999,
+    })
+    const msg = sent()[0]
+    expect(msg.to).toEqual(['ada@example.com'])
+    const link = (msg.text as string).match(/https:\/\/quelldrop\.com\/cart\/resume\?\S+/)?.[0]
+    const url = new URL(link!)
+    expect(campaignFromSearch(url.search)).toMatchObject({
+      utmCampaign: 'abandoned-cart',
+      utmContent: 'reminder-2',
+    })
+    expect(msg.text).toMatch(/last reminder/i)
+    // Same limits as the first: no discount, no urgency, no product claims.
+    expect(msg.text).not.toMatch(/discount|% off|hurry|expires|relief|dry eye/i)
   })
 })

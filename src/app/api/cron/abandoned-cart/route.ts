@@ -1,11 +1,17 @@
 import { NextResponse } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import { prisma } from '@/lib/db'
-import { sendAbandonedCartEmail } from '@/lib/email'
+import {
+  sendAbandonedCartEmail,
+  sendAbandonedCartFollowUpEmail,
+} from '@/lib/email'
 import {
   ABANDON_AFTER_MS,
   ABANDON_WINDOW_MS,
+  FOLLOW_UP_AFTER_MS,
+  FOLLOW_UP_WINDOW_MS,
   shouldEmailAbandoned,
+  shouldSendFollowUp,
 } from '@/lib/abandoned-cart'
 
 /**
@@ -92,11 +98,65 @@ export async function GET(request: Request) {
     }
   }
 
+  // The second and last reminder (2026-11-21), for orders whose first went
+  // out 3 to 5 days ago. Same mark-before-send rule as above.
+  const followUpCandidates = await prisma.order.findMany({
+    where: {
+      status: 'pending',
+      paymentTransactionId: null,
+      abandonedFollowUpSentAt: null,
+      abandonedEmailSentAt: {
+        gte: new Date(now.getTime() - FOLLOW_UP_WINDOW_MS),
+        lte: new Date(now.getTime() - FOLLOW_UP_AFTER_MS),
+      },
+    },
+    orderBy: { createdAt: 'asc' },
+    take: MAX_PER_RUN,
+  })
+
+  let followUps = 0
+  for (const order of followUpCandidates) {
+    // Anyone who has started another order since, paid or not, has moved on
+    // from this cart; a reminder about it would only confuse.
+    const later = await prisma.order.count({
+      where: {
+        email: { equals: order.email, mode: 'insensitive' },
+        createdAt: { gt: order.createdAt },
+      },
+    })
+    const verdict = shouldSendFollowUp({ ...order, hasLaterOrder: later > 0, now })
+    if (!verdict.email) continue
+
+    try {
+      await prisma.order.update({
+        where: { id: order.id },
+        data: { abandonedFollowUpSentAt: new Date() },
+      })
+      await sendAbandonedCartFollowUpEmail(order)
+      followUps++
+    } catch (error) {
+      failed++
+      console.error('[cron/abandoned-cart] follow-up failed', {
+        orderNumber: order.orderNumber,
+        error: error instanceof Error ? error.message : String(error),
+      })
+      Sentry.captureException(error, { tags: { cron: 'abandoned-cart-follow-up' } })
+    }
+  }
+
   console.info('[cron/abandoned-cart] run complete', {
     candidates: candidates.length,
     sent,
+    followUpCandidates: followUpCandidates.length,
+    followUps,
     failed,
   })
 
-  return NextResponse.json({ ok: true, candidates: candidates.length, sent, failed })
+  return NextResponse.json({
+    ok: true,
+    candidates: candidates.length,
+    sent,
+    followUps,
+    failed,
+  })
 }
