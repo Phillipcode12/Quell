@@ -842,3 +842,100 @@ build time and deployment count.
     quelldrop.com 200.
   - *(This entry was written after the push and is committed with the next
     run.)*
+
+---
+
+## 2026-11-21 — eleventh daily run
+
+- **Started 13:04 local**; no lock was present. Phillip was live part of the
+  way through (see "Also shipped" below).
+- **Published: 100 guides + 0 city pages = 100.**
+  - By category: local 35, using 15, choosing 14, seasonal 14, ordering 8,
+    formula 6, label 4, shipping 4.
+  - Totals after this run: 1,116 guides (977 from the daily job).
+- **City pages:** ramp finished 11-15; nothing to add.
+- **Local guides (35):** each station checked in ACIS first (raw JSON in
+  `.daily-job/acis1121/`). Battle Creek (BTL), Altoona (AOO), Anniston (ANB),
+  Carlsbad CA (CRQ), Hampton (LFI), Newport News (PHF), Greenville MS (GLH),
+  Cape Girardeau (CGI), Carbondale (MDH), Concord CA (CCR), Decatur AL (DCU),
+  Elyria (LPR), Hialeah (OPF), Pembroke Pines (HWO), Findlay (FDY), Fullerton
+  (FUL), Goldsboro (GSB), Rocky Mount (RWI), Hayward (HWD), Hickory (HKY),
+  Hutchinson (HUT), New Braunfels (BAZ), New Iberia (ARA), North Las Vegas
+  (VGT), Odessa (ODO), Oxnard (OXR), Pearland (LVJ), Pine Bluff (PBF), Punta
+  Gorda (PGD), Racine (RAC), Sanford FL (SFB), Texarkana (TXK), Vancouver WA
+  (VUO), Vineland (MIV), Winter Haven (GIF).
+  - **Dropped as too close to an existing guide's station or valley:**
+    Beaumont (BPT is Port Arthur's), Overland Park (OJC is Olathe's), Canton
+    (CAK is Akron's), Davenport (Moline/Quad Cities), Harlingen (Brownsville,
+    McAllen), Palmdale (Lancaster), Pompano Beach (third South Florida
+    suburb today). Usable next time with a fresh angle: Pompano Beach (PMP).
+  - **No normals in ACIS today:** Auburn AL, Bloomington IL, Bullhead City,
+    Casa Grande, Chandler, Columbus MS, Danville IL, Fort Collins, Gadsden,
+    Galesburg, Georgetown TX, Glendale AZ, Goodyear, Grand Prairie, Greeley,
+    Greenville NC, Hammond LA, Henderson NV, Jacksonville NC, Joliet,
+    Kankakee, Kissimmee, Lakeland, Las Cruces, Mesa, Nampa, Norman, Ocala,
+    Ruston, San Marcos, Torrance, Victorville, Waterbury.
+  - **Untried candidates for next run:** suburbs are most of the 1,539
+    cities still unlinked (`.daily-job/uncovered-1121.json`); small airports
+    rarely have normals, so check ACIS in bulk first.
+- **Other guides:** seasonal (Christmas gifts for grandma, father-in-law,
+  aunt; Small Business Saturday, puzzles and board games, Christmas cards;
+  year-end work crunch, holiday retail shifts, grading before winter break;
+  Christmas flight, relative's guest room, Christmas cruise; New Year
+  routine, back at work after the holidays); using (drywall finishers,
+  flooring installers, auto body techs, corrections officers, crossing
+  guards, animal control, animators, podcasters, theater actors, patio
+  heaters, model building, mini-split heat pumps, ranchers, arborists, land
+  surveyors); choosing (what's making my eyes dry, sensitive eyes, blinking
+  vs drops, how often preservative-free, wait between drops, how long to use
+  drops, eye drops in the nose, cold drops, while fasting, moisturizing vs
+  lubricating, drops vs water, before or after computer work, are my drops
+  working, time-zone changes); ordering (unused FSA money, HSA after Dec 31,
+  ship to a different address than billing, will the recipient see the
+  price, order lookup "no order found", reorder reminder timing, fake
+  delivery texts, shared computer); formula (full ingredient list, the
+  before-and-after picture on the box, three actives, glycerin, emu oil,
+  manuka honey and honey allergy); label ("caution should be used",
+  "relieve dryness of the eye", storage temperature, who to call); shipping
+  (APO/FPO, why a phone number, stolen package, pack or ship for holiday
+  travel).
+- **10 strongest search phrases used:** dry eye relief <city> (35 cities),
+  christmas gifts for grandma, do fsa funds expire december 31, can you add
+  to your hsa after december 31, will the gift recipient see the price, can
+  you put eye drops in your nose, can you use eye drops while fasting,
+  moisturizing vs lubricating eye drops, what does glycerin do in eye drops,
+  eye drop package stolen.
+- **Skipped, and why:** nearly every seed in the brief already had a guide
+  (trades, public-service jobs, creative jobs, home heating, "can I" and
+  "how often" questions, hotel and relative shipping, all natural inactives).
+  Writers moved to the nearest untaken angle. D's "jigsaw puzzles" was
+  replaced with mini-splits because B wrote puzzles and board games.
+  fsafeds.gov returned 403, so nothing cites it. ACIS day-count reduces
+  (days over 90, nights under 32) returned nonsense and were not used.
+- **For a human look:** neighbor towns, rivers and counties stated from
+  general knowledge (writers listed them: e.g. Calhoun County, Catawba
+  Valley, Charlotte Harbor, Lake Monroe, Columbia River commute); the
+  hurricane season dates (June 1 to November 30) from general knowledge;
+  Langley and Seymour Johnson named only as ACIS station names. The APO/FPO
+  guide says the address form would accept one but nothing promises service,
+  and sends readers to call first.
+- **Reviewed end to end (11):** nose, cold drops, fasting, "caution should
+  be used", Christmas gifts for grandma, HSA after Dec 31, will the
+  recipient see the price, and the openings and numbers of Hampton, Hialeah,
+  Odessa and Vancouver (checked against ACIS; all matched).
+- **Checks:** full vitest 639 passed; `npm run build` passed in 128 s
+  locally; `tsc --noEmit` clean.
+- **Also shipped in today's push (Phillip, live):** Bing Webmaster Tools
+  verification tag `msvalidate.01` in `src/app/layout.tsx` (the GSC import
+  opens a Google popup Chrome tools can't reach); "What converted" section
+  in `docs/SEARCH-CONSOLE-QUERIES.md` from sale Q-RX4K7PP7. The push also
+  carried dee55e7 ("Tag the abandoned-cart email link…"), committed by
+  another session before this run's push.
+- **Deploy:**
+  - Commit d1cb3d5 built on Vercel in about 2 minutes (Ready).
+  - `guides-verify-live`: 100/100 OK. Bing tag confirmed on quelldrop.com.
+  - Pruning: removed quell-bzps9f6i8 with `--safe --confirm-name`, leaving 3
+    (live quell-pq7nhkj46 + quell-bzp93618c + quell-3fbxl397x).
+    quelldrop.com 200.
+  - *(This entry was written after the push and is committed with the next
+    run.)*
