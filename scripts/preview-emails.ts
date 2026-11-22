@@ -100,7 +100,17 @@ async function main() {
     sendShippingNoticeEmail,
     sendNewOrderNotificationEmail,
     sendPasswordResetEmail,
+    sendAbandonedCartEmail,
+    sendAbandonedCartFollowUpEmail,
   } = await import('../src/lib/email')
+
+  // A one-bottle cart, like the first sale the reminders recovered.
+  const abandoned = {
+    email: 'customer@example.com',
+    orderNumber: 'Q-7F3K9M2A',
+    shippingName: 'Ada Lovelace',
+    totalCents: 3999,
+  }
 
   const jobs: [string, () => Promise<unknown>][] = [
     ['1-order-confirmation', () => sendOrderConfirmationEmail(ORDER)],
@@ -121,6 +131,8 @@ async function main() {
           'https://quelldrop.com/reset-password?token=preview',
         ),
     ],
+    ['5-cart-reminder-1', () => sendAbandonedCartEmail(abandoned)],
+    ['6-cart-reminder-2', () => sendAbandonedCartFollowUpEmail(abandoned)],
   ]
 
   for (const [name, run] of jobs) {
