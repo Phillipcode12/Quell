@@ -128,6 +128,21 @@ model Order {
   /// a replayed webhook cannot pay the same order twice.
   paymentTransactionId String? @unique
 
+  /// The most recent declined card attempt on this order, from the
+  /// Authorize.net webhook. Added 2026-11-21 after Q-5R997H9N: the buyer's
+  /// bank declined the card, they left, and the only way to learn why was to
+  /// sign in to Authorize.net. Shown on the admin Abandoned page.
+  ///
+  /// Purely a record. A decline never changes `status`, stock or emails; the
+  /// order stays pending and the abandoned-cart email still goes, which is
+  /// what recovered that sale two days later.
+  paymentDeclinedAt    DateTime?
+  /// Plain words for the admin, e.g. "Declined by the card's bank". Never the
+  /// card number or anything about the customer.
+  paymentDeclineReason String?
+  /// How many declined attempts this order has had.
+  paymentDeclineCount  Int       @default(0)
+
   /// When the abandoned-cart email was sent, so it is sent once.
   ///
   /// The flag lives on the order rather than in a separate log because that is

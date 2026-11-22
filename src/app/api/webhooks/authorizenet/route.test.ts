@@ -159,15 +159,71 @@ describe('events it deliberately ignores', () => {
     expectNothingHappened()
   })
 
-  it('ignores a declined transaction', async () => {
+  it('ignores a payload with no transaction id', async () => {
+    const res = await post({ eventType: AUTH_CAPTURE, payload: {} })
+
+    expect(res.status).toBe(200)
+    expectNothingHappened()
+  })
+})
+
+describe('a declined card (recorded since 2026-11-21)', () => {
+  // Q-5R997H9N: the buyer's bank declined the card and the order sat in the
+  // Abandoned list with no reason until someone read it in Authorize.net.
+  beforeEach(() => {
+    getTransactionDetails.mockResolvedValue({
+      invoiceNumber: ORDER.orderNumber,
+      amountCents: ORDER.totalCents,
+      responseCode: 2,
+      reasonCode: 2,
+      reasonDescription: 'This transaction has been declined.',
+    })
+  })
+
+  it('records the reason on the pending order, in plain words', async () => {
+    const res = await post(authCapture({ responseCode: 2 }))
+
+    expect(res.status).toBe(200)
+    expect(getTransactionDetails).toHaveBeenCalledWith(TRANSACTION_ID)
+    expect(prisma.order.updateMany).toHaveBeenCalledWith({
+      where: { orderNumber: ORDER.orderNumber, status: 'pending' },
+      data: {
+        paymentDeclinedAt: expect.any(Date),
+        paymentDeclineReason: 'Declined by the card’s bank',
+        paymentDeclineCount: { increment: 1 },
+      },
+    })
+  })
+
+  it('never marks it paid, draws stock, sends mail or rebuilds the home page', async () => {
+    await post(authCapture({ responseCode: 2 }))
+
+    const data = prisma.order.updateMany.mock.calls[0][0].data
+    expect(data).not.toHaveProperty('status')
+    expect(data).not.toHaveProperty('paymentTransactionId')
+    expect(drawDownStock).not.toHaveBeenCalled()
+    expect(sendOrderConfirmation).not.toHaveBeenCalled()
+    expect(sendNewOrderNotification).not.toHaveBeenCalled()
+    expect(revalidatePath).not.toHaveBeenCalled()
+  })
+
+  it('records nothing when the gateway lookup names no order', async () => {
+    getTransactionDetails.mockResolvedValue({
+      invoiceNumber: null,
+      amountCents: null,
+      responseCode: 2,
+      reasonCode: 2,
+      reasonDescription: null,
+    })
     const res = await post(authCapture({ responseCode: 2 }))
 
     expect(res.status).toBe(200)
     expectNothingHappened()
   })
 
-  it('ignores a payload with no transaction id', async () => {
-    const res = await post({ eventType: AUTH_CAPTURE, payload: {} })
+  it('still answers 200 if the lookup fails, so the gateway never retries', async () => {
+    getTransactionDetails.mockRejectedValue(new Error('gateway down'))
+    const res = await post(authCapture({ responseCode: 2 }))
 
     expect(res.status).toBe(200)
     expectNothingHappened()

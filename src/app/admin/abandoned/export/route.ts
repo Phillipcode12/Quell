@@ -34,6 +34,8 @@ export async function GET() {
       'utm_source',
       'utm_campaign',
       'started',
+      'card_declined',
+      'card_declined_at',
       'recovery_email_sent',
     ],
     orders.map((o) => [
@@ -46,6 +48,11 @@ export async function GET() {
       o.utmSource ?? '',
       o.utmCampaign ?? '',
       o.createdAt.toISOString(),
+      // Since 2026-11-21; see lib/payment-decline.ts.
+      o.paymentDeclineReason
+        ? `${o.paymentDeclineReason}${o.paymentDeclineCount > 1 ? ` (${o.paymentDeclineCount} tries)` : ''}`
+        : '',
+      o.paymentDeclinedAt ? o.paymentDeclinedAt.toISOString() : '',
       o.abandonedEmailSentAt ? o.abandonedEmailSentAt.toISOString() : '',
     ]),
   )

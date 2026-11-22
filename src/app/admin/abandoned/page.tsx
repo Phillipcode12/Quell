@@ -85,7 +85,7 @@ export default async function AdminAbandonedPage() {
       </div>
 
       <div className="mt-4 overflow-x-auto rounded-xl border border-line">
-        <table className="w-full min-w-[56rem] text-left text-sm">
+        <table className="w-full min-w-[64rem] text-left text-sm">
           <thead className="border-b border-line bg-surface-2 text-muted">
             <tr>
               <th className="px-4 py-3 font-medium">Order</th>
@@ -94,13 +94,14 @@ export default async function AdminAbandonedPage() {
               <th className="px-4 py-3 text-right font-medium">Value</th>
               <th className="px-4 py-3 font-medium">Campaign</th>
               <th className="px-4 py-3 font-medium">Started</th>
+              <th className="px-4 py-3 font-medium">Why it stopped</th>
               <th className="px-4 py-3 font-medium">Recovery email</th>
             </tr>
           </thead>
           <tbody>
             {orders.length === 0 ? (
               <tr>
-                <td className="px-4 py-4 text-muted" colSpan={7}>
+                <td className="px-4 py-4 text-muted" colSpan={8}>
                   None. Every order that started has either completed or been
                   cancelled.
                 </td>
@@ -124,6 +125,30 @@ export default async function AdminAbandonedPage() {
                     </td>
                     <td className="px-4 py-3 tabular-nums text-muted">
                       {age(o.createdAt, now)}
+                    </td>
+                    {/* Recorded from Authorize.net's webhook since 2026-11-21
+                        (lib/payment-decline.ts). A dash means no declined card
+                        was recorded: usually they left the payment page
+                        without pressing Pay, or it predates the feature. */}
+                    <td className="px-4 py-3">
+                      {o.paymentDeclineReason ? (
+                        <span className="text-amber-300">
+                          {o.paymentDeclineReason}
+                          {o.paymentDeclineCount > 1 && ` (${o.paymentDeclineCount} tries)`}
+                          {o.paymentDeclinedAt && (
+                            <span className="block text-xs text-muted">
+                              {age(o.paymentDeclinedAt, now)}
+                            </span>
+                          )}
+                        </span>
+                      ) : (
+                        <span
+                          className="text-muted"
+                          title="No declined card recorded. Usually they left the payment page without pressing Pay."
+                        >
+                          —
+                        </span>
+                      )}
                     </td>
                     <td className="px-4 py-3 text-muted">
                       <span className="flex flex-wrap items-center gap-2">

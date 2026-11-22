@@ -332,12 +332,17 @@ export async function getTransactionDetails(transactionId: string): Promise<{
   invoiceNumber: string | null
   amountCents: number | null
   responseCode: number | null
+  /** Why it was declined or errored; see lib/payment-decline.ts. */
+  reasonCode: number | null
+  reasonDescription: string | null
 }> {
   const response = await gatewayRequest<{
     transaction?: {
       order?: { invoiceNumber?: string }
       authAmount?: number
       responseCode?: number
+      responseReasonCode?: number | string
+      responseReasonDescription?: string
     }
   }>('getTransactionDetailsRequest', { transId: transactionId })
 
@@ -349,6 +354,14 @@ export async function getTransactionDetails(transactionId: string): Promise<{
         ? Math.round(transaction.authAmount * 100)
         : null,
     responseCode: transaction?.responseCode ?? null,
+    // The "JSON" shim sometimes renders numbers as strings.
+    reasonCode:
+      transaction?.responseReasonCode != null &&
+      transaction.responseReasonCode !== '' &&
+      Number.isFinite(Number(transaction.responseReasonCode))
+        ? Number(transaction.responseReasonCode)
+        : null,
+    reasonDescription: transaction?.responseReasonDescription ?? null,
   }
 }
 

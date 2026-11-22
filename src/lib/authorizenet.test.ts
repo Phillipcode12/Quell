@@ -448,6 +448,26 @@ describe('getTransactionDetails', () => {
       invoiceNumber: 'Q-7F3K9M2A',
       amountCents: 3694,
       responseCode: 1,
+      reasonCode: null,
+      reasonDescription: null,
+    })
+  })
+
+  it('returns the decline reason, accepting a code sent as text', async () => {
+    // Since 2026-11-21 the webhook records why a card was declined. The JSON
+    // shim sometimes renders numbers as strings, so both forms must parse.
+    respondWith({
+      order: { invoiceNumber: 'Q-5R997H9N' },
+      authAmount: 39.99,
+      responseCode: 2,
+      responseReasonCode: '2',
+      responseReasonDescription: 'This transaction has been declined.',
+    })
+
+    await expect(getTransactionDetails('t')).resolves.toMatchObject({
+      responseCode: 2,
+      reasonCode: 2,
+      reasonDescription: 'This transaction has been declined.',
     })
   })
 
@@ -469,6 +489,8 @@ describe('getTransactionDetails', () => {
       invoiceNumber: null,
       amountCents: null,
       responseCode: null,
+      reasonCode: null,
+      reasonDescription: null,
     })
   })
 
@@ -479,6 +501,8 @@ describe('getTransactionDetails', () => {
       invoiceNumber: null,
       amountCents: null,
       responseCode: null,
+      reasonCode: null,
+      reasonDescription: null,
     })
   })
 })

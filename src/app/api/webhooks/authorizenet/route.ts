@@ -8,6 +8,7 @@ import {
   verifyWebhookSignatureDetailed,
 } from '@/lib/authorizenet'
 import { drawDownStock } from '@/lib/inventory'
+import { describeDecline } from '@/lib/payment-decline'
 import {
   sendNewOrderNotification,
   sendOrderConfirmation,
@@ -89,6 +90,47 @@ export async function POST(request: Request) {
   return NextResponse.json({ received: true })
 }
 
+/**
+ * A card attempt that didn't go through: note why on the order, and nothing
+ * else.
+ *
+ * Added 2026-11-21. Declines used to be dropped here, which is how order
+ * Q-5R997H9N sat in the Abandoned list with no explanation until Phillip read
+ * the reason in Authorize.net himself ("declined by issuer").
+ *
+ * **It never changes status, stock or emails.** The order stays pending, so
+ * the customer can retry and the abandoned-cart email still goes; that email
+ * is what recovered that sale. Scoped to pending orders so a late decline
+ * event can't touch an order that has since been paid.
+ *
+ * The gateway is asked for the transaction, exactly as for a payment, so a
+ * forged event naming a transaction that doesn't exist changes nothing.
+ */
+async function recordDecline(transactionId: string, payloadResponseCode: number) {
+  const details = await getTransactionDetails(transactionId)
+  const orderNumber = details.invoiceNumber
+  if (!orderNumber) return
+
+  const reason = describeDecline({
+    responseCode: details.responseCode ?? payloadResponseCode,
+    reasonCode: details.reasonCode,
+    reasonDescription: details.reasonDescription,
+  })
+
+  const updated = await prisma.order.updateMany({
+    where: { orderNumber, status: 'pending' },
+    data: {
+      paymentDeclinedAt: new Date(),
+      paymentDeclineReason: reason,
+      paymentDeclineCount: { increment: 1 },
+    },
+  })
+  console.info(
+    `[webhook] card attempt on ${orderNumber} did not go through: ${reason}` +
+      (updated.count === 0 ? ' (order not pending; nothing recorded)' : ''),
+  )
+}
+
 async function handleAuthCapture(event: WebhookEvent) {
   const transactionId = event.payload?.id
   if (!transactionId) return
@@ -97,6 +139,7 @@ async function handleAuthCapture(event: WebhookEvent) {
     typeof event.payload?.responseCode === 'number' &&
     event.payload.responseCode !== APPROVED
   ) {
+    await recordDecline(transactionId, event.payload.responseCode)
     return
   }
 
