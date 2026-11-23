@@ -939,3 +939,92 @@ build time and deployment count.
     quelldrop.com 200.
   - *(This entry was written after the push and is committed with the next
     run.)*
+
+---
+
+## 2026-11-22 — twelfth daily run
+
+- **Started 11:05 local**; no lock was present.
+- **Published: 100 guides + 0 city pages = 100.**
+  - By category: local 21, using 19, seasonal 17, choosing 15, ordering 8,
+    shipping 6, label 5, returns 5, formula 4.
+  - Totals after this run: 1,216 guides (1,077 from the daily job).
+- **City pages:** ramp finished 11-15; nothing to add.
+- **Local guides (21):** each station checked in ACIS this morning (raw JSON
+  in `.daily-job/acis1122/`). Pompano Beach (PMP), Clearwater (PIE, no
+  elevation returned), Cape Coral (RSW), Sugar Land (SGR), Kent (Renton RNT),
+  Gresham (Troutdale TTD), Spokane Valley (Felts Field SFF), Livermore (LVK),
+  Broken Arrow (Jones Riverside RVS), Edmond (Wiley Post PWA), Kansas City KS
+  (downtown MKC), Centennial (APA), Chula Vista (Brown Field SDM), Escondido
+  (Ramona RNM), Chino (CNO), Lowell (Lawrence LWM), Paterson (Teterboro TEB),
+  White Plains (HPN), Lindenhurst (Republic FRG), Joliet (Romeoville LOT),
+  Waukegan (UGN).
+  - **Checked today with normals, not yet used:** Lee's Summit MO (LXT; no
+    live page, so for Independence MO), Bedford MA (BED; Cambridge or
+    Lexington area), Detroit City (DET; Sterling Heights), West Chicago
+    DuPage (DPA; Elgin), Aurora IL airport (ARR; Naperville), Palwaukee
+    (PWK; Evanston), Caldwell NJ (CDW; Clifton), Islip (ISP; Long Island),
+    Burnet TX (BMQ), Hondo TX (HDO), Boeing Field (BFI), Imperial Beach (NRS).
+  - **Not usable:** JQF, EFD, ADS, BJC, SBD, AJO, MCC, SUU, POC, EMT, PWT,
+    GTU, HYI, EDC returned nothing; NFG has no precipitation. Skipped as
+    already a neighbor's station: CQT (Los Angeles), SAC (Sacramento), FAT
+    (Fresno), HOU (Houston).
+- **Other guides (writers swapped many assigned topics that already had
+  guides; the inventory is dense, grep before assigning):** ordering
+  (declined card, company card, another state, cancel, prepaid card, charged
+  twice, does Quell sell my data, weekend orders); shipping (winter storm
+  delay, package got wet, mailbox, second home, pickup, someone who is
+  moving); returns (refund window start, refund timing, send back, returned
+  to sender, crushed box); label (what a label doesn't tell you, 1 drop 3
+  times, Poison Control line, label too small to read, continued
+  irritation); formula (drop volume, lubricant vs emollient, dyes or
+  fragrance, preservative-free glycerin); choosing (rewetting drops, eyes
+  closed, waiting for an appointment, dry in the corner, dry when I blink,
+  skincare, why drops feel good, lash lift, warm compress, eyelash serum,
+  facial, brow waxing, blue light glasses, dry at work fine at home,
+  floaters); using (car salespeople, insurance adjusters, bank tellers,
+  property managers, receptionists, night custodians, dairy farmers,
+  winter sailors, museum guards, church musicians, dog groomers, nannies,
+  indoor pools, long nails, mirror, squeeze, bathroom, nightstand, gloves,
+  ski goggles); seasonal (gifts for uncle, son-in-law, daughter-in-law,
+  grown nephew and niece, cousin, godparent, nanny, someone who works from
+  home, woodworker, musician, engineer, veteran; Christmas lights drive,
+  wrapping marathon, bell ringers).
+- **10 strongest search phrases used:** dry eye relief <city> (21 cities),
+  eye drop volume per drop, lubricant eye drops vs rewetting drops, glycerin
+  eye drops preservative free, can you put eye drops in with your eyes
+  closed, do blue light glasses help dry eyes, do eye drops help with
+  floaters, why was my card declined, can i cancel my order, christmas gifts
+  for a son-in-law.
+- **Skipped, and why:** "Does Quell ship to Puerto Rico?" (checkout accepts
+  any two-letter state code, so the code can't answer it); "is polysorbate
+  80 a preservative" (an existing FAQ answers it); online vs pharmacy,
+  ships internationally, eyes-only, without a prescription, real estate
+  agents, cashiers, before an eye exam, one eye drier, still dry after drops,
+  too many drops, CAD drafters, book lover, retired friend, ice rink, glare
+  at night, tired eyes, running down the cheek (all already answered).
+- **Fixed in review (11 read end to end):** floaters (cut a reassurance that
+  "it doesn't mean something serious"), why drops feel good (cut an
+  unsourced comparison with other drops), Pompano Beach (July was called
+  the hottest month; August is, per ACIS), privacy (dropped "the cart is
+  never sent to the site"; see below). Also read: dyes and fragrance, blue
+  light glasses, Centennial (sums and the Kansas City comparison checked
+  against ACIS), cancel, veteran gifts, drop volume, dairy farmers.
+- **For a human look:** the /privacy page says the cart is stored in the
+  browser and "never sent to us", which may not fit the abandoned-cart
+  emails. Phillip, 2026-11-22: "Leave it." Don't raise it again; guides
+  just shouldn't repeat that sentence. Writers named some
+  neighbor towns from general knowledge (Dunedin, Largo, Pine Island,
+  Missouri City, Richmond TX) and called Edmond a "college town".
+- **Checks:** full vitest 651 passed; `npm run build` passed in 67 s
+  locally; `tsc --noEmit` clean.
+- **Deploy:**
+  - Commit 735cb76 built on Vercel in about 2 minutes (Ready). The push also
+    carried 86a2a51 ("Email previews: include both cart reminders"), which
+    another session had committed but not pushed.
+  - `guides-verify-live`: 100/100 OK.
+  - Pruning: removed quell-pq7nhkj46 with `--safe --confirm-name`, leaving
+    3 (live quell-k2mgz2ak9 + quell-lw0ml1ohv + quell-k52z599zd).
+    quelldrop.com 200.
+  - *(This entry was written after the push and is committed with the next
+    run.)*
