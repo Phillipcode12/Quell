@@ -1028,3 +1028,104 @@ build time and deployment count.
     quelldrop.com 200.
   - *(This entry was written after the push and is committed with the next
     run.)*
+
+---
+
+## 2026-11-23 — thirteenth daily run
+
+- **Started 13:23 local**; no lock was present.
+- **Published: 100 guides + 0 city pages = 100.**
+  - By category: using 22, local 20, choosing 18, seasonal 16, ordering 8,
+    formula 4, label 4, returns 4, shipping 4.
+  - Totals after this run: 1,316 guides (1,177 from the daily job).
+  - Ordering, shipping and returns came in under the 30 percent target on
+    purpose: nearly every honest question in those categories is already
+    answered (156 guides), and the open ones need site facts the code
+    doesn't hold (PO boxes, debit cards, statement name, signatures).
+- **City pages:** ramp finished 11-15; nothing to add.
+- **Local guides (20):** each station checked in ACIS this morning (raw JSON
+  in `.daily-job/acis1123/`, writers' low-temperature pulls in
+  `.daily-job/<letter>/`). Independence MO (LXT), Harlingen (HRL), Roseburg
+  (RBG), Evanston (PWK), Cambridge MA (BED), Huntsville TX (UTS), New Bern
+  (EWN), Holland MI (BIV), Sterling Heights (DET), Kingsville (NQI),
+  Danville VA (DAN), Naperville (ARR), Elgin (DPA), Stephenville (SEP 9NNE
+  coop), Greenwood SC (GRD), Overland Park (OJC), Clifton NJ (CDW),
+  Corsicana (CRS), Eagle Pass (EGP 3N coop), Jackson MI (JXN).
+  - Overland Park shares OJC with the existing Olathe guide, and Naperville
+    shares ARR with the Aurora guide; both were built on different angles
+    and link the neighbor.
+  - **Checked today with normals, not yet used:** Islip (ISP; no Islip city
+    page, try a Long Island page), Port Arthur's BPT (Beaumont would repeat
+    Port Arthur), San Antonio Stinson (SSF; Schertz, Converse, Universal
+    City), Pasco (PSC; Kennewick has a guide), Saginaw MBS and
+    Wilkes-Barre AVP (both have neighbors' guides).
+  - **No normals in ACIS today:** GYI, OCH, PRX, ASL, ERV, GVT, SEQ, BGS,
+    TYQ, FIN, F70, MAN, TIX, ITH, UNV, SHD, HXD, MYR, SRB, MKT, TBR, GAD,
+    STE, MTW, OKV, JHW, BCB, AUO, BVS, KLS, AIK, HYW, RUQ, TTA, LGC; LMT and
+    BHL returned nothing.
+- **Other guides:** using (judges, climbing gym route setters, offshore oil
+  rig workers, DJs, sonographers, wind turbine technicians, cable
+  installers, sound engineers, poker players, catering and banquet staff,
+  online tutors, actuaries, butchers, estheticians, florists, massage
+  therapists, physical therapists, machinists, carpenters, flight
+  instructors, meteorologists, brewery workers); seasonal (gifts for a
+  widowed parent, close friend, caregiver, stepparent, librarian; Christmas
+  Eve candlelight service, caroling, assembling gifts on Christmas Eve;
+  baseboard heat, airport layover, parked car with the heat on, first snow
+  day, ceiling fan, air purifier, hair dryer, humidity forecast); choosing
+  (headaches from screens, preservatives, eye twitching, dark circles,
+  blurry vision, dry some days not others, makeup, sitting by a window, dry
+  lately, moving to a dry climate, basement, sunny winter days, stress,
+  oily feel, couples sharing, dropped bottle, hospital room, dentist);
+  ordering (unrecognized charge, late at night, roommate, card name vs ship
+  name, two orders, slow connection, parent without email, splitting a gift
+  with siblings); shipping (office closed for holidays, college winter
+  break, gated community, mobile home park); returns (gift after Christmas,
+  order you didn't place, opened one return the rest, exchanges); label
+  ("changes in your vision", Celsius and Fahrenheit, keeping the box, "eye
+  pain"); formula (oil-based drops, steroids, active vs inactive, alcohol).
+- **10 strongest search phrases used:** dry eye relief <city> (20 cities),
+  do eye drops help with blurry vision, can eye drops help with eye
+  twitching, why do eye drops have preservatives, do eye drops have
+  steroids in them, do eye drops contain alcohol, why have my eyes been so
+  dry lately, can couples use the same eye drops, can eye drops help with
+  headaches from screens, christmas gifts for a widowed parent.
+- **Skipped, and why (already answered; writers swapped in-category):**
+  rock climbers, power line workers, restaurant servers, call-center
+  workers, stargazers, forced-air heat, car heater, clocks falling back,
+  grandkids' gifts, coworker gifts, holiday open house, hotel room, purse,
+  dilation (an existing FAQ), bottle life, "apply 1 drop", time of day,
+  blurry after drops, makeup order, shower, crying, try drops before a
+  doctor, what to look for when buying, what drops feel like working,
+  refund to a canceled card, held packages, storage temperature. "Best
+  friend" fails the banned-word scan, so "close friend". Not attempted for
+  lack of site facts: PO boxes, Apple Pay or debit, statement name,
+  signature on delivery.
+- **Fixed in review (11 read end to end):** steroids (an awkward
+  {doNotUse} sentence), eye pain (cut a contact-lens instruction and an odd
+  "reviewed summary" phrase), Eagle Pass (cut "climbs well past 86°F within
+  an hour"; reworded the {doNotUse} line). Also read: twitching, dark
+  circles, Harlingen, blurry vision, widowed parent, Cambridge, stress,
+  alcohol. During writing, B and E collided on an identical FAQ about
+  moving; both swapped topics, and E fixed a "treat" in the librarian gift
+  guide.
+- **For a human look:** general-knowledge lines writers flagged: hurricane
+  season peaking in September (Harlingen), Roseburg on I-5 between Eugene
+  and Medford, Stephenville in Erath County, nearby towns named in shipping
+  lines, steroid eye drops being prescription medicines, glycerol and
+  caprylyl glycol not being drinking alcohol, "the site doesn't sell gift
+  cards" (no gift-card code found).
+- **Checks:** `npx vitest run` failed only on a timeout: the five-word
+  similarity test took over the default 5 s under the full parallel suite.
+  It passes alone and the full suite passes 651/651 with
+  `--testTimeout=60000`. The test file was not edited; someone should
+  decide whether to give that test its own timeout, since it grows daily.
+  `npm run build` passed in 66 s locally; `tsc --noEmit` clean.
+- **Deploy:**
+  - Commit b19d27c built on Vercel in about 3 minutes (Ready).
+  - `guides-verify-live`: 100/100 OK.
+  - Pruning: removed quell-k52z599zd with `--safe --confirm-name`, leaving 3
+    (live quell-ihe8s8zrd + quell-k2mgz2ak9 + quell-lw0ml1ohv).
+    quelldrop.com 200.
+  - *(This entry was written after the push and is committed with the next
+    run.)*
