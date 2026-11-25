@@ -1129,3 +1129,104 @@ build time and deployment count.
     quelldrop.com 200.
   - *(This entry was written after the push and is committed with the next
     run.)*
+
+---
+
+## 2026-11-24 — fourteenth daily run
+
+- **Started 11:01 local**; no lock was present.
+- **Published: 100 guides + 0 city pages = 100.**
+  - By category: local 20, using 16, seasonal 15, choosing 15, ordering 12,
+    formula 6, label 6, returns 5, shipping 5.
+  - Totals after this run: 1,416 guides (1,277 from the daily job).
+- **City pages:** ramp finished 11-15; nothing to add.
+- **Local guides (20), new station method:** FAA-code lookups mostly return
+  nothing in ACIS now, so stations came from ACIS MultiStnData by state
+  (`.daily-job/acis-state.sh <ST>` → `acis1124/list-<ST>.txt`, every
+  station with full 1991–2020 normals), matched to uncovered city pages by
+  station name (`.daily-job/match.cjs`). Raw per-station JSON with lows in
+  `.daily-job/acis1124/<GHCN id>.json` (`acis2.sh`). Used: San Marcos
+  (USC00417983), Kerrville (3 NNE), Beaumont (Beaumont City), Nacogdoches,
+  Sherman, Big Spring (USW00023041), Fort Collins, Boulder, Greeley (UNC),
+  Chico (University Farm), Monterey (Peninsula AP), South Lake Tahoe (AP),
+  Paso Robles (Municipal AP), Ocala, Crestview (AP), Homestead (Gen
+  Aviation AP), Sierra Vista, Boone (1 SE), Durham, Shelby (2 NW).
+  - **Matched with normals, not yet used** (from today's lists for TX, FL,
+    AZ, CA, NC, CO): Richardson, Edinburg, Georgetown, Baytown, Burleson,
+    Grapevine, Waxahachie, Weslaco, Cleburne, Greenville TX, Alvin, Paris
+    TX, Marshall TX, Terrell, Boerne; Hollywood FL, Palm Bay, Lakeland,
+    Palm Coast, Kissimmee, Miami Beach, Palm Beach Gardens, Bradenton,
+    Fort Pierce, Titusville, DeLand, Plant City, Leesburg, Venice,
+    Jacksonville Beach; Tempe, Casa Grande, Lake Havasu City, Bullhead
+    City; Anaheim, Irvine, Santa Ana, Fremont, Oceanside, Palmdale,
+    Victorville, Torrance, Pasadena CA, Vallejo, Fairfield, Berkeley,
+    Vacaville, Burbank, El Cajon, Palm Springs, Redlands, Davis, Hanford,
+    Gilroy, Petaluma; Cary, High Point, Concord NC, Greenville NC, Chapel
+    Hill, Burlington NC, Wilson, Salisbury, Statesville; Lakewood CO,
+    Longmont, Loveland, Castle Rock, Montrose. Check neighbors first.
+- **Non-local:** the inventory is now so dense that writers swapped about
+  half of the assigned non-local topics for untaken ones in the same
+  category. Written: using (pharmacy technicians, medical coders, baristas,
+  makeup artists, opticians, event planners, grocery cashiers, hospital
+  chaplains, pest control technicians, locksmiths, crossword solvers,
+  journalists, movers, shuttle drivers, calligraphy, upholsterers);
+  seasonal (splitting firewood, hayride/sleigh ride, aging parent living
+  alone, Black Friday trips, hanging Christmas lights, flight attendant
+  gifts, frying a turkey, empty nesters, raking leaves, Turkey Trot, in-laws
+  you don't know well, walking the dog in winter, cold tailgate, holiday
+  craft fair, home cook gifts); choosing (dry when I close them, when sick,
+  after being outside, once a day, keeping eyes from drying out, windy days,
+  afternoon, computer but not TV, before or after going out in the cold,
+  after 28 days, wrong eye, dark mode, warm drops, choosing for someone
+  else, rest or drops); ordering (in-laws, Thanksgiving weekend, tablet,
+  church or club, household, order total before paying, away from home,
+  neighbor, which email, delivery date, elderly neighbor, adult child);
+  shipping (senior living, tracking not updating, delivered to a neighbor,
+  yourself at someone else's house, Thanksgiving weekend); returns (box
+  arrives open, calling for someone else, missing bottle, opened and didn't
+  like it, gift arrives damaged); formula (emu and mineral oil, hyaluronic
+  acid, parabens, homeopathic, oil-free, antihistamine); label (ask a
+  doctor, worsens or persists, taking the label to a visit, 3 times a day on
+  nights, caregiver, going over a label with an aging parent).
+- **10 strongest search phrases used:** dry eye relief <city> (20 cities),
+  why do my eyes feel dry when i close them, why do my eyes feel dry when
+  i'm sick, what happens if you use eye drops after 28 days, is it okay to
+  use eye drops once a day, christmas gifts for an aging parent who lives
+  alone, is there hyaluronic acid in eye drops, does dark mode help dry
+  eyes, can you use warm eye drops, black friday shopping.
+- **Skipped as already answered (don't assign again):** lab technicians,
+  stock traders, video editors, HVAC technicians, insurance adjusters, home
+  health aides, birdwatchers, rideshare drivers, quilters, tax preparers;
+  Thanksgiving parade, ice skating rink, Christmas tree farm, deer/hunting,
+  hot oven, new retiree, garage workshop, nurse gifts, book-lover gifts,
+  year-end FSA; every day, before bed, nap, blink, glasses (all angles),
+  blue light, fasting, wake up, tired, evening, after opening, ears/nose,
+  how long before a doctor; business orders for employees, another state,
+  spouse's card, coworker; vacation rental, rural address, freeze in transit,
+  holiday address; wrong address, wrong number of bottles, who to call;
+  fragrance/dye, how many ingredients, animal ingredients, lubricant vs
+  emollient; "for use in the eyes only", egg or bird allergies, protectant,
+  keep out of reach.
+- **Fixed in review (14 read end to end):** Big Spring (cut two sentences
+  inferring dry air from low precipitation), homeopathic (doubled period
+  after {emuOil}; used the label's spelling of the Terminalia inactive).
+  Also read: San Marcos, Beaumont, Boone, sick, delivery date (checked
+  /terms "Delivery estimates are estimates"), antihistamine, aging parent
+  gifts, chaplains, 28 days, hyaluronic acid, box arrives open (checked
+  /terms "replace it at no charge"), Turkey Trot. During writing, A, D and
+  E all drafted a Turkey Trot guide; only D's was kept.
+- **For a human look:** Boone called a college town with nearby ski slopes
+  and Blowing Rock; Beaumont names Nederland and Lumberton; Sierra Vista
+  names Huachuca City; Paso Robles names Templeton and Atascadero; the
+  antihistamine guide says the Uses line doesn't mention itching (true of
+  the Uses line, though the site's RELIEVES list includes itching).
+- **Checks:** full `npx vitest run --testTimeout=60000` 651/651; `npm run
+  build` 83 s locally; `tsc --noEmit` clean.
+- **Deploy:**
+  - Commit 60c0a32 built on Vercel in about 2.5 minutes (Ready).
+  - `guides-verify-live`: 100/100 OK.
+  - Pruning: removed quell-lw0ml1ohv with `--safe --confirm-name`, leaving 3
+    (live quell-m1yi93rz4 + quell-ihe8s8zrd + quell-k2mgz2ak9).
+    quelldrop.com 200.
+  - *(This entry was written after the push and is committed with the next
+    run.)*
