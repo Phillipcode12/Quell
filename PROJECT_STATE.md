@@ -7,14 +7,19 @@ Update it when something here stops being true.
 
 ## Start here — next session
 
-> **Latest state: §59 (2026-11-11, the 100-a-day job), §58 (2026-11-07), §57 (2026-11-06), §56 (2026-11-03), then §55 and §54.** The numbered list
+> **Latest state: §60 (2026-11-25), §59 (2026-11-11, the 100-a-day job), §58 (2026-11-07), §57 (2026-11-06), §56 (2026-11-03), then §55 and §54.** The numbered list
 > below predates them and some items in it are closed; where the two disagree,
 > §56 is current. The repo now lives at **`C:\dev\quell`**.
 >
-> **Next dated item: 2026-11-17** — re-read Search Console (URL-prefix
-> property). It is the first report that reflects the canonical fix, the
-> guides and the indexing requests. If the city pages are still at zero
-> indexed, that is the point for `LOCATION_PAGES=off` (§56).
+> **Newest: §60 (2026-11-16 to 11-25)**: second sale, card declines recorded,
+> two cart reminders, admin login moved to phillip.moore@meibum.com, Search
+> Console export 2.
+>
+> **Next dated item: about 2026-12-09.** Pull Search Console again (in
+> Phillip's Chrome) and add "Export 3" to `docs/SEARCH-CONSOLE-QUERIES.md`;
+> compare positions of the guides the daily job strengthened. The 2026-11-17
+> check is done: city pages are indexed (1,620), so `LOCATION_PAGES=off` is
+> not needed.
 
 **The store is live and takes real card payments.** `main` deploys to a shop
 with a working checkout, and Google indexes it, so mistakes are public. Apply
@@ -3006,6 +3011,77 @@ accepted Google's terms himself; the rest was done from here.
 Hobby has a build-time limit; if builds approach it, move guides from
 build-time prerendering to on-demand rendering with a long cache (mind ISR
 writes, §57) or to the database, as Sleight does.
+
+---
+
+## 60. Second sale, card declines, two cart reminders, Search Console export 2 (2026-11-16 to 11-25)
+
+**Sales: 2 real ones, ever** (count paid/shipped orders, never Order rows or
+Authorize.net emails; settlement reports for account **965630 are BlephEx's**).
+
+### Sale 2: Q-RX4K7PP7, 1 bottle, $39.99, San Antonio TX
+- Likely found through **DuckDuckGo** on a daily guide ("Can you share eye
+  drops?"), Nov 19. Two checkouts that night (Q-SQCJ9YKY, Q-5R997H9N) failed:
+  Authorize.net shows Q-5R997H9N **declined by the issuer** (Merchant Advice
+  Code 2, "issuer cannot approve at this time"; CVV matched). Not our site.
+- The **abandoned-cart email** (Nov 20) brought them back; paid Nov 21 via
+  `/cart/resume`. Shipped Nov 25 by FedEx; shipping email sent.
+- How it was traced: visits are deliberately unlinked to buyers, so by time
+  window (Visit.landingPath/referrerHost vs. Order.createdAt). Note `pg`
+  parses Prisma's `timestamp without time zone` as local time; set a UTC type
+  parser (1114) or times are off by 6 hours.
+
+### Built
+- **Reminder links tagged** `utm_source=quell&utm_medium=email&utm_campaign=abandoned-cart&utm_content=reminder-1|2`,
+  captured on /cart/resume before it forwards, saved on the order.
+- **Card declines recorded** (migration `20261122000000_payment_decline`):
+  `paymentDeclinedAt / paymentDeclineReason / paymentDeclineCount`. The
+  webhook used to drop non-approved authcapture events; `recordDecline` now
+  looks the transaction up and stores plain words from `lib/payment-decline.ts`
+  on the **pending** order only. Never touches status, stock or emails.
+  Admin Abandoned page "Why it stopped" + CSV. Q-5R997H9N backfilled.
+  **Not yet proven by a live decline**; if one shows only a dash, check the
+  Authorize.net webhook subscription covers declined authcapture events.
+- **Second cart reminder** (migration `20261122010000_abandoned_follow_up`,
+  `abandonedFollowUpSentAt`): 3 to 5 days after the first, skipped if the same
+  email started any later order. Two per order, ever. First email's footer now
+  "We'll send one more reminder in a few days, and that's all."; second ends
+  "This is our last reminder about it." Phillip chose this and **declined** an
+  unsubscribe link/postal address, per-person dedupe, a decline-aware email and
+  a "payment didn't go through" cart note. Don't re-propose.
+  `scripts/preview-emails.ts` renders both (`email-preview/5-…`, `6-…`).
+- **Admin traffic chart** shows each day's count on the bar
+  (`app/admin/analytics/DayBars.tsx`).
+- **Affiliated clinic links** to centersfordryeye.com (footer, About, three
+  see-a-doctor guides, 12 Nashville-area city pages) via `AFFILIATED_CLINIC` /
+  `AFFILIATED_CLINIC_LINE` in product-content.ts: always "affiliated", no
+  claims, tested against the guide banned list.
+
+### Accounts and config
+- **Admin login is now `phillip.moore@meibum.com`** (User row email changed,
+  password kept). `ADMIN_EMAILS` = phillip.moore@meibum.com, docjmrmd@gmail.com,
+  ryan.peterson@meibum.com. FULFILMENT_EMAILS and EMAIL_REPLY_TO were already
+  his work address.
+- Payment keys (`AUTHORIZENET_*`) are Sensitive in Vercel: `vercel env pull`
+  can't read them, so gateway lookups from a laptop fail by design.
+- Old deployments: Phillip gave **standing approval** (2026-11-16) to remove
+  anything but the live one and the two newest, with
+  `vercel remove <url> --safe --confirm-name <url>` (`--yes` alone no longer
+  deletes). The daily job does it.
+- The daily job was **recreated** 2026-11-16 so it runs from `C:\dev\quell`
+  (the app keeps a task's folder on its side; recreating reset its permission
+  mode, which Phillip set back).
+
+### Search Console, export 2 (2026-11-25, last 28 days)
+**2,330 pages indexed** (cities 1,620 + 229 queued; guides 444 + 4 queued,
+~900 newer not yet processed). 1,910 impressions, 10 clicks, average position
+42. Narrow questions rank on page 1 (woodworkers 1, truck drivers 2, ID to buy
+4, sauna 7, FSA 8, eyelash extensions 9); broad and local "treatment" searches
+sit at 50 to 90; city pages got 0 clicks. Full data and the daily job's new
+guidance are in `docs/SEARCH-CONSOLE-QUERIES.md`; the job now favors narrow
+questions and strengthens up to 5 already-shown guides a day. Search Console
+is readable in **Phillip's Chrome** (phillipquell123@gmail.com); the app's own
+browser is signed in as sleightmagicllc@gmail.com and can't see Quell.
 
 ---
 
