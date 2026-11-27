@@ -97,7 +97,7 @@ export const DAILY_20261112_A: Guide[] = [
       },
       { h: 'When to see an eye doctor in Ventura County' },
       {
-        p: `A drop can ease dryness, but figuring out what’s behind persistent symptoms belongs to an optometrist or ophthalmologist who can examine your eyes. Make an appointment if dryness keeps coming back after the wind season ends, or if it affects your vision. The label is specific about when to stop: {stopUse}. Before your visit, the [dry eye self-check](/self-check) can help you put your symptoms into words.`,
+        p: `A drop can ease dryness, but figuring out what’s behind persistent symptoms belongs to an optometrist or ophthalmologist who can examine your eyes. Make an appointment if dryness keeps coming back after the wind season ends, or if it affects your vision. The label is specific about when to stop: {stopUse} Before your visit, the [dry eye self-check](/self-check) can help you put your symptoms into words.`,
       },
     ],
     faq: [
@@ -205,7 +205,7 @@ export const DAILY_20261112_A: Guide[] = [
       },
       { h: 'When dryness needs an eye exam' },
       {
-        p: `Seasonal dryness that fades with spring is common in Minnesota. Dryness that lingers into summer, comes with blurry vision, or keeps getting worse needs an eye doctor, who can work out what’s behind it. The label lists when to stop using Quell: {stopUse}.`,
+        p: `Seasonal dryness that fades with spring is common in Minnesota. Dryness that lingers into summer, comes with blurry vision, or keeps getting worse needs an eye doctor, who can work out what’s behind it. The label lists when to stop using Quell: {stopUse}`,
       },
     ],
     faq: [
@@ -315,7 +315,7 @@ export const DAILY_20261112_A: Guide[] = [
       },
       { h: 'When to see an eye doctor' },
       {
-        p: `Eye drops ease dryness; they don’t tell you why it’s happening. Figuring that out takes an eye exam with an optometrist or ophthalmologist. Book one if dryness lasts across seasons, keeps getting worse, or affects how you see. And follow the label’s limit: {stopUse}.`,
+        p: `Eye drops ease dryness; they don’t tell you why it’s happening. Figuring that out takes an eye exam with an optometrist or ophthalmologist. Book one if dryness lasts across seasons, keeps getting worse, or affects how you see. And follow the label’s limit: {stopUse}`,
       },
     ],
     faq: [
@@ -420,7 +420,7 @@ export const DAILY_20261112_A: Guide[] = [
       },
       { h: 'Knowing when to see someone' },
       {
-        p: `Lubricating drops are for everyday dryness. Working out why your eyes stay dry, or why they suddenly feel different, takes an eye doctor who can examine them. Make an appointment if dryness lasts beyond a season or affects your sight. The label says exactly when to stop: {stopUse}.`,
+        p: `Lubricating drops are for everyday dryness. Working out why your eyes stay dry, or why they suddenly feel different, takes an eye doctor who can examine them. Make an appointment if dryness lasts beyond a season or affects your sight. The label says exactly when to stop: {stopUse}`,
       },
     ],
     faq: [
@@ -466,7 +466,7 @@ export const DAILY_20261112_A: Guide[] = [
     addedOn: '2026-11-12',
     body: [
       {
-        p: `Dry eye relief in Niagara Falls is mostly about the indoor half of the year. NOAA’s normals for Niagara Falls International Airport list about 132 freezing nights and nearly 6,800 heating degree days, so homes run on heated air for months, while wind off the river and Lake Ontario stings outdoors. Humidify at home, keep vents off your face, wear wraparound glasses outside and use a lubricating drop as labeled. See an eye doctor for dryness that persists.`,
+        p: `Dry eye relief in Niagara Falls starts with the long heating season: NOAA’s normals for Niagara Falls International Airport list about 132 freezing nights a year, so homes run on dry, heated air for months. Humidify, keep vents off your face, wear wraparound glasses in the wind and use a lubricating drop as labeled. For dryness that keeps coming back, an optometrist or ophthalmologist can find the cause and decide what to do.`,
       },
       { h: 'Niagara Falls weather by NOAA’s numbers' },
       {
@@ -519,6 +519,36 @@ export const DAILY_20261112_A: Guide[] = [
       {
         p: `For car trips, point the vents at your chest once the windshield clears and avoid putting drops in until you’ve parked.`,
       },
+      { h: 'Finding an eye doctor for dry eyes in Niagara Falls' },
+      {
+        p: `People searching for dry eye care in Niagara Falls usually want someone who can look at their eyes, not another bottle. That’s an optometrist or an ophthalmologist. Either can examine the front of the eye and the eyelids, find out why your eyes are dry, and decide what to do; an ophthalmologist is a medical doctor who also does surgery. We don’t recommend or rate any clinic. To find one near you:`,
+      },
+      {
+        list: [
+          `Start with your vision or medical plan’s provider directory, which lists who is in network.`,
+          `Ask your primary care office for a referral, especially if your plan requires one for a specialist.`,
+          `When you call a practice, ask whether it sees patients for dry eye complaints and how long the first visit takes.`,
+          `If you split time between Niagara Falls and Buffalo, a practice near work may be easier to keep visiting.`,
+        ],
+      },
+      {
+        p: `[Optometrist or ophthalmologist: which to see?](/guides/optometrist-or-ophthalmologist) explains the difference in more detail.`,
+      },
+      { h: 'Getting the most from a dry eye appointment' },
+      {
+        p: `Dry eyes in western New York often follow the furnace, so a visit in January may show a different picture than one in July. Give the doctor the pattern, not just the symptom:`,
+      },
+      {
+        list: [
+          `When your eyes feel worst: mornings after a night of heat, afternoons at a screen, or the walk along the river in wind.`,
+          `How long it has gone on, and whether it eases in summer.`,
+          `Every drop, ointment or medicine you use, including over-the-counter ones; bring the cartons or photos of the labels.`,
+          `What you’ve already tried at home, such as a humidifier or moving away from vents, and whether it helped.`,
+        ],
+      },
+      {
+        p: `If your eyes hurt, your vision changes, or one eye is much worse than the other, don’t wait for a routine appointment. Our list of [eye symptoms that need a doctor](/guides/eye-symptoms-that-need-a-doctor) can help you judge how soon to go.`,
+      },
       { h: 'Using Quell through a western New York winter' },
       {
         p: `Quell’s label gives its Uses as {uses}. It’s designed to reinforce the tear film’s oil layer to help reduce moisture loss, which is the problem heated winter air creates. Follow the label’s directions, {directions}, and protect the tip: {tip}.`,
@@ -532,7 +562,7 @@ export const DAILY_20261112_A: Guide[] = [
       },
       { h: 'When to have your eyes checked' },
       {
-        p: `If your eyes stay dry after the heat goes off in spring, or dryness comes with pain or changes in your vision, an eye doctor is the right person to work out what’s going on. The label gives the line to watch for: {stopUse}.`,
+        p: `If your eyes stay dry after the heat goes off in spring, or dryness comes with pain or changes in your vision, an eye doctor is the right person to work out what’s going on. The label gives the line to watch for: {stopUse}`,
       },
     ],
     faq: [
@@ -551,6 +581,14 @@ export const DAILY_20261112_A: Guide[] = [
       {
         q: 'Can Quell be shipped to Niagara Falls, Ontario?',
         a: `No. Quell ships only to addresses in the United States, so orders can go to Niagara Falls, New York, but not across the border to Canada.`,
+      },
+      {
+        q: 'Where can I find an eye doctor for dry eyes in Niagara Falls, NY?',
+        a: `Start with your vision or medical plan’s provider directory, or ask your primary care office for a referral to an optometrist or ophthalmologist. When you call, ask whether the practice sees patients for dry eye complaints.`,
+      },
+      {
+        q: 'What can I do for dry eyes in Niagara Falls between eye doctor visits?',
+        a: `Run a humidifier through the heating season, point vents away from your face, wear wraparound glasses in the wind near the river, and use a lubricating drop as its label directs. Keep notes on when your eyes feel worst for your next visit.`,
       },
     ],
   },
@@ -634,7 +672,7 @@ export const DAILY_20261112_A: Guide[] = [
       },
       { h: 'If cost is keeping you from an eye exam' },
       {
-        p: `Dryness that keeps returning, gets worse or affects your vision needs an eye doctor, whatever the budget. Many communities have health centers that charge based on income, and some optometry schools run clinics. Quell’s label also sets a clear line for when to stop and get checked: {stopUse}.`,
+        p: `Dryness that keeps returning, gets worse or affects your vision needs an eye doctor, whatever the budget. Many communities have health centers that charge based on income, and some optometry schools run clinics. Quell’s label also sets a clear line for when to stop and get checked: {stopUse}`,
       },
     ],
     faq: [
@@ -730,7 +768,7 @@ export const DAILY_20261112_A: Guide[] = [
       },
       { h: 'Watching for changes' },
       {
-        p: `Residents don’t always mention discomfort, so family visits are a good time to notice it. If the resident complains of eye pain, has trouble seeing, or their eyes look more irritated, tell the nurse. The label sets the limit clearly: {stopUse}. [Eye drops for older adults](/guides/eye-drops-for-older-adults) has more on helping someone use drops comfortably.`,
+        p: `Residents don’t always mention discomfort, so family visits are a good time to notice it. If the resident complains of eye pain, has trouble seeing, or their eyes look more irritated, tell the nurse. The label sets the limit clearly: {stopUse} [Eye drops for older adults](/guides/eye-drops-for-older-adults) has more on helping someone use drops comfortably.`,
       },
     ],
     faq: [
@@ -762,7 +800,7 @@ export const DAILY_20261112_A: Guide[] = [
     addedOn: '2026-11-12',
     body: [
       {
-        p: `Dry, itchy eyes in winter usually come from dry air. Furnaces warm cold outdoor air without adding moisture, so tears evaporate faster indoors, and the skin of the eyelids dries out along with the rest of your skin. Wind and cold outside add to it. A humidifier, vents pointed away from your face and a lubricating drop help with dryness; itching that persists needs a doctor’s look.`,
+        p: `To keep your eyes from drying out in winter, slow the evaporation that heated air causes: run a humidifier, point furnace and car vents away from your face, wear wraparound sunglasses in cold wind, and take screen breaks. Dry, itchy winter eyes usually come from that dry indoor air. A lubricating drop can relieve dryness, as its label says. Itching that persists needs a doctor’s look.`,
       },
       { h: 'Why winter makes eyes dry' },
       {
@@ -810,13 +848,44 @@ export const DAILY_20261112_A: Guide[] = [
       {
         p: `Wind makes eyes water, and that watery reflex tear washes away fast, which can leave eyes drier once you’re back inside. Bright sun on snow makes people squint, and squinting goes with partial blinks. Wraparound sunglasses deal with both. Ski goggles or a scarf pulled up help on very windy days. [Dry eyes from cold air](/guides/dry-eyes-from-cold-air) explains the watering reflex in more detail.`,
       },
+      { h: 'Winter dry eye symptoms to notice' },
+      {
+        p: `Winter dryness doesn’t always feel like dryness. It shows up in a few common ways, often worse in the morning after a night of heat or in the late afternoon after hours indoors:`,
+      },
+      {
+        list: [
+          `A gritty or sandy feeling, as if something is in the eye.`,
+          `Burning or stinging, especially in heated rooms or the car.`,
+          `Watery eyes outdoors in the wind, followed by dryness once you come inside.`,
+          `Heavy, tired-feeling lids by evening.`,
+          `Vision that blurs a little at a screen and clears when you blink.`,
+          `Itchy, flaky skin along the lids.`,
+        ],
+      },
+      {
+        p: `Those are the everyday kind. Pain, light that hurts, discharge, blurred vision that doesn’t clear with blinking, or one eye much worse than the other aren’t winter dryness to wait out; see an eye doctor.`,
+      },
+      { h: 'How to relieve dry eyes in winter, through the day' },
+      {
+        list: [
+          `On waking: if your eyes feel worst first thing, lower the bedroom thermostat a little and keep the humidifier running at night.`,
+          `The commute: set the car’s heat to the windshield and floor once the glass clears, not to the face vents.`,
+          `At work: sit out of the path of heating vents, lower your monitor slightly, and look away from the screen every so often.`,
+          `Outdoors: wraparound sunglasses or goggles on windy or bright snowy days.`,
+          `Evenings: lamps on behind the TV, the couch away from the fireplace or space heater, and the ceiling fan off.`,
+          `Your drops: use them as the label directs, {directions}, spread across the day rather than all at once.`,
+        ],
+      },
+      {
+        p: `[Winter heating and dry eyes](/guides/winter-heating-and-dry-eyes) goes system by system, from forced air to radiators, if your home’s heat is the main problem.`,
+      },
       { h: 'Keeping drops in good shape in winter' },
       {
         p: `Eye drops have a storage range on the label too, and winter tests it. Quell’s is {storage}. A bottle left in the car on a freezing night falls below that, and one parked next to a radiator or space heater can run above it. Keep it in a bag that comes inside with you, or in a drawer at room temperature. If it changes color, the label says {doNotUse}.`,
       },
       { h: 'When itchy, dry eyes need a doctor' },
       {
-        p: `See an eye doctor if your eyes keep itching despite the steps above, if the lids are swollen or crusted, if there’s discharge, or if dryness lingers after winter ends. Figuring out what’s causing symptoms is their job, and they can tell whether a lubricating drop fits. The label is clear about when to stop: {stopUse}. The [dry eye self-check](/self-check) can help you describe your symptoms before the appointment.`,
+        p: `See an eye doctor if your eyes keep itching despite the steps above, if the lids are swollen or crusted, if there’s discharge, or if dryness lingers after winter ends. Figuring out what’s causing symptoms is their job, and they can tell whether a lubricating drop fits. The label is clear about when to stop: {stopUse} The [dry eye self-check](/self-check) can help you describe your symptoms before the appointment.`,
       },
     ],
     faq: [
@@ -835,6 +904,14 @@ export const DAILY_20261112_A: Guide[] = [
       {
         q: 'When should I see a doctor for itchy eyes in winter?',
         a: `If itching continues despite simple changes, or comes with swelling, crusting, discharge, pain or vision changes. Stop using any eye drop and ask a doctor if symptoms persist.`,
+      },
+      {
+        q: 'How do I keep my eyes from drying out in winter?',
+        a: `Slow tear evaporation indoors: run a clean humidifier, point heating and car vents away from your face, take screen breaks, and wear wraparound sunglasses in cold wind. A lubricating drop, used as labeled, can relieve the dryness that remains.`,
+      },
+      {
+        q: 'Why do my eyes feel worse in the morning in winter?',
+        a: `Heat often runs through the night, drying the bedroom air for hours before you wake. Lowering the thermostat a little and running a bedroom humidifier can help.`,
       },
     ],
   },
@@ -907,7 +984,7 @@ export const DAILY_20261112_A: Guide[] = [
       },
       { h: 'A note on what a gift can’t do' },
       {
-        p: `A drop or a humidifier can make a shift more comfortable. It doesn’t replace an eye exam. Nurses are good at telling other people to see a doctor and less good at doing it themselves, so if they mention dryness that never lets up, nudge them. The label’s own line is worth sharing: {stopUse}.`,
+        p: `A drop or a humidifier can make a shift more comfortable. It doesn’t replace an eye exam. Nurses are good at telling other people to see a doctor and less good at doing it themselves, so if they mention dryness that never lets up, nudge them. The label’s own line is worth sharing: {stopUse}`,
       },
     ],
     faq: [
@@ -1002,7 +1079,7 @@ export const DAILY_20261112_A: Guide[] = [
       },
       { h: 'Summer break is a good test' },
       {
-        p: `If your eyes feel much better in July and August, the classroom environment is a likely contributor, and the changes above are worth pushing for. If dryness stays the same through summer, or gets worse, see an eye doctor. Working out what’s behind it is their job, and the [dry eye self-check](/self-check) can help you describe your symptoms before the visit. The label says when to stop: {stopUse}.`,
+        p: `If your eyes feel much better in July and August, the classroom environment is a likely contributor, and the changes above are worth pushing for. If dryness stays the same through summer, or gets worse, see an eye doctor. Working out what’s behind it is their job, and the [dry eye self-check](/self-check) can help you describe your symptoms before the visit. The label says when to stop: {stopUse}`,
       },
     ],
     faq: [
@@ -1097,7 +1174,7 @@ export const DAILY_20261112_A: Guide[] = [
       },
       { h: 'When dry eyes after running need a doctor' },
       {
-        p: `Eyes that feel dry for an hour after a cold run and then settle are common. Eyes that stay dry for days, hurt, or blur your vision are not, and an eye doctor can work out what’s behind it. Follow the label’s line on when to stop: {stopUse}. The [dry eye self-check](/self-check) can help you put a pattern into words, and [dry eyes for outdoor workers](/guides/dry-eyes-for-outdoor-workers) covers long hours in wind and sun.`,
+        p: `Eyes that feel dry for an hour after a cold run and then settle are common. Eyes that stay dry for days, hurt, or blur your vision are not, and an eye doctor can work out what’s behind it. Follow the label’s line on when to stop: {stopUse} The [dry eye self-check](/self-check) can help you put a pattern into words, and [dry eyes for outdoor workers](/guides/dry-eyes-for-outdoor-workers) covers long hours in wind and sun.`,
       },
     ],
     faq: [
@@ -1183,7 +1260,7 @@ export const DAILY_20261112_A: Guide[] = [
       },
       { h: 'When to see your eye doctor' },
       {
-        p: `Your glasses prescription check is a good time to mention dryness. An eye doctor can look at the eye’s surface and work out what’s behind it. Don’t wait for that appointment if something changes, though. The label is direct: {stopUse}. The [dry eye self-check](/self-check) can help you organize what to tell them.`,
+        p: `Your glasses prescription check is a good time to mention dryness. An eye doctor can look at the eye’s surface and work out what’s behind it. Don’t wait for that appointment if something changes, though. The label is direct: {stopUse} The [dry eye self-check](/self-check) can help you organize what to tell them.`,
       },
     ],
     faq: [
@@ -1396,7 +1473,7 @@ export const DAILY_20261112_A: Guide[] = [
         ],
       },
       {
-        p: `Keep the carton while you’re using a bottle. The front tells you what you bought and how much; the back tells you how to use it and when to stop. Quell’s label is direct on that last point: {stopUse}.`,
+        p: `Keep the carton while you’re using a bottle. The front tells you what you bought and how much; the back tells you how to use it and when to stop. Quell’s label is direct on that last point: {stopUse}`,
       },
     ],
     faq: [

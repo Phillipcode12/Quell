@@ -1230,3 +1230,104 @@ build time and deployment count.
     quelldrop.com 200.
   - *(This entry was written after the push and is committed with the next
     run.)*
+
+---
+
+## 2026-11-25 — fifteenth daily run
+
+- **Started 11:10 local**; no lock was present.
+- **Published: 100 guides + 0 city pages = 100.**
+  - By category: local 20, using 16, seasonal 15, choosing 15, ordering 12,
+    formula 6, label 6, returns 5, shipping 5.
+  - Totals after this run: 1,516 guides (1,377 from the daily job).
+- **City pages:** ramp finished 11-15; nothing to add.
+- **Local guides (20)**, stations picked from yesterday's "matched with
+  normals, not yet used" list; raw ACIS JSON (with lows) in
+  `.daily-job/acis1125/<SID>.json`, city lists `local-<letter>-1125.txt`:
+  Georgetown TX (Georgetown Lake), Weslaco TX, Paris TX, Marshall TX,
+  Boerne TX (links the San Antonio guide and page), Lakeland FL (Lakeland
+  2), Palm Coast FL (6NE), Titusville FL, Venice FL, Palmdale CA (AP), Palm
+  Springs CA (ASOS), Davis CA (2 WSW Exp Farm), Gilroy CA, Lake Havasu City
+  AZ, Casa Grande AZ, Montrose CO (Regional AP), Castle Rock CO, Wilson NC
+  (3 SW), Statesville NC (2 NNE), Salisbury NC.
+  - **Still matched with normals, not yet used:** Richardson, Edinburg,
+    Baytown, Burleson, Grapevine, Waxahachie, Cleburne, Greenville TX,
+    Alvin, Terrell; Hollywood FL, Palm Bay, Kissimmee, Miami Beach, Palm
+    Beach Gardens, Bradenton, Fort Pierce, DeLand, Plant City, Leesburg,
+    Jacksonville Beach; Tempe, Bullhead City; Anaheim, Irvine, Santa Ana,
+    Fremont, Oceanside, Victorville, Torrance, Pasadena CA, Vallejo,
+    Fairfield, Berkeley, Vacaville, Burbank, El Cajon, Redlands, Hanford;
+    Cary, High Point, Concord NC, Greenville NC, Chapel Hill, Burlington NC;
+    Lakewood CO, Longmont, Loveland. After that, run acis-state.sh for new
+    states (none outside TX, FL, AZ, CA, NC, CO has been listed yet).
+- **Non-local written:** using (snowboarders, ski instructors, snowcat
+  operators, zookeepers, tour guides, port and dock workers, field
+  geologists, archaeologists, vineyard workers in winter, greenhouse
+  workers, tailors and seamstresses, phlebotomists, respiratory therapists,
+  kennel staff, stable hands and farriers, Christmas tree lot workers);
+  seasonal (gifts for a boyfriend, girlfriend, someone who has everything,
+  an adult grandchild, a personal trainer; Christmas morning, driving home
+  after Thanksgiving, tree lighting, outdoor bowl game, office
+  Friendsgiving potluck, new video game over Christmas break, cleaning
+  before holiday guests, volunteering at a holiday meal, New Year's Day
+  polar plunge, walking in a Christmas parade); choosing (bad to use often,
+  how often, expired, do drops actually help, scratched eye, swollen
+  eyelid, tight, cold, scratchy, what drops are good for dry eyes, gentle
+  enough for daily use, what to buy at the store, considered medication,
+  make your eyes water, supposed to be thick); ordering (boyfriend or
+  girlfriend, did my order go through, coworker, without a doctor's note,
+  for a friend, public Wi-Fi, where to buy preservative-free online, out of
+  stock, HSA after switching to a PPO, two people one email, insurance,
+  card security code); shipping (ski resort, care-of address, duplex or
+  back unit, "label created", "out for delivery"); returns (canceled trip,
+  allergic, arrived too late, parent can't use them, partial refund);
+  formula (lanolin, propylene glycol or boric acid, mineral oil in your
+  eyes, plant oils, milk in milky drops, main ingredient); label ("any
+  surface", as needed, check before first use, gift recipients, how to
+  pronounce, comparing two labels).
+- **10 strongest search phrases used:** dry eye relief <city> (20 cities),
+  is it bad to use eye drops often, how often should you use eye drops, is
+  it bad to use expired eye drops, does insurance cover eye drops, where
+  can i buy preservative free eye drops online, what eye drops are good for
+  dry eyes, christmas gifts for boyfriend, christmas gifts for girlfriend,
+  why do my eyes feel scratchy.
+- **Skipped as already answered (don't assign again):** potters, church
+  musicians, coach gifts, snowshoeing, winter bonfire, Friendsgiving at
+  home, gritty, after crying, tired-looking, wind, burn/sting, cold
+  storage, Thanksgiving Day ordering, work address shipping, hospital
+  shipping, gift returns after Christmas, missing bottle, refund to a
+  canceled card, "temporary relief", "Purpose", polysorbate 80 and
+  glycerin angles (about ten guides), emu oil and manuka honey, "regularly".
+  Left out for lack of site facts: Puerto Rico/territory shipping, PayPal,
+  foreign cards, phone payment.
+- **Collisions during writing:** writers C/A/D/E collided on order-for-a-
+  friend, Christmas Day ordering, castor oil, doctor-said-stop refunds,
+  puffy eyes and "check a new bottle"; each was resolved before the end
+  (one copy kept, the others swapped).
+- **Fixed in review (11 read end to end):** B's file printed "{stopUse}."
+  in 18 places (the token already ends in a period, so pages showed "72
+  hours.."); expired drops (cut an unverified line about carton printing);
+  Lake Havasu City (cut "one of the driest places you can live beside a
+  big lake" and "winter residents fill the town"; fixed "mid 60s" to "low
+  60s"); plant oils ("only ingredient with oil in its name" was false: now
+  "only inactive ingredient"). Also read: scratched eye, swollen eyelid
+  (both defer to a doctor throughout), HSA after a PPO switch, Boerne,
+  allergic returns, considered medication, insurance, boyfriend gifts,
+  Weslaco.
+- **For a human look:** nearby towns named without an official check
+  (Hallsville and Jefferson near Marshall, Nokomis and Englewood near
+  Venice, Sedalia and Larkspur near Castle Rock); TSA 3.4-ounce rule stated
+  from knowledge in two guides; HSA-after-PPO reasoning rests on how Pub
+  969 is structured rather than one explicit sentence; ingredient
+  pronunciations from general knowledge; the kennel guide gives Poison
+  Control's 1-800-222-1222 (already on the site).
+- **Checks:** full `npx vitest run --testTimeout=60000` 651/651; `npm run
+  build` 101 s locally; `tsc --noEmit` clean.
+- **Deploy:**
+  - Commit f76b86b built on Vercel in about 2 minutes (Ready).
+  - `guides-verify-live`: 100/100 OK.
+  - Pruning: removed quell-k2mgz2ak9 with `--safe --confirm-name`, leaving 3
+    (live quell-otrcwovzq + quell-m1yi93rz4 + quell-ihe8s8zrd).
+    quelldrop.com 200.
+  - *(This entry was written after the push and is committed with the next
+    run.)*

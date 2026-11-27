@@ -116,7 +116,10 @@ export const DAILY_20261111_A: Guide[] = [
     addedOn: '2026-11-11',
     body: [
       {
-        p: `Colorado Springs sits higher than Denver, at 6,035 feet by the city’s own count, and its air is dry for much of the year. Add wind off the foothills, long winters of indoor heat and plenty of outdoor training at altitude, and eyes can feel dry or gritty here even when nothing else has changed. Adjusting the air you sit in, blinking on purpose, and a lubricating drop used as labeled cover most of it.`,
+        p: `Dry eye relief in Colorado Springs, from downtown to Briargate and Cordera on the north side, starts with the air: 6,035 feet by the city’s own count, little winter precipitation, wind off the foothills and months of furnace heat. Keep vents and heaters off your face, blink fully at screens, wear wraparound sunglasses outside and use a lubricating drop as labeled. Finding the cause of dryness and deciding what to do belong to an eye doctor.`,
+      },
+      {
+        p: `Colorado Springs sits higher than Denver, and its air is dry for much of the year. Add long winters of indoor heat and plenty of outdoor training at altitude, and eyes can feel dry or gritty here even when nothing else has changed. Adjusting the air you sit in, blinking on purpose, and a lubricating drop used as labeled cover most of it.`,
       },
       { h: 'Dry eyes in Colorado Springs: the numbers' },
       {
@@ -155,6 +158,35 @@ export const DAILY_20261111_A: Guide[] = [
       {
         p: `Around the drops, work on the air. A humidifier in the room where you sleep, cleaned the way its maker says, raises the moisture you spend eight hours in. Screens deserve a pause: look out the window toward the mountains for a little while and blink fully a few times. And if you’ve got a space heater in a basement office, point it at your legs, not your face; [dry eyes from a space heater](/guides/dry-eyes-from-a-space-heater) goes into that.`,
       },
+      { h: 'Dry eyes in Briargate and Cordera' },
+      {
+        p: `Briargate and Cordera are neighborhoods on the city’s north side, and the National Weather Service doesn’t publish separate climate numbers for them. The figures above are the city’s official record, and they describe the same high, dry air that reaches every part of town. What changes from one household to the next is the indoor routine: how long the furnace runs, where the registers point, and how many hours go to a screen or a windshield.`,
+      },
+      {
+        list: [
+          `On north-side commutes, the drive into the sun on a clear morning or evening means glare through the windshield and a heater blowing at face height. Angle the vents down and keep sunglasses in the car.`,
+          `In a home office, put the desk where you can look out a window now and then, away from the nearest floor register.`,
+          `On neighborhood trails and at a kids’ game in the park, wind on open ground dries the eyes faster than you’d expect in cool weather. Wraparound lenses help.`,
+          `In winter, run a clean humidifier in the bedroom and lower the thermostat a little at night.`,
+        ],
+      },
+      { h: 'Relief you can start at home' },
+      {
+        p: `Most dryness tied to Colorado Springs air responds to a few changes you can try this week, with no appointment needed. Think of them as a two-week experiment and notice what helps:`,
+      },
+      {
+        list: [
+          `Move out of moving air: car vents, furnace registers, ceiling fans and space heaters.`,
+          `Add moisture where you sleep with a humidifier kept clean.`,
+          `Break up screen time; look across the room and finish each blink.`,
+          `Wear wraparound sunglasses outdoors, especially on windy days.`,
+          `Use a lubricating drop exactly as its label directs, no more often than it says.`,
+        ],
+      },
+      { h: 'What an eye doctor visit is for' },
+      {
+        p: `A drop can relieve dryness, but it can’t tell you why your eyes are dry. An optometrist or ophthalmologist can examine the eye’s surface, the eyelids and the tear film, ask about medicines and screen habits, and decide what to do next. That matters most if dryness keeps returning after you’ve changed the air around you, if one eye is much worse than the other, or if anything hurts. Our guide to [questions to ask your eye doctor](/guides/questions-to-ask-your-eye-doctor) helps you prepare. We don’t refer to or rate local clinics.`,
+      },
       { h: 'Ordering Quell to Colorado Springs' },
       {
         p: `Quell ships from Brentwood, Tennessee, to any address in the United States, including homes on and around the city’s bases. Shipping is a flat {shipping}, and orders of {freeBottles} bottles or more ship free. The site doesn’t promise a delivery date, so order while you still have a week or two left. See the [Colorado Springs page](/eye-drops/colorado-springs-co) and the [Colorado page](/eye-drops/state/colorado) for the local details.`,
@@ -180,6 +212,14 @@ export const DAILY_20261111_A: Guide[] = [
       {
         q: 'Does Quell ship to Colorado Springs?',
         a: `Yes. Orders ship from Brentwood, Tennessee, for a flat {shipping}, or free when you order {freeBottles} or more bottles. No delivery date is promised, so order ahead.`,
+      },
+      {
+        q: 'Why are my eyes dry in Briargate?',
+        a: `Briargate shares the city’s high, dry air, and winter furnace heat, screen time and windy open ground all speed evaporation from the tear film. Moving away from vents, a bedroom humidifier and sunglasses outdoors usually help.`,
+      },
+      {
+        q: 'Where can I get dry eye relief in Colorado Springs?',
+        a: `Start with the air around you and a lubricating drop used as labeled; Quell ships to any Colorado Springs address. For dryness that keeps returning, an optometrist or ophthalmologist can find the cause and decide what to do.`,
       },
     ],
   },

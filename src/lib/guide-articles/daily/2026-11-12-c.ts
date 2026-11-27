@@ -1219,7 +1219,7 @@ export const DAILY_20261112_C: Guide[] = [
     addedOn: '2026-11-12',
     body: [
       {
-        p: `You can taste eye drops because your eyes drain into your nose. MedlinePlus explains that tears flow into a tiny opening in the inner corner of each eye, the entrance to the tear duct, which carries them into the nose. From there, a little liquid runs down the back of the throat, where you taste it. A faint taste after a drop simply means the drop followed the same path your tears always take.`,
+        p: `Yes, you can taste eye drops in your mouth, and it’s normal. MedlinePlus explains that tears drain through a tiny opening in the inner corner of each eye into the tear duct, which empties into the nose. Part of every drop takes that route and trickles down the back of the throat, so a faint or weird taste a minute or two later means the drop drained the way your tears always do.`,
       },
       { h: 'How tears drain from the eye' },
       {
@@ -1274,6 +1274,23 @@ export const DAILY_20261112_C: Guide[] = [
       {
         p: `Some people notice the drop in their nose before they taste it, as a cool or wet feeling, or the urge to sniff. That’s the same drainage, caught a step earlier. Blowing your nose right after a drop won’t harm anything, though it may pull more of the liquid down the duct. Waiting a minute or two is gentler.`,
       },
+      { h: 'Why eye drops leave a weird taste in your mouth' },
+      {
+        p: `People describe the taste in all sorts of ways: bitter, salty, faintly sweet, metallic, or just “off.” A Drug Facts panel lists what’s in a bottle; it never says what the bottle tastes like, and Quell’s is no exception. Its actives are {actives}, and its inactive ingredients are {inactives}. Even a small trace of that mixture reaching the back of the tongue can be enough to notice.`,
+      },
+      {
+        p: `The word “weird” usually comes from surprise more than strength. You put something in your eye and then notice it in your mouth, which feels wrong until you know the eye and nose are connected. The taste fades on its own as the trace is swallowed with saliva. A sip of water or brushing your teeth clears it faster if it bothers you.`,
+      },
+      { h: 'Tasting eye drops right away, later, or not at all' },
+      {
+        p: `Timing varies from person to person and from one drop to the next. Some people notice a taste within moments, others only after a few minutes, and plenty never notice anything. All of that is ordinary. Not tasting a drop doesn’t mean it missed, and tasting one doesn’t mean it failed to do its job on the eye’s surface.`,
+      },
+      {
+        list: [
+          `A drop that lands near the inner corner reaches the drainage opening sooner than one placed in the lower lid’s pocket.`,
+          `If you use drops at mealtimes and the taste spoils your food, put the drop in after eating instead of just before.`,
+        ],
+      },
       { h: 'When a taste or drainage needs attention' },
       {
         p: `A faint taste is normal. Tell a doctor or pharmacist if you notice any of these:`,
@@ -1306,6 +1323,14 @@ export const DAILY_20261112_C: Guide[] = [
       {
         q: 'How do I stop tasting eye drops?',
         a: `Use a single drop, then close your eye gently for a moment instead of blinking hard. A pharmacist can show you whether pressing the inner corner of your eye is worth doing.`,
+      },
+      {
+        q: 'Why do I have a weird taste in my mouth after eye drops?',
+        a: `Some of each drop drains from the inner corner of the eye into the nose and down the back of the throat, where taste buds pick up even a trace of the ingredients. The taste fades on its own; a sip of water clears it sooner.`,
+      },
+      {
+        q: 'Is it normal not to taste eye drops at all?',
+        a: `Yes. Many people never notice a taste, and the same person may taste one drop and not the next. Not tasting it doesn’t mean the drop missed your eye.`,
       },
       {
         q: 'What if I swallow eye drops by accident?',

@@ -195,7 +195,7 @@ export const FEATURED_GUIDES: Guide[] = [
     featured: true,
     body: [
       {
-        p: `Lubricating eye drops are over-the-counter drops whose active ingredients are lubricants. They are often called artificial tears, and they are what most people mean by eye drops for dryness. Quell is one of them: the full name on its carton is {brand} Preservative-Free Lubricating Eye Drops.`,
+        p: `Lubricating eye drops, also sold as lubricant eye drops or artificial tears, are over-the-counter drops whose active ingredients are lubricants. Their labels describe uses such as relieving dryness of the eye and protecting it against further irritation. They are what most people mean by eye drops for dryness. Quell is one of them: the full name on its carton is {brand} Preservative-Free Lubricating Eye Drops.`,
       },
       { h: 'What makes a drop a lubricating drop' },
       {
@@ -213,7 +213,7 @@ export const FEATURED_GUIDES: Guide[] = [
       },
       { h: 'Water and oil' },
       {
-        p: `Most drops top up the water layer of the tear film. Quell’s formula is designed to reinforce the eye’s natural lipid (oil) layer instead — the outermost barrier of the tear film, responsible for minimizing evaporation of the watery layer beneath it.`,
+        p: `Most drops top up the water layer of the tear film. Quell’s formula is designed to reinforce the eye’s natural lipid (oil) layer instead: the outermost barrier of the tear film, responsible for minimizing evaporation of the watery layer beneath it.`,
       },
       {
         p: `That design is why the formula includes an emollient and natural oils alongside its lubricants, and why it looks milky brown instead of clear. {appearance} There is more on this in [the tear film’s oil layer, explained](/guides/the-tear-films-oil-layer).`,
@@ -221,6 +221,29 @@ export const FEATURED_GUIDES: Guide[] = [
       { h: 'How they are used' },
       {
         p: `Directions vary from brand to brand, so the only ones that matter are on the bottle in your hand. Quell’s read: {directions}. The panel adds one handling rule: {tip}.`,
+      },
+      { h: 'What are lubricant eye drops used for?' },
+      {
+        p: `People reach for lubricant eye drops when their eyes feel dry, gritty or scratchy from the conditions around them. The tear film thins faster when the air is dry or moving, and when you blink less. Common situations include:`,
+      },
+      {
+        list: [
+          `Long stretches at a computer or phone, when blinking slows. See [screens and your tear film](/guides/screens-and-your-tear-film).`,
+          `Heated rooms in winter and air-conditioned offices in summer. See [winter heating and dry eyes](/guides/winter-heating-and-dry-eyes).`,
+          `Wind, sun and cold outdoors. See [why eyes feel dry when it’s windy](/guides/why-do-my-eyes-feel-dry-when-its-windy).`,
+          `Flights and long drives, with dry cabin air and vents. See [dry eyes on a plane](/guides/dry-eyes-on-a-plane).`,
+        ],
+      },
+      {
+        p: `What they are not used for matters just as much. A lubricating drop isn’t for rinsing out a chemical or a foreign object, and it isn’t for eye pain, an injury or a sudden change in vision. Those need medical care.`,
+      },
+      { h: 'Lubricant eye drops vs. lubricating eye drops' },
+      {
+        p: `The two names describe the same family of products. “Lubricant” is the word the Drug Facts panel uses in its Purpose column, next to each active ingredient that does that job; “lubricating” is how many cartons describe the drop as a whole. Quell’s panel lists two of its actives with the purpose Lubricant and one, light mineral oil, as an Emollient. [Lubricant vs. lubricating eye drops](/guides/lubricant-vs-lubricating-eye-drops) goes through the wording in more detail.`,
+      },
+      { h: 'Eye drops and lubricants: how to tell which is which' },
+      {
+        p: `Not every eye drop is a lubricant. To tell, look at the Drug Facts panel rather than the front of the box. A lubricant eye drop lists active ingredients with a purpose such as Lubricant or Emollient, and its Uses line talks about dryness or irritation. A drop with a different purpose and a Uses line about something else is a different kind of product. For how a lubricant drop acts on the eye’s surface, see [how lubricating eye drops work](/guides/how-do-lubricating-eye-drops-work).`,
       },
       { h: 'Who should check first' },
       {
@@ -236,6 +259,20 @@ export const FEATURED_GUIDES: Guide[] = [
       { h: 'Buying them online' },
       {
         p: `Lubricating drops don’t need a prescription, so you can order them directly. Quell ships anywhere in the United States for a flat {shipping}, and free on {freeBottles} bottles or more. [See prices](/#buy), or read [how to buy eye drops online safely](/guides/how-to-buy-eye-drops-online-safely) first.`,
+      },
+    ],
+    faq: [
+      {
+        q: 'What do lubricant eye drops do?',
+        a: 'They add lubricating ingredients to the surface of the eye to relieve dryness. Quell’s label gives its Uses as: {uses}.',
+      },
+      {
+        q: 'What does “lubricant” mean on an eye drop label?',
+        a: 'It is the purpose the Drug Facts panel gives an active ingredient that lubricates the eye. Quell lists two of its three active ingredients as lubricants and the third, light mineral oil, as an emollient.',
+      },
+      {
+        q: 'Are lubricating eye drops a drug?',
+        a: 'Yes. They are over-the-counter drugs, which is why they carry a Drug Facts panel with active ingredients, uses, warnings and directions. You can buy them without a prescription.',
       },
     ],
   },
